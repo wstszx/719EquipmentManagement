@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">719设备管理</string>
+    <string name="mine">我的</string>
+    <string name="device">设备</string>
+    <string name="Home">首页</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
