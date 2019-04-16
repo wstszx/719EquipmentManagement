@@ -26,4 +26,5 @@
 
     <item name="layout_for_test" type="id"/>
     <item name="scan" type="id"/>
+    <item name="back" type="id"/>
 </resources>

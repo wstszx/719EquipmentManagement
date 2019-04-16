@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
@@ -69,6 +70,12 @@ public class HomeFragment extends BaseFragment {
             homeBeanList.add(bean);
         }
         adapter.setNewData(homeBeanList);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                PersonManageActivity.start(getContext());
+            }
+        });
     }
 
     @Override

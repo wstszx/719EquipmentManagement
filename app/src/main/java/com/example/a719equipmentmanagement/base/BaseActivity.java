@@ -14,9 +14,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        // 沉浸式状态栏
-//        QMUIStatusBarHelper.translucent(this);
         setContentView(getLayoutId());
+//         沉浸式状态栏
+//        QMUIStatusBarHelper.translucent(this);
         ButterKnife.bind(this);
         init(savedInstanceState);
     }
