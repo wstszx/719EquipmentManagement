@@ -12,6 +12,7 @@ import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.section.QMUISection;
+import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
 import java.util.ArrayList;
@@ -45,19 +46,35 @@ public class PersonManageActivity extends BaseActivity {
         PeopleManageAdapter adapter = new PeopleManageAdapter();
         stickySectionLayout.setAdapter(adapter, true);
         ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(createSection("header " + i, i % 2 == 0));
+        for (int i = 1; i < 7; i++) {
+            list.add(createSection("三室 " + i + "小组"));
         }
         adapter.setData(list);
+        adapter.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+            @Override
+            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+
+            }
+
+            @Override
+            public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+
+            }
+
+            @Override
+            public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(String headerText, boolean isFold) {
+    private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             contents.add(new SectionItem("item " + i));
         }
-        QMUISection<SectionHeader, SectionItem> section = new QMUISection<>(header, contents, isFold);
+        QMUISection<SectionHeader, SectionItem> section = new QMUISection<>(header, contents, true);
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);

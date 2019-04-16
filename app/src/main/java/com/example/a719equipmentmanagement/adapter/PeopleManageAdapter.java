@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
@@ -12,6 +13,7 @@ import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 
 public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
@@ -27,6 +29,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     @Override
     protected ViewHolder onCreateSectionItemViewHolder(@NonNull ViewGroup viewGroup) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_child_item, viewGroup, false);
+
         return new ViewHolder(view);
     }
 
@@ -34,8 +37,15 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
+        ConstraintLayout constraintlayout = view.findViewById(R.id.constraintlayout);
         tvParent.setText(section.getHeader().getText());
-
+        constraintlayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
+                toggleFold(pos, false);
+            }
+        });
     }
 
     @Override
