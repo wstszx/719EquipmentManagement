@@ -7,14 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+import butterknife.ButterKnife;
 
-public abstract class BaseFragment<VDB extends ViewDataBinding> extends Fragment {
-
-
-    protected VDB mbinding;
+public abstract class BaseFragment extends Fragment {
 
 
     @Override
@@ -25,9 +21,10 @@ public abstract class BaseFragment<VDB extends ViewDataBinding> extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mbinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
+        ButterKnife.bind(this, view);
         init(savedInstanceState);
-        return mbinding.getRoot();
+        return view;
     }
 
     protected abstract void init(Bundle savedInstanceState);

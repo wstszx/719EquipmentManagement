@@ -2,24 +2,45 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
-import com.example.a719equipmentmanagement.databinding.FragmentHomeBinding;
 import com.example.a719equipmentmanagement.entity.HomeBean;
+import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 
-public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
+public class HomeFragment extends BaseFragment {
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
+    @BindView(R.id.tv_1)
+    TextView tv1;
+    @BindView(R.id.tv_more1)
+    TextView tvMore1;
+    @BindView(R.id.recyclerview1)
+    RecyclerView recyclerview1;
+    @BindView(R.id.tv_2)
+    TextView tv2;
+    @BindView(R.id.tv_more2)
+    TextView tvMore2;
+    @BindView(R.id.recyclerview2)
+    RecyclerView recyclerview2;
+    @BindView(R.id.topbar)
+    QMUITopBar topbar;
     private String[] features = {"人员管理", "货柜管理", "建账入库", "借用", "归还", "盘点", "点检", "报废"};
+    private int[] featuresImg = {R.mipmap.team, R.mipmap.container, R.mipmap.storage, R.mipmap.borrow, R.mipmap.restoration,
+            R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
 
     private static HomeFragment fragment;
     private HomeAdapter adapter;
@@ -31,16 +52,20 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
     }
 
     private void initView() {
-        mbinding.rvWork.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        topbar.setTitle("消息");
+        topbar.setTitleGravity(Gravity.LEFT);
+        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
+
+        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
         adapter = new HomeAdapter(R.layout.square_match_item);
-        mbinding.rvWork.setAdapter(adapter);
+        recyclerview.setAdapter(adapter);
 
     }
 
     private void initData() {
         List<HomeBean> homeBeanList = new ArrayList<>();
-        for (String feature : features) {
-            HomeBean bean = new HomeBean(R.mipmap.ic_launcher, feature);
+        for (int i = 0; i < features.length; i++) {
+            HomeBean bean = new HomeBean(featuresImg[i], features[i]);
             homeBeanList.add(bean);
         }
         adapter.setNewData(homeBeanList);

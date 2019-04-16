@@ -2,17 +2,14 @@ package com.example.a719equipmentmanagement.ui.device;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseFragment;
-import com.example.a719equipmentmanagement.databinding.FragmentDeviceBinding;
-import com.example.a719equipmentmanagement.ui.home.HomeFragment;
 
-public class DeviceFragment extends BaseFragment<FragmentDeviceBinding> {
+import butterknife.BindView;
+
+public class DeviceFragment extends BaseFragment {
 
 
     private static DeviceFragment fragment;

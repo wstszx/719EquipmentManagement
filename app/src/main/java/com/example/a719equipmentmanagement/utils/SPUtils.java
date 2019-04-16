@@ -43,7 +43,7 @@ public class SPUtils {
      *
      * @param context      context
      * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param defaultValue Value to restoration if this preference does not exist
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with
      * this name that is not a string
      */
@@ -85,7 +85,7 @@ public class SPUtils {
      *
      * @param context      context
      * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param defaultValue Value to restoration if this preference does not exist
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with
      * this name that is not a int
      */
@@ -127,7 +127,7 @@ public class SPUtils {
      *
      * @param context      context
      * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param defaultValue Value to restoration if this preference does not exist
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with
      * this name that is not a long
      */
@@ -169,7 +169,7 @@ public class SPUtils {
      *
      * @param context      context
      * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param defaultValue Value to restoration if this preference does not exist
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with
      * this name that is not a float
      */
@@ -211,7 +211,7 @@ public class SPUtils {
      *
      * @param context      context
      * @param key          The name of the preference to retrieve
-     * @param defaultValue Value to return if this preference does not exist
+     * @param defaultValue Value to restoration if this preference does not exist
      * @return The preference value if it exists, or defValue. Throws ClassCastException if there is a preference with
      * this name that is not a boolean
      */

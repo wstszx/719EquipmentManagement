@@ -1,26 +1,24 @@
 package com.example.a719equipmentmanagement;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
+import android.os.PersistableBundle;
+import android.view.MenuItem;
 
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.databinding.ActivityMainBinding;
 import com.example.a719equipmentmanagement.ui.device.DeviceFragment;
 import com.example.a719equipmentmanagement.ui.home.HomeFragment;
 import com.example.a719equipmentmanagement.ui.mine.MineFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-import android.os.PersistableBundle;
-import android.view.MenuItem;
-import android.widget.TextView;
+public class MainActivity extends BaseActivity {
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> {
-
+    @BindView(R.id.navigation)
+    BottomNavigationView navigation;
     private int currentIndex;
     private String bottomIndex = "Bottom_Index";
 
@@ -98,7 +96,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     @Override
     protected void init(Bundle savedInstanceState) {
         initFragment(savedInstanceState);
-        mBinding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
     @Override

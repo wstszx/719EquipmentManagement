@@ -6,19 +6,18 @@ import android.view.WindowManager;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
+import butterknife.ButterKnife;
 
-public abstract class BaseActivity<VDB extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
-    protected VDB mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        // 沉浸式状态栏
 //        QMUIStatusBarHelper.translucent(this);
-        mBinding = DataBindingUtil.setContentView(this, getLayoutId());
+        setContentView(getLayoutId());
+        ButterKnife.bind(this);
         init(savedInstanceState);
     }
 
