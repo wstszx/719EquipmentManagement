@@ -2,11 +2,9 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
@@ -15,14 +13,15 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment {
+
+    @BindView(R.id.topbar)
+    QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     @BindView(R.id.tv_1)
@@ -37,10 +36,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-    @BindView(R.id.topbar)
-    QMUITopBar topbar;
-    private String[] features = {"人员管理", "货柜管理", "建账入库", "借用", "归还", "盘点", "点检", "报废"};
-    private int[] featuresImg = {R.mipmap.team, R.mipmap.container, R.mipmap.storage, R.mipmap.borrow, R.mipmap.restoration,
+    private String[] features = {"人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
+    private int[] featuresImg = {R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
 
     private static HomeFragment fragment;
@@ -48,13 +45,18 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+
         initView();
         initData();
     }
 
     private void initView() {
-        topbar.setTitle("消息");
-        topbar.setTitleGravity(Gravity.LEFT);
+        topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
@@ -70,10 +72,26 @@ public class HomeFragment extends BaseFragment {
             homeBeanList.add(bean);
         }
         adapter.setNewData(homeBeanList);
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                PersonManageActivity.start(getContext());
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            switch (position) {
+                case 0:
+                    PersonManageActivity.start(getContext());
+                    break;
+                case 1:
+                    ContainerManageActivity.start(getContext());
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
             }
         });
     }

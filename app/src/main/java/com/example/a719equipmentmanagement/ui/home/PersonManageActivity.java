@@ -24,6 +24,7 @@ import butterknife.ButterKnife;
 
 public class PersonManageActivity extends BaseActivity {
 
+
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -83,6 +84,12 @@ public class PersonManageActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("人员管理");
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -97,5 +104,12 @@ public class PersonManageActivity extends BaseActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, PersonManageActivity.class);
         context.startActivity(starter);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

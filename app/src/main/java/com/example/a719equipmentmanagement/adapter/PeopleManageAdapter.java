@@ -39,12 +39,9 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ConstraintLayout constraintlayout = view.findViewById(R.id.constraintlayout);
         tvParent.setText(section.getHeader().getText());
-        constraintlayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
-                toggleFold(pos, false);
-            }
+        constraintlayout.setOnClickListener(v -> {
+            int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
+            toggleFold(pos, false);
         });
     }
 

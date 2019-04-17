@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.PersonManageActivity"></activity>
+        <activity android:name=".ui.home.GenarateQRActivity"></activity>
+        <activity android:name=".base.BaseEditActivity" />
+        <activity android:name=".ui.home.ContainerDetailActivity" />
+        <activity android:name=".ui.home.ContainerManageActivity" />
+        <activity android:name=".ui.home.PersonManageActivity" />
         <activity android:name=".ui.home.ScanActivity" />
 
         <meta-data
