@@ -91,10 +91,4 @@ public class GenarateQRActivity extends BaseActivity {
         context.startActivity(starter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

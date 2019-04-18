@@ -11,13 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
-import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -35,18 +32,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * 货柜管理
- */
-public class ContainerManageActivity extends BaseActivity {
+public class DeviceClassifiyActivity extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
     QMUIStickySectionLayout stickySectionLayout;
-    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
+    private ArrayAdapter<String> adapter;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     String[] deletes = new String[]{
             "删除"
     };
@@ -65,7 +59,7 @@ public class ContainerManageActivity extends BaseActivity {
         stickySectionLayout.setAdapter(adapter, true);
         ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
         for (int i = 1; i < 7; i++) {
-            list.add(createSection("货柜 " + i));
+            list.add(createSection("设备分类" + i));
         }
         adapter.setData(list);
         adapter.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
@@ -93,8 +87,8 @@ public class ContainerManageActivity extends BaseActivity {
     private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            contents.add(new SectionItem(i + "层"));
+        for (int i = 0; i < 10; i++) {
+            contents.add(new SectionItem("设备细分 " + i));
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
@@ -102,11 +96,36 @@ public class ContainerManageActivity extends BaseActivity {
         return new QMUISection<>(header, contents, true);
     }
 
-
     private void initTopbar() {
-        topbar.setTitle("货柜管理");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> showEditTextDialog());
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> finish());
+        topbar.setTitle("设备分类");
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+            showEditTextDialog();
+        });
+        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
+    }
+
+    /**
+     * 弹出带输入框的dialog
+     */
+    private void showEditTextDialog() {
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+        builder.setTitle("添加设备分类")
+                .setPlaceholder("请输入")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    CharSequence text1 = builder.getEditText().getText();
+                    if (text1 != null && text1.length() > 0) {
+                        Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    } else {
+                        Toast.makeText(DeviceClassifiyActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .create(mCurrentDialogStyle).show();
     }
 
     private void initListPopupIfNeed(String[] listItems) {
@@ -136,35 +155,12 @@ public class ContainerManageActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_container_manage;
+        return R.layout.activity_device_classifiy;
     }
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, ContainerManageActivity.class);
+        Intent starter = new Intent(context, DeviceClassifiyActivity.class);
         context.startActivity(starter);
     }
 
-    /**
-     * 弹出带输入框的dialog
-     */
-    private void showEditTextDialog() {
-        CustomInputDialog customDialogBuilder = new CustomInputDialog(this);
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        customDialogBuilder.setTitle("添加货柜")
-                .setPlaceholder("请输入货柜名")
-                .setPlaceholder1("请输入层数")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text = customDialogBuilder.getEditText().getText();
-                    CharSequence text1 = customDialogBuilder.getEditText1().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(ContainerManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
 }
