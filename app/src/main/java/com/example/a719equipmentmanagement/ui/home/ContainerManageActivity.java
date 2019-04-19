@@ -76,7 +76,7 @@ public class ContainerManageActivity extends BaseActivity {
 
             @Override
             public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-
+                ContainerDetailActivity.start(ContainerManageActivity.this);
             }
 
             @Override
