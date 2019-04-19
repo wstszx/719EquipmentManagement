@@ -4,6 +4,15 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 
 public class SectionHeader implements QMUISection.Model<SectionHeader> {
     private final String text;
+    private boolean isExpand;
+
+    public boolean isExpand() {
+        return isExpand;
+    }
+
+    public void setExpand(boolean expand) {
+        isExpand = expand;
+    }
 
     public SectionHeader(String text) {
         this.text = text;

@@ -23,9 +23,9 @@ import butterknife.OnClick;
 public class ContainerDetailActivity extends BaseActivity {
 
     private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间", "长度", "宽度", "高度",
-            "层数", "最大承重", "当前存放设备数量",};
+            "层数", "最大承重", "当前存放设备数量"};
     private String[] containerAttrValue = {"货柜05", "三科室", "2019-7-9", "200cm", "60cm", "200cm",
-            "3", "200kg", "100个",};
+            "3", "200kg", "100个"};
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)

@@ -29,7 +29,6 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     @Override
     protected ViewHolder onCreateSectionItemViewHolder(@NonNull ViewGroup viewGroup) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_child_item, viewGroup, false);
-
         return new ViewHolder(view);
     }
 
@@ -37,17 +36,26 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
-        ConstraintLayout constraintlayout = view.findViewById(R.id.constraintlayout);
-        tvParent.setText(section.getHeader().getText());
-        constraintlayout.setOnClickListener(v -> {
+        ImageView ivRight = view.findViewById(R.id.iv_right);
+
+        boolean fold = section.isFold();
+        if (fold) {
+            ivRight.setBackgroundResource(R.mipmap.xiala);
+        } else {
+            ivRight.setBackgroundResource(R.mipmap.shangla);
+        }
+        ivRight.setOnClickListener(v -> {
             int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
             toggleFold(pos, false);
         });
+        tvParent.setText(section.getHeader().getText());
+
     }
 
     @Override
     protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section, int itemIndex) {
         View view = holder.itemView;
+        view.setTag(2);
         TextView tvChild = view.findViewById(R.id.tv_child);
         tvChild.setText(section.getItemAt(itemIndex).getText());
     }
