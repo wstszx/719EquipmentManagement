@@ -13,7 +13,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
 
