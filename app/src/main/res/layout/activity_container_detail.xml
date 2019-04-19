@@ -14,7 +14,6 @@
             android:id="@+id/groupListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
     </ScrollView>
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
