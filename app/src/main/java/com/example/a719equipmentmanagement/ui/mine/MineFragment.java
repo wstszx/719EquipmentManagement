@@ -42,7 +42,11 @@ public class MineFragment extends BaseFragment {
 //            intent.putExtra("text", listItemView.getDetailText().toString());
 //            intent.setClass(this, BaseEditActivity.class);
 //            startActivityForResult(intent, tag);
+
+
+
 //            ContainerDetailActivity.start(getContext());
+
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
         for (int i = 0; i < containerAttrs.length; i++) {
