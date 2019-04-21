@@ -32,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import butterknife.BindView;
 
 public class PersonManageActivity extends BaseActivity {
@@ -49,7 +50,13 @@ public class PersonManageActivity extends BaseActivity {
             "添加人员"
     };
     String[] deletes = new String[]{
-            "删除"
+            "删除",
+            "编辑"
+    };
+    String[] peoples = new String[]{
+            "张三",
+            "李四",
+            "王五"
     };
 
     private ArrayAdapter<String> adapter;
@@ -83,7 +90,15 @@ public class PersonManageActivity extends BaseActivity {
 
             @Override
             public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        adapter.toggleFold(position, false);
+                        break;
+                    case 1:
+                        break;
+                }
+                LogUtils.i("onItemClick==" + itemViewType);
             }
 
             @Override
@@ -101,7 +116,7 @@ public class PersonManageActivity extends BaseActivity {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            contents.add(new SectionItem("item " + i));
+            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
