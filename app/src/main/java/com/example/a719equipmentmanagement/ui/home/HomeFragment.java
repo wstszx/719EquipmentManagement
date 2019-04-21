@@ -82,8 +82,10 @@ public class HomeFragment extends BaseFragment {
                     DeviceClassifiyActivity.start(getContext());
                     break;
                 case 3:
+                    AccountingActivity.start(getContext());
                     break;
                 case 4:
+                    ScanActivity.start(getContext());
                     break;
                 case 5:
                     break;
