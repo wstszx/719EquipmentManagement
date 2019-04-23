@@ -34,4 +34,10 @@
     <item name="complete" type="id"/>
     <item name="qrcode" type="id"/>
     <item name="print" type="id"/>
+
+    <item name="time" type="id"/>
+    <item name="date" type="id"/>
+    <item name="details" type="id"/>
+    <item name="action" type="id"/>
+    <item name="list_view" type="id"/>
 </resources>
