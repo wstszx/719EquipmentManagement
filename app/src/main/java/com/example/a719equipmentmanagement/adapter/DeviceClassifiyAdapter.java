@@ -6,17 +6,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import butterknife.BindView;
-
-public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
+public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
 
     @NonNull
     @Override

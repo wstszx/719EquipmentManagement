@@ -20,6 +20,10 @@
         <activity android:name=".ui.mine.CheckcountActivity" />
         <activity android:name=".ui.mine.ReturnActivity" />
         <activity android:name=".ui.home.DeviceClassifiyActivity" />
+
+        <activity android:name=".ui.device.DeviceDetailActivity"></activity>
+
+
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
