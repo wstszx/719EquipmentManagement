@@ -21,7 +21,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public LocalBroadcastManager localBroadcastManager;
     private QuitLogiinBroadcast localReceiver;
-    private IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         //初始化广播接收者，设置过滤器
         localReceiver = new QuitLogiinBroadcast();
-        intentFilter = new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("quit_login");
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
