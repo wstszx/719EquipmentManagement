@@ -40,4 +40,6 @@
     <item name="details" type="id"/>
     <item name="action" type="id"/>
     <item name="list_view" type="id"/>
+    <item name="carry_on" type="id"/>
+    <item name="arrowleft" type="id"/>
 </resources>

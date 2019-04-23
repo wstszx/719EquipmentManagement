@@ -16,5 +16,15 @@
         android:id="@+id/scanFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.ScanFragment"
         android:label="fragment_scan"
-        tools:layout="@layout/fragment_scan" />
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_againScanFragment"
+            app:destination="@id/againScanFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/againScanFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.ConfirmScanFragment"
+        android:label="fragment_again_scan"
+        tools:layout="@layout/fragment_again_scan" />
 </navigation>

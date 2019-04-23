@@ -90,13 +90,6 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         Log.e(TAG, "打开相机出错");
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
-
     @OnClick( R.id.iv_back)
     public void onViewClicked(View view) {
         if (view.getId() == R.id.iv_back) {

@@ -2,15 +2,20 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.base.BaseEditActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.util.Objects;
@@ -26,20 +31,42 @@ public class InventoryGuideFragment extends BaseFragment {
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
+    private String[] containerAttrs = {"步骤：", "1.扫描货柜二维码", "2.逐一扫描该货柜上二维码", "3.该货柜设备扫描完毕，进行下一货柜扫描",
+            "4.重复1、2、3,直到完成所有", "5.生成报告，保存"};
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initGroupListView();
+
+    }
+
+    private void initGroupListView() {
+        View.OnClickListener onClickListener = v -> {
+
+        };
+        QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
+        for (int i = 0; i < containerAttrs.length; i++) {
+            QMUICommonListItemView item = groupListView.createItemView(
+                    null,
+                    containerAttrs[i],
+                    null,
+                    QMUICommonListItemView.HORIZONTAL,
+                    QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+            item.setTag(i);
+            section.addItemView(item, onClickListener);
+        }
+        section.addTo(groupListView);
+
     }
 
     private void initTopbar() {
-        topbar.setTitle("货柜详情");
-        topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            Navigation.findNavController(topbar).navigate(R.id.action_inventoryGuideFragment2_to_scanFragment);
-        });
+        topbar.setTitle("盘点");
+        Button button = topbar.addRightTextButton(R.string.carry_on, R.id.carry_on);
+        button.setTextColor(getResources().getColor(R.color.blue));
+        button.setOnClickListener(v -> Navigation.findNavController(topbar).navigate(R.id.action_inventoryGuideFragment2_to_scanFragment));
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
-            new NavController(Objects.requireNonNull(getContext())).popBackStack();
-//            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+            Objects.requireNonNull(getActivity()).finish();
         });
     }
 
