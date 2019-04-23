@@ -1,10 +1,13 @@
 package com.example.a719equipmentmanagement.ui.mine;
 
 
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,10 +15,12 @@ import android.view.View;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+
 import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.HomeFragment;
+
+
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -61,6 +66,7 @@ public class MineFragment extends BaseFragment {
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
 
     }
+
 
     private void initTopbar() {
         topbar.setTitle("我的");
@@ -117,6 +123,12 @@ public class MineFragment extends BaseFragment {
 //            intent.putExtra("text", listItemView.getDetailText().toString());
 //            intent.setClass(this, BaseEditActivity.class);
 //            startActivityForResult(intent, tag);
+
+
+
+
+
+//            ContainerDetailActivity.start(getContext());
 
 
         };

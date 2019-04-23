@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
@@ -42,7 +43,8 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     String[] deletes = new String[]{
-            "删除"
+            "删除",
+            "编辑"
     };
 
     @Override
@@ -55,7 +57,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
         stickySectionLayout.setLayoutManager(manager);
-        PeopleManageAdapter adapter = new PeopleManageAdapter();
+        DeviceClassifiyAdapter adapter = new DeviceClassifiyAdapter();
         stickySectionLayout.setAdapter(adapter, true);
         ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
         for (int i = 1; i < 7; i++) {
@@ -70,7 +72,14 @@ public class DeviceClassifiyActivity extends BaseActivity {
 
             @Override
             public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        adapter.toggleFold(position, false);
+                        break;
+                    case 1:
+                        break;
+                }
             }
 
             @Override
