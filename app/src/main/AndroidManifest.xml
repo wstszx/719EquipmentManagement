@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.AccountingActivity"></activity>
+        <activity android:name=".ui.home.InventoryActivity"></activity>
+        <activity android:name=".ui.home.AccountingActivity" />
         <activity android:name=".ui.home.PersonDetailActivity" />
         <activity android:name=".ui.device.DeviceDetailActivity" />
         <activity android:name=".ui.home.DeviceClassifiyActivity" />

@@ -1,17 +1,19 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
@@ -20,6 +22,8 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
     @BindView(R.id.zxingview)
     ZXingView zxingview;
+    @BindView(R.id.iv_back)
+    ImageView ivBack;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -85,6 +89,21 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     public void onScanQRCodeOpenCameraError() {
         Log.e(TAG, "打开相机出错");
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+    }
+
+    @OnClick( R.id.iv_back)
+    public void onViewClicked(View view) {
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        }
+    }
+
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {

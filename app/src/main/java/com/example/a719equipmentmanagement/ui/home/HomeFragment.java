@@ -88,6 +88,7 @@ public class HomeFragment extends BaseFragment {
                     ScanActivity.start(getContext());
                     break;
                 case 5:
+                    InventoryActivity.start(getContext());
                     break;
                 case 6:
                     break;
