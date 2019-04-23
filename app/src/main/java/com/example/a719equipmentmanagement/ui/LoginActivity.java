@@ -18,7 +18,6 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity {
 
-
     @BindView(R.id.et_username_phone_email)
     EditText etUsernamePhoneEmail;
     @BindView(R.id.et_password)
