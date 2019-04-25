@@ -9,7 +9,7 @@ import com.example.a719equipmentmanagement.ui.LoginActivity;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
-public class QuitLogiinBroadcast extends BroadcastReceiver {
+public class LogoutBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         ActivityCollector.finishAll();
