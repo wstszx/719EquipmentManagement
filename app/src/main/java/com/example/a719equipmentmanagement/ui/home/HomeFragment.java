@@ -16,6 +16,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment {
@@ -82,10 +83,13 @@ public class HomeFragment extends BaseFragment {
                     DeviceClassifiyActivity.start(getContext());
                     break;
                 case 3:
+                    AccountingActivity.start(getContext());
                     break;
                 case 4:
+                    ScanActivity.start(getContext());
                     break;
                 case 5:
+                    InventoryActivity.start(getContext());
                     break;
                 case 6:
                     break;

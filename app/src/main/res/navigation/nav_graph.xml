@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/inventoryGuideFragment2">
+    <fragment
+        android:id="@+id/inventoryGuideFragment2"
+        android:name="com.example.a719equipmentmanagement.ui.home.InventoryGuideFragment"
+        android:label="InventoryGuideFragment" >
+        <action
+            android:id="@+id/action_inventoryGuideFragment2_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.ScanFragment"
+        android:label="fragment_scan"
+        tools:layout="@layout/fragment_scan" >
+        <action
+            android:id="@+id/action_scanFragment_to_confirmScanFragment"
+            app:destination="@id/confirmScanFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_inventoryGuideFragment2"
+            app:destination="@id/inventoryGuideFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/confirmScanFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.ConfirmScanFragment"
+        android:label="fragment_confirm_scan"
+        tools:layout="@layout/fragment_confirm_scan" >
+        <action
+            android:id="@+id/action_confirmScanFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
+</navigation>

@@ -68,6 +68,20 @@
         app:qrcv_topOffset="65dp"
         app:qrcv_verticalBias="-1" />
 
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Scan_container_code"
+        android:textColor="@color/qmui_config_color_white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/iv_back" />
+
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"

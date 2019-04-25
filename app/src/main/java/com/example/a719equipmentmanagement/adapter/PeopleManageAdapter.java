@@ -44,7 +44,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         } else {
             ivRight.setBackgroundResource(R.mipmap.shangla);
         }
-        ivRight.setOnClickListener(v -> {
+        view.setOnClickListener(v -> {
             int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
             toggleFold(pos, false);
         });
@@ -56,7 +56,11 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
-        TextView tvChild = view.findViewById(R.id.tv_child);
-        tvChild.setText(section.getItemAt(itemIndex).getText());
+        TextView tv_1 = view.findViewById(R.id.tv_1);
+        TextView tv_2 = view.findViewById(R.id.tv_2);
+        TextView tv_3 = view.findViewById(R.id.tv_3);
+        tv_1.setText(section.getItemAt(itemIndex).getTv_1());
+        tv_2.setText(section.getItemAt(itemIndex).getTv_2());
+        tv_3.setText(section.getItemAt(itemIndex).getTv_3());
     }
 }
