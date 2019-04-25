@@ -9,4 +9,13 @@
     <string name="confirm">确定</string>
     <string name="complete">完成</string>
     <string name="print">打印</string>
+    <string name="login">登录</string>
+    <string name="input_password">请输入密码</string>
+    <string name="input_account">请输入账号</string>
+    <string name="carry_on">继续</string>
+    <string name="scan_tip1">将二维码放入框中，即可自动扫描</string>
+    <string name="Scan_container_code">扫描货柜码</string>
+    <string name="Current_container">当前货柜:</string>
+    <string name="start_scan_device">开始扫描设备</string>
+    <string name="Rescan_container_code">重新扫描货柜码</string>
 </resources>

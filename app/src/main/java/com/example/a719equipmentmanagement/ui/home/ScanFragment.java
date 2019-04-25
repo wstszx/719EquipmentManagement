@@ -1,71 +1,84 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import android.content.Context;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseFragment;
+
+import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
-public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
-    private static final String TAG = ScanActivity.class.getSimpleName();
-    private static final int REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY = 666;
-    @BindView(R.id.zxingview)
-    ZXingView zxingview;
+import static android.content.Context.VIBRATOR_SERVICE;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
+
     @BindView(R.id.iv_back)
     ImageView ivBack;
+    @BindView(R.id.zxingview)
+    ZXingView zxingview;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         zxingview.setDelegate(this);
-    }
 
-    @Override
-    protected void onStart() {
-        zxingview.startCamera();// 打开后置摄像头开始预览，但是并未开始识别
-        zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
-        super.onStart();
-    }
-
-    @Override
-    protected void onDestroy() {
-        zxingview.onDestroy(); // 销毁二维码扫描控件
-        super.onDestroy();
     }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_scan;
+        return R.layout.fragment_scan;
     }
 
-    public static void start(Context context) {
-        Intent starter = new Intent(context, ScanActivity.class);
-        context.startActivity(starter);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        zxingview.startCamera();// 打开后置摄像头开始预览，但是并未开始识别
+        zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
+        super.onViewCreated(view, savedInstanceState);
+
     }
 
+    @Override
+    public void onDestroyView() {
+        zxingview.onDestroy(); // 销毁二维码扫描控件
+        super.onDestroyView();
+    }
+
+
+    @OnClick(R.id.iv_back)
+    public void onViewClicked(View view) {
+        Navigation.findNavController(view).navigateUp();
+    }
 
     private void vibrate() {
-        Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        Vibrator vibrator = (Vibrator) Objects.requireNonNull(getActivity()).getSystemService(VIBRATOR_SERVICE);
         vibrator.vibrate(200);
     }
 
-
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Log.i(TAG, "result:" + result);
-        setTitle("扫描结果为：" + result);
+        Objects.requireNonNull(getActivity()).setTitle("扫描结果为：" + result);
         vibrate();
         zxingview.startSpot(); // 开始识别
+        Bundle bundle = new Bundle();
+        bundle.putString("title", result);
+        Navigation.findNavController(zxingview).navigate(R.id.action_scanFragment_to_confirmScanFragment, bundle);
     }
 
     @Override
@@ -87,28 +100,6 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeOpenCameraError() {
-        Log.e(TAG, "打开相机出错");
+
     }
-
-    @OnClick( R.id.iv_back)
-    public void onViewClicked(View view) {
-        if (view.getId() == R.id.iv_back) {
-            finish();
-        }
-    }
-
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
-//
-//        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_CHOOSE_QRCODE_FROM_GALLERY) {
-//            final String picturePath = BGAPhotoPickerActivity.getSelectedPhotos(data).get(0);
-//            // 本来就用到 QRCodeView 时可直接调 QRCodeView 的方法，走通用的回调
-//            zxingview.decodeQRCode(picturePath);
-//
-//        }
-//    }
 }

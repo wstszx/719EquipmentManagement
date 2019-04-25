@@ -7,31 +7,30 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
+import androidx.annotation.Nullable;
+
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseEditActivity;
+import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import androidx.annotation.Nullable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class ContainerDetailActivity extends BaseActivity {
+/**
+ * 建账入库
+ */
+public class AccountingActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间", "长度", "宽度", "高度",
-            "层数", "最大承重", "当前存放设备数量"};
-    private String[] containerAttrValue = {"货柜05", "三科室", "2019-7-9", "200cm", "60cm", "200cm",
-            "3", "200kg", "100个"};
-    @BindView(R.id.groupListView)
-    QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
+    @BindView(R.id.groupListView)
+    QMUIGroupListView groupListView;
     private QMUICommonListItemView listItemView;
+    private String[] containerAttrs = {"设备名称", "所在位置", "厂家", "状态"};
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -53,7 +52,7 @@ public class ContainerDetailActivity extends BaseActivity {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    containerAttrValue[i],
+                    " ",
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);
@@ -61,17 +60,6 @@ public class ContainerDetailActivity extends BaseActivity {
         }
         section.addTo(groupListView);
 
-    }
-
-    private void initTopbar() {
-        topbar.setTitle("货柜详情");
-        topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
-        });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
-        });
     }
 
     @Override
@@ -87,13 +75,28 @@ public class ContainerDetailActivity extends BaseActivity {
         }
     }
 
+
+    private void initTopbar() {
+        topbar.setTitle("建账入库");
+        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+//            Intent intent = new Intent();
+//            intent.putExtra("text", edittext.getText().toString());
+//            setResult(RESULT_OK, intent);
+//            finish();
+        });
+        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
+    }
+
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_container_detail;
+        return R.layout.activity_accounting;
     }
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, ContainerDetailActivity.class);
+        Intent starter = new Intent(context, AccountingActivity.class);
         context.startActivity(starter);
     }
 

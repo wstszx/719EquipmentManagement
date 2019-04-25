@@ -7,7 +7,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
+import androidx.annotation.Nullable;
+
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseEditActivity;
@@ -15,28 +16,28 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import androidx.annotation.Nullable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class ContainerDetailActivity extends BaseActivity {
+public class PersonDetailActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间", "长度", "宽度", "高度",
-            "层数", "最大承重", "当前存放设备数量"};
-    private String[] containerAttrValue = {"货柜05", "三科室", "2019-7-9", "200cm", "60cm", "200cm",
-            "3", "200kg", "100个"};
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
+    private String[] containerAttrs = {"姓名", "所属科室", "角色", "联系方式"};
+    private String[] containerAttrValue = {"张三", "三科室", "普通用户", "13658744569"};
     private QMUICommonListItemView listItemView;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initGroupListView();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_person_detail;
     }
 
     private void initGroupListView() {
@@ -64,15 +65,13 @@ public class ContainerDetailActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("货柜详情");
-        topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
-        });
+        topbar.setTitle("人员详情");
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -87,14 +86,8 @@ public class ContainerDetailActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_container_detail;
-    }
-
     public static void start(Context context) {
-        Intent starter = new Intent(context, ContainerDetailActivity.class);
+        Intent starter = new Intent(context, PersonDetailActivity.class);
         context.startActivity(starter);
     }
-
 }

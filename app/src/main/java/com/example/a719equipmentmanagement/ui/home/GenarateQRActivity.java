@@ -35,9 +35,9 @@ public class GenarateQRActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
-        initBle();
         createChineseQRCode();
     }
+
 
     /**
      * 初始化蓝牙
@@ -57,7 +57,7 @@ public class GenarateQRActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("二维码");
         topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> {
-
+            initBle();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();

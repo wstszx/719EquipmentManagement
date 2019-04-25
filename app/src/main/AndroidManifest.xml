@@ -2,9 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.a719equipmentmanagement">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".App"
@@ -14,16 +18,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.InventoryActivity"></activity>
+        <activity android:name=".ui.home.AccountingActivity" />
+        <activity android:name=".ui.home.PersonDetailActivity" />
+        <activity android:name=".ui.device.DeviceDetailActivity" />
+        <activity android:name=".ui.home.DeviceClassifiyActivity" />
+
         <activity android:name=".ui.LoginActivity"></activity>
         <activity android:name=".ui.mine.DiscardActivity" />
         <activity android:name=".ui.mine.CheckonActivity" />
         <activity android:name=".ui.mine.CheckcountActivity" />
         <activity android:name=".ui.mine.ReturnActivity" />
-        <activity android:name=".ui.home.DeviceClassifiyActivity" />
-
-        <activity android:name=".ui.device.DeviceDetailActivity"></activity>
-
-
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />

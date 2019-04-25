@@ -96,6 +96,7 @@ public class PersonManageActivity extends BaseActivity {
                         adapter.toggleFold(position, false);
                         break;
                     case 1:
+                        PersonDetailActivity.start(PersonManageActivity.this);
                         break;
                 }
                 LogUtils.i("onItemClick==" + itemViewType);
