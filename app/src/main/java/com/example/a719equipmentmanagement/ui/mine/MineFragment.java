@@ -40,7 +40,7 @@ public class MineFragment extends BaseFragment {
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
     private String[] containerAttrs = {"借还记录", "盘点记录", "送检记录", "报废记录", "退出登录"};
-    private QuitLogiinBroadcast localReceiver;
+    private LogoutBroadcast localReceiver;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class MineFragment extends BaseFragment {
         localBroadcastManager = LocalBroadcastManager.getInstance(Objects.requireNonNull(App.getContext()));
 
         //初始化广播接收者，设置过滤器
-        localReceiver = new QuitLogiinBroadcast();
+        localReceiver = new LogoutBroadcast();
         intentFilter = new IntentFilter();
         intentFilter.addAction("quit_login");
         localBroadcastManager.registerReceiver(localReceiver, intentFilter);
