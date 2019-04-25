@@ -77,8 +77,8 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
         vibrate();
         zxingview.startSpot(); // 开始识别
         Bundle bundle = new Bundle();
-        bundle.putString("title", "扫描货柜码");
-        Navigation.findNavController(zxingview).navigate(R.id.action_scanFragment_to_againScanFragment, bundle);
+        bundle.putString("title", result);
+        Navigation.findNavController(zxingview).navigate(R.id.action_scanFragment_to_confirmScanFragment, bundle);
     }
 
     @Override

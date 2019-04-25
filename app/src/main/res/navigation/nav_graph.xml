@@ -18,13 +18,19 @@
         android:label="fragment_scan"
         tools:layout="@layout/fragment_scan" >
         <action
-            android:id="@+id/action_scanFragment_to_againScanFragment"
-            app:destination="@id/againScanFragment" />
-
+            android:id="@+id/action_scanFragment_to_confirmScanFragment"
+            app:destination="@id/confirmScanFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_inventoryGuideFragment2"
+            app:destination="@id/inventoryGuideFragment2" />
     </fragment>
     <fragment
-        android:id="@+id/againScanFragment"
+        android:id="@+id/confirmScanFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.ConfirmScanFragment"
-        android:label="fragment_again_scan"
-        tools:layout="@layout/fragment_again_scan" />
+        android:label="fragment_confirm_scan"
+        tools:layout="@layout/fragment_confirm_scan" >
+        <action
+            android:id="@+id/action_confirmScanFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
 </navigation>
