@@ -34,4 +34,5 @@
     <item name="complete" type="id"/>
     <item name="qrcode" type="id"/>
     <item name="print" type="id"/>
+    <item name="search" type="id"/>
 </resources>
