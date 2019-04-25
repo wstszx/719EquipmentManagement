@@ -12,10 +12,11 @@ import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 public class LogoutBroadcast extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        ActivityCollector.finishAll();
-//        Intent intent = new Intent(context, MainActivity.class);
-        intent.setClass(context, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+        if ("quit_login".equals(intent.getAction())) {
+            ActivityCollector.finishAll();
+            intent.setClass(context, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 }
