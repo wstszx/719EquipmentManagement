@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
         currentFragment = homeFragment;
         //默认显示第一个页面
         try {
-            getSupportFragmentManager().beginTransaction().add(R.id.framelayout, homeFragment, "msgFragment").commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.framelayout, homeFragment, "homeFragment").commit();
         } catch (Exception e) {
 
         }
