@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import com.clj.fastble.BleManager;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 
 public class App extends Application {
@@ -15,6 +16,13 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        BleManager.getInstance().init(this);
+        BleManager.getInstance()
+                .enableLog(true)
+                .setReConnectCount(1, 5000)
+                .setSplitWriteNum(20)
+                .setConnectOverTime(10000)
+                .setOperateTimeout(5000);
         mainThreadId = android.os.Process.myTid();
         handler = new Handler();
         QMUISwipeBackActivityManager.init(this);

@@ -8,11 +8,17 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleScanCallback;
+import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.scan.BleScanRuleConfig;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +35,23 @@ public class GenarateQRActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initBle();
         createChineseQRCode();
+    }
+
+    /**
+     * 初始化蓝牙
+     */
+    private void initBle() {
+        if (BleManager.getInstance().isSupportBle()) {
+            if (!BleManager.getInstance().isBlueEnable()) {
+                BleManager.getInstance().enableBluetooth();
+            }
+            initScanRule();
+            scanBlueDevice();
+        } else {
+            Toast.makeText(GenarateQRActivity.this,"您的设备不支持蓝牙",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initTopbar() {
@@ -40,6 +62,47 @@ public class GenarateQRActivity extends BaseActivity {
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
+    }
+
+    private void initScanRule() {
+        BleScanRuleConfig scanRuleConfig = new BleScanRuleConfig.Builder()
+//                .setServiceUuids(serviceUuids)      // 只扫描指定的服务的设备，可选
+//                .setDeviceName(true, names)         // 只扫描指定广播名的设备，可选
+//                .setDeviceMac(mac)                  // 只扫描指定mac的设备，可选
+                .setAutoConnect(true)      // 连接时的autoConnect参数，可选，默认false
+                .setScanTimeOut(10000)              // 扫描超时时间，可选，默认10秒；小于等于0表示不限制扫描时间
+                .build();
+        BleManager.getInstance().initScanRule(scanRuleConfig);
+    }
+
+    /**
+     * 扫描蓝牙设备
+     */
+    private void scanBlueDevice() {
+        BleManager.getInstance().scan(new BleScanCallback() {
+            @Override
+            public void onScanStarted(boolean success) {
+                // 开始扫描（主线程）
+                LogUtils.i("开始扫描" + success);
+            }
+
+            @Override
+            public void onScanning(BleDevice bleDevice) {
+                // 扫描到一个符合扫描规则的BLE设备（主线程）
+                LogUtils.i("扫描到一个符合扫描规则的BLE设备" + bleDevice.getName());
+            }
+
+            @Override
+            public void onScanFinished(List<BleDevice> scanResultList) {
+                // 扫描结束，列出所有扫描到的符合扫描规则的BLE设备（主线程）
+                if (scanResultList != null && scanResultList.size() > 0) {
+                    for (BleDevice bleDevice : scanResultList) {
+                        LogUtils.i("扫描结束，列出所有扫描到的符合扫描规则的BLE设备（主线程）" + bleDevice.getName());
+                    }
+                }
+
+            }
         });
     }
 
@@ -90,5 +153,4 @@ public class GenarateQRActivity extends BaseActivity {
         Intent starter = new Intent(context, GenarateQRActivity.class);
         context.startActivity(starter);
     }
-
 }

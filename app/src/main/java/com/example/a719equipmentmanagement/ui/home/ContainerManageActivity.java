@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
@@ -32,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -48,7 +50,8 @@ public class ContainerManageActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
     String[] deletes = new String[]{
-            "删除"
+            "删除",
+            "编辑"
     };
 
     @Override
@@ -61,7 +64,7 @@ public class ContainerManageActivity extends BaseActivity {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
         stickySectionLayout.setLayoutManager(manager);
-        PeopleManageAdapter adapter = new PeopleManageAdapter();
+        ContainerManageAdapter adapter = new ContainerManageAdapter();
         stickySectionLayout.setAdapter(adapter, true);
         ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
         for (int i = 1; i < 7; i++) {
@@ -76,7 +79,15 @@ public class ContainerManageActivity extends BaseActivity {
 
             @Override
             public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        adapter.toggleFold(position, false);
+                        break;
+                    case 1:
+                        ContainerDetailActivity.start(ContainerManageActivity.this);
+                        break;
+                }
             }
 
             @Override
