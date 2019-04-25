@@ -41,7 +41,6 @@ public class MineFragment extends BaseFragment {
 
 
     private static MineFragment fragment;
-    //    private LocalBroadcastManager localBroadcastManager;
     private IntentFilter intentFilter;
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
@@ -49,7 +48,6 @@ public class MineFragment extends BaseFragment {
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
     private String[] containerAttrs = {"借还记录", "盘点记录", "送检记录", "报废记录", "退出登录"};
-    private QuitLogiinBroadcast localReceiver;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -103,15 +101,6 @@ public class MineFragment extends BaseFragment {
                     ShowMessageLogout();
                     break;
             }
-//            Intent intent = new Intent();
-//            intent.putExtra("text", listItemView.getDetailText().toString());
-//            intent.setClass(this, BaseEditActivity.class);
-//            startActivityForResult(intent, tag);
-
-
-//            ContainerDetailActivity.start(getContext());
-
-
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
         for (int i = 0; i < containerAttrs.length; i++) {
