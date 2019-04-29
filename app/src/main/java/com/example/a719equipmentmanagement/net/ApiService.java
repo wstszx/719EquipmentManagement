@@ -24,11 +24,12 @@ public interface ApiService {
     @POST("loginByApp")
     Call<LoginBean> login(@Field("username") String username,
                           @Field("password") String password);
+
     //登出
     @FormUrlEncoded
     @POST("logoutByApp")
     Call<LoginBean> loginout(@Field("username") String username,
-                          @Field("password") String password);
+                             @Field("password") String password);
 
     //注册
     @FormUrlEncoded
