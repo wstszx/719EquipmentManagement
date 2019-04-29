@@ -60,7 +60,7 @@ public class SearchFragment extends DialogFragment {
         dialogWindow.setGravity(Gravity.BOTTOM);
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
         dialogWindow.setAttributes(layoutParams);
-        View view = inflater.inflate(R.layout.fragment_search,container, false);
+        View view = inflater.inflate(R.layout.fragment_search,dialogWindow.findViewById(R.id.recyclerview_search), false);
 
         dialogWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogWindow.setLayout(-1, -2);
@@ -70,7 +70,7 @@ public class SearchFragment extends DialogFragment {
 
     }
 
-    private boolean isSelect;
+
 
     private void initAdapter(View view){
         adapter=new DeviceSearchAdapter(R.layout.base_device_search);
