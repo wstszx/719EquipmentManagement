@@ -2,9 +2,12 @@ package com.example.a719equipmentmanagement.ui.device;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,8 +34,8 @@ public class SearchActivity extends BaseActivity {
     ConstraintLayout constrainlayout;
     @BindView(R.id.dropDownMenu)
     DropDownMenu dropDownMenu;
-    @BindView(R.id.recyclerview)
-    RecyclerView recyclerview5;
+    //    @BindView(R.id.recyclerview)
+//    RecyclerView recyclerview5;
     private String[] filterArray = {"科室分类", "设备分类", "状态"};
     private String[] options = {"选项1", "选项2", "选项3"};
     @BindView(R.id.topbar)
@@ -116,13 +119,6 @@ public class SearchActivity extends BaseActivity {
         popupViews.add(view);
         popupViews.add(recyclerView4);
 
-
-//        RecyclerView recyclerview5 = (RecyclerView) getLayoutInflater().inflate(R.layout.device_list, null);
-//        RecyclerView recyclerview5 = view1.findViewById(R.id.recyclerview);
-//        RecyclerView recyclerview5 = new RecyclerView(this);
-        recyclerview5.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
-        ContentFilterAdapter adapter5 = new ContentFilterAdapter(R.layout.base_device02);
-        recyclerview5.setAdapter(adapter5);
         List<Device> devices = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             Device device = new Device();
@@ -133,8 +129,15 @@ public class SearchActivity extends BaseActivity {
             device.setUserName("张三");
             devices.add(device);
         }
-        dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, new View(this));
+        RecyclerView recyclerview5 = new RecyclerView(this);
+        recyclerview5.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerview5.setLayoutManager(new LinearLayoutManager(this));
+        ContentFilterAdapter adapter5 = new ContentFilterAdapter(R.layout.base_device02);
+        recyclerview5.setAdapter(adapter5);
         adapter5.setNewData(devices);
+
+        dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
+
 
     }
 
@@ -152,7 +155,6 @@ public class SearchActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_search;
     }
-
 
 
 //    @OnClick({R.id.tv_dept_sort, R.id.tv_sort, R.id.tv_status})
