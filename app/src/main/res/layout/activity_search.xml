@@ -14,38 +14,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_dept_sort"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="@dimen/dp_8"-->
-        <!--android:text="@string/dept_type"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/tv_sort"-->
-        <!--app:layout_constraintHorizontal_bias="0.5"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@id/topbar" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv_sort"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/sort"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/tv_status"-->
-        <!--app:layout_constraintHorizontal_bias="0.5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/tv_dept_sort"-->
-        <!--app:layout_constraintTop_toTopOf="@id/tv_dept_sort" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/tv_status"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/status"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/tv_sort"-->
-        <!--app:layout_constraintTop_toTopOf="@id/tv_dept_sort" />-->
-
-
     <com.example.a719equipmentmanagement.view.DropDownMenu
         android:id="@+id/dropDownMenu"
         android:layout_width="match_parent"
@@ -54,15 +22,23 @@
         app:ddmaskColor="@color/mask_color"
         app:ddmenuBackgroundColor="@color/white"
         app:ddmenuMenuHeightPercent="0.5"
-        app:ddmenuSelectedIcon="@mipmap/add"
+        app:ddmenuSelectedIcon="@mipmap/shangla"
         app:ddmenuTextSize="13sp"
-        app:ddmenuUnselectedIcon="@mipmap/team"
+        app:ddmenuUnselectedIcon="@mipmap/xiala"
         app:ddtextSelectedColor="@color/drop_down_selected"
         app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:layout_constraintTop_toBottomOf="@id/topbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:ddunderlineColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:ddunderlineColor="@color/gray" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
