@@ -1,5 +1,6 @@
 package com.example.a719equipmentmanagement.ui.device;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,6 +131,7 @@ public class SearchActivity extends BaseActivity {
             devices.add(device);
         }
         RecyclerView recyclerview5 = new RecyclerView(this);
+        recyclerview5.setBackgroundColor(Color.WHITE);
         recyclerview5.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview5.setLayoutManager(new LinearLayoutManager(this));
         ContentFilterAdapter adapter5 = new ContentFilterAdapter(R.layout.base_device02);
