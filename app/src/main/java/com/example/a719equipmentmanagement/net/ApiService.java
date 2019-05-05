@@ -113,7 +113,7 @@ public interface ApiService {
     Call<BaseResponse> addDevice(@Body RequestBody requestBody);
     //查找设备数据
     @GET("system/equip/list")
-    Call<DeviceData> findDeviceData();
+    Call<List<DeviceData>> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/

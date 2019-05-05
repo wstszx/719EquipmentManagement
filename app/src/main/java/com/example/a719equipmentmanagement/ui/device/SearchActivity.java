@@ -31,12 +31,11 @@ import butterknife.ButterKnife;
 
 public class SearchActivity extends BaseActivity {
 
+
     @BindView(R.id.constrainlayout)
     ConstraintLayout constrainlayout;
     @BindView(R.id.dropDownMenu)
     DropDownMenu dropDownMenu;
-    //    @BindView(R.id.recyclerview)
-//    RecyclerView recyclerview5;
     private String[] filterArray = {"科室分类", "设备分类", "状态"};
     private String[] options = {"选项1", "选项2", "选项3"};
     @BindView(R.id.topbar)

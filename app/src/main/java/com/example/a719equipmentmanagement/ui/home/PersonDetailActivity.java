@@ -12,9 +12,15 @@ import androidx.annotation.Nullable;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseEditActivity;
+import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.entity.User;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +31,11 @@ public class PersonDetailActivity extends BaseActivity {
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    private String[] containerAttrs = {"姓名", "所属科室", "角色", "联系方式"};
-    private String[] containerAttrValue = {"张三", "三科室", "普通用户", "13658744569"};
+    //    private String[] containerAttrs = {"姓名", "所属科室", "角色", "联系方式"};
+    private String[] containerAttrs = {"姓名","性别","电话","邮箱"};
+    //    private String[] containerAttrValue = {"张三", "三科室", "普通用户", "13658744569"};
+    private List<String> containerAttrValue = new ArrayList<>();
+
     private QMUICommonListItemView listItemView;
 
     @Override
@@ -34,6 +43,7 @@ public class PersonDetailActivity extends BaseActivity {
         initTopbar();
         initGroupListView();
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -50,16 +60,29 @@ public class PersonDetailActivity extends BaseActivity {
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
+
+        User.ListBean sectionItem = (User.ListBean) getIntent().getSerializableExtra("serializable");
+        String loginName = sectionItem.getLoginName();
+        String phonenumber = sectionItem.getPhonenumber();
+        String sex = sectionItem.getSex();
+        String email = sectionItem.getEmail();
+        containerAttrValue.add(0,loginName);
+        containerAttrValue.add(1,sex);
+        containerAttrValue.add(2,phonenumber);
+        containerAttrValue.add(3,email);
+
         for (int i = 0; i < containerAttrs.length; i++) {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    containerAttrValue[i],
+                    containerAttrValue.get(i),
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);
             section.addItemView(item, onClickListener);
         }
+
+
         section.addTo(groupListView);
 
     }
@@ -86,8 +109,9 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, Serializable serializable) {
         Intent starter = new Intent(context, PersonDetailActivity.class);
+        starter.putExtra("serializable", serializable);
         context.startActivity(starter);
     }
 }

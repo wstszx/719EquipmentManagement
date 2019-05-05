@@ -16,6 +16,7 @@ import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.entity.User;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -97,7 +98,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            contents.add(new SectionItem("设备细分 " + i));
+            contents.add(new SectionItem(new User.ListBean()));
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);

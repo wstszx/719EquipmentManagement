@@ -18,6 +18,7 @@ import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -105,7 +106,7 @@ public class ContainerManageActivity extends BaseActivity {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
         for (int i = 1; i < 4; i++) {
-            contents.add(new SectionItem(i + "层"));
+            contents.add(new SectionItem(new User.ListBean()));
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);

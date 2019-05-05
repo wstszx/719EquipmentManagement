@@ -29,6 +29,7 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -90,11 +91,7 @@ public class PersonManageActivity extends BaseActivity {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 List<User> body = response.body();
                 if (body != null && body.size() > 0) {
-                    for (User user : body) {
-                        String deptName = user.getDeptName();
-                        list.add(createSection(deptName));
-                    }
-                    adapter1.setData(list);
+                    bindUI(body);
                 }
             }
 
@@ -103,6 +100,13 @@ public class PersonManageActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void bindUI(List<User> body) {
+        for (User user : body) {
+            list.add(createSection(user));
+        }
+        adapter1.setData(list);
     }
 
     private void initStickySectionLayout() {
@@ -127,10 +131,16 @@ public class PersonManageActivity extends BaseActivity {
                         adapter1.toggleFold(position, false);
                         break;
                     case 1:
-                        PersonDetailActivity.start(PersonManageActivity.this);
+                        SectionItem sectionItem = adapter1.getSectionItem(position);
+                        User.ListBean listBean = null;
+                        if (sectionItem != null) {
+                            listBean = sectionItem.getList();
+                            if (listBean != null) {
+                                PersonDetailActivity.start(PersonManageActivity.this, listBean);
+                            }
+                        }
                         break;
                 }
-                LogUtils.i("onItemClick==" + itemViewType);
             }
 
             @Override
@@ -144,12 +154,16 @@ public class PersonManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
-        SectionHeader header = new SectionHeader(headerText);
+    private QMUISection<SectionHeader, SectionItem> createSection(User user) {
+        String deptName = user.getDeptName();
+        SectionHeader header = new SectionHeader(deptName);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
+        List<User.ListBean> list = user.getList();
+        for (User.ListBean listBean : list) {
+//            contents.add(new SectionItem(listBean.getDeptId()+"", listBean.getLoginName(), listBean.getPhonenumber()));
+            contents.add(new SectionItem(listBean));
         }
+
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);

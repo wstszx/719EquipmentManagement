@@ -18,7 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.ScrappedActivity"></activity>
+        <activity android:name=".ui.device.AddDeviceActivity"></activity>
+        <activity android:name=".ui.home.ScrappedActivity" />
         <activity android:name=".ui.home.CheckActivity" />
         <activity android:name=".ui.home.InventoryActivity" />
         <activity android:name=".ui.home.AccountingActivity" />
@@ -36,9 +37,7 @@
         <activity android:name=".ui.mine.CheckonActivity" />
         <activity android:name=".ui.mine.CheckcountActivity" />
         <activity android:name=".ui.mine.ReturnActivity" />
-        <activity android:name=".ui.device.SearchActivity" >
-
-        </activity>
+        <activity android:name=".ui.device.SearchActivity"></activity>
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />

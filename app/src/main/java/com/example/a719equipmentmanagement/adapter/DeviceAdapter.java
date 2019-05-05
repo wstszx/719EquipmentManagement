@@ -9,42 +9,41 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.Device;
+import com.example.a719equipmentmanagement.entity.DeviceData;
 
 import java.util.List;
 
 import androidx.annotation.Nullable;
 
-public class DeviceAdapter extends BaseQuickAdapter<Device, BaseViewHolder> {
+public class DeviceAdapter extends BaseQuickAdapter<DeviceData, BaseViewHolder> {
     public DeviceAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Device item) {
+    protected void convert(BaseViewHolder helper, DeviceData item) {
         helper.setText(R.id.textView1, item.getName())
-                .setText(R.id.textView2,item.getTarget())
+//                .setText(R.id.textView2,item.getTarget())
                 .setText(R.id.textView3,String.valueOf(item.getId()))
-                .setText(R.id.textView4,item.getDepartment())
-                .setText(R.id.textView5, item.getStatus())
-                .setText(R.id.textView6,item.getLocation());
-//        .setText(R.id.textView7,item.getUserName())
-//        helper.setBackgroundColor(R.id.textView5,)
+//                .setText(R.id.textView4,item.getDepartment())
+                .setText(R.id.textView5, item.getStatus()+"");
+//                .setText(R.id.textView6,item.getLocation());
         switch (item.getStatus()){
-            case "在用":
+            case 0:
                 helper.setTextColor(R.id.textView5, Color.parseColor("#EF5362"));
                 break;
-            case "可借":
+            case 1:
                 helper.setTextColor(R.id.textView5,Color.parseColor("#00574B"));
 
                 break;
-            case "送检":
+            case 2:
                 helper.setTextColor(R.id.textView5,Color.parseColor("#FFCF47"));
                 break;
-            case "报废":
+            case 3:
                 helper.setTextColor(R.id.textView5,Color.parseColor("#B0C4DE"));
 
                 break;
-            case "状态5":
+            case 4:
                 break;
 
         }
