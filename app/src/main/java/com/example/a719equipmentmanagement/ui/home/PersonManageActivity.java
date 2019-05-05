@@ -147,9 +147,9 @@ public class PersonManageActivity extends BaseActivity {
     private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
-        }
+//        for (int i = 0; i < 10; i++) {
+//            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
+//        }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);

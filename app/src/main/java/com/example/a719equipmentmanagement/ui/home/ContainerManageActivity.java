@@ -16,8 +16,10 @@ import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.Container;
+import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -36,6 +38,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * 货柜管理
@@ -53,25 +58,47 @@ public class ContainerManageActivity extends BaseActivity {
             "删除",
             "编辑"
     };
+    private ContainerManageAdapter adapter1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initStickySectionLayout();
+        initData();
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<List<ContainerData>>() {
+            @Override
+            public void onResponse(Call<List<ContainerData>> call, Response<List<ContainerData>> response) {
+                List<ContainerData> body = response.body();
+                if (body != null && body.size() > 0) {
+                    bindUi(body);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ContainerData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void bindUi(List<ContainerData> body) {
+        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
+        for (ContainerData containerData : body) {
+            list.add(createSection(containerData));
+        }
+        adapter1.setData(list);
     }
 
     private void initStickySectionLayout() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
         stickySectionLayout.setLayoutManager(manager);
-        ContainerManageAdapter adapter = new ContainerManageAdapter();
-        stickySectionLayout.setAdapter(adapter, true);
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
-        for (int i = 1; i < 7; i++) {
-            list.add(createSection("货柜 " + i));
-        }
-        adapter.setData(list);
-        adapter.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1 = new ContainerManageAdapter();
+        stickySectionLayout.setAdapter(adapter1, true);
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
             @Override
             public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
 
@@ -82,10 +109,14 @@ public class ContainerManageActivity extends BaseActivity {
                 int itemViewType = holder.getItemViewType();
                 switch (itemViewType) {
                     case 0:
-                        adapter.toggleFold(position, false);
+                        adapter1.toggleFold(position, false);
                         break;
                     case 1:
-                        ContainerDetailActivity.start(ContainerManageActivity.this);
+                        SectionItem sectionItem = adapter1.getSectionItem(position);
+                        ContainerData.ListBean listBean = sectionItem.getListBean();
+                        if (listBean != null) {
+                            ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
+                        }
                         break;
                 }
             }
@@ -101,11 +132,15 @@ public class ContainerManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
-        SectionHeader header = new SectionHeader(headerText);
+    private QMUISection<SectionHeader, SectionItem> createSection(ContainerData containerData) {
+        String name = containerData.getName();
+        SectionHeader header = new SectionHeader(name);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 1; i < 4; i++) {
-            contents.add(new SectionItem(i + "层"));
+        List<ContainerData.ListBean> listBeans = containerData.getList();
+        if (listBeans != null && listBeans.size() > 0) {
+            for (ContainerData.ListBean listBean : listBeans) {
+                contents.add(new SectionItem(listBean));
+            }
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
