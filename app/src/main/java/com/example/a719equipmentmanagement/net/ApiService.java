@@ -12,11 +12,12 @@ import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
 import com.example.a719equipmentmanagement.entity.LoginBean;
 import com.example.a719equipmentmanagement.entity.MsgData;
-import com.example.a719equipmentmanagement.entity.PeopleData;
 import com.example.a719equipmentmanagement.entity.RoleData;
+import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.entity.UserListData;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -89,7 +90,7 @@ public interface ApiService {
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Call<PeopleData> findPeopleData();
+    Call<List<User>> getUser();
 
     //编辑科室
     @POST("system/dept/edit")
@@ -143,7 +144,7 @@ public interface ApiService {
     /*----------------- profile-controller  ----------------*/
     //APP获取当前用户信息
     @GET("system/user/profile/me")
-    Call<CurrentUserData> getCurrentUserData();
+    Call<User> getMe();
     //修改密码
     @POST("system/user/profile/resetPwd")
     Call<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,

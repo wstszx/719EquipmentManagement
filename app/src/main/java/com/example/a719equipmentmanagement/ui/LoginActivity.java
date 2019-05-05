@@ -80,7 +80,7 @@ public class LoginActivity extends BaseActivity {
 
             @Override
             public void onFailure(Call<LoginBean> call, Throwable t) {
-
+                LogUtils.i(t.getMessage());
             }
         });
 
