@@ -2,22 +2,20 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-import java.io.Serializable;
-
 public class SectionItem implements QMUISection.Model<SectionItem> {
-    private User.ListBean listBean;
+    private ContainerData.ListBean listBean;
 
-    public SectionItem(User.ListBean listBean) {
+    public SectionItem(ContainerData.ListBean listBean) {
         this.listBean = listBean;
     }
 
-    public User.ListBean getList() {
+    public ContainerData.ListBean getListBean() {
         return listBean;
     }
 
     @Override
     public SectionItem cloneForDiff() {
-        return new SectionItem(listBean);
+        return new SectionItem(getListBean());
     }
 
     @Override

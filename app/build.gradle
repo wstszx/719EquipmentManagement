@@ -76,4 +76,9 @@ dependencies {
     def nav_version = "2.1.0-alpha02"
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
+//    SmartRefreshLayout
+    implementation 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-andx-7'
+    implementation 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-andx-7'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    
 }

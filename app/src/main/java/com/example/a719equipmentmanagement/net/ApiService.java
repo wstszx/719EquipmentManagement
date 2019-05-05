@@ -3,8 +3,7 @@ package com.example.a719equipmentmanagement.net;
 
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
-import com.example.a719equipmentmanagement.entity.CurrentUserData;
-import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceTypeData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
@@ -75,7 +74,7 @@ public interface ApiService {
     Call<BaseResponse> addContainer(@Body RequestBody requestBody);
     //查找货柜数据
     @GET("system/container/list")
-    Call<ContainerData> findContainerData();
+    Call<List<ContainerData>> findContainerData();
 
 
 
@@ -113,7 +112,7 @@ public interface ApiService {
     Call<BaseResponse> addDevice(@Body RequestBody requestBody);
     //查找设备数据
     @GET("system/equip/list")
-    Call<List<DeviceData>> findDeviceData();
+    Call<List<DeviceClassifiy>> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/

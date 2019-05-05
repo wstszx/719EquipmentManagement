@@ -57,8 +57,8 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-        tv_1.setText(section.getItemAt(itemIndex).getList().getDeptId()+"");
-        tv_2.setText(section.getItemAt(itemIndex).getList().getLoginName());
-        tv_3.setText(section.getItemAt(itemIndex).getList().getPhonenumber());
+//        tv_1.setText(section.getItemAt(itemIndex).getTv_1());
+//        tv_2.setText(section.getItemAt(itemIndex).getTv_2());
+//        tv_3.setText(section.getItemAt(itemIndex).getTv_3());
     }
 }
