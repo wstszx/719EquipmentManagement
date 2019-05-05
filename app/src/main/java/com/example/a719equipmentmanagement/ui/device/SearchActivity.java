@@ -139,8 +139,6 @@ public class SearchActivity extends BaseActivity {
         adapter5.setNewData(devices);
 
         dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
-
-
     }
 
     private void initTopbar() {
