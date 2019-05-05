@@ -25,20 +25,20 @@ public class ConfirmScanFragment extends BaseFragment {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    @BindView(R.id.tv_name)
-    TextView tvName;
     @BindView(R.id.button1)
     Button button1;
     @BindView(R.id.button2)
     Button button2;
+    @BindView(R.id.tv_1)
+    TextView tv1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
         Bundle arguments = getArguments();
         if (arguments != null) {
-            String title = arguments.getString("title");
-            tvName.setText(TextUtils.isEmpty(title) ? "" : title);
+            String result = arguments.getString("result");
+            tv1.setText(TextUtils.isEmpty(result) ? "" : result);
         }
     }
 
@@ -61,7 +61,9 @@ public class ConfirmScanFragment extends BaseFragment {
                 Navigation.findNavController(view).navigateUp();
                 break;
             case R.id.button2:
-                Navigation.findNavController(view).navigate(R.id.action_confirmScanFragment_to_scanFragment);
+                Bundle bundle = new Bundle();
+                bundle.putString("title", "扫描设备码");
+                Navigation.findNavController(view).navigate(R.id.action_confirmScanFragment_to_scanFragment, bundle);
                 break;
         }
     }

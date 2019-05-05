@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrapped"
+    app:startDestination="@id/waitScrappedFragment">
+
+    <fragment
+        android:id="@+id/waitScrappedFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.WaitScrappedFragment"
+        android:label="fragment_wait_scrapped"
+        tools:layout="@layout/fragment_wait_scrapped" />
+</navigation>
