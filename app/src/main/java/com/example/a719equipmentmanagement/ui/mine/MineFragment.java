@@ -17,6 +17,8 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.HomeFragment;
@@ -34,6 +36,9 @@ import java.util.Objects;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
@@ -51,10 +56,25 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        initData();
         initTopbar();
         initGroupListView();
         List<Activity> actList = ActivityCollector.getActList();
         Log.i("mylog", "actList.size()==" + actList.size());
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initTopbar() {

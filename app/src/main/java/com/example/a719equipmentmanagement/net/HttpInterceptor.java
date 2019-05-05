@@ -14,10 +14,10 @@ public class HttpInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String session_token = SPUtils.getString(App.getContext(), "session_token", "");
+        String token = SPUtils.getString(App.getContext(), "token", "");
         Request original = chain.request();
         Request request = original.newBuilder()
-                .addHeader("session_token", session_token)
+                .addHeader("token", token)
                 .addHeader("Header", "Content-Type:application/json")
                 .method(original.method(), original.body())
                 .build();

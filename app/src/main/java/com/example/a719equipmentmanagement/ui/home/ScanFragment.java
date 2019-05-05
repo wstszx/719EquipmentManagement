@@ -3,14 +3,14 @@ package com.example.a719equipmentmanagement.ui.home;
 
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.a719equipmentmanagement.R;
@@ -34,11 +34,21 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     ImageView ivBack;
     @BindView(R.id.zxingview)
     ZXingView zxingview;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         zxingview.setDelegate(this);
+        initView();
+    }
 
+    private void initView() {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            String title = arguments.getString("title");
+            tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
+        }
     }
 
     @Override
@@ -77,7 +87,7 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
         vibrate();
         zxingview.startSpot(); // 开始识别
         Bundle bundle = new Bundle();
-        bundle.putString("title", result);
+        bundle.putString("result", "当前货柜：" + result);
         Navigation.findNavController(zxingview).navigate(R.id.action_scanFragment_to_confirmScanFragment, bundle);
     }
 
