@@ -15,14 +15,17 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
 
-    //登陆
-    @POST("login")
-    Call<LoginBean> login(@Body RequestBody requestBody);
-
-    //注册
-    @FormUrlEncoded
-    @POST("user/register/")
-    Call<LoginBean> register(@Field("username") String username,
-                             @Field("password") String password,
-                             @Field("repassword") String repassword);
+//    //登陆
+//    @POST("login")
+//    Call<LoginBean> login(@Body RequestBody requestBody);
+//
+//    //注册
+//    @FormUrlEncoded
+//    @POST("user/register/")
+//    Call<LoginBean> register(@Field("username") String username,
+//                             @Field("password") String password,
+//                             @Field("repassword") String repassword);
+//    //添加设备分类
+//    @POST("system/category/add")
+//    Call<LoginBean> login(@Body RequestBody requestBody);
 }
