@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
@@ -16,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 
-public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
+public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem<ContainerData.ListBean>> {
 
     @NonNull
     @Override
@@ -33,7 +34,7 @@ public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -53,7 +54,7 @@ public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);

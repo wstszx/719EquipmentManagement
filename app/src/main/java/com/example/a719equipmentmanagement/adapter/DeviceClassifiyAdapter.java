@@ -9,12 +9,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
+public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem<DeviceClassifiy>> {
 
     @NonNull
     @Override
@@ -31,7 +32,7 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -51,7 +52,7 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);

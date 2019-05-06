@@ -48,10 +48,10 @@ public interface ApiService {
     @POST("loginByApp")
     Call<LoginBean> login(@Field("username") String username,
                           @Field("password") String password);
+
     //APP用户退出
     @GET("logoutByApp")
     Call<BaseResponse> loginout();
-
 
 
     /*------  category-controller -------*/
@@ -64,15 +64,14 @@ public interface ApiService {
     Call<DeviceTypeData> findDeviceTypeData();
 
 
-
     /*------  container-controller -------*/
     //添加货柜
     @POST("system/container/add")
     Call<BaseResponse> addContainer(@Body RequestBody requestBody);
+
     //查找货柜数据
     @GET("system/container/list")
     Call<List<ContainerData>> findContainerData();
-
 
 
     /*------  dept-controller -------*/
@@ -107,6 +106,7 @@ public interface ApiService {
     //添加设备
     @POST("system/equip/add")
     Call<BaseResponse> addDevice(@Body RequestBody requestBody);
+
     //查找设备数据
     @GET("system/equip/list")
     Call<List<DeviceClassifiy>> findDeviceData();
@@ -116,19 +116,22 @@ public interface ApiService {
     //设置盘点货柜范围
     @POST("system/inventory/addContainer")
     Call<BaseResponse> setInventoryContainer(@Body RequestBody requestBody);
+
     //保存盘点设备
     @POST("system/inventory/addDetails")
     Call<BaseResponse> saveInventoryDevice(@Body RequestBody requestBody);
+
     //设置盘点结束
     @POST("system/inventory/endInventory")
     Call<BaseResponse> setEndInventory(@Body RequestBody requestBody);
+
     //查找盘点数据
     @GET("system/inventory/list")
     Call<InventoryData> findInventoryData();
+
     //获取盘点记录id
     @GET("system/inventory/nextId")
     Call<InventoryRevordId> findInventoryRevordId();
-
 
 
     /*----------------- msg-controller  ----------------*/
@@ -141,13 +144,16 @@ public interface ApiService {
     //APP获取当前用户信息
     @GET("system/user/profile/me")
     Call<User> getMe();
+
     //修改密码
     @POST("system/user/profile/resetPwd")
     Call<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,
                                     @Field("newPassword") String newPassword);
+
     //APP更新个人信息
     @POST("system/user/profile/update")
     Call<BaseResponse> updataUserData();
+
     //保存头像
     @POST("system/user/profile/updateAvatar")
     Call<BaseResponse> saveAvatar(@Field("avatarfile") File avatarfile);
@@ -159,12 +165,11 @@ public interface ApiService {
     Call<RoleData> findRoleData();
 
 
-
-
     /*----------------- setup-controller  ----------------*/
     //添加建账入库记录
     @POST("system/setup/add")
     Call<BaseResponse> addInRecord(@Body RequestBody requestBody);
+
     //查找建账入库数据
     @GET("system/setup/list")
     Call<InRecordData> findInRecordData();
@@ -191,12 +196,15 @@ public interface ApiService {
     //新增保存用户
     @POST("system/user/add")
     Call<BaseResponse> addUser();
+
     //编辑保存用户
     @POST("system/user/edit")
     Call<BaseResponse> editUser();
+
     //删除用户
     @POST("system/user/remove")
     Call<BaseResponse> deleteUser(@Field("ids") String ids);
+
     //重置密码
     @POST("system/user/resetPwd")
     Call<BaseResponse> resetPwd();

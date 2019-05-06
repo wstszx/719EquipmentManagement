@@ -70,7 +70,7 @@ public class PersonManageActivity extends BaseActivity {
     };
 
     private ArrayAdapter<String> adapter;
-    private ArrayList<QMUISection<SectionHeader, SectionItem>> list;
+    private ArrayList<QMUISection<SectionHeader, SectionItem<User.ListBean>>> list;
     private PeopleManageAdapter adapter1;
 
     @Override
@@ -113,9 +113,9 @@ public class PersonManageActivity extends BaseActivity {
         stickySectionLayout.setAdapter(adapter1, true);
         list = new ArrayList<>();
 
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<User.ListBean>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader, SectionItem<User.ListBean>> section, boolean loadMoreBefore) {
 
             }
 
@@ -144,9 +144,9 @@ public class PersonManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
+    private QMUISection<SectionHeader, SectionItem<User.ListBean>> createSection(String headerText) {
         SectionHeader header = new SectionHeader(headerText);
-        ArrayList<SectionItem> contents = new ArrayList<>();
+        ArrayList<SectionItem<User.ListBean>> contents = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
 //            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
 //        }

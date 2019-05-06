@@ -85,7 +85,7 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void bindUi(List<ContainerData> body) {
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>>> list = new ArrayList<>();
         for (ContainerData containerData : body) {
             list.add(createSection(containerData));
         }
@@ -98,9 +98,9 @@ public class ContainerManageActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new ContainerManageAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<ContainerData.ListBean>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> section, boolean loadMoreBefore) {
 
             }
 
@@ -112,7 +112,7 @@ public class ContainerManageActivity extends BaseActivity {
                         adapter1.toggleFold(position, false);
                         break;
                     case 1:
-                        SectionItem sectionItem = adapter1.getSectionItem(position);
+                        SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
                         ContainerData.ListBean listBean = sectionItem.getListBean();
                         if (listBean != null) {
                             ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
@@ -132,10 +132,10 @@ public class ContainerManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(ContainerData containerData) {
+    private QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> createSection(ContainerData containerData) {
         String name = containerData.getName();
         SectionHeader header = new SectionHeader(name);
-        ArrayList<SectionItem> contents = new ArrayList<>();
+        ArrayList<SectionItem<ContainerData.ListBean>> contents = new ArrayList<>();
         List<ContainerData.ListBean> listBeans = containerData.getList();
         if (listBeans != null && listBeans.size() > 0) {
             for (ContainerData.ListBean listBean : listBeans) {
