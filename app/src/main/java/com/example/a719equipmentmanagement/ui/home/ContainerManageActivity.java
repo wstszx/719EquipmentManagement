@@ -54,9 +54,14 @@ public class ContainerManageActivity extends BaseActivity {
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
-    String[] deletes = new String[]{
-            "删除",
-            "编辑"
+    String[] headerDeletes = new String[]{
+            "编辑",
+            "添加",
+            "删除"
+    };
+    String[] itemDeletes = new String[]{
+            "编辑",
+            "删除"
     };
     private ContainerManageAdapter adapter1;
 
@@ -123,7 +128,15 @@ public class ContainerManageActivity extends BaseActivity {
 
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                initListPopupIfNeed(deletes);
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        initListPopupIfNeed(headerDeletes);
+                        break;
+                    case 1:
+                        initListPopupIfNeed(itemDeletes);
+                        break;
+                }
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(holder.itemView);
@@ -139,7 +152,7 @@ public class ContainerManageActivity extends BaseActivity {
         List<ContainerData.ListBean> listBeans = containerData.getList();
         if (listBeans != null && listBeans.size() > 0) {
             for (ContainerData.ListBean listBean : listBeans) {
-                contents.add(new SectionItem(listBean));
+                contents.add(new SectionItem<>(listBean));
             }
         }
         // if test load more, you can open the code

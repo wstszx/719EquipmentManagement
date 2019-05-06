@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseEditActivity;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
@@ -30,8 +31,11 @@ import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -54,7 +58,8 @@ public class PersonManageActivity extends BaseActivity {
     QMUIStickySectionLayout stickySectionLayout;
     private QMUIListPopup mListPopup;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-
+    private String[] personTitles = {"用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"};
+    private ArrayList<String> titleArray = new ArrayList<>(Arrays.asList("用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"));
     String[] addTypes = new String[]{
             "添加部门",
             "添加人员"
@@ -62,11 +67,6 @@ public class PersonManageActivity extends BaseActivity {
     String[] deletes = new String[]{
             "删除",
             "编辑"
-    };
-    String[] peoples = new String[]{
-            "张三",
-            "李四",
-            "王五"
     };
 
     private ArrayAdapter<String> adapter;
@@ -91,8 +91,8 @@ public class PersonManageActivity extends BaseActivity {
                 List<User> body = response.body();
                 if (body != null && body.size() > 0) {
                     for (User user : body) {
-                        String deptName = user.getDeptName();
-                        list.add(createSection(deptName));
+//                        String deptName = user.getDeptName();
+                        list.add(createSection(user));
                     }
                     adapter1.setData(list);
                 }
@@ -130,7 +130,6 @@ public class PersonManageActivity extends BaseActivity {
                         PersonDetailActivity.start(PersonManageActivity.this);
                         break;
                 }
-                LogUtils.i("onItemClick==" + itemViewType);
             }
 
             @Override
@@ -144,12 +143,14 @@ public class PersonManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem<User.ListBean>> createSection(String headerText) {
-        SectionHeader header = new SectionHeader(headerText);
+    private QMUISection<SectionHeader, SectionItem<User.ListBean>> createSection(User user) {
+        String deptName = user.getDeptName();
+        SectionHeader header = new SectionHeader(deptName);
         ArrayList<SectionItem<User.ListBean>> contents = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
-//        }
+        List<User.ListBean> listBeans = user.getList();
+        for (User.ListBean listBean : listBeans) {
+            contents.add(new SectionItem<>(listBean));
+        }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);
@@ -201,10 +202,11 @@ public class PersonManageActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "添加部门":
-                            showEditTextDialog(s);
+//                            showEditTextDialog(s);
                             break;
                         case "添加人员":
-                            showEditTextDialog(s);
+                            BaseEditActivity.start(PersonManageActivity.this, s, personTitles);
+//                            showEditTextDialog(s);
                             break;
                         case "删除":
                             break;
@@ -219,21 +221,25 @@ public class PersonManageActivity extends BaseActivity {
     /**
      * 弹出带输入框的dialog
      */
-    private void showEditTextDialog(String text) {
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        builder.setTitle(text)
-                .setPlaceholder("请输入")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text1 = builder.getEditText().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(PersonManageActivity.this, "成功" + text + ":" + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(PersonManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    private void showEditTextDialog(String text) {
+//        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//        builder.setTitle(text)
+//                .setPlaceholder("请输入")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text1 = builder.getEditText().getText();
+//                    if (text1 != null && text1.length() > 0) {
+//                        Bundle bundle = new Bundle();
+//                        bundle.putStringArray("titleArray", personTitles);
+//                        BaseEditActivity.start(PersonManageActivity.this, text, bundle);
+////                        Toast.makeText(PersonManageActivity.this, "成功" + text + ":" + text1, Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    } else {
+//                        Toast.makeText(PersonManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
+
 }

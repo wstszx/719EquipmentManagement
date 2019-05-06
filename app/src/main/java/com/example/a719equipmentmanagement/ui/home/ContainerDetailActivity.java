@@ -7,10 +7,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -21,8 +20,6 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class ContainerDetailActivity extends BaseActivity {
 
@@ -61,7 +58,7 @@ public class ContainerDetailActivity extends BaseActivity {
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
             intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseEditActivity.class);
+            intent.setClass(this, BaseItemEditActivity.class);
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);

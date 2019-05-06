@@ -60,8 +60,9 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-//        tv_1.setText(section.getItemAt(itemIndex).getTv_1());
-//        tv_2.setText(section.getItemAt(itemIndex).getTv_2());
-//        tv_3.setText(section.getItemAt(itemIndex).getTv_3());
+        User.ListBean user = section.getItemAt(itemIndex).getListBean();
+        tv_1.setText(user.getDeptId()+"");
+        tv_2.setText(user.getLoginName());
+        tv_3.setText(user.getPhonenumber());
     }
 }

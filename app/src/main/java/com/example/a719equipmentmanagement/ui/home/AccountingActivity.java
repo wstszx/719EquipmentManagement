@@ -11,14 +11,12 @@ import androidx.annotation.Nullable;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
-import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 建账入库
@@ -44,7 +42,7 @@ public class AccountingActivity extends BaseActivity {
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
             intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseEditActivity.class);
+            intent.setClass(this, BaseItemEditActivity.class);
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
