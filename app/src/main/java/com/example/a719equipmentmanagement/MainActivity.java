@@ -1,5 +1,7 @@
 package com.example.a719equipmentmanagement;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.MenuItem;
@@ -60,11 +62,7 @@ public class MainActivity extends BaseActivity {
         }
         currentFragment = homeFragment;
         //默认显示第一个页面
-        try {
             getSupportFragmentManager().beginTransaction().add(R.id.framelayout, homeFragment, "homeFragment").commit();
-        } catch (Exception e) {
-
-        }
 
     }
 
@@ -103,4 +101,8 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+        context.startActivity(starter);
+    }
 }

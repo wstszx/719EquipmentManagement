@@ -18,18 +18,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.InventoryActivity"></activity>
+        <activity android:name=".ui.home.ScrappedActivity"></activity>
+        <activity android:name=".ui.home.CheckActivity" />
+        <activity android:name=".ui.home.InventoryActivity" />
         <activity android:name=".ui.home.AccountingActivity" />
         <activity android:name=".ui.home.PersonDetailActivity" />
         <activity android:name=".ui.device.DeviceDetailActivity" />
         <activity android:name=".ui.home.DeviceClassifiyActivity" />
+        <activity android:name=".ui.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".ui.LoginActivity"></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.mine.DiscardActivity" />
         <activity android:name=".ui.mine.CheckonActivity" />
         <activity android:name=".ui.mine.CheckcountActivity" />
         <activity android:name=".ui.mine.ReturnActivity" />
-        <activity android:name=".ui.device.SearchActivity"></activity>
+        <activity android:name=".ui.device.SearchActivity" >
+
+        </activity>
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
@@ -46,13 +55,7 @@
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:label="@string/app_name" />
     </application>
 
 </manifest>

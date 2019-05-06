@@ -17,6 +17,8 @@ import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -33,7 +35,15 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PersonManageActivity extends BaseActivity {
 
@@ -60,6 +70,8 @@ public class PersonManageActivity extends BaseActivity {
     };
 
     private ArrayAdapter<String> adapter;
+    private ArrayList<QMUISection<SectionHeader, SectionItem>> list;
+    private PeopleManageAdapter adapter1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -69,20 +81,39 @@ public class PersonManageActivity extends BaseActivity {
     private void initView() {
         initTopbar();
         initStickySectionLayout();
+        initData();
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                List<User> body = response.body();
+                if (body != null && body.size() > 0) {
+                    for (User user : body) {
+                        String deptName = user.getDeptName();
+                        list.add(createSection(deptName));
+                    }
+                    adapter1.setData(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void initStickySectionLayout() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
         stickySectionLayout.setLayoutManager(manager);
-        PeopleManageAdapter adapter = new PeopleManageAdapter();
-        stickySectionLayout.setAdapter(adapter, true);
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
-        for (int i = 1; i < 7; i++) {
-            list.add(createSection("三室 " + i));
-        }
-        adapter.setData(list);
-        adapter.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1 = new PeopleManageAdapter();
+        stickySectionLayout.setAdapter(adapter1, true);
+        list = new ArrayList<>();
+
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
             @Override
             public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
 
@@ -93,7 +124,7 @@ public class PersonManageActivity extends BaseActivity {
                 int itemViewType = holder.getItemViewType();
                 switch (itemViewType) {
                     case 0:
-                        adapter.toggleFold(position, false);
+                        adapter1.toggleFold(position, false);
                         break;
                     case 1:
                         PersonDetailActivity.start(PersonManageActivity.this);
@@ -116,9 +147,9 @@ public class PersonManageActivity extends BaseActivity {
     private QMUISection<SectionHeader, SectionItem> createSection(String headerText) {
         SectionHeader header = new SectionHeader(headerText);
         ArrayList<SectionItem> contents = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
-        }
+//        for (int i = 0; i < 10; i++) {
+//            contents.add(new SectionItem(peoples[i % 2], "管理员", "13665874558"));
+//        }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);

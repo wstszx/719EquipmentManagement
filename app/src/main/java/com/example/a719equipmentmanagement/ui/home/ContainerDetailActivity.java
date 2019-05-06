@@ -11,11 +11,14 @@ import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseEditActivity;
+import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import androidx.annotation.Nullable;
+
+import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,10 +26,12 @@ import butterknife.OnClick;
 
 public class ContainerDetailActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间", "长度", "宽度", "高度",
-            "层数", "最大承重", "当前存放设备数量"};
-    private String[] containerAttrValue = {"货柜05", "三科室", "2019-7-9", "200cm", "60cm", "200cm",
-            "3", "200kg", "100个"};
+    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间"};
+    //    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间", "长度", "宽度", "高度",
+//            "层数", "最大承重", "当前存放设备数量"};
+//    private String[] containerAttrValue = {"货柜05", "三科室", "2019-7-9", "200cm", "60cm", "200cm",
+//            "3", "200kg", "100个"};
+    private String[] containerAttrValue = new String[3];
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
@@ -36,7 +41,18 @@ public class ContainerDetailActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
         initGroupListView();
+    }
+
+    private void initData() {
+        ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
+        String name = listBean.getName();
+        String dept = listBean.getDept();
+        String createTime = listBean.getCreateTime();
+        containerAttrValue[0] = name;
+        containerAttrValue[1] = dept;
+        containerAttrValue[2] = createTime;
     }
 
     private void initGroupListView() {
@@ -92,8 +108,9 @@ public class ContainerDetailActivity extends BaseActivity {
         return R.layout.activity_container_detail;
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, Serializable serializable) {
         Intent starter = new Intent(context, ContainerDetailActivity.class);
+        starter.putExtra("serializable", serializable);
         context.startActivity(starter);
     }
 

@@ -6,8 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@mipmap/b"
     android:orientation="vertical"
     tools:context=".ui.LoginActivity">
+    <!--admin/admin123-->
+    <!--manager/manager-->
 
 
     <EditText
@@ -22,6 +25,7 @@
         android:hint="@string/input_account"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:text="admin"
         android:textColor="@color/app_color_description"
         android:textSize="@dimen/sp_14"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,6 +44,7 @@
         android:inputType="textPassword"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:text="admin123"
         android:textColor="@color/app_color_description"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"

@@ -18,4 +18,7 @@
     <string name="Current_container">当前货柜:</string>
     <string name="start_scan_device">开始扫描设备</string>
     <string name="Rescan_container_code">重新扫描货柜码</string>
+    <string name="dept_type">科室分类</string>
+    <string name="sort">分类</string>
+    <string name="status">状态</string>
 </resources>
