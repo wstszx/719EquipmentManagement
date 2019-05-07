@@ -4,7 +4,6 @@ package com.example.a719equipmentmanagement.net;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
-import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceTypeData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
@@ -14,7 +13,6 @@ import com.example.a719equipmentmanagement.entity.LoginBean;
 import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.User;
-import com.example.a719equipmentmanagement.entity.UserListData;
 
 import java.io.File;
 import java.util.List;
@@ -22,12 +20,10 @@ import java.util.List;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 
 /**
  *
@@ -65,7 +61,8 @@ public interface ApiService {
 
     //查找设备分类数据
     @GET("system/category/list")
-    Call<List<DeviceClassifiy>> findDeviceTypeData();
+    Call<DeviceTypeData> findDeviceTypeData();
+
 
     /*------  container-controller -------*/
     //添加货柜
@@ -81,7 +78,14 @@ public interface ApiService {
     //添加科室
     @FormUrlEncoded
     @POST("system/dept/add")
-    Call<BaseResponse> addDept(@Field("rolename") String name);  //  ?????????
+    Call<BaseResponse> addDept(
+            @Field("dept_name") String dept_name,
+            @Field("order_num") String order_num,
+            @Field("leader") String leader,
+            @Field("phone") String phone,
+            @Field("email") String email,
+            @Field("status") String status
+    );
 
     //校验部门名称
     @POST("system/dept/checkDeptNameUnique")
@@ -113,7 +117,7 @@ public interface ApiService {
 
     //查找设备数据
     @GET("system/equip/list")
-    Call<List<DeviceData>> findDeviceData();
+    Call<List<DeviceClassifiy>> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/
