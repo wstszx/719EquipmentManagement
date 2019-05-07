@@ -66,7 +66,7 @@ public class ContainerDetailActivity extends BaseActivity {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    containerAttrValue[i],
+                    containerAttrValue[i] == null ? " " : containerAttrValue[i],
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);

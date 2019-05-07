@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.ui.home;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,7 +26,7 @@ public class AddDeptActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"};
+    private String[] containerAttrs = {"部门名称", "显示排序", "负责人", "邮箱", "部门状态"};
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class AddDeptActivity extends BaseActivity {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    null,
+                    " ",
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);
@@ -84,5 +85,10 @@ public class AddDeptActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_add_dept;
+    }
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, AddDeptActivity.class);
+        context.startActivity(starter);
     }
 }

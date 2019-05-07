@@ -187,12 +187,10 @@ public class PersonManageActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "添加部门":
-//                            showEditTextDialog(s);
+                            AddDeptActivity.start(PersonManageActivity.this);
                             break;
                         case "添加人员":
-
-//                            BaseEditActivity.start(PersonManageActivity.this, s, personTitles);
-//                            showEditTextDialog(s);
+                            AddPersonActivity.start(PersonManageActivity.this);
                             break;
                         case "删除":
                             break;

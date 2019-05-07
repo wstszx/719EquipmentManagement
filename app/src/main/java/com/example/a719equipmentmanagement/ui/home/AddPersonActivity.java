@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.ui.home;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -47,7 +48,7 @@ public class AddPersonActivity extends BaseActivity {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    null,
+                    " ",
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);
@@ -84,5 +85,10 @@ public class AddPersonActivity extends BaseActivity {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_add_person;
+    }
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, AddPersonActivity.class);
+        context.startActivity(starter);
     }
 }
