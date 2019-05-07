@@ -113,10 +113,10 @@ public class ContainerManageActivity extends BaseActivity {
                         break;
                     case 1:
                         SectionItem sectionItem = adapter1.getSectionItem(position);
-                        ContainerData.ListBean listBean = sectionItem.getListBean();
-                        if (listBean != null) {
-                            ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
-                        }
+//                        ContainerData.ListBean listBean = sectionItem.getListBean();
+//                        if (listBean != null) {
+//                            ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
+//                        }
                         break;
                 }
             }
@@ -138,9 +138,9 @@ public class ContainerManageActivity extends BaseActivity {
         ArrayList<SectionItem> contents = new ArrayList<>();
         List<ContainerData.ListBean> listBeans = containerData.getList();
         if (listBeans != null && listBeans.size() > 0) {
-            for (ContainerData.ListBean listBean : listBeans) {
-                contents.add(new SectionItem(listBean));
-            }
+//            for (ContainerData.ListBean listBean : listBeans) {
+//                contents.add(new SectionItem(listBean));
+//            }
         }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);

@@ -12,29 +12,25 @@ import androidx.annotation.Nullable;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseEditActivity;
-import com.example.a719equipmentmanagement.entity.SectionItem;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class PersonDetailActivity extends BaseActivity {
+public class DeptAddActivity extends BaseActivity {
 
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    //    private String[] containerAttrs = {"姓名", "所属科室", "角色", "联系方式"};
-    private String[] containerAttrs = {"姓名","性别","电话","邮箱"};
-    //    private String[] containerAttrValue = {"张三", "三科室", "普通用户", "13658744569"};
-    private List<String> containerAttrValue = new ArrayList<>();
+
+    private String[] containerAttrs = {"上级部门","部门名称","显示排序","负责人","联系电话","邮箱"};
 
     private QMUICommonListItemView listItemView;
 
@@ -42,6 +38,35 @@ public class PersonDetailActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initGroupListView();
+    }
+
+    private void initTopbar() {
+        topbar.setTitle("部门添加");
+        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
+        topbar.addRightTextButton("完成",R.id.complete).setOnClickListener(v -> {
+            addDept();
+            PersonManageActivity.start(DeptAddActivity.this);
+
+        });
+    }
+
+    private void addDept() {
+//        groupListView.ge
+
+        RetrofitClient.getInstance().getService().addDept("虑").enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
 
@@ -55,48 +80,26 @@ public class PersonDetailActivity extends BaseActivity {
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
-            intent.putExtra("text", listItemView.getDetailText().toString());
+            intent.putExtra("text","");
             intent.setClass(this, BaseEditActivity.class);
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
 
-        User.ListBean sectionItem = (User.ListBean) getIntent().getSerializableExtra("serializable");
-        String loginName = sectionItem.getLoginName();
-        String phonenumber = sectionItem.getPhonenumber();
-        String sex = sectionItem.getSex();
-        String email = sectionItem.getEmail();
-        containerAttrValue.add(0,loginName);
-        containerAttrValue.add(1,sex);
-        containerAttrValue.add(2,phonenumber);
-        containerAttrValue.add(3,email);
-
+        String detailText="请输入";
         for (int i = 0; i < containerAttrs.length; i++) {
-            QMUICommonListItemView item = groupListView.createItemView(
+            QMUICommonListItemView item;
+            item = groupListView.createItemView(
                     null,
                     containerAttrs[i],
-                    containerAttrValue.get(i),
+                    detailText,
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+
             item.setTag(i);
             section.addItemView(item, onClickListener);
         }
-
-
         section.addTo(groupListView);
-
-    }
-
-    private void initTopbar() {
-        topbar.setTitle("人员详情");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
-        });
-        topbar.addRightTextButton("完成",R.id.complete).setOnClickListener(v -> {
-            finish();
-
-        });
     }
 
 
@@ -113,9 +116,8 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
-    public static void start(Context context, Serializable serializable) {
-        Intent starter = new Intent(context, PersonDetailActivity.class);
-        starter.putExtra("serializable", serializable);
+    public static void start(Context context) {
+        Intent starter = new Intent(context, DeptAddActivity.class);
         context.startActivity(starter);
     }
 }

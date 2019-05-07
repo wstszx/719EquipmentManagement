@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
@@ -215,10 +216,10 @@ public class PersonManageActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "添加部门":
-                            showEditTextDialog(s);
+                            DeptAddActivity.start(PersonManageActivity.this);
                             break;
                         case "添加人员":
-                            showEditTextDialog(s);
+                            PersonAddActivity.start(PersonManageActivity.this);
                             break;
                         case "删除":
                             break;
@@ -242,6 +243,7 @@ public class PersonManageActivity extends BaseActivity {
                 .addAction("确定", (dialog, index) -> {
                     CharSequence text1 = builder.getEditText().getText();
                     if (text1 != null && text1.length() > 0) {
+                        addDept();
                         Toast.makeText(PersonManageActivity.this, "成功" + text + ":" + text1, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {
@@ -249,5 +251,19 @@ public class PersonManageActivity extends BaseActivity {
                     }
                 })
                 .create(mCurrentDialogStyle).show();
+    }
+
+    private void addDept() {
+        RetrofitClient.getInstance().getService().addDept("虑").enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                initData();
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

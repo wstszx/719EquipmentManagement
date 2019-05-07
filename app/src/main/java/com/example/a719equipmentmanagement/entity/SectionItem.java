@@ -3,19 +3,19 @@ package com.example.a719equipmentmanagement.entity;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
 public class SectionItem implements QMUISection.Model<SectionItem> {
-    private ContainerData.ListBean listBean;
+    private User.ListBean listBean;
 
-    public SectionItem(ContainerData.ListBean listBean) {
+    public SectionItem(User.ListBean listBean) {
         this.listBean = listBean;
     }
 
-    public ContainerData.ListBean getListBean() {
+    public User.ListBean getList() {
         return listBean;
     }
 
     @Override
     public SectionItem cloneForDiff() {
-        return new SectionItem(getListBean());
+        return new SectionItem(getList());
     }
 
     @Override

@@ -57,6 +57,6 @@ public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<Sect
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);
-        tv_1.setText(section.getItemAt(itemIndex).getListBean().getName());
+//        tv_1.setText(section.getItemAt(itemIndex).getListBean().getName());
     }
 }

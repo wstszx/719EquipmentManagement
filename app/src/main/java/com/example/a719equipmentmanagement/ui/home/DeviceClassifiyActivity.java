@@ -63,7 +63,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceData().enqueue(new Callback<List<DeviceClassifiy>>() {
+        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<List<DeviceClassifiy>>() {
             @Override
             public void onResponse(Call<List<DeviceClassifiy>> call, Response<List<DeviceClassifiy>> response) {
                 List<DeviceClassifiy> body = response.body();
