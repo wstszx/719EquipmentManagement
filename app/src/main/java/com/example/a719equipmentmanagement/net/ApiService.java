@@ -76,8 +76,16 @@ public interface ApiService {
 
     /*------  dept-controller -------*/
     //添加科室
+    @FormUrlEncoded
     @POST("system/dept/add")
-    Call<BaseResponse> addDept();  //  ?????????
+    Call<BaseResponse> addDept(
+            @Field("dept_name") String dept_name,
+            @Field("order_num") String order_num,
+            @Field("leader") String leader,
+            @Field("phone") String phone,
+            @Field("email") String email,
+            @Field("status") String status
+    );
 
     //校验部门名称
     @POST("system/dept/checkDeptNameUnique")
