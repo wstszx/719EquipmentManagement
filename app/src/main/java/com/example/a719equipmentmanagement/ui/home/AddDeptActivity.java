@@ -1,53 +1,36 @@
-package com.example.a719equipmentmanagement.base;
+package com.example.a719equipmentmanagement.ui.home;
 
-import android.content.Context;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.entity.ContainerData;
-import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
+import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import butterknife.BindView;
 
-public class BaseEditActivity extends BaseActivity {
+public class AddDeptActivity extends BaseActivity {
 
-    List<String> containerAttrs = new ArrayList<>();
-    List<String> containerAttrValue = new ArrayList<>();
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
-    private String title;
-    private String[] titleArrays;
-
+    private String[] containerAttrs = {"用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"};
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initData();
         initTopbar();
         initGroupListView();
-    }
-
-    private void initData() {
-        Intent intent = getIntent();
-        title = intent.getStringExtra("title");
-        titleArrays = intent.getStringArrayExtra("titleArray");
     }
 
     private void initGroupListView() {
@@ -60,10 +43,10 @@ public class BaseEditActivity extends BaseActivity {
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-        for (int i = 0; i < containerAttrs.size(); i++) {
+        for (int i = 0; i < containerAttrs.length; i++) {
             QMUICommonListItemView item = groupListView.createItemView(
                     null,
-                    titleArrays[i],
+                    containerAttrs[i],
                     null,
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
@@ -75,7 +58,7 @@ public class BaseEditActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle(title == null ? "" : title);
+        topbar.setTitle("添加部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
 
         });
@@ -100,14 +83,6 @@ public class BaseEditActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_container_detail;
+        return R.layout.activity_add_dept;
     }
-
-    public static void start(Context context, String title, String[] titleArray) {
-        Intent starter = new Intent(context, BaseEditActivity.class);
-        starter.putExtra("titleArray", titleArray);
-        starter.putExtra("title", title);
-        context.startActivity(starter);
-    }
-
 }

@@ -3,27 +3,20 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.section.QMUISection;
@@ -31,20 +24,13 @@ import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +45,6 @@ public class PersonManageActivity extends BaseActivity {
     private QMUIListPopup mListPopup;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String[] personTitles = {"用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"};
-    private ArrayList<String> titleArray = new ArrayList<>(Arrays.asList("用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"));
     String[] addTypes = new String[]{
             "添加部门",
             "添加人员"
@@ -205,7 +190,8 @@ public class PersonManageActivity extends BaseActivity {
 //                            showEditTextDialog(s);
                             break;
                         case "添加人员":
-                            BaseEditActivity.start(PersonManageActivity.this, s, personTitles);
+
+//                            BaseEditActivity.start(PersonManageActivity.this, s, personTitles);
 //                            showEditTextDialog(s);
                             break;
                         case "删除":
