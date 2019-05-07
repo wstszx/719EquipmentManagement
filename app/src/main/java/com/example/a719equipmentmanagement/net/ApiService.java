@@ -67,7 +67,6 @@ public interface ApiService {
     @GET("system/category/list")
     Call<List<DeviceClassifiy>> findDeviceTypeData();
 
-
     /*------  container-controller -------*/
     //添加货柜
     @POST("system/container/add")

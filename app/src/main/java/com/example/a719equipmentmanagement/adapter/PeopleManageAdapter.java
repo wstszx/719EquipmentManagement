@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.entity.User;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
@@ -16,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import butterknife.BindView;
 
-public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem> {
+public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem<User.ListBean>> {
 
     @NonNull
     @Override
@@ -33,7 +34,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<User.ListBean>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -53,14 +54,15 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<User.ListBean>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-        tv_1.setText(section.getItemAt(itemIndex).getList().getDeptId()+"");
-        tv_2.setText(section.getItemAt(itemIndex).getList().getLoginName());
-        tv_3.setText(section.getItemAt(itemIndex).getList().getPhonenumber());
+        User.ListBean user = section.getItemAt(itemIndex).getListBean();
+        tv_1.setText(user.getDeptId()+"");
+        tv_2.setText(user.getLoginName());
+        tv_3.setText(user.getPhonenumber());
     }
 }

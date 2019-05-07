@@ -2,20 +2,20 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class SectionItem implements QMUISection.Model<SectionItem> {
-    private User.ListBean listBean;
+public class SectionItem<T> implements QMUISection.Model<SectionItem<T>> {
+    private T listBean;
 
-    public SectionItem(User.ListBean listBean) {
+    public SectionItem(T listBean) {
         this.listBean = listBean;
     }
 
-    public User.ListBean getList() {
+    public T getListBean() {
         return listBean;
     }
 
     @Override
     public SectionItem cloneForDiff() {
-        return new SectionItem(getList());
+        return new SectionItem(getListBean());
     }
 
     @Override

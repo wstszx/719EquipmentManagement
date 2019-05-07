@@ -80,7 +80,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void bindUi(List<DeviceClassifiy> body) {
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader, SectionItem<DeviceClassifiy>>> list = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy : body) {
             list.add(createSection(deviceClassifiy));
         }
@@ -93,9 +93,9 @@ public class DeviceClassifiyActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new DeviceClassifiyAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<DeviceClassifiy>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section, boolean loadMoreBefore) {
 
             }
 
@@ -122,10 +122,10 @@ public class DeviceClassifiyActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(DeviceClassifiy deviceClassifiy) {
+    private QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> createSection(DeviceClassifiy deviceClassifiy) {
         String name = deviceClassifiy.getName();
         SectionHeader header = new SectionHeader(name);
-        ArrayList<SectionItem> contents = new ArrayList<>();
+        ArrayList<SectionItem<DeviceClassifiy>> contents = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
 //            contents.add(new SectionItem(new ContainerData.ListBean()));
 //        }
