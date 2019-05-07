@@ -12,8 +12,7 @@ import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
-import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -44,9 +43,6 @@ public class AddDeviceActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar_addDevice.setTitle("添加设备");
-//        topbar_addDevice.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-//            GenarateQRActivity.start(this);
-//        });
 
         topbar_addDevice.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -67,7 +63,7 @@ public class AddDeviceActivity extends BaseActivity {
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
             intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseEditActivity.class);
+            intent.setClass(this, BaseItemEditActivity.class);
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
@@ -82,8 +78,8 @@ public class AddDeviceActivity extends BaseActivity {
             section.addItemView(item, onClickListener);
         }
         section.addTo(groupListView_addDevice);
-
     }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_add_device;

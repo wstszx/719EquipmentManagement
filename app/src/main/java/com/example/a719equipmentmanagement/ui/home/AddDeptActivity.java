@@ -61,12 +61,15 @@ public class AddDeptActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("添加部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
-
+            getInputData();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
+    }
+
+    private void getInputData() {
     }
 
     @Override
