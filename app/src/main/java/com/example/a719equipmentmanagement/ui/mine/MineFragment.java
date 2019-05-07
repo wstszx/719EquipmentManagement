@@ -17,6 +17,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
@@ -88,11 +89,29 @@ public class MineFragment extends BaseFragment {
                 .setMessage("您确定要退出登录吗？")
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
+                    logout();
                     dialog.dismiss();
                     Intent intent = new Intent("quit_login");
                     ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
                 })
                 .show();
+    }
+
+    /**
+     * 登出
+     */
+    private void logout() {
+        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
