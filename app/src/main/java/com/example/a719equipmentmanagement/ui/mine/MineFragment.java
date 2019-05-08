@@ -10,14 +10,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;

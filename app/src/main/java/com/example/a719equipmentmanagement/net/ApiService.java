@@ -137,7 +137,6 @@ public interface ApiService {
     //查找盘点数据
     @GET("system/inventory/list")
     Call<List<InventoryData>> findInventoryData();
-    Call<InventoryData> findInventoryData();
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
