@@ -25,6 +25,7 @@ import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.HomeFragment;
 
 
+import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -89,6 +90,7 @@ public class MineFragment extends BaseFragment {
                 .setMessage("您确定要退出登录吗？")
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
+                    SPUtils.putBoolean(App.getContext(), "main", false);
                     logout();
                     dialog.dismiss();
                     Intent intent = new Intent("quit_login");

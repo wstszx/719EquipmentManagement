@@ -2,9 +2,13 @@ package com.example.a719equipmentmanagement.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.App;
@@ -42,12 +46,15 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        List<Activity> actList = ActivityCollector.getActList();
-        Log.i("mylog", "actList.size()==" + actList.size());
     }
 
     @Override
     protected int getLayoutId() {
+        boolean main = SPUtils.getBoolean(getApplicationContext(), "main", false);
+        if (main) {
+            MainActivity.start(this);
+            LoginActivity.this.finish();
+        }
         return R.layout.activity_login;
     }
 
@@ -72,6 +79,7 @@ public class LoginActivity extends BaseActivity {
                     if (0 == code) {
                         String token = response.body().getMsg();
                         SPUtils.putString(App.getContext(), "token", token);
+                        SPUtils.putBoolean(App.getContext(), "main", true);
                         MainActivity.start(LoginActivity.this);
                         finish();
                     }
