@@ -17,6 +17,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
@@ -24,6 +25,7 @@ import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.HomeFragment;
 
 
+import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -59,8 +61,7 @@ public class MineFragment extends BaseFragment {
         initData();
         initTopbar();
         initGroupListView();
-        List<Activity> actList = ActivityCollector.getActList();
-        Log.i("mylog", "actList.size()==" + actList.size());
+//        List<Activity> actList = ActivityCollector.getActList();
     }
 
     private void initData() {
@@ -88,11 +89,30 @@ public class MineFragment extends BaseFragment {
                 .setMessage("您确定要退出登录吗？")
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
+                    SPUtils.putBoolean(App.getContext(), "main", false);
+                    logout();
                     dialog.dismiss();
                     Intent intent = new Intent("quit_login");
-                    ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
+//                    ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
                 })
                 .show();
+    }
+
+    /**
+     * 登出
+     */
+    private void logout() {
+        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

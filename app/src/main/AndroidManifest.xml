@@ -18,6 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.home.EditPersonActivity" />
+        <activity android:name=".ui.home.AddDeptActivity" />
         <activity android:name=".ui.device.AddDeviceActivity"></activity>
         <activity android:name=".ui.home.ScrappedActivity" />
         <activity android:name=".ui.home.AddDeptActivity"></activity>
