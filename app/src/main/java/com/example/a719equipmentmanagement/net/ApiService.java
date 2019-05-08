@@ -4,6 +4,7 @@ package com.example.a719equipmentmanagement.net;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
+import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceTypeData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
@@ -61,7 +62,7 @@ public interface ApiService {
 
     //查找设备分类数据
     @GET("system/category/list")
-    Call<DeviceTypeData> findDeviceTypeData();
+    Call<List<DeviceClassifiy>> findDeviceTypeData();
 
 
     /*------  container-controller -------*/
@@ -117,7 +118,7 @@ public interface ApiService {
 
     //查找设备数据
     @GET("system/equip/list")
-    Call<List<DeviceClassifiy>> findDeviceData();
+    Call<List<DeviceData>> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/

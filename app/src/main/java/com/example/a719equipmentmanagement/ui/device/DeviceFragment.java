@@ -14,6 +14,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.Device;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ContainerManageActivity;

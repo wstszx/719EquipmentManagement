@@ -138,7 +138,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("设备分类");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            showEditTextDialog();
+            AddDeviceClassifyActivity.start(DeviceClassifiyActivity.this);
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -146,26 +146,26 @@ public class DeviceClassifiyActivity extends BaseActivity {
         });
     }
 
-    /**
-     * 弹出带输入框的dialog
-     */
-    private void showEditTextDialog() {
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        builder.setTitle("添加设备分类")
-                .setPlaceholder("请输入")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text1 = builder.getEditText().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(DeviceClassifiyActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    /**
+//     * 弹出带输入框的dialog
+//     */
+//    private void showEditTextDialog() {
+//        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//        builder.setTitle("添加设备分类")
+//                .setPlaceholder("请输入")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text1 = builder.getEditText().getText();
+//                    if (text1 != null && text1.length() > 0) {
+//                        Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    } else {
+//                        Toast.makeText(DeviceClassifiyActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
 
     private void initListPopupIfNeed(String[] listItems) {
 
