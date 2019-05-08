@@ -97,7 +97,7 @@ public interface ApiService {
 
     //编辑科室
     @POST("system/dept/edit")
-    Call<BaseResponse> edit();
+    Call<BaseResponse> editDept();
 
     //删除科室
     @GET("system/dept/remove/{deptId}")

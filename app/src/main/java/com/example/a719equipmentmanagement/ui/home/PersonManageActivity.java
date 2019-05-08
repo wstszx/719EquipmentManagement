@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 
@@ -38,6 +41,8 @@ import retrofit2.Response;
 public class PersonManageActivity extends BaseActivity {
 
 
+    private static final int EDIT_DEPT = 1;
+    private static final int EDIT_PERSON = 2;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -57,6 +62,11 @@ public class PersonManageActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<QMUISection<SectionHeader, SectionItem<User.ListBean>>> list;
     private PeopleManageAdapter adapter1;
+    private int itemViewType = -1;
+    private String parentTitle;
+    private String childTitle1;
+    private String childTitle2;
+    private String childTitle3;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -119,6 +129,22 @@ public class PersonManageActivity extends BaseActivity {
 
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+                itemViewType = holder.getItemViewType();
+                View view = holder.itemView;
+                switch (itemViewType) {
+                    case 0:
+                        TextView tvParent = view.findViewById(R.id.tv_parent);
+                        parentTitle = tvParent.getText().toString();
+                        break;
+                    case 1:
+                        TextView tv_1 = view.findViewById(R.id.tv_1);
+                        TextView tv_2 = view.findViewById(R.id.tv_2);
+                        TextView tv_3 = view.findViewById(R.id.tv_3);
+                        childTitle1 = tv_1.getText().toString();
+                        childTitle2 = tv_2.getText().toString();
+                        childTitle3 = tv_3.getText().toString();
+                        break;
+                }
                 initListPopupIfNeed(deletes);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -145,7 +171,6 @@ public class PersonManageActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("人员管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-
             initListPopupIfNeed(addTypes);
             mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
             mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -193,12 +218,83 @@ public class PersonManageActivity extends BaseActivity {
                             AddPersonActivity.start(PersonManageActivity.this);
                             break;
                         case "删除":
+                            delete();
+                            break;
+                        case "编辑":
+                            switch (itemViewType) {
+                                case 0:
+                                    Intent intent = new Intent();
+                                    intent.putExtra("text", parentTitle);
+                                    intent.setClass(PersonManageActivity.this, BaseItemEditActivity.class);
+                                    startActivityForResult(intent, EDIT_DEPT);
+                                    break;
+                                case 1:
+                                    Intent intent1 = new Intent();
+                                    intent1.putExtra("text", parentTitle);
+                                    intent1.setClass(PersonManageActivity.this, BaseItemEditActivity.class);
+                                    startActivityForResult(intent1, EDIT_PERSON);
+                                    break;
+                            }
+
                             break;
                     }
                     mListPopup.dismiss();
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case EDIT_DEPT:
+                RetrofitClient.getInstance().getService().editDept().enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                    }
+                });
+                break;
+            case EDIT_PERSON:
+                break;
+        }
+    }
+
+    private void delete() {
+        switch (itemViewType) {
+            case 0:
+                RetrofitClient.getInstance().getService().delete().enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                    }
+                });
+                break;
+            case 1:
+                RetrofitClient.getInstance().getService().deleteUser("").enqueue(new Callback<BaseResponse>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                    }
+                });
+                break;
         }
     }
 
