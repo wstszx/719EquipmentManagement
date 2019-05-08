@@ -8,13 +8,21 @@ import android.view.View;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.InventoryData;
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CheckcountActivity extends BaseActivity {
 
@@ -22,16 +30,30 @@ public class CheckcountActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
-    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-    private String[] location = new String[]{"1号货架第1层盘点完成", "1号货架第2层盘点完成", "1号货架第3层盘点完成"};
-    private String[] state = new String[]{"完全吻合", "盘盈", "，盘亏"};
+    private List<InventoryData> body;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        // int id = getIntent().getIntExtra("id", -1);
         initView();
+//        initData();
     }
 
+//    private void initData() {
+//        RetrofitClient.getInstance().getService().findInventoryData().enqueue(new Callback<List<InventoryData>>() {
+//            @Override
+//            public void onResponse(Call<List<InventoryData>> call, Response<List<InventoryData>> response) {
+//                body = response.body();
+//                if (body != null && body.size() > 0) {
+//                    initGroupListView();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<InventoryData>> call, Throwable t) {
+//
+//            }
+//        });
+//    }
 
     @Override
     protected int getLayoutId() {
@@ -40,13 +62,11 @@ public class CheckcountActivity extends BaseActivity {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, CheckcountActivity.class);
-        //starter.putExtra("id", id);
         context.startActivity(starter);
     }
 
     private void initView() {
         initTopbar();
-        initGroupListView();
     }
 
     private void initTopbar() {
@@ -57,27 +77,20 @@ public class CheckcountActivity extends BaseActivity {
         });
     }
 
-    private void initGroupListView() {
-        String time = "时间";
-        String result = "，盘点结果：";
-        View.OnClickListener onClickListener = v -> {
-        };
-        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-        for (int i = 0; i < date.length; i++) {
-            QMUICommonListItemView item = groupListView.createItemView(
-                    null,
-                    time + date[i],
-                    location[i] + result + state[i],
-                    QMUICommonListItemView.VERTICAL, 0);
-            section.addItemView(item, onClickListener);
-        }
-        section.addTo(groupListView);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+//    private void initGroupListView() {
+//        String time = "时间";
+//        String result = "盘点结果：";
+//        View.OnClickListener onClickListener = v -> {
+//        };
+//        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
+//            for (int i = 0; i < body.size(); i++) {
+//                QMUICommonListItemView item = groupListView.createItemView(
+//                        null,
+//                        time + body.get(i).getCreateTime(),
+//                        result+(body.get(i).getState()==0?"盘点完成":"盘点未完成"),
+//                        QMUICommonListItemView.VERTICAL, 0);
+//                section.addItemView(item, onClickListener);
+//            }
+//        section.addTo(groupListView);
+//    }
 }

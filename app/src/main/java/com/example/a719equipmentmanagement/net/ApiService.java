@@ -124,7 +124,7 @@ public interface ApiService {
     Call<BaseResponse> setEndInventory(@Body RequestBody requestBody);
     //查找盘点数据
     @GET("system/inventory/list")
-    Call<InventoryData> findInventoryData();
+    Call<List<InventoryData>> findInventoryData();
     //获取盘点记录id
     @GET("system/inventory/nextId")
     Call<InventoryRevordId> findInventoryRevordId();
