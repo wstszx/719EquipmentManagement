@@ -61,8 +61,7 @@ public class MineFragment extends BaseFragment {
         initData();
         initTopbar();
         initGroupListView();
-        List<Activity> actList = ActivityCollector.getActList();
-        Log.i("mylog", "actList.size()==" + actList.size());
+//        List<Activity> actList = ActivityCollector.getActList();
     }
 
     private void initData() {
@@ -94,7 +93,7 @@ public class MineFragment extends BaseFragment {
                     logout();
                     dialog.dismiss();
                     Intent intent = new Intent("quit_login");
-                    ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
+//                    ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
                 })
                 .show();
     }
