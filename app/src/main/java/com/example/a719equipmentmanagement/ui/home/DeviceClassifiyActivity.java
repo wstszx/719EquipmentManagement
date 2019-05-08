@@ -10,14 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -63,18 +66,23 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<List<DeviceClassifiy>>() {
+        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<BaseResponse<List<DeviceClassifiy>>>() {
             @Override
-            public void onResponse(Call<List<DeviceClassifiy>> call, Response<List<DeviceClassifiy>> response) {
-                List<DeviceClassifiy> body = response.body();
-                if (body != null && body.size() > 0) {
-                    bindUi(body);
+            public void onResponse(Call<BaseResponse<List<DeviceClassifiy>>> call, Response<BaseResponse<List<DeviceClassifiy>>> response) {
+                if (response.body() != null) {
+                    boolean ok = response.body().isOk(App.getContext());
+                    if (ok) {
+                        List<DeviceClassifiy> body = response.body().getRes();
+                        if (body != null && body.size() > 0) {
+                            bindUi(body);
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DeviceClassifiy>> call, Throwable t) {
-
+            public void onFailure(Call<BaseResponse<List<DeviceClassifiy>>> call, Throwable t) {
+                NetworkError.error(App.getContext(),t);
             }
         });
     }

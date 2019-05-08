@@ -31,24 +31,12 @@ import retrofit2.http.POST;
  */
 public interface ApiService {
 
-//    //登陆
-//    @POST("login")
-//    Call<LoginBean> login(@Body RequestBody requestBody);
-//
-//    //注册
-//    @FormUrlEncoded
-//    @POST("user/register/")
-//    Call<LoginBean> register(@Field("username") String username,
-//                             @Field("password") String password,
-//                             @Field("repassword") String repassword);
-
-
     /*------  login-controller -------*/
     //APP登录
     @FormUrlEncoded
     @POST("loginByApp")
-    Call<LoginBean> login(@Field("username") String username,
-                          @Field("password") String password);
+    Call<BaseResponse<LoginBean>> login(@Field("username") String username,
+                                        @Field("password") String password);
 
     //APP用户退出
     @GET("logoutByApp")
@@ -62,7 +50,7 @@ public interface ApiService {
 
     //查找设备分类数据
     @GET("system/category/list")
-    Call<List<DeviceClassifiy>> findDeviceTypeData();
+    Call<BaseResponse<List<DeviceClassifiy>>> findDeviceTypeData();
 
 
     /*------  container-controller -------*/
@@ -72,7 +60,7 @@ public interface ApiService {
 
     //查找货柜数据
     @GET("system/container/list")
-    Call<List<ContainerData>> findContainerData();
+    Call<BaseResponse<List<ContainerData>>> findContainerData();
 
 
     /*------  dept-controller -------*/
@@ -94,7 +82,7 @@ public interface ApiService {
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Call<List<User>> getUser();
+    Call<BaseResponse<List<User>>> getUser();
 
     //编辑科室
     @POST("system/dept/edit")
@@ -108,7 +96,7 @@ public interface ApiService {
     /* -------------- dict-data-controller  ----------------------- */
     //获取数据字典
     @GET("system/dict/data/findByType")
-    Call<DictData> findDictData();
+    Call<BaseResponse<DictData>> findDictData();
 
 
     /* -----------------  equip-controller -----------------------*/
@@ -118,7 +106,7 @@ public interface ApiService {
 
     //查找设备数据
     @GET("system/equip/list")
-    Call<List<DeviceData>> findDeviceData();
+    Call<BaseResponse<List<DeviceData>>> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/
@@ -136,23 +124,23 @@ public interface ApiService {
 
     //查找盘点数据
     @GET("system/inventory/list")
-    Call<List<InventoryData>> findInventoryData();
+    Call<BaseResponse<List<InventoryData>>> findInventoryData();
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
-    Call<InventoryRevordId> findInventoryRevordId();
+    Call<BaseResponse<InventoryRevordId>> findInventoryRevordId();
 
 
     /*----------------- msg-controller  ----------------*/
     //查找消息数据
     @GET("system/msg/list")
-    Call<MsgData> findMsgData();
+    Call<BaseResponse<MsgData>> findMsgData();
 
 
     /*----------------- profile-controller  ----------------*/
     //APP获取当前用户信息
     @GET("system/user/profile/me")
-    Call<User> getMe();
+    Call<BaseResponse<User>> getMe();
 
     //修改密码
     @POST("system/user/profile/resetPwd")
@@ -171,7 +159,7 @@ public interface ApiService {
     /*----------------- role-controller  ----------------*/
     //查找角色数据
     @GET("system/role/listByApp")
-    Call<RoleData> findRoleData();
+    Call<BaseResponse<RoleData>> findRoleData();
 
 
     /*----------------- setup-controller  ----------------*/
@@ -181,24 +169,7 @@ public interface ApiService {
 
     //查找建账入库数据
     @GET("system/setup/list")
-    Call<InRecordData> findInRecordData();
-
-
-//    /*----------------- test-controller  ----------------*/
-//    //删除用户
-//    @DELETE("test/delete")
-//    Call<BaseResponse> deleteUser(@Body RequestBody requestBody);
-//    //获取列表
-//    @GET("test/list")
-//    Call<UserListData> findUserListData();
-//    //新增用户
-//    @POST("test/save")
-//    Call<BaseResponse> addUser(@Field("userId") String userId,
-//                               @Field("username") String username,
-//                               @Field("password") String password);
-//    //更新用户
-//    @PUT("test/update")
-//    Call<BaseResponse> updataUser(@Body RequestBody requestBody);
+    Call<BaseResponse<InRecordData>> findInRecordData();
 
 
     /*----------------- user-controller  ----------------*/

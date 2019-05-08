@@ -19,6 +19,7 @@ import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -57,15 +58,20 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<User>() {
+        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<BaseResponse<User>>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
+                if (response.body() != null) {
+                    boolean ok = response.body().isOk(getContext());
+                    if (ok) {
 
+                    }
+                }
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
+            public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
+                NetworkError.error(getContext(), t);
             }
         });
     }

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -16,6 +17,7 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -80,22 +82,26 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<List<User>>() {
+        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<BaseResponse<List<User>>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                List<User> body = response.body();
-                if (body != null && body.size() > 0) {
-                    for (User user : body) {
-//                        String deptName = user.getDeptName();
-                        list.add(createSection(user));
+            public void onResponse(Call<BaseResponse<List<User>>> call, Response<BaseResponse<List<User>>> response) {
+                if (response.body() != null) {
+                    boolean ok = response.body().isOk(App.getContext());
+                    if (ok) {
+                        List<User> body = response.body().getRes();
+                        if (body != null && body.size() > 0) {
+                            for (User user : body) {
+                                list.add(createSection(user));
+                            }
+                            adapter1.setData(list);
+                        }
                     }
-                    adapter1.setData(list);
                 }
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-
+            public void onFailure(Call<BaseResponse<List<User>>> call, Throwable t) {
+                NetworkError.error(App.getContext(),t);
             }
         });
     }

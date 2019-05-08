@@ -15,8 +15,10 @@ import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.LoginBean;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.mine.ActivityCollector;
 import com.example.a719equipmentmanagement.utils.SPUtils;
@@ -71,12 +73,13 @@ public class LoginActivity extends BaseActivity {
 //            e.printStackTrace();
 //        }
 //        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().login(username, password).enqueue(new Callback<LoginBean>() {
+        RetrofitClient.getInstance().getService().login(username, password).enqueue(new Callback<BaseResponse<LoginBean>>() {
             @Override
-            public void onResponse(Call<LoginBean> call, Response<LoginBean> response) {
+            public void onResponse(Call<BaseResponse<LoginBean>> call, Response<BaseResponse<LoginBean>> response) {
+                boolean ok = false;
                 if (response.body() != null) {
-                    int code = response.body().getCode();
-                    if (0 == code) {
+                    ok = response.body().isOk(App.getContext());
+                    if (ok) {
                         String token = response.body().getMsg();
                         SPUtils.putString(App.getContext(), "token", token);
                         SPUtils.putBoolean(App.getContext(), "main", true);
@@ -87,11 +90,9 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<LoginBean> call, Throwable t) {
-                LogUtils.i(t.getMessage());
+            public void onFailure(Call<BaseResponse<LoginBean>> call, Throwable t) {
+                NetworkError.error(App.getContext(), t);
             }
         });
-
-
     }
 }

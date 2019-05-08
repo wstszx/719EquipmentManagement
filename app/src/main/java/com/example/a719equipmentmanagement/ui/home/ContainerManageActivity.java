@@ -11,14 +11,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -73,18 +76,23 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<List<ContainerData>>() {
+        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<BaseResponse<List<ContainerData>>>() {
             @Override
-            public void onResponse(Call<List<ContainerData>> call, Response<List<ContainerData>> response) {
-                List<ContainerData> body = response.body();
-                if (body != null && body.size() > 0) {
-                    bindUi(body);
+            public void onResponse(Call<BaseResponse<List<ContainerData>>> call, Response<BaseResponse<List<ContainerData>>> response) {
+                if (response.body() != null) {
+                    boolean ok = response.body().isOk(App.getContext());
+                    if (ok) {
+                        List<ContainerData> body = response.body().getRes();
+                        if (body != null && body.size() > 0) {
+                            bindUi(body);
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ContainerData>> call, Throwable t) {
-
+            public void onFailure(Call<BaseResponse<List<ContainerData>>> call, Throwable t) {
+                NetworkError.error(App.getContext(),t);
             }
         });
     }

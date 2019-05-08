@@ -9,13 +9,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.Device;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ContainerManageActivity;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
@@ -94,18 +97,23 @@ public class DeviceFragment extends BaseFragment {
 
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceData().enqueue(new Callback<List<DeviceData>>() {
+        RetrofitClient.getInstance().getService().findDeviceData().enqueue(new Callback<BaseResponse<List<DeviceData>>>() {
             @Override
-            public void onResponse(Call<List<DeviceData>> call, Response<List<DeviceData>> response) {
-                body = response.body();
-                if (body != null && body.size() > 0) {
-                    bindUi();
+            public void onResponse(Call<BaseResponse<List<DeviceData>>> call, Response<BaseResponse<List<DeviceData>>> response) {
+                if (response.body() != null) {
+                    boolean ok = response.body().isOk(App.getContext());
+                    if (ok) {
+                        body = response.body().getRes();
+                        if (body != null && body.size() > 0) {
+                            bindUi();
+                        }
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DeviceData>> call, Throwable t) {
-
+            public void onFailure(Call<BaseResponse<List<DeviceData>>> call, Throwable t) {
+                NetworkError.error(App.getContext(),t);
             }
         });
     }
