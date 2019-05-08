@@ -1,51 +1,60 @@
-package com.example.a719equipmentmanagement.ui.home;
+package com.example.a719equipmentmanagement.ui.device;
 
-import android.content.Context;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
-import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import androidx.annotation.Nullable;
-
-import java.io.Serializable;
-
 import butterknife.BindView;
 
-public class ContainerDetailActivity extends BaseActivity {
+public class AddDeviceActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间"};
-    private String[] containerAttrValue = new String[3];
-    @BindView(R.id.groupListView)
-    QMUIGroupListView groupListView;
-    @BindView(R.id.topbar)
-    QMUITopBarLayout topbar;
+
+    private String[] containerAttrs = {"设备名称", "技术指标", "设备编号", "所属部门", "存放位置", "属性1",
+            "属性2", "属性3", "属性4"};
+    private String[] containerAttrValue = {"05", "5MPa", "2019009", "三科室", "3#3", "001",
+            "3", "10", "12"};
+
+    @BindView(R.id.groupListView_addDevice)
+    QMUIGroupListView groupListView_addDevice;
+
+    @BindView(R.id.topbar_addDevice)
+    QMUITopBarLayout topbar_addDevice;
+
     private QMUICommonListItemView listItemView;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
-        initData();
         initGroupListView();
     }
 
-    private void initData() {
-        ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
-        String name = listBean.getName();
-        String dept = listBean.getDept();
-        String createTime = listBean.getCreateTime();
-        containerAttrValue[0] = name;
-        containerAttrValue[1] = dept;
-        containerAttrValue[2] = createTime;
+    private void initTopbar() {
+        topbar_addDevice.setTitle("添加设备");
+
+        topbar_addDevice.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
+
+        topbar_addDevice.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+//            Intent intent = new Intent();
+//            intent.putExtra("text", edittext.getText().toString());
+//            setResult(RESULT_OK, intent);
+            finish();
+        });
     }
 
     private void initGroupListView() {
@@ -59,28 +68,21 @@ public class ContainerDetailActivity extends BaseActivity {
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
         for (int i = 0; i < containerAttrs.length; i++) {
-            QMUICommonListItemView item = groupListView.createItemView(
+            QMUICommonListItemView item = groupListView_addDevice.createItemView(
                     null,
                     containerAttrs[i],
-                    containerAttrValue[i] == null ? " " : containerAttrValue[i],
+                    containerAttrValue[i],
                     QMUICommonListItemView.HORIZONTAL,
                     QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
             item.setTag(i);
             section.addItemView(item, onClickListener);
         }
-        section.addTo(groupListView);
-
+        section.addTo(groupListView_addDevice);
     }
 
-    private void initTopbar() {
-        topbar.setTitle("货柜详情");
-        topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
-        });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
-            finish();
-            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
-        });
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_add_device;
     }
 
     @Override
@@ -94,17 +96,6 @@ public class ContainerDetailActivity extends BaseActivity {
             detailTextView.setEllipsize(TextUtils.TruncateAt.END);
             detailTextView.setText(text);
         }
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_container_detail;
-    }
-
-    public static void start(Context context, Serializable serializable) {
-        Intent starter = new Intent(context, ContainerDetailActivity.class);
-        starter.putExtra("serializable", serializable);
-        context.startActivity(starter);
     }
 
 }

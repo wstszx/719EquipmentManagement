@@ -3,16 +3,14 @@ package com.example.a719equipmentmanagement.base;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 
 import com.example.a719equipmentmanagement.R;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class BaseEditActivity extends BaseActivity {
+public class BaseItemEditActivity extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
@@ -53,7 +51,7 @@ public class BaseEditActivity extends BaseActivity {
     }
 
     public static void start(Context context, String text) {
-        Intent starter = new Intent(context, BaseEditActivity.class);
+        Intent starter = new Intent(context, BaseItemEditActivity.class);
         starter.putExtra("text", text);
         context.startActivity(starter);
     }

@@ -11,15 +11,17 @@
         android:fitsSystemWindows="true">
 
         <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
-            android:id="@+id/groupListView"
+            android:id="@+id/groupListView_addDevice"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+        </com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView>
+
     </ScrollView>
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout
-        android:id="@+id/topbar"
+        android:id="@+id/topbar_addDevice"
         android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true" />
 
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

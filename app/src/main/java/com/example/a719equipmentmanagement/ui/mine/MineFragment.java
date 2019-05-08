@@ -2,13 +2,17 @@ package com.example.a719equipmentmanagement.ui.mine;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
+import com.example.a719equipmentmanagement.App;
+import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
@@ -47,8 +51,6 @@ public class MineFragment extends BaseFragment {
         initTopbar();
         initGroupListView();
         initTextView();
-        List<Activity> actList = ActivityCollector.getActList();
-        Log.i("mylog", "actList.size()==" + actList.size());
     }
 
     private void initData() {
@@ -80,6 +82,8 @@ public class MineFragment extends BaseFragment {
                         .setMessage("您确定要退出登录吗？")
                         .addAction("取消", (dialog, index) -> dialog.dismiss())
                         .addAction("确认", (dialog, index) -> {
+                            SPUtils.putBoolean(App.getContext(), "main", false);
+                            logout();
                             dialog.dismiss();
                             Intent intent = new Intent("quit_login");
                             ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
@@ -88,6 +92,23 @@ public class MineFragment extends BaseFragment {
             }
         });
 
+    }
+
+    /**
+     * 登出
+     */
+    private void logout() {
+        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

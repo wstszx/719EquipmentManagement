@@ -14,6 +14,9 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.Device;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
+import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ContainerManageActivity;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -28,6 +31,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.OnItemClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DeviceFragment extends BaseFragment {
 
@@ -42,7 +48,7 @@ public class DeviceFragment extends BaseFragment {
     RecyclerView recyclerview;
 
     private DeviceAdapter adapter;
-    private List<Device> devices;
+    private List<DeviceData> body;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -54,80 +60,64 @@ public class DeviceFragment extends BaseFragment {
 
     private void initTopbar() {
         topbar.setTitle("设备");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> addDeviceTextDialog());
+//        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> addDeviceTextDialog());
+
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(),AddDeviceActivity.class);
+            startActivity(intent);
+        });
         topbar.addLeftImageButton(R.mipmap.search,R.id.search).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(),SearchActivity.class);
             startActivity(intent);
         });
     }
 
-    private void addDeviceTextDialog(){
-        CustomInputDialog deviceInputDialog=new CustomInputDialog(getActivity());
-        final QMUIDialog.EditTextDialogBuilder builder=new QMUIDialog.EditTextDialogBuilder(getActivity());
-        deviceInputDialog.setTitle("添加设备").setPlaceholder("设备名称").setPlaceholder1("设备编号")
-//                .setPlaceholder("属性01").setPlaceholder("属性02")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text = deviceInputDialog.getEditText().getText();
-                    CharSequence text1 = deviceInputDialog.getEditText1().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(getActivity(), "成功" + "添加设备" + ":" + text + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(getActivity(), "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    private void addDeviceTextDialog(){
+//        CustomInputDialog deviceInputDialog=new CustomInputDialog(getActivity());
+//        final QMUIDialog.EditTextDialogBuilder builder=new QMUIDialog.EditTextDialogBuilder(getActivity());
+//        deviceInputDialog.setTitle("添加设备").setPlaceholder("设备名称").setPlaceholder1("设备编号")
+////                .setPlaceholder("属性01").setPlaceholder("属性02")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text = deviceInputDialog.getEditText().getText();
+//                    CharSequence text1 = deviceInputDialog.getEditText1().getText();
+//                    if (text1 != null && text1.length() > 0) {
+//                        Toast.makeText(getActivity(), "成功" + "添加设备" + ":" + text + text1, Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    } else {
+//                        Toast.makeText(getActivity(), "输入不能为空", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
+
+
     private void initData() {
-        devices = new ArrayList<>();
-        for (int i = 1; i <= 20; i++) {
-//            Device device = new Device(i, "设备" + i, "状态" + i);
-            Device device=new Device();
-            int i1=Integer.valueOf("19042300"+i);
-            device.setId(i1);
-
-            if(i%4==1){
-                device.setName("压力变送器");
-                device.setTarget("5MPa");
-                device.setDepartment("三室2组");
-                device.setLocation("2号货架1层");
-//                device.setUserName("无");
-                device.setStatus("可借");
-            }
-            else if(i%4==2){
-                device.setName("温度计");
-                device.setTarget("500℃");
-                device.setDepartment("三室1组");
-                device.setLocation("1号货架2层");
-//                device.setUserName("张三四");
-                device.setStatus("在用");
-            }
-            else if(i%4==3){
-                device.setName("压力表");
-                device.setTarget("3MPa");
-                device.setDepartment("三室4组");
-                device.setLocation("4号货架第3层");
-//                device.setUserName("无");
-                device.setStatus("送检");
-            }else {
-                device.setName("流量计");
-                device.setTarget("100m³/h");
-                device.setDepartment("三室4组");
-                device.setLocation("5号货架第1层");
-//                device.setUserName("无");
-                device.setStatus("报废");
+        RetrofitClient.getInstance().getService().findDeviceData().enqueue(new Callback<List<DeviceData>>() {
+            @Override
+            public void onResponse(Call<List<DeviceData>> call, Response<List<DeviceData>> response) {
+                body = response.body();
+                if (body != null && body.size() > 0) {
+                    bindUi();
+                }
             }
 
-            devices.add(device);
-        }
+            @Override
+            public void onFailure(Call<List<DeviceData>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void bindUi() {
+        adapter.setNewData(body);
     }
 
     private void initAdapter() {
 //        adapter = new DeviceAdapter(R.layout.base_device);
         adapter = new DeviceAdapter(R.layout.base_device02);
-        adapter.setNewData(devices);
+
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
 //        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()),DividerItemDecoration.VERTICAL,10,getResources().getColor(R.color.app_color_blue)));

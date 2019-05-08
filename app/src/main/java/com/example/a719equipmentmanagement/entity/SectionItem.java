@@ -2,14 +2,14 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class SectionItem implements QMUISection.Model<SectionItem> {
-    private ContainerData.ListBean listBean;
+public class SectionItem<T> implements QMUISection.Model<SectionItem<T>> {
+    private T listBean;
 
-    public SectionItem(ContainerData.ListBean listBean) {
+    public SectionItem(T listBean) {
         this.listBean = listBean;
     }
 
-    public ContainerData.ListBean getListBean() {
+    public T getListBean() {
         return listBean;
     }
 

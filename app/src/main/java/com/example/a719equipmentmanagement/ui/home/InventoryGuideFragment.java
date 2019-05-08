@@ -1,18 +1,14 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.base.BaseEditActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;

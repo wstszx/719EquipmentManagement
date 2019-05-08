@@ -1,5 +1,6 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -214,9 +215,10 @@ public class User {
     }
 
     public static class ParamsBean {
+
     }
 
-    public static class ListBean {
+    public static class ListBean implements Serializable {
         /**
          * id : null
          * searchValue : null
@@ -400,7 +402,7 @@ public class User {
         }
 
         public String getSex() {
-            return sex == null ? "" : sex;
+            return sex == null ? "" : (sex.equals("0") ? "男" : "女");
         }
 
         public void setSex(String sex) {
@@ -514,10 +516,10 @@ public class User {
             this.roles = roles;
         }
 
-        public static class ParamsBeanX {
+        public static class ParamsBeanX implements Serializable {
         }
 
-        public static class DeptBean {
+        public static class DeptBean implements Serializable {
             /**
              * id : null
              * searchValue : null
@@ -722,7 +724,7 @@ public class User {
                 this.list = list;
             }
 
-            public static class ParamsBeanXX {
+            public static class ParamsBeanXX implements Serializable {
             }
         }
     }

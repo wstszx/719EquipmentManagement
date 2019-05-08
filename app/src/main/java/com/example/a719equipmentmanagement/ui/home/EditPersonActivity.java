@@ -1,28 +1,27 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import android.content.Context;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import androidx.annotation.Nullable;
-
-import java.io.Serializable;
-
 import butterknife.BindView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class ContainerDetailActivity extends BaseActivity {
-
+public class EditPersonActivity extends BaseActivity {
     private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间"};
     private String[] containerAttrValue = new String[3];
     @BindView(R.id.groupListView)
@@ -39,13 +38,7 @@ public class ContainerDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
-        String name = listBean.getName();
-        String dept = listBean.getDept();
-        String createTime = listBean.getCreateTime();
-        containerAttrValue[0] = name;
-        containerAttrValue[1] = dept;
-        containerAttrValue[2] = createTime;
+
     }
 
     private void initGroupListView() {
@@ -72,39 +65,29 @@ public class ContainerDetailActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_edit_person;
+    }
+
     private void initTopbar() {
-        topbar.setTitle("货柜详情");
-        topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
+        topbar.setTitle("编辑人员");
+        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+            RetrofitClient.getInstance().getService().editUser().enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                }
+            });
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            String text = data.getStringExtra("text");
-            TextView detailTextView = listItemView.getDetailTextView();
-            detailTextView.setSingleLine(true);
-            detailTextView.setMaxEms(8);
-            detailTextView.setEllipsize(TextUtils.TruncateAt.END);
-            detailTextView.setText(text);
-        }
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_container_detail;
-    }
-
-    public static void start(Context context, Serializable serializable) {
-        Intent starter = new Intent(context, ContainerDetailActivity.class);
-        starter.putExtra("serializable", serializable);
-        context.startActivity(starter);
-    }
-
 }

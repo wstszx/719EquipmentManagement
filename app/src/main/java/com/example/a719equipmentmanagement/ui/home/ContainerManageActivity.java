@@ -54,9 +54,14 @@ public class ContainerManageActivity extends BaseActivity {
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
-    String[] deletes = new String[]{
-            "删除",
-            "编辑"
+    String[] headerDeletes = new String[]{
+            "编辑",
+            "添加",
+            "删除"
+    };
+    String[] itemDeletes = new String[]{
+            "编辑",
+            "删除"
     };
     private ContainerManageAdapter adapter1;
 
@@ -85,7 +90,7 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void bindUi(List<ContainerData> body) {
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>>> list = new ArrayList<>();
         for (ContainerData containerData : body) {
             list.add(createSection(containerData));
         }
@@ -98,9 +103,9 @@ public class ContainerManageActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new ContainerManageAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<ContainerData.ListBean>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> section, boolean loadMoreBefore) {
 
             }
 
@@ -112,7 +117,7 @@ public class ContainerManageActivity extends BaseActivity {
                         adapter1.toggleFold(position, false);
                         break;
                     case 1:
-                        SectionItem sectionItem = adapter1.getSectionItem(position);
+                        SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
                         ContainerData.ListBean listBean = sectionItem.getListBean();
                         if (listBean != null) {
                             ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
@@ -123,7 +128,15 @@ public class ContainerManageActivity extends BaseActivity {
 
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                initListPopupIfNeed(deletes);
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        initListPopupIfNeed(headerDeletes);
+                        break;
+                    case 1:
+                        initListPopupIfNeed(itemDeletes);
+                        break;
+                }
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(holder.itemView);
@@ -132,14 +145,14 @@ public class ContainerManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(ContainerData containerData) {
+    private QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> createSection(ContainerData containerData) {
         String name = containerData.getName();
         SectionHeader header = new SectionHeader(name);
-        ArrayList<SectionItem> contents = new ArrayList<>();
+        ArrayList<SectionItem<ContainerData.ListBean>> contents = new ArrayList<>();
         List<ContainerData.ListBean> listBeans = containerData.getList();
         if (listBeans != null && listBeans.size() > 0) {
             for (ContainerData.ListBean listBean : listBeans) {
-                contents.add(new SectionItem(listBean));
+                contents.add(new SectionItem<>(listBean));
             }
         }
         // if test load more, you can open the code

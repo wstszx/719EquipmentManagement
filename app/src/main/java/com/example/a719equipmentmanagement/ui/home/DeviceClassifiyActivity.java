@@ -63,7 +63,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceData().enqueue(new Callback<List<DeviceClassifiy>>() {
+        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<List<DeviceClassifiy>>() {
             @Override
             public void onResponse(Call<List<DeviceClassifiy>> call, Response<List<DeviceClassifiy>> response) {
                 List<DeviceClassifiy> body = response.body();
@@ -80,7 +80,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void bindUi(List<DeviceClassifiy> body) {
-        ArrayList<QMUISection<SectionHeader, SectionItem>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader, SectionItem<DeviceClassifiy>>> list = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy : body) {
             list.add(createSection(deviceClassifiy));
         }
@@ -93,9 +93,9 @@ public class DeviceClassifiyActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new DeviceClassifiyAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<DeviceClassifiy>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section, boolean loadMoreBefore) {
 
             }
 
@@ -122,10 +122,10 @@ public class DeviceClassifiyActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem> createSection(DeviceClassifiy deviceClassifiy) {
+    private QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> createSection(DeviceClassifiy deviceClassifiy) {
         String name = deviceClassifiy.getName();
         SectionHeader header = new SectionHeader(name);
-        ArrayList<SectionItem> contents = new ArrayList<>();
+        ArrayList<SectionItem<DeviceClassifiy>> contents = new ArrayList<>();
 //        for (int i = 0; i < 10; i++) {
 //            contents.add(new SectionItem(new ContainerData.ListBean()));
 //        }
@@ -138,7 +138,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("设备分类");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            showEditTextDialog();
+            AddDeviceClassifyActivity.start(DeviceClassifiyActivity.this);
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -146,26 +146,26 @@ public class DeviceClassifiyActivity extends BaseActivity {
         });
     }
 
-    /**
-     * 弹出带输入框的dialog
-     */
-    private void showEditTextDialog() {
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        builder.setTitle("添加设备分类")
-                .setPlaceholder("请输入")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text1 = builder.getEditText().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(DeviceClassifiyActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    /**
+//     * 弹出带输入框的dialog
+//     */
+//    private void showEditTextDialog() {
+//        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//        builder.setTitle("添加设备分类")
+//                .setPlaceholder("请输入")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text1 = builder.getEditText().getText();
+//                    if (text1 != null && text1.length() > 0) {
+//                        Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
+//                    } else {
+//                        Toast.makeText(DeviceClassifiyActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
 
     private void initListPopupIfNeed(String[] listItems) {
 
