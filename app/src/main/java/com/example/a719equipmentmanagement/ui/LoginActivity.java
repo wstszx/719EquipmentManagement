@@ -26,7 +26,10 @@ import com.example.a719equipmentmanagement.utils.SPUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -94,5 +97,20 @@ public class LoginActivity extends BaseActivity {
                 NetworkError.error(App.getContext(), t);
             }
         });
+//        IdentityHashMap<String, String> map = new IdentityHashMap<>();
+//        map.put("locationIds", "gdgdfg");
+//        map.put(new String("locationIds"), "gdgfdggdfg");
+//        map.put("name", "gegeg");
+//        RetrofitClient.getInstance().getService().test(map).enqueue(new Callback<BaseResponse>() {
+//            @Override
+//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseResponse> call, Throwable t) {
+//
+//            }
+//        });
     }
 }

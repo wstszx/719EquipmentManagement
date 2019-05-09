@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.ui.mine.ActivityCollector;
+import com.example.a719equipmentmanagement.utils.SPUtils;
 
 public class NetworkError {
     public static void error(Context context, Throwable throwable) {
@@ -21,6 +23,7 @@ public class NetworkError {
                 break;
             case -1:
                 // 跳转到登陆页面
+                SPUtils.putBoolean(App.getContext(), "main", false);
                 context.startActivity(new Intent(context, LoginActivity.class));
                 ActivityCollector.finishAll();
                 break;

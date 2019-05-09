@@ -16,15 +16,20 @@ import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.User;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 /**
  *
@@ -78,7 +83,7 @@ public interface ApiService {
 
     //校验部门名称
     @POST("system/dept/checkDeptNameUnique")
-    Call<BaseResponse> matchDept();  //????????
+    Call<BaseResponse> matchDept();
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
@@ -188,5 +193,9 @@ public interface ApiService {
     //重置密码
     @POST("system/user/resetPwd")
     Call<BaseResponse> resetPwd();
+
+    //测试
+    @GET("system/user/resetPwd")
+    Call<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
 
 }

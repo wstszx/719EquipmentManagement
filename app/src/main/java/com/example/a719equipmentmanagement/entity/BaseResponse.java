@@ -6,7 +6,7 @@ import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.ServerException;
 
 public class BaseResponse<T> {
-    private int code;
+    private int code = -2;
     private String msg;
     private T res;
 
@@ -35,11 +35,11 @@ public class BaseResponse<T> {
     }
 
     public boolean isOk(Context context) {
-        if (code == 0) {
-            return true;
-        } else {
+        if (code == -1) {
             NetworkError.error(context, new ServerException(code, msg));
             return false;
+        } else {
+            return true;
         }
     }
 }
