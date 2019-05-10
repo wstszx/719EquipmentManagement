@@ -18,7 +18,12 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,13 +123,21 @@ public class AddDeviceClassifyActivity extends BaseActivity {
     }
 
     private void getInputData() {
-        String input = item.getDetailText().toString();
-        String input1 = item1.getDetailText().toString();
-        String input2 = item2.getDetailText().toString();
-        String input3 = item3.getDetailText().toString();
-        String input4 = item4.getDetailText().toString();
-        String input5 = item5.getDetailText().toString();
-        RetrofitClient.getInstance().getService().addDept(input, input1, input2, input3, input4, input5).enqueue(new Callback<BaseResponse>() {
+//        String input = item.getDetailText().toString();
+//        String input1 = item1.getDetailText().toString();
+//        String input2 = item2.getDetailText().toString();
+//        String input3 = item3.getDetailText().toString();
+//        String input4 = item4.getDetailText().toString();
+//        String input5 = item5.getDetailText().toString();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pid", 0);
+            jsonObject.put("name", "压力计");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().addDeviceType(requestBody).enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
 
@@ -135,7 +148,6 @@ public class AddDeviceClassifyActivity extends BaseActivity {
 
             }
         });
-
     }
 
     @Override

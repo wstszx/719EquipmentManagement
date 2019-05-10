@@ -82,40 +82,12 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initData() {
-//        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<BaseResponse<User>>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
-//                if (response.body() != null) {
-//                    boolean ok = response.body().isOk(App.getContext());
-//                    if (ok) {
-//                        User body = response.body().getRes();
-//                        list.add(createSection(body));
-//                        adapter1.setData(list);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
-//                NetworkError.error(App.getContext(), t);
-//            }
-//        });
-        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<BaseResponse<List<User>>>() {
+        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<List<User>>() {
             @Override
-            public void onResponse(Call<BaseResponse<List<User>>> call, Response<BaseResponse<List<User>>> response) {
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 if (response.body() != null) {
-//                    boolean ok = response.body().isOk(App.getContext());
-//                    if (ok) {
-//                        List<User> body = response.body().getRes();
-//                        if (body != null && body.size() > 0) {
-//                            for (User user : body) {
-//                                list.add(createSection(user));
-//                            }
-//                            adapter1.setData(list);
-//                        }
-//                    }
-                    List<User> body = response.body().getRes();
-                    if (body != null && body.size() > 0) {
+                    List<User> body = response.body();
+                    if (body.size() > 0) {
                         for (User user : body) {
                             list.add(createSection(user));
                         }
@@ -125,10 +97,39 @@ public class PersonManageActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<List<User>>> call, Throwable t) {
-                NetworkError.error(App.getContext(), t);
+            public void onFailure(Call<List<User>> call, Throwable t) {
+
             }
         });
+//        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<BaseResponse<List<User>>>() {
+//            @Override
+//            public void onResponse(Call<BaseResponse<List<User>>> call, Response<BaseResponse<List<User>>> response) {
+//                if (response.body() != null) {
+////                    boolean ok = response.body().isOk(App.getContext());
+////                    if (ok) {
+////                        List<User> body = response.body().getRes();
+////                        if (body != null && body.size() > 0) {
+////                            for (User user : body) {
+////                                list.add(createSection(user));
+////                            }
+////                            adapter1.setData(list);
+////                        }
+////                    }
+//                    List<User> body = response.body().getRes();
+//                    if (body != null && body.size() > 0) {
+//                        for (User user : body) {
+//                            list.add(createSection(user));
+//                        }
+//                        adapter1.setData(list);
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseResponse<List<User>>> call, Throwable t) {
+//                NetworkError.error(App.getContext(), t);
+//            }
+//        });
     }
 
     private void initStickySectionLayout() {

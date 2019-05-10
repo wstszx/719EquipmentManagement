@@ -13,11 +13,21 @@ import android.widget.TextView;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddDeviceActivity extends BaseActivity {
 
@@ -50,6 +60,25 @@ public class AddDeviceActivity extends BaseActivity {
         });
 
         topbar_addDevice.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("id", 0);
+                jsonObject.put("name", "压力计");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+            RetrofitClient.getInstance().getService().addDevice(requestBody).enqueue(new Callback<BaseResponse>() {
+                @Override
+                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+                }
+            });
 //            Intent intent = new Intent();
 //            intent.putExtra("text", edittext.getText().toString());
 //            setResult(RESULT_OK, intent);

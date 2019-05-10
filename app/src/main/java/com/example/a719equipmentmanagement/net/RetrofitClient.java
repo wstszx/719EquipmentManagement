@@ -19,7 +19,7 @@ public class RetrofitClient {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(CustomGsonConverterFactory.create())
 //                .addCallAdapterFactory(new LiveDataCallAdapterFactory())
                 .build();
         this.service = retrofit.create(ApiService.class);

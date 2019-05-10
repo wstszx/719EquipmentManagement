@@ -65,7 +65,7 @@ public interface ApiService {
 
     //查找货柜数据
     @GET("system/container/list")
-    Call<BaseResponse<List<ContainerData>>> findContainerData();
+    Call<List<ContainerData>> findContainerData();
 
 
     /*------  dept-controller -------*/
@@ -87,7 +87,7 @@ public interface ApiService {
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Call<BaseResponse<List<User>>> getUser();
+    Call<List<User>> getUser();
 
     //编辑科室
     @POST("system/dept/edit")

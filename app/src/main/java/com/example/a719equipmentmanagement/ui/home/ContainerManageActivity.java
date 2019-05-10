@@ -76,23 +76,20 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<BaseResponse<List<ContainerData>>>() {
+        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<List<ContainerData>>() {
             @Override
-            public void onResponse(Call<BaseResponse<List<ContainerData>>> call, Response<BaseResponse<List<ContainerData>>> response) {
+            public void onResponse(Call<List<ContainerData>> call, Response<List<ContainerData>> response) {
                 if (response.body() != null) {
-                    boolean ok = response.body().isOk(App.getContext());
-                    if (ok) {
-                        List<ContainerData> body = response.body().getRes();
-                        if (body != null && body.size() > 0) {
-                            bindUi(body);
-                        }
+                    List<ContainerData> body = response.body();
+                    if (body.size() > 0) {
+                        bindUi(body);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<BaseResponse<List<ContainerData>>> call, Throwable t) {
-                NetworkError.error(App.getContext(),t);
+            public void onFailure(Call<List<ContainerData>> call, Throwable t) {
+                NetworkError.error(App.getContext(), t);
             }
         });
     }
@@ -128,7 +125,7 @@ public class ContainerManageActivity extends BaseActivity {
                         SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
                         ContainerData.ListBean listBean = sectionItem.getListBean();
                         if (listBean != null) {
-                            ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
+                            ContainerDetailActivity.start(ContainerManageActivity.this, listBean);
                         }
                         break;
                 }

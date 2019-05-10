@@ -1,6 +1,8 @@
 package com.example.a719equipmentmanagement.ui;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -112,5 +114,10 @@ public class LoginActivity extends BaseActivity {
 //
 //            }
 //        });
+    }
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, LoginActivity.class);
+        context.startActivity(starter);
     }
 }
