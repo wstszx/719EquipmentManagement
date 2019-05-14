@@ -27,6 +27,7 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,18 +58,22 @@ public class PersonManageActivity extends BaseActivity {
             "添加人员"
     };
     String[] deletes = new String[]{
-            "删除",
-            "编辑"
+            "编辑",
+            "删除"
     };
-
+    private List<User> users;
     private ArrayAdapter<String> adapter;
-    private ArrayList<QMUISection<SectionHeader, SectionItem<User.ListBean>>> list;
+    private ArrayList<QMUISection<SectionHeader<User>, SectionItem<User>>> list;
     private PeopleManageAdapter adapter1;
     private int itemViewType = -1;
     private String parentTitle;
     private String childTitle1;
     private String childTitle2;
     private String childTitle3;
+    private SectionHeader header;
+    private ArrayList<SectionItem<User>> contents;
+    private String parentDept;
+    private User user;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -85,13 +90,12 @@ public class PersonManageActivity extends BaseActivity {
         RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
+
                     @Override
                     public void onSuccess(List<User> users) {
-                        if (users.size() > 0) {
-                            for (User user : users) {
-                                list.add(createSection(user));
-                            }
-                            adapter1.setData(list);
+                        PersonManageActivity.this.users = users;
+                        if (users != null && users.size() > 0) {
+                            createSection(users);
                         }
                     }
 
@@ -110,9 +114,9 @@ public class PersonManageActivity extends BaseActivity {
         stickySectionLayout.setAdapter(adapter1, true);
         list = new ArrayList<>();
 
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<User.ListBean>>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<User>, SectionItem<User>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem<User.ListBean>> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader<User>, SectionItem<User>> section, boolean loadMoreBefore) {
 
             }
 
@@ -137,6 +141,11 @@ public class PersonManageActivity extends BaseActivity {
                     case 0:
                         TextView tvParent = view.findViewById(R.id.tv_parent);
                         parentTitle = tvParent.getText().toString();
+                        QMUISection<SectionHeader<User>, SectionItem<User>> section = adapter1.getSection(position);
+                        if (section != null) {
+                            SectionHeader<User> header = section.getHeader();
+                            user = ((User) header.getText());
+                        }
                         break;
                     case 1:
                         TextView tv_1 = view.findViewById(R.id.tv_1);
@@ -145,6 +154,10 @@ public class PersonManageActivity extends BaseActivity {
                         childTitle1 = tv_1.getText().toString();
                         childTitle2 = tv_2.getText().toString();
                         childTitle3 = tv_3.getText().toString();
+                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
+                        if (sectionItem != null) {
+                            user = sectionItem.getListBean();
+                        }
                         break;
                 }
                 initListPopupIfNeed(deletes);
@@ -156,18 +169,24 @@ public class PersonManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem<User.ListBean>> createSection(User user) {
-        String deptName = user.getDeptName();
-        SectionHeader header = new SectionHeader(deptName);
-        ArrayList<SectionItem<User.ListBean>> contents = new ArrayList<>();
-        List<User.ListBean> listBeans = user.getList();
-        for (User.ListBean listBean : listBeans) {
-            contents.add(new SectionItem<>(listBean));
+    private void createSection(List<User> users) {
+        contents = new ArrayList<>();
+
+        for (User user : users) {
+            int parentId = user.getParentId();
+            if (0 == parentId) {
+//                String deptName = user.getDeptName();
+                header = new SectionHeader(user);
+            } else if (100 == parentId) {
+                SectionItem<User> userSectionItem = new SectionItem<>(user);
+                contents.add(userSectionItem);
+            }
         }
+        list.add(new QMUISection<>(header, contents));
+        adapter1.setData(list);
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);
-        return new QMUISection<>(header, contents, true);
     }
 
     private void initTopbar() {
@@ -226,14 +245,15 @@ public class PersonManageActivity extends BaseActivity {
                             switch (itemViewType) {
                                 case 0:
                                     Intent intent = new Intent();
-                                    intent.putExtra("text", parentTitle);
-                                    intent.setClass(PersonManageActivity.this, BaseItemEditActivity.class);
+                                    intent.putExtra("parentDept", parentDept);
+                                    intent.putExtra("data", user);
+                                    intent.setClass(PersonManageActivity.this, EditDeptActivity.class);
                                     startActivityForResult(intent, EDIT_DEPT);
                                     break;
                                 case 1:
                                     Intent intent1 = new Intent();
                                     intent1.putExtra("text", parentTitle);
-                                    intent1.setClass(PersonManageActivity.this, BaseItemEditActivity.class);
+                                    intent1.setClass(PersonManageActivity.this, EditPersonActivity.class);
                                     startActivityForResult(intent1, EDIT_PERSON);
                                     break;
                             }

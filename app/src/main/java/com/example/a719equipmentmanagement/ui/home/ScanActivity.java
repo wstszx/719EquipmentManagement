@@ -10,9 +10,9 @@ import android.widget.ImageView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
@@ -62,10 +62,10 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Log.i(TAG, "result:" + result);
         setTitle("扫描结果为：" + result);
         vibrate();
         zxingview.startSpot(); // 开始识别
+        DeviceDetailActivity.start(this);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         Log.e(TAG, "打开相机出错");
     }
 
-    @OnClick( R.id.iv_back)
+    @OnClick(R.id.iv_back)
     public void onViewClicked(View view) {
         if (view.getId() == R.id.iv_back) {
             finish();

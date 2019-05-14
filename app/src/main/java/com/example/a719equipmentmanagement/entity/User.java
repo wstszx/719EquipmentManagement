@@ -1,8 +1,9 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
 
 
     /**
@@ -17,7 +18,7 @@ public class User {
      * deptId : 100
      * parentId : 0
      * ancestors : 0
-     * deptName : 三亚试验基地
+     * deptName : 三亚试验
      * orderNum : 0
      * leader : 若依
      * phone : 15888888888
@@ -25,7 +26,7 @@ public class User {
      * status : 0
      * delFlag : 0
      * parentName : null
-     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:03","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":101,"deptId":110,"parentId":null,"loginName":"manager","userName":"manager","email":"manager@qq.com","phonenumber":"18612345678","sex":"0","avatar":"","password":"0d2e2f9447716a9dc0913d95ccbede4d","salt":"fdd9dd","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-04-01 16:35:37","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:54","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":102,"deptId":110,"parentId":null,"loginName":"user","userName":"user","email":"user@qq.com","phonenumber":"18712345678","sex":"0","avatar":"","password":"89e18347c8a74334121fd771c15ab19d","salt":"94dedf","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-04-01 16:20:57","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false}]
+     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"0","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"29c67a30398638269fe600f73a054934","salt":"111111","status":"0","delFlag":"0","loginIp":"10.11.53.64","loginDate":"2019-05-14 19:21:43","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":true}]
      */
 
     private int id;
@@ -217,32 +218,32 @@ public class User {
          * id : null
          * searchValue : null
          * createBy : admin
-         * createTime : 2019-04-01 16:13:03
+         * createTime : 2018-03-16 11:33:00
          * updateBy : null
          * updateTime : null
-         * remark :
+         * remark : 管理员
          * params : {}
-         * userId : 101
-         * deptId : 110
+         * userId : 1
+         * deptId : 100
          * parentId : null
-         * loginName : manager
-         * userName : manager
-         * email : manager@qq.com
-         * phonenumber : 18612345678
+         * loginName : admin
+         * userName : 王刚
+         * email : wg@163.com
+         * phonenumber : 15888888888
          * sex : 0
-         * avatar :
-         * password : 0d2e2f9447716a9dc0913d95ccbede4d
-         * salt : fdd9dd
+         * avatar : 2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg
+         * password : 29c67a30398638269fe600f73a054934
+         * salt : 111111
          * status : 0
          * delFlag : 0
-         * loginIp : 127.0.0.1
-         * loginDate : 2019-04-01 16:35:37
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null}
+         * loginIp : 10.11.53.64
+         * loginDate : 2019-05-14 19:21:43
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null}
          * roles : []
          * roleIds : null
          * postIds : null
          * list : null
-         * admin : false
+         * admin : true
          */
 
         private Object id;
@@ -520,10 +521,10 @@ public class User {
              * updateTime : null
              * remark : null
              * params : {}
-             * deptId : 110
+             * deptId : 100
              * parentId : null
              * ancestors : null
-             * deptName : 301实验室
+             * deptName : 三亚试验
              * orderNum : null
              * leader : null
              * phone : null
