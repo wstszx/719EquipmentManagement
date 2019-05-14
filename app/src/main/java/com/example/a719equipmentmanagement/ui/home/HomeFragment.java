@@ -54,7 +54,7 @@ public class HomeFragment extends BaseFragment {
     private void initView() {
         topbar.setTitle("首页");
         topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
-
+            MsgActivity.start(getActivity());
         });
         topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
