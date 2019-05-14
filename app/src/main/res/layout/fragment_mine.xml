@@ -11,11 +11,29 @@
         android:layout_marginTop="?attr/qmui_topbar_height"
         android:background="@color/qmui_config_color_background"
         android:fitsSystemWindows="true">
-
-        <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
-            android:id="@+id/groupListView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+                android:id="@+id/groupListView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@color/white"
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                android:textSize="@dimen/sp_16"
+                android:text="退出登录"
+                />
+        </LinearLayout>
 
     </ScrollView>
 
@@ -24,5 +42,6 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height"
         android:fitsSystemWindows="true" />
+
 
 </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout>

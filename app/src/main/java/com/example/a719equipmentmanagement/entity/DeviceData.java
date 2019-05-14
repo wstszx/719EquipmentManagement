@@ -1,249 +1,290 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.util.List;
+
 public class DeviceData {
 
 
     /**
-     * id : 1
-     * searchValue : null
-     * createBy : null
-     * createTime : null
-     * updateBy : null
-     * updateTime : null
-     * remark : null
-     * params : {}
-     * name : null
-     * list : null
-     * status : 0
-     * equip_no : 1
-     * sn : 1
-     * source : null
-     * parameter : null
-     * manufactuer : null
-     * responsor : null
-     * latest_verify_date : null
-     * valid_date : null
-     * location_id : 1
-     * category_id : 1
-     * tech_state : 0
-     * verify_period : 0
-     * del_flag : 0
+     * total : 2
+     * rows : [{"id":1,"searchValue":null,"createBy":"admin","createTime":"2019-05-09 13:49:03","updateBy":"admin","updateTime":"2019-05-09 15:21:00","remark":"111","params":{},"equipNo":"1","sn":"1","locationId":1,"categoryId":1,"deptId":1,"name":"设备","source":"11","parameter":"1","manufactuer":"1","techState":1,"responsor":"1","verifyPeriod":1,"latestVerifyDate":"2019-05-09 13:54:30","validDate":"2019-05-08 10:52:07","status":1,"delFlag":0},{"id":2,"searchValue":null,"createBy":null,"createTime":null,"updateBy":"","updateTime":null,"remark":null,"params":{},"equipNo":"2","sn":"2","locationId":2,"categoryId":2,"deptId":1,"name":"2","source":null,"parameter":null,"manufactuer":null,"techState":null,"responsor":null,"verifyPeriod":null,"latestVerifyDate":null,"validDate":null,"status":null,"delFlag":0}]
+     * code : 0
      */
 
-    private int id;
-    private Object searchValue;
-    private Object createBy;
-    private Object createTime;
-    private Object updateBy;
-    private Object updateTime;
-    private Object remark;
-    private ParamBean params;
-    private String name;
-    private Object list;
-    private int status;
-    private String equip_no;
-    private String sn;
-    private Object source;
-    private Object parameter;
-    private Object manufactuer;
-    private Object responsor;
-    private Object latest_verify_date;
-    private Object valid_date;
-    private int location_id;
-    private int category_id;
-    private int tech_state;
-    private int verify_period;
-    private int del_flag;
+    private int total;
+    private int code;
+    private List<RowsBean> rows;
 
-    public int getId() {
-        return id;
+    public int getTotal() {
+        return total;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public Object getSearchValue() {
-        return searchValue;
+    public int getCode() {
+        return code;
     }
 
-    public void setSearchValue(Object searchValue) {
-        this.searchValue = searchValue;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public Object getCreateBy() {
-        return createBy;
+    public List<RowsBean> getRows() {
+        return rows;
     }
 
-    public void setCreateBy(Object createBy) {
-        this.createBy = createBy;
+    public void setRows(List<RowsBean> rows) {
+        this.rows = rows;
     }
 
-    public Object getCreateTime() {
-        return createTime;
-    }
+    public static class RowsBean {
+        /**
+         * id : 1
+         * searchValue : null
+         * createBy : admin
+         * createTime : 2019-05-09 13:49:03
+         * updateBy : admin
+         * updateTime : 2019-05-09 15:21:00
+         * remark : 111
+         * params : {}
+         * equipNo : 1
+         * sn : 1
+         * locationId : 1
+         * categoryId : 1
+         * deptId : 1
+         * name : 设备
+         * source : 11
+         * parameter : 1
+         * manufactuer : 1
+         * techState : 1
+         * responsor : 1
+         * verifyPeriod : 1
+         * latestVerifyDate : 2019-05-09 13:54:30
+         * validDate : 2019-05-08 10:52:07
+         * status : 1
+         * delFlag : 0
+         */
 
-    public void setCreateTime(Object createTime) {
-        this.createTime = createTime;
-    }
+        private int id;
+        private Object searchValue;
+        private String createBy;
+        private String createTime;
+        private String updateBy;
+        private String updateTime;
+        private String remark;
+        private ParamsBean params;
+        private String equipNo;
+        private String sn;
+        private int locationId;
+        private int categoryId;
+        private int deptId;
+        private String name;
+        private String source;
+        private String parameter;
+        private String manufactuer;
+        private int techState;
+        private String responsor;
+        private int verifyPeriod;
+        private String latestVerifyDate;
+        private String validDate;
+        private int status;
+        private int delFlag;
 
-    public Object getUpdateBy() {
-        return updateBy;
-    }
+        public int getId() {
+            return id;
+        }
 
-    public void setUpdateBy(Object updateBy) {
-        this.updateBy = updateBy;
-    }
+        public void setId(int id) {
+            this.id = id;
+        }
 
-    public Object getUpdateTime() {
-        return updateTime;
-    }
+        public Object getSearchValue() {
+            return searchValue;
+        }
 
-    public void setUpdateTime(Object updateTime) {
-        this.updateTime = updateTime;
-    }
+        public void setSearchValue(Object searchValue) {
+            this.searchValue = searchValue;
+        }
 
-    public Object getRemark() {
-        return remark;
-    }
+        public String getCreateBy() {
+            return createBy == null ? "" : createBy;
+        }
 
-    public void setRemark(Object remark) {
-        this.remark = remark;
-    }
+        public void setCreateBy(String createBy) {
+            this.createBy = createBy;
+        }
 
-    public ParamBean getParams() {
-        return params;
-    }
+        public String getCreateTime() {
+            return createTime == null ? "" : createTime;
+        }
 
-    public void setParams(ParamBean params) {
-        this.params = params;
-    }
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public String getUpdateBy() {
+            return updateBy == null ? "" : updateBy;
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        public void setUpdateBy(String updateBy) {
+            this.updateBy = updateBy;
+        }
 
-    public Object getList() {
-        return list;
-    }
+        public String getUpdateTime() {
+            return updateTime == null ? "" : updateTime;
+        }
 
-    public void setList(Object list) {
-        this.list = list;
-    }
+        public void setUpdateTime(String updateTime) {
+            this.updateTime = updateTime;
+        }
 
-    public int getStatus() {
-        return status;
-    }
+        public String getRemark() {
+            return remark == null ? "" : remark;
+        }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+        public void setRemark(String remark) {
+            this.remark = remark;
+        }
 
-    public String getEquip_no() {
-        return equip_no == null ? "" : equip_no;
-    }
+        public ParamsBean getParams() {
+            return params;
+        }
 
-    public void setEquip_no(String equip_no) {
-        this.equip_no = equip_no;
-    }
+        public void setParams(ParamsBean params) {
+            this.params = params;
+        }
 
-    public String getSn() {
-        return sn == null ? "" : sn;
-    }
+        public String getEquipNo() {
+            return equipNo == null ? "" : equipNo;
+        }
 
-    public void setSn(String sn) {
-        this.sn = sn;
-    }
+        public void setEquipNo(String equipNo) {
+            this.equipNo = equipNo;
+        }
 
-    public Object getSource() {
-        return source;
-    }
+        public String getSn() {
+            return sn == null ? "" : sn;
+        }
 
-    public void setSource(Object source) {
-        this.source = source;
-    }
+        public void setSn(String sn) {
+            this.sn = sn;
+        }
 
-    public Object getParameter() {
-        return parameter;
-    }
+        public int getLocationId() {
+            return locationId;
+        }
 
-    public void setParameter(Object parameter) {
-        this.parameter = parameter;
-    }
+        public void setLocationId(int locationId) {
+            this.locationId = locationId;
+        }
 
-    public Object getManufactuer() {
-        return manufactuer;
-    }
+        public int getCategoryId() {
+            return categoryId;
+        }
 
-    public void setManufactuer(Object manufactuer) {
-        this.manufactuer = manufactuer;
-    }
+        public void setCategoryId(int categoryId) {
+            this.categoryId = categoryId;
+        }
 
-    public Object getResponsor() {
-        return responsor;
-    }
+        public int getDeptId() {
+            return deptId;
+        }
 
-    public void setResponsor(Object responsor) {
-        this.responsor = responsor;
-    }
+        public void setDeptId(int deptId) {
+            this.deptId = deptId;
+        }
 
-    public Object getLatest_verify_date() {
-        return latest_verify_date;
-    }
+        public String getName() {
+            return name == null ? "" : name;
+        }
 
-    public void setLatest_verify_date(Object latest_verify_date) {
-        this.latest_verify_date = latest_verify_date;
-    }
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public Object getValid_date() {
-        return valid_date;
-    }
+        public String getSource() {
+            return source == null ? "" : source;
+        }
 
-    public void setValid_date(Object valid_date) {
-        this.valid_date = valid_date;
-    }
+        public void setSource(String source) {
+            this.source = source;
+        }
 
-    public int getLocation_id() {
-        return location_id;
-    }
+        public String getParameter() {
+            return parameter == null ? "" : parameter;
+        }
 
-    public void setLocation_id(int location_id) {
-        this.location_id = location_id;
-    }
+        public void setParameter(String parameter) {
+            this.parameter = parameter;
+        }
 
-    public int getCategory_id() {
-        return category_id;
-    }
+        public String getManufactuer() {
+            return manufactuer == null ? "" : manufactuer;
+        }
 
-    public void setCategory_id(int category_id) {
-        this.category_id = category_id;
-    }
+        public void setManufactuer(String manufactuer) {
+            this.manufactuer = manufactuer;
+        }
 
-    public int getTech_state() {
-        return tech_state;
-    }
+        public int getTechState() {
+            return techState;
+        }
 
-    public void setTech_state(int tech_state) {
-        this.tech_state = tech_state;
-    }
+        public void setTechState(int techState) {
+            this.techState = techState;
+        }
 
-    public int getVerify_period() {
-        return verify_period;
-    }
+        public String getResponsor() {
+            return responsor == null ? "" : responsor;
+        }
 
-    public void setVerify_period(int verify_period) {
-        this.verify_period = verify_period;
-    }
+        public void setResponsor(String responsor) {
+            this.responsor = responsor;
+        }
 
-    public int getDel_flag() {
-        return del_flag;
-    }
+        public int getVerifyPeriod() {
+            return verifyPeriod;
+        }
 
-    public void setDel_flag(int del_flag) {
-        this.del_flag = del_flag;
+        public void setVerifyPeriod(int verifyPeriod) {
+            this.verifyPeriod = verifyPeriod;
+        }
+
+        public String getLatestVerifyDate() {
+            return latestVerifyDate == null ? "" : latestVerifyDate;
+        }
+
+        public void setLatestVerifyDate(String latestVerifyDate) {
+            this.latestVerifyDate = latestVerifyDate;
+        }
+
+        public String getValidDate() {
+            return validDate == null ? "" : validDate;
+        }
+
+        public void setValidDate(String validDate) {
+            this.validDate = validDate;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+
+        public int getDelFlag() {
+            return delFlag;
+        }
+
+        public void setDelFlag(int delFlag) {
+            this.delFlag = delFlag;
+        }
+
+        public static class ParamsBean {
+        }
     }
 }

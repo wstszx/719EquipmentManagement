@@ -13,12 +13,19 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,24 +125,28 @@ public class AddDeviceClassifyActivity extends BaseActivity {
     }
 
     private void getInputData() {
-        String input = item.getDetailText().toString();
-        String input1 = item1.getDetailText().toString();
-        String input2 = item2.getDetailText().toString();
-        String input3 = item3.getDetailText().toString();
-        String input4 = item4.getDetailText().toString();
-        String input5 = item5.getDetailText().toString();
-        RetrofitClient.getInstance().getService().addDept(input, input1, input2, input3, input4, input5).enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//        String input = item.getDetailText().toString();
+//        String input1 = item1.getDetailText().toString();
+//        String input2 = item2.getDetailText().toString();
+//        String input3 = item3.getDetailText().toString();
+//        String input4 = item4.getDetailText().toString();
+//        String input5 = item5.getDetailText().toString();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pid", 0);
+            jsonObject.put("name", "压力计");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().addDeviceType(requestBody)
+                .compose(CommonCompose.io2main(AddDeviceClassifyActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceClassifyActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
-
+                    }
+                });
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.example.a719equipmentmanagement.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -27,7 +25,7 @@ public class User {
      * status : 0
      * delFlag : 0
      * parentName : null
-     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:03","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":101,"deptId":110,"parentId":null,"loginName":"manager","userName":"manager","email":"manager@qq.com","phonenumber":"18612345678","sex":"0","avatar":"","password":"0d2e2f9447716a9dc0913d95ccbede4d","salt":"fdd9dd","status":"0","delFlag":"0","loginIp":"10.11.55.109","loginDate":"2019-04-26 10:39:40","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:54","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":102,"deptId":110,"parentId":null,"loginName":"user","userName":"user","email":"user@qq.com","phonenumber":"18712345678","sex":"0","avatar":"","password":"89e18347c8a74334121fd771c15ab19d","salt":"94dedf","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-04-01 16:20:57","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false}]
+     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:03","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":101,"deptId":110,"parentId":null,"loginName":"manager","userName":"manager","email":"manager@qq.com","phonenumber":"18612345678","sex":"0","avatar":"","password":"0d2e2f9447716a9dc0913d95ccbede4d","salt":"fdd9dd","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-04-01 16:35:37","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-04-01 16:13:54","updateBy":null,"updateTime":null,"remark":"","params":{},"userId":102,"deptId":110,"parentId":null,"loginName":"user","userName":"user","email":"user@qq.com","phonenumber":"18712345678","sex":"0","avatar":"","password":"89e18347c8a74334121fd771c15ab19d","salt":"94dedf","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-04-01 16:20:57","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false}]
      */
 
     private int id;
@@ -68,7 +66,7 @@ public class User {
     }
 
     public String getCreateBy() {
-        return createBy == null ? "" : createBy;
+        return createBy;
     }
 
     public void setCreateBy(String createBy) {
@@ -76,7 +74,7 @@ public class User {
     }
 
     public String getCreateTime() {
-        return createTime == null ? "" : createTime;
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -132,7 +130,7 @@ public class User {
     }
 
     public String getAncestors() {
-        return ancestors == null ? "" : ancestors;
+        return ancestors;
     }
 
     public void setAncestors(String ancestors) {
@@ -140,7 +138,7 @@ public class User {
     }
 
     public String getDeptName() {
-        return deptName == null ? "" : deptName;
+        return deptName;
     }
 
     public void setDeptName(String deptName) {
@@ -148,7 +146,7 @@ public class User {
     }
 
     public String getOrderNum() {
-        return orderNum == null ? "" : orderNum;
+        return orderNum;
     }
 
     public void setOrderNum(String orderNum) {
@@ -156,7 +154,7 @@ public class User {
     }
 
     public String getLeader() {
-        return leader == null ? "" : leader;
+        return leader;
     }
 
     public void setLeader(String leader) {
@@ -164,7 +162,7 @@ public class User {
     }
 
     public String getPhone() {
-        return phone == null ? "" : phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
@@ -172,7 +170,7 @@ public class User {
     }
 
     public String getEmail() {
-        return email == null ? "" : email;
+        return email;
     }
 
     public void setEmail(String email) {
@@ -180,7 +178,7 @@ public class User {
     }
 
     public String getStatus() {
-        return status == null ? "" : status;
+        return status;
     }
 
     public void setStatus(String status) {
@@ -188,7 +186,7 @@ public class User {
     }
 
     public String getDelFlag() {
-        return delFlag == null ? "" : delFlag;
+        return delFlag;
     }
 
     public void setDelFlag(String delFlag) {
@@ -204,9 +202,6 @@ public class User {
     }
 
     public List<ListBean> getList() {
-        if (list == null) {
-            return new ArrayList<>();
-        }
         return list;
     }
 
@@ -215,10 +210,9 @@ public class User {
     }
 
     public static class ParamsBean {
-
     }
 
-    public static class ListBean implements Serializable {
+    public static class ListBean {
         /**
          * id : null
          * searchValue : null
@@ -241,8 +235,8 @@ public class User {
          * salt : fdd9dd
          * status : 0
          * delFlag : 0
-         * loginIp : 10.11.55.109
-         * loginDate : 2019-04-26 10:39:40
+         * loginIp : 127.0.0.1
+         * loginDate : 2019-04-01 16:35:37
          * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":110,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null}
          * roles : []
          * roleIds : null
@@ -298,7 +292,7 @@ public class User {
         }
 
         public String getCreateBy() {
-            return createBy == null ? "" : createBy;
+            return createBy;
         }
 
         public void setCreateBy(String createBy) {
@@ -306,7 +300,7 @@ public class User {
         }
 
         public String getCreateTime() {
-            return createTime == null ? "" : createTime;
+            return createTime;
         }
 
         public void setCreateTime(String createTime) {
@@ -330,7 +324,7 @@ public class User {
         }
 
         public String getRemark() {
-            return remark == null ? "" : remark;
+            return remark;
         }
 
         public void setRemark(String remark) {
@@ -370,7 +364,7 @@ public class User {
         }
 
         public String getLoginName() {
-            return loginName == null ? "" : loginName;
+            return loginName;
         }
 
         public void setLoginName(String loginName) {
@@ -378,7 +372,7 @@ public class User {
         }
 
         public String getUserName() {
-            return userName == null ? "" : userName;
+            return userName;
         }
 
         public void setUserName(String userName) {
@@ -386,7 +380,7 @@ public class User {
         }
 
         public String getEmail() {
-            return email == null ? "" : email;
+            return email;
         }
 
         public void setEmail(String email) {
@@ -394,7 +388,7 @@ public class User {
         }
 
         public String getPhonenumber() {
-            return phonenumber == null ? "" : phonenumber;
+            return phonenumber;
         }
 
         public void setPhonenumber(String phonenumber) {
@@ -402,7 +396,7 @@ public class User {
         }
 
         public String getSex() {
-            return sex == null ? "" : (sex.equals("0") ? "男" : "女");
+            return sex;
         }
 
         public void setSex(String sex) {
@@ -410,7 +404,7 @@ public class User {
         }
 
         public String getAvatar() {
-            return avatar == null ? "" : avatar;
+            return avatar;
         }
 
         public void setAvatar(String avatar) {
@@ -418,7 +412,7 @@ public class User {
         }
 
         public String getPassword() {
-            return password == null ? "" : password;
+            return password;
         }
 
         public void setPassword(String password) {
@@ -426,7 +420,7 @@ public class User {
         }
 
         public String getSalt() {
-            return salt == null ? "" : salt;
+            return salt;
         }
 
         public void setSalt(String salt) {
@@ -434,7 +428,7 @@ public class User {
         }
 
         public String getStatus() {
-            return status == null ? "" : status;
+            return status;
         }
 
         public void setStatus(String status) {
@@ -442,7 +436,7 @@ public class User {
         }
 
         public String getDelFlag() {
-            return delFlag == null ? "" : delFlag;
+            return delFlag;
         }
 
         public void setDelFlag(String delFlag) {
@@ -450,7 +444,7 @@ public class User {
         }
 
         public String getLoginIp() {
-            return loginIp == null ? "" : loginIp;
+            return loginIp;
         }
 
         public void setLoginIp(String loginIp) {
@@ -458,7 +452,7 @@ public class User {
         }
 
         public String getLoginDate() {
-            return loginDate == null ? "" : loginDate;
+            return loginDate;
         }
 
         public void setLoginDate(String loginDate) {
@@ -506,9 +500,6 @@ public class User {
         }
 
         public List<?> getRoles() {
-            if (roles == null) {
-                return new ArrayList<>();
-            }
             return roles;
         }
 
@@ -516,10 +507,10 @@ public class User {
             this.roles = roles;
         }
 
-        public static class ParamsBeanX implements Serializable {
+        public static class ParamsBeanX {
         }
 
-        public static class DeptBean implements Serializable {
+        public static class DeptBean {
             /**
              * id : null
              * searchValue : null
@@ -653,7 +644,7 @@ public class User {
             }
 
             public String getDeptName() {
-                return deptName == null ? "" : deptName;
+                return deptName;
             }
 
             public void setDeptName(String deptName) {
@@ -724,7 +715,7 @@ public class User {
                 this.list = list;
             }
 
-            public static class ParamsBeanXX implements Serializable {
+            public static class ParamsBeanXX {
             }
         }
     }

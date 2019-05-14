@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
@@ -19,6 +20,9 @@ import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -70,20 +74,16 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<List<DeviceClassifiy>>() {
-            @Override
-            public void onResponse(Call<List<DeviceClassifiy>> call, Response<List<DeviceClassifiy>> response) {
-                List<DeviceClassifiy> body = response.body();
-                if (body != null && body.size() > 0) {
-                    bindUi(body);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<DeviceClassifiy>> call, Throwable t) {
-
-            }
-        });
+        RetrofitClient.getInstance().getService().findDeviceTypeData()
+                .compose(CommonCompose.io2main(DeviceClassifiyActivity.this))
+                .subscribe(new BaseSubscriber<List<DeviceClassifiy>>(DeviceClassifiyActivity.this) {
+                    @Override
+                    public void onSuccess(List<DeviceClassifiy> baseResponse) {
+                        if (baseResponse != null && baseResponse.size() > 0) {
+                            bindUi(baseResponse);
+                        }
+                    }
+                });
     }
 
     private void bindUi(List<DeviceClassifiy> body) {

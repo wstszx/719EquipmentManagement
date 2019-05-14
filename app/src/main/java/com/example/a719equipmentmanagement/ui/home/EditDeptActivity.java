@@ -10,7 +10,6 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -18,14 +17,10 @@ import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.util.List;
-
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class EditPersonActivity extends BaseActivity {
+public class EditDeptActivity extends BaseActivity {
+
     private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间"};
     private String[] containerAttrValue = new String[3];
     @BindView(R.id.groupListView)
@@ -71,15 +66,15 @@ public class EditPersonActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_edit_person;
+        return R.layout.activity_edit_dept;
     }
 
     private void initTopbar() {
         topbar.setTitle("编辑人员");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             RetrofitClient.getInstance().getService().editUser()
-                    .compose(CommonCompose.io2main(EditPersonActivity.this))
-                    .subscribe(new BaseSubscriber<BaseResponse>(EditPersonActivity.this) {
+                    .compose(CommonCompose.io2main(EditDeptActivity.this))
+                    .subscribe(new BaseSubscriber<BaseResponse>(EditDeptActivity.this) {
                         @Override
                         public void onSuccess(BaseResponse baseResponse) {
                         }
