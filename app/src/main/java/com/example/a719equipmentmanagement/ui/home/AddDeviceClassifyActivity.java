@@ -13,6 +13,8 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -137,17 +139,14 @@ public class AddDeviceClassifyActivity extends BaseActivity {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addDeviceType(requestBody).enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+        RetrofitClient.getInstance().getService().addDeviceType(requestBody)
+                .compose(CommonCompose.io2main(AddDeviceClassifyActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceClassifyActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+                    }
+                });
     }
 
     @Override

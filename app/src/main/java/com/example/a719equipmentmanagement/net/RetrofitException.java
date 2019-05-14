@@ -2,6 +2,7 @@ package com.example.a719equipmentmanagement.net;
 
 import android.net.ParseException;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -24,6 +25,7 @@ public class RetrofitException {
     private static final int SERVICE_UNAVAILABLE = 503;
     private static final int GATEWAY_TIMEOUT = 504;
     static ResponeThrowable retrofitException(Throwable e) {
+        LogUtils.i(e);
         ResponeThrowable ex;
         if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;

@@ -20,6 +20,8 @@ import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -66,25 +68,16 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceTypeData().enqueue(new Callback<BaseResponse<List<DeviceClassifiy>>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<List<DeviceClassifiy>>> call, Response<BaseResponse<List<DeviceClassifiy>>> response) {
-                if (response.body() != null) {
-                    boolean ok = response.body().isOk(App.getContext());
-                    if (ok) {
-                        List<DeviceClassifiy> body = response.body().getRes();
-                        if (body != null && body.size() > 0) {
-                            bindUi(body);
+        RetrofitClient.getInstance().getService().findDeviceTypeData()
+                .compose(CommonCompose.io2main(DeviceClassifiyActivity.this))
+                .subscribe(new BaseSubscriber<List<DeviceClassifiy>>(DeviceClassifiyActivity.this) {
+                    @Override
+                    public void onSuccess(List<DeviceClassifiy> baseResponse) {
+                        if (baseResponse != null && baseResponse.size() > 0) {
+                            bindUi(baseResponse);
                         }
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse<List<DeviceClassifiy>>> call, Throwable t) {
-                NetworkError.error(App.getContext(),t);
-            }
-        });
+                });
     }
 
     private void bindUi(List<DeviceClassifiy> body) {

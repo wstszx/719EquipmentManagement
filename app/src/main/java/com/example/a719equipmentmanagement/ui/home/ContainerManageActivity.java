@@ -21,8 +21,11 @@ import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.device.AddDeviceActivity;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -76,22 +79,16 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<List<ContainerData>>() {
-            @Override
-            public void onResponse(Call<List<ContainerData>> call, Response<List<ContainerData>> response) {
-                if (response.body() != null) {
-                    List<ContainerData> body = response.body();
-                    if (body.size() > 0) {
-                        bindUi(body);
+        RetrofitClient.getInstance().getService().findContainerData()
+                .compose(CommonCompose.io2main(ContainerManageActivity.this))
+                .subscribe(new BaseSubscriber<List<ContainerData>>(ContainerManageActivity.this) {
+                    @Override
+                    public void onSuccess(List<ContainerData> baseResponse) {
+                        if (baseResponse != null && baseResponse.size() > 0) {
+                            bindUi(baseResponse);
+                        }
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ContainerData>> call, Throwable t) {
-                NetworkError.error(App.getContext(), t);
-            }
-        });
+                });
     }
 
     private void bindUi(List<ContainerData> body) {

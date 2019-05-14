@@ -14,7 +14,10 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.home.AddDeptActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -68,17 +71,15 @@ public class AddDeviceActivity extends BaseActivity {
                 e.printStackTrace();
             }
             RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-            RetrofitClient.getInstance().getService().addDevice(requestBody).enqueue(new Callback<BaseResponse>() {
-                @Override
-                public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            RetrofitClient.getInstance().getService().addDevice(requestBody)
+                    .compose(CommonCompose.io2main(AddDeviceActivity.this))
+                    .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceActivity.this) {
+                        @Override
+                        public void onSuccess(BaseResponse baseResponse) {
 
-                }
+                        }
+                    });
 
-                @Override
-                public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                }
-            });
 //            Intent intent = new Intent();
 //            intent.putExtra("text", edittext.getText().toString());
 //            setResult(RESULT_OK, intent);

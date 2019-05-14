@@ -47,21 +47,21 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
         try {
             switch (jsonType) {
                 case JSON_TYPE_ARRAY:
-                    JSONArray jsonArray = new JSONArray(body);
-                    body = jsonArray.toString();
+//                    JSONArray jsonArray = new JSONArray(body);
+//                    body = jsonArray.toString();
                     break;
                 case JSON_TYPE_OBJECT:
                     JSONObject json = new JSONObject(body);
                     boolean aNull = json.isNull("code");
+                    String msg = json.optString("msg");
                     if (!aNull) {
                         int code = json.optInt("code");
                         if (code == -1) {
-                            // 跳转到登陆页面
-                            SPUtils.putBoolean(App.getContext(), "main", false);
-//                            ToastUtils.showShort("身份过期");
-//                            LoginActivity.start(App.getContext());
-//                            ActivityCollector.finishAll();
-                            App.getInstance().showMessagePositiveDialog();
+                            value.close();
+                            throw new ServerException(code, msg);
+                        } else if (code == 1) {
+                            value.close();
+                            throw new ServerException(code, msg);
                         }
                     }
                     body = json.toString();

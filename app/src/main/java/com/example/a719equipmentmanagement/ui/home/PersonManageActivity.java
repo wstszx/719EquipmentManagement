@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -17,7 +16,8 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
-import com.example.a719equipmentmanagement.net.NetworkError;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -82,54 +82,24 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<List<User>>() {
-            @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                if (response.body() != null) {
-                    List<User> body = response.body();
-                    if (body.size() > 0) {
-                        for (User user : body) {
-                            list.add(createSection(user));
+        RetrofitClient.getInstance().getService().getUser()
+                .compose(CommonCompose.io2main(PersonManageActivity.this))
+                .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
+                    @Override
+                    public void onSuccess(List<User> users) {
+                        if (users.size() > 0) {
+                            for (User user : users) {
+                                list.add(createSection(user));
+                            }
+                            adapter1.setData(list);
                         }
-                        adapter1.setData(list);
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-
-            }
-        });
-//        RetrofitClient.getInstance().getService().getUser().enqueue(new Callback<BaseResponse<List<User>>>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse<List<User>>> call, Response<BaseResponse<List<User>>> response) {
-//                if (response.body() != null) {
-////                    boolean ok = response.body().isOk(App.getContext());
-////                    if (ok) {
-////                        List<User> body = response.body().getRes();
-////                        if (body != null && body.size() > 0) {
-////                            for (User user : body) {
-////                                list.add(createSection(user));
-////                            }
-////                            adapter1.setData(list);
-////                        }
-////                    }
-//                    List<User> body = response.body().getRes();
-//                    if (body != null && body.size() > 0) {
-//                        for (User user : body) {
-//                            list.add(createSection(user));
-//                        }
-//                        adapter1.setData(list);
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseResponse<List<User>>> call, Throwable t) {
-//                NetworkError.error(App.getContext(), t);
-//            }
-//        });
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
     }
 
     private void initStickySectionLayout() {
@@ -282,17 +252,14 @@ public class PersonManageActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case EDIT_DEPT:
-                RetrofitClient.getInstance().getService().editDept().enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                    }
-                });
+                RetrofitClient.getInstance().getService().editDept()
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
+                                initData();
+                            }
+                        });
                 break;
             case EDIT_PERSON:
                 break;
@@ -302,30 +269,24 @@ public class PersonManageActivity extends BaseActivity {
     private void delete() {
         switch (itemViewType) {
             case 0:
-                RetrofitClient.getInstance().getService().delete().enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                RetrofitClient.getInstance().getService().delete()
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                    }
-                });
+                            }
+                        });
                 break;
             case 1:
-                RetrofitClient.getInstance().getService().deleteUser("").enqueue(new Callback<BaseResponse>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                RetrofitClient.getInstance().getService().deleteUser("")
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-                    }
-                });
+                            }
+                        });
                 break;
         }
     }

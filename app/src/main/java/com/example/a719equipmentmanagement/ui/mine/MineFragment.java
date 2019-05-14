@@ -18,9 +18,13 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -58,22 +62,13 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<BaseResponse<User>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<User>> call, Response<BaseResponse<User>> response) {
-                if (response.body() != null) {
-                    boolean ok = response.body().isOk(getContext());
-                    if (ok) {
-
+        RetrofitClient.getInstance().getService().getMe()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<User>(getContext()) {
+                    @Override
+                    public void onSuccess(User baseResponse) {
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse<User>> call, Throwable t) {
-                NetworkError.error(getContext(), t);
-            }
-        });
+                });
     }
 
     private void initTopbar() {
@@ -107,17 +102,14 @@ public class MineFragment extends BaseFragment {
      * 登出
      */
     private void logout() {
-        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+        RetrofitClient.getInstance().getService().loginout()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+                    }
+                });
     }
 
     @Override

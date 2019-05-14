@@ -1,46 +1,24 @@
 package com.example.a719equipmentmanagement.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.LoginBean;
-import com.example.a719equipmentmanagement.entity.User;
-import com.example.a719equipmentmanagement.net.NetworkError;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.mine.ActivityCollector;
 import com.example.a719equipmentmanagement.utils.SPUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends BaseActivity {
 
@@ -78,27 +56,21 @@ public class LoginActivity extends BaseActivity {
 //            e.printStackTrace();
 //        }
 //        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().login(username, password).enqueue(new Callback<BaseResponse<LoginBean>>() {
-            @Override
-            public void onResponse(Call<BaseResponse<LoginBean>> call, Response<BaseResponse<LoginBean>> response) {
-                boolean ok = false;
-                if (response.body() != null) {
-                    ok = response.body().isOk(App.getContext());
-                    if (ok) {
-                        String token = response.body().getMsg();
+
+        RetrofitClient.getInstance().getService().login(username, password)
+                .compose(CommonCompose.io2main(LoginActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(LoginActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        String token = baseResponse.getMsg();
                         SPUtils.putString(App.getContext(), "token", token);
                         SPUtils.putBoolean(App.getContext(), "main", true);
                         MainActivity.start(LoginActivity.this);
                         finish();
                     }
-                }
-            }
+                });
 
-            @Override
-            public void onFailure(Call<BaseResponse<LoginBean>> call, Throwable t) {
-                NetworkError.error(App.getContext(), t);
-            }
-        });
+
 //        IdentityHashMap<String, String> map = new IdentityHashMap<>();
 //        map.put("locationIds", "gdgdfg");
 //        map.put(new String("locationIds"), "gdgfdggdfg");

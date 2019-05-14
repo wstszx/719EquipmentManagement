@@ -16,19 +16,18 @@ import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.User;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
+import io.reactivex.Single;
 import okhttp3.RequestBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -40,162 +39,157 @@ public interface ApiService {
     //APP登录
     @FormUrlEncoded
     @POST("loginByApp")
-    Call<BaseResponse<LoginBean>> login(@Field("username") String username,
-                                        @Field("password") String password);
+    Single<BaseResponse> login(@Field("username") String username,
+                                @Field("password") String password);
 
     //APP用户退出
     @GET("logoutByApp")
-    Call<BaseResponse> loginout();
+    Single<BaseResponse> loginout();
 
 
     /*------  category-controller -------*/
     //添加设备分类
     @POST("system/category/add")
-    Call<BaseResponse> addDeviceType(@Body RequestBody requestBody);
+    Single<BaseResponse> addDeviceType(@Body RequestBody requestBody);
 
     //查找设备分类数据
     @GET("system/category/list")
-    Call<BaseResponse<List<DeviceClassifiy>>> findDeviceTypeData();
+    Single<List<DeviceClassifiy>> findDeviceTypeData();
 
 
     /*------  container-controller -------*/
     //添加货柜
     @POST("system/container/add")
-    Call<BaseResponse> addContainer(@Body RequestBody requestBody);
+    Single<BaseResponse> addContainer(@Body RequestBody requestBody);
 
     //查找货柜数据
     @GET("system/container/list")
-    Call<List<ContainerData>> findContainerData();
+    Single<List<ContainerData>> findContainerData();
 
 
     /*------  dept-controller -------*/
     //添加科室
     @FormUrlEncoded
     @POST("system/dept/add")
-    Call<BaseResponse> addDept(
-            @Field("dept_name") String dept_name,
-            @Field("order_num") String order_num,
-            @Field("leader") String leader,
-            @Field("phone") String phone,
-            @Field("email") String email,
-            @Field("status") String status
+    Single<BaseResponse> addDept(
+            @FieldMap Map<String, String> map
     );
 
     //校验部门名称
     @POST("system/dept/checkDeptNameUnique")
-    Call<BaseResponse> matchDept();
+    Single<BaseResponse> matchDept();
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Call<List<User>> getUser();
+    Single<List<User>> getUser();
 
     //编辑科室
     @POST("system/dept/edit")
-    Call<BaseResponse> editDept();
+    Single<BaseResponse> editDept();
 
     //删除科室
     @GET("system/dept/remove/{deptId}")
-    Call<BaseResponse> delete();
+    Single<BaseResponse> delete();
 
 
     /* -------------- dict-data-controller  ----------------------- */
     //获取数据字典
     @GET("system/dict/data/findByType")
-    Call<BaseResponse<DictData>> findDictData();
+    Single<DictData> findDictData();
 
 
     /* -----------------  equip-controller -----------------------*/
     //添加设备
     @POST("system/equip/add")
-    Call<BaseResponse> addDevice(@Body RequestBody requestBody);
+    Single<BaseResponse> addDevice(@Body RequestBody requestBody);
 
     //查找设备数据
     @GET("system/equip/list")
-    Call<BaseResponse<List<DeviceData>>> findDeviceData();
+    Single<DeviceData> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/
     //设置盘点货柜范围
     @POST("system/inventory/addContainer")
-    Call<BaseResponse> setInventoryContainer(@Body RequestBody requestBody);
+    Single<BaseResponse> setInventoryContainer(@Body RequestBody requestBody);
 
     //保存盘点设备
     @POST("system/inventory/addDetails")
-    Call<BaseResponse> saveInventoryDevice(@Body RequestBody requestBody);
+    Single<BaseResponse> saveInventoryDevice(@Body RequestBody requestBody);
 
     //设置盘点结束
     @POST("system/inventory/endInventory")
-    Call<BaseResponse> setEndInventory(@Body RequestBody requestBody);
+    Single<BaseResponse> setEndInventory(@Body RequestBody requestBody);
 
     //查找盘点数据
     @GET("system/inventory/list")
-    Call<BaseResponse<List<InventoryData>>> findInventoryData();
+    Single<List<InventoryData>> findInventoryData();
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
-    Call<BaseResponse<InventoryRevordId>> findInventoryRevordId();
+    Single<InventoryRevordId> findInventoryRevordId();
 
 
     /*----------------- msg-controller  ----------------*/
     //查找消息数据
     @GET("system/msg/list")
-    Call<BaseResponse<MsgData>> findMsgData();
+    Single<MsgData> findMsgData();
 
 
     /*----------------- profile-controller  ----------------*/
     //APP获取当前用户信息
     @GET("system/user/profile/me")
-    Call<BaseResponse<User>> getMe();
+    Single<User> getMe();
 
     //修改密码
     @POST("system/user/profile/resetPwd")
-    Call<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,
+    Single<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,
                                     @Field("newPassword") String newPassword);
 
     //APP更新个人信息
     @POST("system/user/profile/update")
-    Call<BaseResponse> updataUserData();
+    Single<BaseResponse> updataUserData();
 
     //保存头像
     @POST("system/user/profile/updateAvatar")
-    Call<BaseResponse> saveAvatar(@Field("avatarfile") File avatarfile);
+    Single<BaseResponse> saveAvatar(@Field("avatarfile") File avatarfile);
 
 
     /*----------------- role-controller  ----------------*/
     //查找角色数据
     @GET("system/role/listByApp")
-    Call<BaseResponse<RoleData>> findRoleData();
+    Single<RoleData> findRoleData();
 
 
     /*----------------- setup-controller  ----------------*/
     //添加建账入库记录
     @POST("system/setup/add")
-    Call<BaseResponse> addInRecord(@Body RequestBody requestBody);
+    Single<BaseResponse> addInRecord(@Body RequestBody requestBody);
 
     //查找建账入库数据
     @GET("system/setup/list")
-    Call<BaseResponse<InRecordData>> findInRecordData();
+    Single<InRecordData> findInRecordData();
 
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户
     @POST("system/user/add")
-    Call<BaseResponse> addUser();
+    Single<BaseResponse> addUser();
 
     //编辑保存用户
     @POST("system/user/edit")
-    Call<BaseResponse> editUser();
+    Single<BaseResponse> editUser();
 
     //删除用户
     @POST("system/user/remove")
-    Call<BaseResponse> deleteUser(@Field("ids") String ids);
+    Single<BaseResponse> deleteUser(@Field("ids") String ids);
 
     //重置密码
     @POST("system/user/resetPwd")
-    Call<BaseResponse> resetPwd();
+    Single<BaseResponse> resetPwd();
 
     //测试
     @GET("system/user/resetPwd")
-    Call<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
+    Single<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
 
 }
