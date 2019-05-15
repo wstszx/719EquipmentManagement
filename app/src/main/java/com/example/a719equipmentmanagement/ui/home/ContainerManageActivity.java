@@ -220,6 +220,7 @@ public class ContainerManageActivity extends BaseActivity {
                     CharSequence text = customDialogBuilder.getEditText().getText();
                     CharSequence text1 = customDialogBuilder.getEditText1().getText();
                     if (text1 != null && text1.length() > 0) {
+
                         Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {

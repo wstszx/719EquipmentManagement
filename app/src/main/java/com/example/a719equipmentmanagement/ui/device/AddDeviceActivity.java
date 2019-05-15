@@ -65,7 +65,12 @@ public class AddDeviceActivity extends BaseActivity {
         topbar_addDevice.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("id", 0);
+                jsonObject.put("id", 5);
+                jsonObject.put("equip_no","湖北5");
+                jsonObject.put("sn", 5);
+                jsonObject.put("location_id", 5);
+                jsonObject.put("category_id", 5);
+                jsonObject.put("dept_id", 5);
                 jsonObject.put("name", "压力计");
             } catch (JSONException e) {
                 e.printStackTrace();

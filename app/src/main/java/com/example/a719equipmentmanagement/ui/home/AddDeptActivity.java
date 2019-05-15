@@ -134,18 +134,25 @@ public class AddDeptActivity extends BaseActivity {
         String input4 = item4.getDetailText().toString();
         String input5 = item5.getDetailText().toString();
         Map<String, String> map = new HashMap<>();
-        map.put("dept_name", input);
-        map.put("order_num", input1);
-        map.put("leader", input2);
-        map.put("phone", input3);
-        map.put("email", input4);
-        map.put("status", input5);
+
+        try {
+            map.put("parentId", "100");
+            map.put("deptName", input);
+            map.put("orderNum", input1);
+            map.put("leader", input2);
+            map.put("phone", input3);
+            map.put("email", input4);
+            map.put("status", input5);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         RetrofitClient.getInstance().getService().addDept(map)
                 .compose(CommonCompose.io2main(AddDeptActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(AddDeptActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        setResult(RESULT_OK,new Intent());
+                        finish();
                     }
                 });
 

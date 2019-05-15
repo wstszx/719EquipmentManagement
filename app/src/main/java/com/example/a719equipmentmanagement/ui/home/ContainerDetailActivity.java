@@ -23,7 +23,7 @@ import butterknife.BindView;
 
 public class ContainerDetailActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"货柜名称", "所属科室", "购置时间"};
+    private String[] containerAttrs = {"货柜名称", "购置时间"};
     private String[] containerAttrValue = new String[3];
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
@@ -41,11 +41,11 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initData() {
         ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
         String name = listBean.getName();
-        String dept = listBean.getDept();
+//        String dept = listBean.getDept();
         String createTime = listBean.getCreateTime();
         containerAttrValue[0] = name;
-        containerAttrValue[1] = dept;
-        containerAttrValue[2] = createTime;
+//        containerAttrValue[1] = dept;
+        containerAttrValue[1] = createTime;
     }
 
     private void initGroupListView() {

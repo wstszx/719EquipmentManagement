@@ -168,7 +168,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 .addAction("确定", (dialog, index) -> {
                     CharSequence text1 = builder.getEditText().getText();
                     if (text1 != null && text1.length() > 0) {
-                        addDeviceClassify(text1.toString(),pid);
+                        addDeviceClassify(text1.toString(), pid);
                         Toast.makeText(DeviceClassifiyActivity.this, "成功添加设备分类" + ":" + text1, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {
@@ -178,7 +178,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 .create(mCurrentDialogStyle).show();
     }
 
-    private void addDeviceClassify(String name,int pid) {
+    private void addDeviceClassify(String name, int pid) {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("name", name);
@@ -187,17 +187,24 @@ public class DeviceClassifiyActivity extends BaseActivity {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addDeviceType(requestBody).enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+//        RetrofitClient.getInstance().getService().addDeviceType(requestBody).enqueue(new Callback<BaseResponse>() {
+//            @Override
+//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseResponse> call, Throwable t) {
+//
+//            }
+//        });
+        RetrofitClient.getInstance().getService().addDeviceType(requestBody)
+                .compose(CommonCompose.io2main(DeviceClassifiyActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceClassifiyActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                    }
+                });
 
     }
 

@@ -4,44 +4,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
+import com.example.a719equipmentmanagement.adapter.MsgAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
-import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
-import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.section.QMUISection;
-import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
-import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MsgActivity extends BaseActivity {
 
@@ -49,11 +39,10 @@ public class MsgActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBar topbar;
 
-    @BindView(R.id.sticky_section_layout)
-    QMUIStickySectionLayout stickySectionLayout;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
 
-    private ArrayList<QMUISection<SectionHeader, SectionItem<User.ListBean>>> list;
-    private PeopleManageAdapter adapter1;
+    private MsgAdapter adapter;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -62,26 +51,11 @@ public class MsgActivity extends BaseActivity {
 
     private void initView() {
         initTopbar();
-        initStickySectionLayout();
         initData();
         initAdapter();
     }
 
-    private void initAdapter() {
-//        adapter = new DeviceAdapter(R.layout.base_device02);
-//
-//        recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-//        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
-////        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()),DividerItemDecoration.VERTICAL,10,getResources().getColor(R.color.app_color_blue)));
-//        recyclerview.setAdapter(adapter);
-//        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Toast.makeText(getContext(),"当前点击条目为"+(position+1),Toast.LENGTH_SHORT).show();
-//                DeviceDetailActivity.start(getActivity());
-//            }
-//        });
-    }
+
 
     private void initTopbar() {
         topbar.setTitle("消息");
@@ -91,18 +65,40 @@ public class MsgActivity extends BaseActivity {
         });
     }
 
-    private void initStickySectionLayout() {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
-        stickySectionLayout.setLayoutManager(manager);
-        adapter1 = new PeopleManageAdapter();
-        stickySectionLayout.setAdapter(adapter1, true);
-        list = new ArrayList<>();
 
-    }
 
     private void initData() {
+        RetrofitClient.getInstance().getService().findMsgData()
+                .compose(CommonCompose.io2main(MsgActivity.this))
+                .subscribe(new BaseSubscriber<MsgData>(MsgActivity.this){
+                    @Override
+                    public void onSuccess(MsgData baseResponse) {
+                        if(baseResponse!=null){
 
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        super.onError(e);
+                    }
+                });
+    }
+
+    private void initAdapter() {
+        adapter = new MsgAdapter(R.layout.base_msg);
+
+//        recyclerView.setLayoutManager(new LinearLayoutManager());
+//        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+//        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()),DividerItemDecoration.VERTICAL,10,getResources().getColor(R.color.app_color_blue)));
+        recyclerView.setAdapter(adapter);
+//        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+////                Toast.makeText(getContext(),"当前点击条目为"+(position+1),Toast.LENGTH_SHORT).show();
+////                DeviceDetailActivity.start(getActivity());
+//            }
+//        });
     }
 
 
@@ -110,7 +106,7 @@ public class MsgActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_person_manage;
+        return R.layout.activity_msg;
     }
 
     public static void start(Context context) {
