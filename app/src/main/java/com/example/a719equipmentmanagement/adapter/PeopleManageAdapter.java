@@ -16,9 +16,23 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
 public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<User>, SectionItem<User>> {
+
+    private List<QMUISection<SectionHeader<User>, SectionItem<User>>> list = new ArrayList<>();
+
+    public void setList(List<QMUISection<SectionHeader<User>, SectionItem<User>>> list) {
+        if (list != null) {
+            list.clear();
+        }
+        this.list = list;
+        setData(list);
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override

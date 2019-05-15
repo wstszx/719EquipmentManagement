@@ -46,6 +46,7 @@ public class PersonManageActivity extends BaseActivity {
 
     private static final int EDIT_DEPT = 1;
     private static final int EDIT_PERSON = 2;
+    private static final int ADD_DEPT = 3;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -101,10 +102,6 @@ public class PersonManageActivity extends BaseActivity {
                         }
                     }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                    }
                 });
     }
 
@@ -190,8 +187,8 @@ public class PersonManageActivity extends BaseActivity {
                 list.add(new QMUISection<>(header, contents));
             }
         }
-
         adapter1.setData(list);
+
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);
@@ -241,7 +238,9 @@ public class PersonManageActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "添加部门":
-                            AddDeptActivity.start(PersonManageActivity.this);
+                            Intent addDeptIntent = new Intent();
+                            addDeptIntent.setClass(PersonManageActivity.this, AddDeptActivity.class);
+                            startActivityForResult(addDeptIntent,ADD_DEPT);
                             break;
                         case "添加人员":
                             AddPersonActivity.start(PersonManageActivity.this);
@@ -299,6 +298,10 @@ public class PersonManageActivity extends BaseActivity {
                             }
                         });
                 break;
+            case ADD_DEPT:
+
+                break;
+
         }
     }
 
