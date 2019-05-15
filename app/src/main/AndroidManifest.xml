@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.EditDeptActivity"></activity>
+        <activity android:name=".ui.home.ConfirmBorrowResultsActivity"></activity>
+        <activity android:name=".ui.home.EditDeptActivity" />
         <activity android:name=".ui.mine.PersonInfoActivity" />
         <activity android:name=".ui.home.ScrappedActivity" />
         <activity android:name=".ui.home.EditPersonActivity" />

@@ -5,16 +5,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -24,14 +37,43 @@ public class PersonDetailActivity extends BaseActivity {
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    private String[] containerAttrs = {"姓名", "所属科室", "角色", "联系方式"};
-    private String[] containerAttrValue = {"张三", "三科室", "普通用户", "13658744569"};
+    private String[] containerAttrs = {"上级部门", "部门名称", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
+    private String[] containerAttrValue = {"张三", "三科室", "普通用户"};
     private QMUICommonListItemView listItemView;
+    private String heightDept="";
+    private String deptName;
+    private String orderNum;
+    private String leader;
+    private String phone;
+    private String email;
+    private String status;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
         initGroupListView();
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        User user = (User) intent.getSerializableExtra("serializable");
+        deptName = user.getDeptName();
+        orderNum = user.getOrderNum();
+        leader = user.getLeader();
+        phone = user.getPhone();
+        email = user.getEmail();
+        status = user.getStatus();
+        switch (status) {
+            case "0":
+                status = "正常";
+                break;
+            case "1":
+                status = "停用";
+                break;
+        }
+
+
     }
 
     @Override
@@ -41,6 +83,9 @@ public class PersonDetailActivity extends BaseActivity {
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {
+            if (((QMUICommonListItemView) v).getAccessoryType() == QMUICommonListItemView.ACCESSORY_TYPE_SWITCH) {
+                ((QMUICommonListItemView) v).getSwitch().toggle();
+            }
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
@@ -49,16 +94,69 @@ public class PersonDetailActivity extends BaseActivity {
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-        for (int i = 0; i < containerAttrs.length; i++) {
-            QMUICommonListItemView item = groupListView.createItemView(
-                    null,
-                    containerAttrs[i],
-                    containerAttrValue[i],
-                    QMUICommonListItemView.HORIZONTAL,
-                    QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-            item.setTag(i);
-            section.addItemView(item, onClickListener);
-        }
+        QMUICommonListItemView item = groupListView.createItemView(
+                null,
+                containerAttrs[0],
+                heightDept != null ? heightDept : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(0);
+        section.addItemView(item, onClickListener);
+
+        QMUICommonListItemView item1 = groupListView.createItemView(
+                null,
+                containerAttrs[1],
+                deptName != null ? deptName : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(1);
+        section.addItemView(item1, onClickListener);
+
+        QMUICommonListItemView item2 = groupListView.createItemView(
+                null,
+                containerAttrs[2],
+                orderNum != null ? orderNum : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(2);
+        section.addItemView(item2, onClickListener);
+
+        QMUICommonListItemView item3 = groupListView.createItemView(
+                null,
+                containerAttrs[3],
+                leader != null ? leader : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(3);
+        section.addItemView(item3, onClickListener);
+
+        QMUICommonListItemView item4 = groupListView.createItemView(
+                null,
+                containerAttrs[4],
+                phone != null ? phone : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(4);
+        section.addItemView(item4, onClickListener);
+
+        QMUICommonListItemView item5 = groupListView.createItemView(
+                null,
+                containerAttrs[5],
+                email != null ? email : " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(5);
+        section.addItemView(item5, onClickListener);
+
+        QMUICommonListItemView item6 = groupListView.createItemView("Item 5");
+        item6.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        item6.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
+        section.addItemView(item6, onClickListener);
         section.addTo(groupListView);
 
     }
@@ -69,6 +167,29 @@ public class PersonDetailActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
+        Button rightTextButton = topbar.addRightTextButton("保存", R.id.save);
+        rightTextButton.setTextColor(getResources().getColor(R.color.blue));
+        rightTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updatePersonDetail();
+                finish();
+            }
+        });
+    }
+
+    /**
+     * 更新用户详情
+     */
+    private void updatePersonDetail() {
+        RetrofitClient.getInstance().getService().editUser()
+                .compose(CommonCompose.io2main(PersonDetailActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(PersonDetailActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        ToastUtils.showShort("更新成功");
+                    }
+                });
     }
 
 
@@ -85,8 +206,9 @@ public class PersonDetailActivity extends BaseActivity {
         }
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, Serializable serializable) {
         Intent starter = new Intent(context, PersonDetailActivity.class);
+        starter.putExtra("serializable", serializable);
         context.startActivity(starter);
     }
 }

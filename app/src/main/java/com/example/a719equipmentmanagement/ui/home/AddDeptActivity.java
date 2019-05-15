@@ -180,4 +180,5 @@ public class AddDeptActivity extends BaseActivity {
         Intent starter = new Intent(context, AddDeptActivity.class);
         context.startActivity(starter);
     }
+
 }
