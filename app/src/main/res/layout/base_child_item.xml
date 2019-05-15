@@ -46,6 +46,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="18871462356" />
 
+    <TextView
+        android:id="@+id/tv_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_3"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="18871462356" />
+
     <ImageView
         android:id="@+id/iv_1"
         android:layout_width="wrap_content"

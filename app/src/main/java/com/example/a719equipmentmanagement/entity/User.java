@@ -210,10 +210,10 @@ public class User implements Serializable {
         this.list = list;
     }
 
-    public static class ParamsBean {
+    public static class ParamsBean implements Serializable {
     }
 
-    public static class ListBean {
+    public static class ListBean implements Serializable {
         /**
          * id : null
          * searchValue : null
@@ -508,10 +508,10 @@ public class User implements Serializable {
             this.roles = roles;
         }
 
-        public static class ParamsBeanX {
+        public static class ParamsBeanX implements Serializable {
         }
 
-        public static class DeptBean {
+        public static class DeptBean implements Serializable {
             /**
              * id : null
              * searchValue : null
@@ -716,7 +716,7 @@ public class User implements Serializable {
                 this.list = list;
             }
 
-            public static class ParamsBeanXX {
+            public static class ParamsBeanXX implements Serializable {
             }
         }
     }

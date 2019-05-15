@@ -15,6 +15,7 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
 import butterknife.BindView;
 
 public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<User>, SectionItem<User>> {
@@ -37,6 +38,9 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<User>, SectionItem<User>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
+        TextView tv_leader = view.findViewById(R.id.tv_leader);
+        TextView tv_status = view.findViewById(R.id.tv_status);
+        TextView tv_create_time = view.findViewById(R.id.tv_create_time);
         ImageView ivRight = view.findViewById(R.id.iv_right);
 
         boolean fold = section.isFold();
@@ -49,7 +53,21 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
             int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
             toggleFold(pos, false);
         });
-        String deptName = section.getHeader().getText().getDeptName();
+        User user = section.getHeader().getText();
+        String deptName = user.getDeptName();
+        String leader = user.getLeader();
+        String status = user.getStatus();
+        String createTime = user.getCreateTime();
+        tv_leader.setText(leader);
+        switch (status) {
+            case "0":
+                tv_status.setText("正常");
+                break;
+            case "1":
+                tv_status.setText("停用");
+                break;
+        }
+        tv_create_time.setText(createTime);
         tvParent.setText(deptName);
 
     }
@@ -61,9 +79,22 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
+        TextView tv_4 = view.findViewById(R.id.tv_4);
         User user = section.getItemAt(itemIndex).getListBean();
-        tv_1.setText(user.getLeader());
-        tv_2.setText(user.getEmail());
-        tv_3.setText(user.getPhone());
+        String deptName = user.getDeptName();
+        String leader = user.getLeader();
+        String status = user.getStatus();
+        String createTime = user.getCreateTime();
+        tv_1.setText(deptName);
+        tv_2.setText(leader);
+        switch (status) {
+            case "0":
+                tv_3.setText("正常");
+                break;
+            case "1":
+                tv_3.setText("停用");
+                break;
+        }
+        tv_4.setText(createTime);
     }
 }

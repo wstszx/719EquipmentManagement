@@ -52,13 +52,15 @@ public class PersonManageActivity extends BaseActivity {
     QMUIStickySectionLayout stickySectionLayout;
     private QMUIListPopup mListPopup;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String[] personTitles = {"用户名称", "归属部门", "手机号码", "邮箱", "登录账号", "登录密码", "用户性别", "岗位", "角色", "备注"};
     String[] addTypes = new String[]{
             "添加部门",
             "添加人员"
     };
-    String[] deletes = new String[]{
+    String[] parentdeletes = new String[]{
             "编辑",
+            "删除"
+    };
+    String[] deletes = new String[]{
             "删除"
     };
     private List<User> users;
@@ -128,7 +130,9 @@ public class PersonManageActivity extends BaseActivity {
                         adapter1.toggleFold(position, false);
                         break;
                     case 1:
-                        PersonDetailActivity.start(PersonManageActivity.this);
+                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
+                        User listBean = sectionItem != null ? sectionItem.getListBean() : null;
+                        PersonDetailActivity.start(PersonManageActivity.this, listBean);
                         break;
                 }
             }
@@ -139,15 +143,17 @@ public class PersonManageActivity extends BaseActivity {
                 View view = holder.itemView;
                 switch (itemViewType) {
                     case 0:
+                        initListPopupIfNeed(parentdeletes);
                         TextView tvParent = view.findViewById(R.id.tv_parent);
                         parentTitle = tvParent.getText().toString();
                         QMUISection<SectionHeader<User>, SectionItem<User>> section = adapter1.getSection(position);
                         if (section != null) {
                             SectionHeader<User> header = section.getHeader();
-                            user = ((User) header.getText());
+                            user = header.getText();
                         }
                         break;
                     case 1:
+                        initListPopupIfNeed(deletes);
                         TextView tv_1 = view.findViewById(R.id.tv_1);
                         TextView tv_2 = view.findViewById(R.id.tv_2);
                         TextView tv_3 = view.findViewById(R.id.tv_3);
@@ -160,7 +166,6 @@ public class PersonManageActivity extends BaseActivity {
                         }
                         break;
                 }
-                initListPopupIfNeed(deletes);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(holder.itemView);
@@ -171,18 +176,21 @@ public class PersonManageActivity extends BaseActivity {
 
     private void createSection(List<User> users) {
         contents = new ArrayList<>();
-
         for (User user : users) {
             int parentId = user.getParentId();
             if (0 == parentId) {
-//                String deptName = user.getDeptName();
                 header = new SectionHeader(user);
-            } else if (100 == parentId) {
-                SectionItem<User> userSectionItem = new SectionItem<>(user);
-                contents.add(userSectionItem);
+                int deptId = user.getDeptId();
+                for (User user1 : users) {
+                    if (deptId == user1.getParentId()) {
+                        SectionItem<User> userSectionItem = new SectionItem<>(user1);
+                        contents.add(userSectionItem);
+                    }
+                }
+                list.add(new QMUISection<>(header, contents));
             }
         }
-        list.add(new QMUISection<>(header, contents));
+
         adapter1.setData(list);
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
@@ -282,6 +290,14 @@ public class PersonManageActivity extends BaseActivity {
                         });
                 break;
             case EDIT_PERSON:
+                RetrofitClient.getInstance().getService().editUser()
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
+                                initData();
+                            }
+                        });
                 break;
         }
     }
@@ -294,7 +310,7 @@ public class PersonManageActivity extends BaseActivity {
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                             @Override
                             public void onSuccess(BaseResponse baseResponse) {
-
+                                initData();
                             }
                         });
                 break;
@@ -304,7 +320,7 @@ public class PersonManageActivity extends BaseActivity {
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                             @Override
                             public void onSuccess(BaseResponse baseResponse) {
-
+                                initData();
                             }
                         });
                 break;
