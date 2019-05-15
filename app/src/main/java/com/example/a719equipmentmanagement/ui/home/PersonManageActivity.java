@@ -8,11 +8,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
+import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.PersonOne;
+import com.example.a719equipmentmanagement.entity.PersonThree;
+import com.example.a719equipmentmanagement.entity.PersonTwo;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.User;
@@ -34,6 +40,7 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import butterknife.BindView;
@@ -49,10 +56,9 @@ public class PersonManageActivity extends BaseActivity {
     private static final int ADD_DEPT = 3;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    @BindView(R.id.sticky_section_layout)
-    QMUIStickySectionLayout stickySectionLayout;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
     private QMUIListPopup mListPopup;
-    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     String[] addTypes = new String[]{
             "添加部门",
             "添加人员"
@@ -66,17 +72,11 @@ public class PersonManageActivity extends BaseActivity {
     };
     private List<User> users;
     private ArrayAdapter<String> adapter;
-    private ArrayList<QMUISection<SectionHeader<User>, SectionItem<User>>> list;
-    private PeopleManageAdapter adapter1;
     private int itemViewType = -1;
     private String parentTitle;
-    private String childTitle1;
-    private String childTitle2;
-    private String childTitle3;
-    private SectionHeader header;
-    private ArrayList<SectionItem<User>> contents;
     private String parentDept;
     private User user;
+    private PersonManageAdapter adapter1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -85,7 +85,6 @@ public class PersonManageActivity extends BaseActivity {
 
     private void initView() {
         initTopbar();
-        initStickySectionLayout();
         initData();
     }
 
@@ -101,97 +100,123 @@ public class PersonManageActivity extends BaseActivity {
                             createSection(users);
                         }
                     }
-
                 });
+
     }
 
-    private void initStickySectionLayout() {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
-        stickySectionLayout.setLayoutManager(manager);
-        adapter1 = new PeopleManageAdapter();
-        stickySectionLayout.setAdapter(adapter1, true);
-        list = new ArrayList<>();
-
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<User>, SectionItem<User>>() {
-            @Override
-            public void loadMore(QMUISection<SectionHeader<User>, SectionItem<User>> section, boolean loadMoreBefore) {
-
-            }
-
-            @Override
-            public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                int itemViewType = holder.getItemViewType();
-                switch (itemViewType) {
-                    case 0:
-                        adapter1.toggleFold(position, false);
-                        break;
-                    case 1:
-                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
-                        User listBean = sectionItem != null ? sectionItem.getListBean() : null;
-                        PersonDetailActivity.start(PersonManageActivity.this, listBean);
-                        break;
-                }
-            }
-
-            @Override
-            public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                itemViewType = holder.getItemViewType();
-                View view = holder.itemView;
-                switch (itemViewType) {
-                    case 0:
-                        initListPopupIfNeed(parentdeletes);
-                        TextView tvParent = view.findViewById(R.id.tv_parent);
-                        parentTitle = tvParent.getText().toString();
-                        QMUISection<SectionHeader<User>, SectionItem<User>> section = adapter1.getSection(position);
-                        if (section != null) {
-                            SectionHeader<User> header = section.getHeader();
-                            user = header.getText();
-                        }
-                        break;
-                    case 1:
-                        initListPopupIfNeed(deletes);
-                        TextView tv_1 = view.findViewById(R.id.tv_1);
-                        TextView tv_2 = view.findViewById(R.id.tv_2);
-                        TextView tv_3 = view.findViewById(R.id.tv_3);
-                        childTitle1 = tv_1.getText().toString();
-                        childTitle2 = tv_2.getText().toString();
-                        childTitle3 = tv_3.getText().toString();
-                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
-                        if (sectionItem != null) {
-                            user = sectionItem.getListBean();
-                        }
-                        break;
-                }
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(holder.itemView);
-                return true;
-            }
-        });
-    }
+//    private void initStickySectionLayout() {
+//        LinearLayoutManager manager = new LinearLayoutManager(this);
+//        stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
+//        stickySectionLayout.setLayoutManager(manager);
+//        adapter1 = new PeopleManageAdapter();
+//        stickySectionLayout.setAdapter(adapter1, true);
+//        list = new ArrayList<>();
+//
+//        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<User>, SectionItem<User>>() {
+//            @Override
+//            public void loadMore(QMUISection<SectionHeader<User>, SectionItem<User>> section, boolean loadMoreBefore) {
+//
+//            }
+//
+//            @Override
+//            public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+//                int itemViewType = holder.getItemViewType();
+//                switch (itemViewType) {
+//                    case 0:
+//                        adapter1.toggleFold(position, false);
+//                        break;
+//                    case 1:
+//                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
+//                        User listBean = sectionItem != null ? sectionItem.getListBean() : null;
+//                        PersonDetailActivity.start(PersonManageActivity.this, listBean);
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+//                itemViewType = holder.getItemViewType();
+//                View view = holder.itemView;
+//                switch (itemViewType) {
+//                    case 0:
+//                        initListPopupIfNeed(parentdeletes);
+//                        TextView tvParent = view.findViewById(R.id.tv_parent);
+//                        parentTitle = tvParent.getText().toString();
+//                        QMUISection<SectionHeader<User>, SectionItem<User>> section = adapter1.getSection(position);
+//                        if (section != null) {
+//                            SectionHeader<User> header = section.getHeader();
+//                            user = header.getText();
+//                        }
+//                        break;
+//                    case 1:
+//                        initListPopupIfNeed(deletes);
+//                        TextView tv_1 = view.findViewById(R.id.tv_1);
+//                        TextView tv_2 = view.findViewById(R.id.tv_2);
+//                        TextView tv_3 = view.findViewById(R.id.tv_3);
+//                        childTitle1 = tv_1.getText().toString();
+//                        childTitle2 = tv_2.getText().toString();
+//                        childTitle3 = tv_3.getText().toString();
+//                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
+//                        if (sectionItem != null) {
+//                            user = sectionItem.getListBean();
+//                        }
+//                        break;
+//                }
+//                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+//                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+//                mListPopup.show(holder.itemView);
+//                return true;
+//            }
+//        });
+//    }
 
     private void createSection(List<User> users) {
-        contents = new ArrayList<>();
+        List<MultiItemEntity> list = new ArrayList<>();
         for (User user : users) {
-            int parentId = user.getParentId();
-            if (0 == parentId) {
-                header = new SectionHeader(user);
+            int id = user.getId();
+            if (100 == id) {
                 int deptId = user.getDeptId();
+                PersonOne personOne = new PersonOne(user);
+
                 for (User user1 : users) {
-                    if (deptId == user1.getParentId()) {
-                        SectionItem<User> userSectionItem = new SectionItem<>(user1);
-                        contents.add(userSectionItem);
+                    int parentId1 = user1.getParentId();
+
+                    if (deptId == parentId1) {
+                        int deptId1 = user1.getDeptId();
+
+                        PersonTwo personTwo = new PersonTwo(user1);
+                        for (User user2 : users) {
+                            int parentId2 = user2.getParentId();
+                            if (deptId1 == parentId2) {
+                                PersonThree personThree = new PersonThree(user2);
+                                personTwo.addSubItem(personThree);
+                            }
+                        }
+                        personOne.addSubItem(personTwo);
                     }
                 }
-                list.add(new QMUISection<>(header, contents));
+                list.add(personOne);
             }
         }
-//        adapter1.setData(list);
-            adapter1.setList(list);
-        // if test load more, you can open the code
-//        section.setExistAfterDataToLoad(true);
-//        section.setExistBeforeDataToLoad(true);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        adapter1 = new PersonManageAdapter(this, list);
+        recyclerview.setAdapter(adapter1);
+        adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+
+            }
+        });
+        adapter1.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(BaseQuickAdapter adapter, View v, int position) {
+                initListPopupIfNeed(addTypes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
+                return false;
+            }
+        });
     }
 
     private void initTopbar() {
@@ -240,7 +265,7 @@ public class PersonManageActivity extends BaseActivity {
                         case "添加部门":
                             Intent addDeptIntent = new Intent();
                             addDeptIntent.setClass(PersonManageActivity.this, AddDeptActivity.class);
-                            startActivityForResult(addDeptIntent,ADD_DEPT);
+                            startActivityForResult(addDeptIntent, ADD_DEPT);
                             break;
                         case "添加人员":
                             AddPersonActivity.start(PersonManageActivity.this);

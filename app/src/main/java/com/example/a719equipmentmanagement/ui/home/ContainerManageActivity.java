@@ -157,9 +157,6 @@ public class ContainerManageActivity extends BaseActivity {
                 contents.add(new SectionItem<>(listBean));
             }
         }
-        // if test load more, you can open the code
-//        section.setExistAfterDataToLoad(true);
-//        section.setExistBeforeDataToLoad(true);
         return new QMUISection<>(header, contents, true);
     }
 
@@ -220,7 +217,6 @@ public class ContainerManageActivity extends BaseActivity {
                     CharSequence text = customDialogBuilder.getEditText().getText();
                     CharSequence text1 = customDialogBuilder.getEditText1().getText();
                     if (text1 != null && text1.length() > 0) {
-
                         Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     } else {

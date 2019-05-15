@@ -93,12 +93,10 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-//        TextView tv_4 = view.findViewById(R.id.tv_4);
         User user = section.getItemAt(itemIndex).getListBean();
         String deptName = user.getDeptName();
         String leader = user.getLeader();
         String status = user.getStatus();
-//        String createTime = user.getCreateTime();
         tv_1.setText(deptName);
         tv_2.setText(leader);
         switch (status) {
@@ -109,6 +107,5 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
                 tv_3.setText("停用");
                 break;
         }
-//        tv_4.setText(createTime);
     }
 }
