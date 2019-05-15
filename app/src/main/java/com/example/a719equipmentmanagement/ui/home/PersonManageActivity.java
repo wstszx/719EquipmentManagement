@@ -187,8 +187,8 @@ public class PersonManageActivity extends BaseActivity {
                 list.add(new QMUISection<>(header, contents));
             }
         }
-        adapter1.setData(list);
-
+//        adapter1.setData(list);
+            adapter1.setList(list);
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);
@@ -299,7 +299,7 @@ public class PersonManageActivity extends BaseActivity {
                         });
                 break;
             case ADD_DEPT:
-
+                initData();
                 break;
 
         }

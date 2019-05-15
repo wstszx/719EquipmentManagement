@@ -26,12 +26,12 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     private List<QMUISection<SectionHeader<User>, SectionItem<User>>> list = new ArrayList<>();
 
     public void setList(List<QMUISection<SectionHeader<User>, SectionItem<User>>> list) {
-        if (list != null) {
+        setData(list);
+        if (list.size() > 0) {
             list.clear();
         }
-        this.list = list;
-        setData(list);
-        notifyDataSetChanged();
+//        this.list = list;
+//        refreshCustomData();
     }
 
     @NonNull
@@ -54,7 +54,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tvParent = view.findViewById(R.id.tv_parent);
         TextView tv_leader = view.findViewById(R.id.tv_leader);
         TextView tv_status = view.findViewById(R.id.tv_status);
-        TextView tv_create_time = view.findViewById(R.id.tv_create_time);
+//        TextView tv_create_time = view.findViewById(R.id.tv_create_time);
         ImageView ivRight = view.findViewById(R.id.iv_right);
 
         boolean fold = section.isFold();
@@ -71,7 +71,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         String deptName = user.getDeptName();
         String leader = user.getLeader();
         String status = user.getStatus();
-        String createTime = user.getCreateTime();
+//        String createTime = user.getCreateTime();
         tv_leader.setText(leader);
         switch (status) {
             case "0":
@@ -81,7 +81,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
                 tv_status.setText("停用");
                 break;
         }
-        tv_create_time.setText(createTime);
+//        tv_create_time.setText(createTime);
         tvParent.setText(deptName);
 
     }
@@ -93,12 +93,12 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-        TextView tv_4 = view.findViewById(R.id.tv_4);
+//        TextView tv_4 = view.findViewById(R.id.tv_4);
         User user = section.getItemAt(itemIndex).getListBean();
         String deptName = user.getDeptName();
         String leader = user.getLeader();
         String status = user.getStatus();
-        String createTime = user.getCreateTime();
+//        String createTime = user.getCreateTime();
         tv_1.setText(deptName);
         tv_2.setText(leader);
         switch (status) {
@@ -109,6 +109,6 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
                 tv_3.setText("停用");
                 break;
         }
-        tv_4.setText(createTime);
+//        tv_4.setText(createTime);
     }
 }

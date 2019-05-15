@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
@@ -55,6 +57,9 @@ public class AddDeptActivity extends BaseActivity {
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {
+            if (((QMUICommonListItemView) v).getAccessoryType() == QMUICommonListItemView.ACCESSORY_TYPE_SWITCH) {
+                ((QMUICommonListItemView) v).getSwitch().toggle();
+            }
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
@@ -104,13 +109,15 @@ public class AddDeptActivity extends BaseActivity {
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item4.setTag(4);
         section.addItemView(item4, onClickListener);
-        item5 = groupListView.createItemView(
-                null,
-                containerAttrs[5],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item5.setTag(5);
+
+        item5 = groupListView.createItemView("部门状态");
+        item5.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        item5.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });
         section.addItemView(item5, onClickListener);
         section.addTo(groupListView);
     }
@@ -132,7 +139,7 @@ public class AddDeptActivity extends BaseActivity {
         String input2 = item2.getDetailText().toString();
         String input3 = item3.getDetailText().toString();
         String input4 = item4.getDetailText().toString();
-        String input5 = item5.getDetailText().toString();
+        boolean checked = item5.getSwitch().isChecked();
         Map<String, String> map = new HashMap<>();
 
         try {
@@ -142,8 +149,8 @@ public class AddDeptActivity extends BaseActivity {
             map.put("leader", input2);
             map.put("phone", input3);
             map.put("email", input4);
-            map.put("status", input5);
-        }catch (Exception e){
+            map.put("status", checked ? "0" : "1");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         RetrofitClient.getInstance().getService().addDept(map)
@@ -151,7 +158,7 @@ public class AddDeptActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddDeptActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK,new Intent());
+                        setResult(RESULT_OK, new Intent());
                         finish();
                     }
                 });

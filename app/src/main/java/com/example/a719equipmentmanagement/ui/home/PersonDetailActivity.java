@@ -40,7 +40,7 @@ public class PersonDetailActivity extends BaseActivity {
     private String[] containerAttrs = {"上级部门", "部门名称", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
     private String[] containerAttrValue = {"张三", "三科室", "普通用户"};
     private QMUICommonListItemView listItemView;
-    private String heightDept="";
+    private String heightDept = "";
     private String deptName;
     private String orderNum;
     private String leader;
@@ -148,7 +148,7 @@ public class PersonDetailActivity extends BaseActivity {
         item.setTag(5);
         section.addItemView(item5, onClickListener);
 
-        QMUICommonListItemView item6 = groupListView.createItemView("Item 5");
+        QMUICommonListItemView item6 = groupListView.createItemView("部门状态");
         item6.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
         item6.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
