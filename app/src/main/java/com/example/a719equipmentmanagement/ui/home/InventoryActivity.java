@@ -1,6 +1,8 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,5 +26,11 @@ public class InventoryActivity extends BaseActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, InventoryActivity.class);
         context.startActivity(starter);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.my_nav_host_fragment);
+        return NavHostFragment.findNavController(fragment).navigateUp();
     }
 }

@@ -14,15 +14,23 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Field;
 
 public class AddDeptActivity extends BaseActivity {
 
@@ -125,17 +133,21 @@ public class AddDeptActivity extends BaseActivity {
         String input3 = item3.getDetailText().toString();
         String input4 = item4.getDetailText().toString();
         String input5 = item5.getDetailText().toString();
-        RetrofitClient.getInstance().getService().addDept(input, input1, input2, input3, input4, input5).enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+        Map<String, String> map = new HashMap<>();
+        map.put("dept_name", input);
+        map.put("order_num", input1);
+        map.put("leader", input2);
+        map.put("phone", input3);
+        map.put("email", input4);
+        map.put("status", input5);
+        RetrofitClient.getInstance().getService().addDept(map)
+                .compose(CommonCompose.io2main(AddDeptActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(AddDeptActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+                    }
+                });
 
     }
 

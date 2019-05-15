@@ -11,15 +11,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.device.AddDeviceActivity;
 import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -73,20 +79,16 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findContainerData().enqueue(new Callback<List<ContainerData>>() {
-            @Override
-            public void onResponse(Call<List<ContainerData>> call, Response<List<ContainerData>> response) {
-                List<ContainerData> body = response.body();
-                if (body != null && body.size() > 0) {
-                    bindUi(body);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ContainerData>> call, Throwable t) {
-
-            }
-        });
+        RetrofitClient.getInstance().getService().findContainerData()
+                .compose(CommonCompose.io2main(ContainerManageActivity.this))
+                .subscribe(new BaseSubscriber<List<ContainerData>>(ContainerManageActivity.this) {
+                    @Override
+                    public void onSuccess(List<ContainerData> baseResponse) {
+                        if (baseResponse != null && baseResponse.size() > 0) {
+                            bindUi(baseResponse);
+                        }
+                    }
+                });
     }
 
     private void bindUi(List<ContainerData> body) {
@@ -120,7 +122,7 @@ public class ContainerManageActivity extends BaseActivity {
                         SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
                         ContainerData.ListBean listBean = sectionItem.getListBean();
                         if (listBean != null) {
-                            ContainerDetailActivity.start(ContainerManageActivity.this,listBean);
+                            ContainerDetailActivity.start(ContainerManageActivity.this, listBean);
                         }
                         break;
                 }
