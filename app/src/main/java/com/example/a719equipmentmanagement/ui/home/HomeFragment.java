@@ -7,14 +7,23 @@ import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
+import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
+import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
+import com.example.a719equipmentmanagement.entity.WaitApprovalItem;
+import com.example.a719equipmentmanagement.entity.WaitReturnDevice;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
@@ -46,9 +55,28 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-
         initView();
+        initMenu();
         initData();
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getWaitApprovalItem()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<WaitApprovalItem>(getContext()) {
+                    @Override
+                    public void onSuccess(WaitApprovalItem waitApprovalItem) {
+
+                    }
+                });
+        RetrofitClient.getInstance().getService().getWaitReturnDevice()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<WaitReturnDevice>(getContext()) {
+                    @Override
+                    public void onSuccess(WaitReturnDevice waitReturnDevice) {
+
+                    }
+                });
     }
 
     private void initView() {
@@ -59,12 +87,17 @@ public class HomeFragment extends BaseFragment {
         topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HomeAdapter(R.layout.square_match_item);
+        WaitApprovalItemAdapter adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
+        WaitReturnDeviceAdapter adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
         recyclerview.setAdapter(adapter);
-
+        recyclerview1.setAdapter(adapter1);
+        recyclerview2.setAdapter(adapter2);
     }
 
-    private void initData() {
+    private void initMenu() {
         List<HomeBean> homeBeanList = new ArrayList<>();
         for (int i = 0; i < features.length; i++) {
             HomeBean bean = new HomeBean(featuresImg[i], features[i]);

@@ -20,7 +20,7 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     @NonNull
     @Override
     protected ViewHolder onCreateSectionHeaderViewHolder(@NonNull ViewGroup viewGroup) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_parent_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_one_level_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

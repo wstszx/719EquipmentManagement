@@ -1,8 +1,6 @@
 package com.example.a719equipmentmanagement.adapter;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -30,9 +28,19 @@ public class PersonManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
     public PersonManageAdapter(Context context, List<MultiItemEntity> data) {
         super(data);
         this.mContext = context;
-        addItemType(LEVEL_ONE, R.layout.base_parent_item);
-        addItemType(LEVEL_TWO, R.layout.base_parent_item);
-        addItemType(LEVEL_THREE, R.layout.base_parent_item);
+        addItemType(LEVEL_ONE, R.layout.base_one_level_item);
+        addItemType(LEVEL_TWO, R.layout.base_two_level_item);
+        addItemType(LEVEL_THREE, R.layout.base_three_level_item);
+    }
+
+    private ClickListener listener;
+
+    public interface ClickListener {
+        void click(String parentText);
+    }
+
+    public void setListener(ClickListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -42,27 +50,41 @@ public class PersonManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
                 PersonOne personOne = (PersonOne) item;
                 User user = personOne.getUser();
                 setLevelData(user, helper);
-                helper.getView(R.id.constraint).setOnClickListener(v -> {
-                    int pos = helper.getAdapterPosition();
-                    if (personOne.isExpanded()) {
-                        collapse(pos, true);
-                    } else {
-                        expand(pos, true);
-                    }
-                });
+                if (personOne.isExpanded()) {
+                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+                } else {
+                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+                }
+//                helper.getView(R.id.constraint).setOnClickListener(v -> {
+//                    int pos = helper.getAdapterPosition();
+//                    if (personOne.isExpanded()) {
+//                        helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+//                        collapse(pos, true);
+//                    } else {
+//                        helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+//                        expand(pos, true);
+//                    }
+//                });
                 break;
             case LEVEL_TWO:
                 PersonTwo personTwo = (PersonTwo) item;
                 User user1 = personTwo.getUser();
                 setLevelData(user1, helper);
-                helper.getView(R.id.constraint).setOnClickListener(v -> {
-                    int pos = helper.getAdapterPosition();
-                    if (personTwo.isExpanded()) {
-                        collapse(pos, true);
-                    } else {
-                        expand(pos, true);
-                    }
-                });
+                if (personTwo.isExpanded()) {
+                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+                } else {
+                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+                }
+//                helper.getView(R.id.constraint).setOnClickListener(v -> {
+//                    int pos = helper.getAdapterPosition();
+//                    if (personTwo.isExpanded()) {
+//                        helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+//                        collapse(pos, true);
+//                    } else {
+//                        helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+//                        expand(pos, true);
+//                    }
+//                });
                 break;
             case LEVEL_THREE:
                 PersonThree personThree = (PersonThree) item;
@@ -86,5 +108,6 @@ public class PersonManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         }
         helper.setText(R.id.tv_parent, deptName)
                 .setText(R.id.tv_leader, leader);
+
     }
 }

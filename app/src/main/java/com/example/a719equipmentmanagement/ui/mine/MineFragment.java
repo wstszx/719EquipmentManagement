@@ -55,21 +55,12 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initData();
         initTopbar();
         initGroupListView();
         initTextView();
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().getMe()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<User>(getContext()) {
-                    @Override
-                    public void onSuccess(User baseResponse) {
-                    }
-                });
-    }
+
 
     private void initTopbar() {
         topbar.setTitle("我的");
@@ -77,7 +68,6 @@ public class MineFragment extends BaseFragment {
 
     private void initTextView() {
 
-//        textView.setText("退出登录");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,11 +100,6 @@ public class MineFragment extends BaseFragment {
 
                     }
                 });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
     }
 
     private void initGroupListView() {

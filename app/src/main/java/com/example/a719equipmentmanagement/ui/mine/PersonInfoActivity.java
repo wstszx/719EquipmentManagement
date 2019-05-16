@@ -8,6 +8,10 @@ import android.view.View;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -31,8 +35,21 @@ public class PersonInfoActivity extends BaseActivity {
 
     private void initView() {
         initTopbar();
-        initGroupListView();
-        initShowInfo();
+        initData();
+
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getMe()
+                .compose(CommonCompose.io2main(PersonInfoActivity.this))
+                .subscribe(new BaseSubscriber<User>(PersonInfoActivity.this) {
+                    @Override
+                    public void onSuccess(User baseResponse) {
+                        if (baseResponse != null) {
+                            initGroupListView();
+                        }
+                    }
+                });
     }
 
     private void initGroupListView() {
@@ -85,9 +102,6 @@ public class PersonInfoActivity extends BaseActivity {
         section.addTo(groupListView);
     }
 
-    private void initShowInfo() {
-
-    }
 
     private void initTopbar() {
         topbar.setTitle("个人信息");

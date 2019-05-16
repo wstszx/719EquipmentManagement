@@ -14,6 +14,8 @@ import com.example.a719equipmentmanagement.entity.LoginBean;
 import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.WaitApprovalItem;
+import com.example.a719equipmentmanagement.entity.WaitReturnDevice;
 
 import java.io.File;
 import java.util.IdentityHashMap;
@@ -28,7 +30,9 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 /**
  *
@@ -40,7 +44,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("loginByApp")
     Single<BaseResponse> login(@Field("username") String username,
-                                @Field("password") String password);
+                               @Field("password") String password);
 
     //APP用户退出
     @GET("logoutByApp")
@@ -89,7 +93,7 @@ public interface ApiService {
 
     //删除科室
     @GET("system/dept/remove/{deptId}")
-    Single<BaseResponse> delete();
+    Single<BaseResponse> delete(@Path("deptId") String deptId);
 
 
     /* -------------- dict-data-controller  ----------------------- */
@@ -136,6 +140,15 @@ public interface ApiService {
     Single<MsgData> findMsgData();
 
 
+    //获取待办事项
+    @GET("system/msg/list")
+    Single<WaitApprovalItem> getWaitApprovalItem();
+
+    //获取待还设备
+    @GET("system/msg/list")
+    Single<WaitReturnDevice> getWaitReturnDevice();
+
+
     /*----------------- profile-controller  ----------------*/
     //APP获取当前用户信息
     @GET("system/user/profile/me")
@@ -144,7 +157,7 @@ public interface ApiService {
     //修改密码
     @POST("system/user/profile/resetPwd")
     Single<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,
-                                    @Field("newPassword") String newPassword);
+                                      @Field("newPassword") String newPassword);
 
     //APP更新个人信息
     @POST("system/user/profile/update")
