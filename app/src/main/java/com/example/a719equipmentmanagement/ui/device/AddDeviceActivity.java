@@ -14,6 +14,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -25,6 +26,8 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import butterknife.BindView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -35,10 +38,9 @@ import retrofit2.Response;
 public class AddDeviceActivity extends BaseActivity {
 
 
-    private String[] containerAttrs = {"设备名称", "技术指标", "设备编号", "所属部门", "存放位置", "属性1",
-            "属性2", "属性3", "属性4"};
-    private String[] containerAttrValue = {"05", "5MPa", "2019009", "三科室", "3#3", "001",
-            "3", "10", "12"};
+    private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人"};
+//    private String[] containerAttrValue = {"05", "5MPa", "2019009", "三科室", "3#3", "001",
+//            "3", "10", "12"};
 
     @BindView(R.id.groupListView_addDevice)
     QMUIGroupListView groupListView_addDevice;
@@ -47,6 +49,15 @@ public class AddDeviceActivity extends BaseActivity {
     QMUITopBarLayout topbar_addDevice;
 
     private QMUICommonListItemView listItemView;
+
+    private QMUICommonListItemView item0;
+    private QMUICommonListItemView item1;
+    private QMUICommonListItemView item2;
+    private QMUICommonListItemView item3;
+//    private QMUICommonListItemView item4;
+//    private QMUICommonListItemView item5;
+
+    private int rowCount;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -63,37 +74,67 @@ public class AddDeviceActivity extends BaseActivity {
         });
 
         topbar_addDevice.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            JSONObject jsonObject = new JSONObject();
-            try {
-                jsonObject.put("id", 5);
-                jsonObject.put("equip_no","湖北5");
-                jsonObject.put("sn", 5);
-                jsonObject.put("location_id", 5);
-                jsonObject.put("category_id", 5);
-                jsonObject.put("dept_id", 5);
-                jsonObject.put("name", "压力计");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-            RetrofitClient.getInstance().getService().addDevice(requestBody)
-                    .compose(CommonCompose.io2main(AddDeviceActivity.this))
-                    .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceActivity.this) {
-                        @Override
-                        public void onSuccess(BaseResponse baseResponse) {
+            getInputData();
 
+        });
+
+        RetrofitClient.getInstance().getService().findDeviceData()
+                .compose(CommonCompose.io2main(AddDeviceActivity.this))
+                .subscribe(new BaseSubscriber<DeviceData>(AddDeviceActivity.this) {
+                    @Override
+                    public void onSuccess(DeviceData baseResponse) {
+                        if (baseResponse != null ) {
+                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+                            rowCount=rows.size()+1;
                         }
-                    });
+                    }
+                });
+    }
+
+    private void getInputData() {
+        String input0 = item0.getDetailText().toString();
+        String input1 = item1.getDetailText().toString();
+        String input2 = item2.getDetailText().toString();
+        String input3 = item3.getDetailText().toString();
+//        String input4 = item4.getDetailText().toString();
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id",rowCount);
+            jsonObject.put("equipNo",rowCount+"");
+//                jsonObject.put("sn", 5);
+//                jsonObject.put("location_id", 5);
+//                jsonObject.put("category_id", 5);
+//                jsonObject.put("deptId", 5);
+            jsonObject.put("name", input0);
+            jsonObject.put("parameter", input1) ;
+            jsonObject.put("manufactuer", input2);
+            jsonObject.put("responsor", input3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().addDevice(requestBody)
+                .compose(CommonCompose.io2main(AddDeviceActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+
+                    }
+                });
 
 //            Intent intent = new Intent();
 //            intent.putExtra("text", edittext.getText().toString());
 //            setResult(RESULT_OK, intent);
-            finish();
-        });
+        finish();
     }
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {
+            if (((QMUICommonListItemView) v).getAccessoryType() == QMUICommonListItemView.ACCESSORY_TYPE_SWITCH) {
+                ((QMUICommonListItemView) v).getSwitch().toggle();
+            }
+
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
             Intent intent = new Intent();
@@ -102,16 +143,58 @@ public class AddDeviceActivity extends BaseActivity {
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-        for (int i = 0; i < containerAttrs.length; i++) {
-            QMUICommonListItemView item = groupListView_addDevice.createItemView(
-                    null,
-                    containerAttrs[i],
-                    containerAttrValue[i],
-                    QMUICommonListItemView.HORIZONTAL,
-                    QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-            item.setTag(i);
-            section.addItemView(item, onClickListener);
-        }
+        item0 = groupListView_addDevice.createItemView(
+                null,
+                containerAttrs[0],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item0.setTag(0);
+        section.addItemView(item0, onClickListener);
+        item1 = groupListView_addDevice.createItemView(
+                null,
+                containerAttrs[1],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item1.setTag(1);
+        section.addItemView(item1, onClickListener);
+        item2 = groupListView_addDevice.createItemView(
+                null,
+                containerAttrs[2],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item2.setTag(2);
+        section.addItemView(item2, onClickListener);
+        item3 = groupListView_addDevice.createItemView(
+                null,
+                containerAttrs[3],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item3.setTag(3);
+        section.addItemView(item3, onClickListener);
+//        item4 = groupListView_addDevice.createItemView(
+//                null,
+//                containerAttrs[4],
+//                " ",
+//                QMUICommonListItemView.HORIZONTAL,
+//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+//        item4.setTag(4);
+//        section.addItemView(item4, onClickListener);
+
+//        for (int i = 0; i < containerAttrs.length; i++) {
+//            QMUICommonListItemView item = groupListView_addDevice.createItemView(
+//                    null,
+//                    containerAttrs[i],
+//                    containerAttrValue[i],
+//                    QMUICommonListItemView.HORIZONTAL,
+//                    QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+//            item.setTag(i);
+//            section.addItemView(item, onClickListener);
+//        }
+
         section.addTo(groupListView_addDevice);
     }
 
