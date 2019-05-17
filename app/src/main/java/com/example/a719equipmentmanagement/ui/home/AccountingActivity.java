@@ -12,6 +12,10 @@ import androidx.annotation.Nullable;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.InRecordData;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -33,7 +37,19 @@ public class AccountingActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
         initGroupListView();
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().findInRecordData()
+                .compose(CommonCompose.io2main(this))
+                .subscribe(new BaseSubscriber<InRecordData>(AccountingActivity.this){
+                    @Override
+                    public void onSuccess(InRecordData inRecordData) {
+
+                    }
+                });
     }
 
     private void initGroupListView() {

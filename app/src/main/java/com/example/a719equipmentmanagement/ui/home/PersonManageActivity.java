@@ -48,6 +48,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import butterknife.BindView;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -357,13 +359,27 @@ public class PersonManageActivity extends BaseActivity {
             case 0:
             case 1:
                 RetrofitClient.getInstance().getService().delete(deptId)
-                        .compose(CommonCompose.io2main(PersonManageActivity.this))
-                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                        .flatMap(new Function<BaseResponse, SingleSource<List<User>>>() {
                             @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                initData();
+                            public SingleSource<List<User>> apply(BaseResponse baseResponse) throws Exception {
+                                return RetrofitClient.getInstance().getService().getUser();
+                            }
+                        })
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(List<User> users) {
+                                if (users != null && users.size() > 0) {
+                                    createSection(users);
+                                }
                             }
                         });
+//                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+//                            @Override
+//                            public void onSuccess(BaseResponse baseResponse) {
+//                                initData();
+//                            }
+//                        });
                 break;
             case 2:
                 RetrofitClient.getInstance().getService().deleteUser("")

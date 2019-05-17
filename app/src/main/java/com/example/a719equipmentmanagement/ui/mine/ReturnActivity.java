@@ -38,6 +38,11 @@ public class ReturnActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
        // int id = getIntent().getIntExtra("id", -1);
         initView();
+        initData();
+    }
+
+    private void initData() {
+
     }
 
 
