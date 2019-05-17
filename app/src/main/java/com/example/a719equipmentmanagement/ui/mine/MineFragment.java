@@ -57,17 +57,17 @@ public class MineFragment extends BaseFragment {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
+//        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<User>() {
+//            @Override
+//            public void onResponse(Call<User> call, Response<User> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<User> call, Throwable t) {
+//
+//            }
+//        });
     }
 
     private void initTopbar() {
@@ -101,17 +101,17 @@ public class MineFragment extends BaseFragment {
      * 登出
      */
     private void logout() {
-        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
+//        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
+//            @Override
+//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseResponse> call, Throwable t) {
+//
+//            }
+//        });
     }
 
     @Override
