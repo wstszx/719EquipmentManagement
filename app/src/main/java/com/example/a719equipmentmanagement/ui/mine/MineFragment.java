@@ -18,8 +18,13 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
@@ -50,25 +55,12 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initData();
         initTopbar();
         initGroupListView();
         initTextView();
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().getMe().enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
 
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void initTopbar() {
         topbar.setTitle("我的");
@@ -76,7 +68,6 @@ public class MineFragment extends BaseFragment {
 
     private void initTextView() {
 
-//        textView.setText("退出登录");
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,22 +92,14 @@ public class MineFragment extends BaseFragment {
      * 登出
      */
     private void logout() {
-        RetrofitClient.getInstance().getService().loginout().enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+        RetrofitClient.getInstance().getService().loginout()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
 
-            }
-
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+                    }
+                });
     }
 
     private void initGroupListView() {
