@@ -2,8 +2,8 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class SectionHeader implements QMUISection.Model<SectionHeader> {
-    private final String text;
+public class SectionHeader<T> implements QMUISection.Model<SectionHeader<T>> {
+    private final T text;
     private boolean isExpand;
 
     public boolean isExpand() {
@@ -14,11 +14,11 @@ public class SectionHeader implements QMUISection.Model<SectionHeader> {
         isExpand = expand;
     }
 
-    public SectionHeader(String text) {
+    public SectionHeader(T text) {
         this.text = text;
     }
 
-    public String getText() {
+    public T getText() {
         return text;
     }
 

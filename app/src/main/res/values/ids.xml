@@ -43,4 +43,5 @@
     <item name="list_view" type="id"/>
     <item name="carry_on" type="id"/>
     <item name="arrowleft" type="id"/>
+    <item name="save" type="id"/>
 </resources>

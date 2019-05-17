@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.EditDeptActivity"></activity>
+        <activity android:name=".ui.home.ConfirmBorrowResultsActivity"></activity>
+        <activity android:name=".ui.home.EditDeptActivity" />
         <activity android:name=".ui.mine.PersonInfoActivity" />
         <activity android:name=".ui.home.ScrappedActivity" />
         <activity android:name=".ui.home.EditPersonActivity" />
@@ -28,11 +29,12 @@
         <activity android:name=".ui.device.AddDeviceActivity" />
         <activity android:name=".ui.home.AddPersonActivity" />
         <activity android:name=".ui.home.CheckActivity" />
-        <activity android:name=".ui.home.InventoryActivity"></activity>
+        <activity android:name=".ui.home.InventoryActivity" />
         <activity android:name=".ui.home.AccountingActivity" />
         <activity android:name=".ui.home.PersonDetailActivity" />
         <activity android:name=".ui.device.DeviceDetailActivity" />
         <activity android:name=".ui.home.DeviceClassifiyActivity" />
+        <activity android:name=".ui.home.MsgActivity" />
         <activity android:name=".ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -49,10 +51,9 @@
         <activity android:name=".base.BaseItemEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
         <activity android:name=".ui.home.ContainerManageActivity" />
-        <activity android:name=".ui.home.PersonManageActivity"></activity>
+        <activity android:name=".ui.home.PersonManageActivity" />
         <activity android:name=".ui.home.ScanActivity" />
         <activity android:name=".ui.home.AddDeviceClassifyActivity" />
-
         <meta-data
             android:name="design_width_in_dp"
             android:value="360" />
