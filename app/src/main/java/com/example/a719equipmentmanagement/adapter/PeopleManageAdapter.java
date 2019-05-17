@@ -14,12 +14,9 @@ import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<User>, SectionItem<User>> {
 
@@ -37,7 +34,7 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     @NonNull
     @Override
     protected ViewHolder onCreateSectionHeaderViewHolder(@NonNull ViewGroup viewGroup) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_parent_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.base_one_level_item, viewGroup, false);
         return new ViewHolder(view);
     }
 

@@ -1,227 +1,48 @@
 package com.example.a719equipmentmanagement.entity;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Serializable {
-
+public class Me {
 
     /**
-     * id : 100
-     * searchValue : null
-     * createBy : admin
-     * createTime : 2018-03-16 11:33:00
-     * updateBy : null
-     * updateTime : null
-     * remark : null
-     * params : {}
-     * deptId : 100
-     * parentId : 0
-     * ancestors : 0
-     * deptName : 三亚试验
-     * orderNum : 0
-     * leader : 若依
-     * phone : 15888888888
-     * email : ry@qq.com
-     * status : 0
-     * delFlag : 0
-     * parentName : null
-     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"0","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"29c67a30398638269fe600f73a054934","salt":"111111","status":"0","delFlag":"0","loginIp":"10.11.53.64","loginDate":"2019-05-14 19:21:43","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":true}]
+     * postGroup : 董事长
+     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"29c67a30398638269fe600f73a054934","salt":"111111","status":"0","delFlag":"0","loginIp":"10.11.57.112","loginDate":"2019-05-16 17:22:29","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"admin":true}
+     * roleGroup : 超级系统管理员
      */
 
-    private int id;
-    private Object searchValue;
-    private String createBy;
-    private String createTime;
-    private Object updateBy;
-    private Object updateTime;
-    private Object remark;
-    private ParamsBean params;
-    private int deptId;
-    private int parentId;
-    private String ancestors;
-    private String deptName;
-    private String orderNum;
-    private String leader;
-    private String phone;
-    private String email;
-    private String status;
-    private String delFlag;
-    private Object parentName;
-    private List<ListBean> list;
+    private String postGroup;
+    private UserBean user;
+    private String roleGroup;
 
-    public int getId() {
-        return id;
+    public String getPostGroup() {
+        return postGroup;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPostGroup(String postGroup) {
+        this.postGroup = postGroup;
     }
 
-    public Object getSearchValue() {
-        return searchValue;
+    public UserBean getUser() {
+        return user;
     }
 
-    public void setSearchValue(Object searchValue) {
-        this.searchValue = searchValue;
+    public void setUser(UserBean user) {
+        this.user = user;
     }
 
-    public String getCreateBy() {
-        return createBy == null ? "" : createBy;
+    public String getRoleGroup() {
+        return roleGroup;
     }
 
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
+    public void setRoleGroup(String roleGroup) {
+        this.roleGroup = roleGroup;
     }
 
-    public String getCreateTime() {
-        return createTime == null ? "" : createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    public Object getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Object updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Object getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Object updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Object getRemark() {
-        return remark;
-    }
-
-    public void setRemark(Object remark) {
-        this.remark = remark;
-    }
-
-    public ParamsBean getParams() {
-        return params;
-    }
-
-    public void setParams(ParamsBean params) {
-        this.params = params;
-    }
-
-    public int getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(int deptId) {
-        this.deptId = deptId;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getAncestors() {
-        return ancestors == null ? "" : ancestors;
-    }
-
-    public void setAncestors(String ancestors) {
-        this.ancestors = ancestors;
-    }
-
-    public String getDeptName() {
-        return deptName == null ? "" : deptName;
-    }
-
-    public void setDeptName(String deptName) {
-        this.deptName = deptName;
-    }
-
-    public String getOrderNum() {
-        return orderNum == null ? "" : orderNum;
-    }
-
-    public void setOrderNum(String orderNum) {
-        this.orderNum = orderNum;
-    }
-
-    public String getLeader() {
-        return leader == null ? "" : leader;
-    }
-
-    public void setLeader(String leader) {
-        this.leader = leader;
-    }
-
-    public String getPhone() {
-        return phone == null ? "" : phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email == null ? "" : email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getStatus() {
-        return status == null ? "" : status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDelFlag() {
-        return delFlag == null ? "" : delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public Object getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(Object parentName) {
-        this.parentName = parentName;
-    }
-
-    public List<ListBean> getList() {
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
-    }
-
-    public void setList(List<ListBean> list) {
-        this.list = list;
-    }
-
-    public static class ParamsBean implements Serializable {
-    }
-
-    public static class ListBean implements Serializable {
+    public static class UserBean {
         /**
          * id : null
          * searchValue : null
-         * createBy : admin
+         * createBy : null
          * createTime : 2018-03-16 11:33:00
          * updateBy : null
          * updateTime : null
@@ -234,17 +55,17 @@ public class User implements Serializable {
          * userName : 王刚
          * email : wg@163.com
          * phonenumber : 15888888888
-         * sex : 0
+         * sex : 男
          * avatar : 2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg
          * password : 29c67a30398638269fe600f73a054934
          * salt : 111111
          * status : 0
          * delFlag : 0
-         * loginIp : 10.11.53.64
-         * loginDate : 2019-05-14 19:21:43
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null}
-         * roles : []
-         * roleIds : null
+         * loginIp : 10.11.57.112
+         * loginDate : 2019-05-16 17:22:29
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null}
+         * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
+         * roleIds : [1]
          * postIds : null
          * list : null
          * admin : true
@@ -252,12 +73,12 @@ public class User implements Serializable {
 
         private Object id;
         private Object searchValue;
-        private String createBy;
+        private Object createBy;
         private String createTime;
         private Object updateBy;
         private Object updateTime;
         private String remark;
-        private ParamsBeanX params;
+        private ParamsBean params;
         private int userId;
         private int deptId;
         private Object parentId;
@@ -274,11 +95,11 @@ public class User implements Serializable {
         private String loginIp;
         private String loginDate;
         private DeptBean dept;
-        private Object roleIds;
         private Object postIds;
         private Object list;
         private boolean admin;
-        private List<?> roles;
+        private List<RolesBean> roles;
+        private List<Integer> roleIds;
 
         public Object getId() {
             return id;
@@ -296,11 +117,11 @@ public class User implements Serializable {
             this.searchValue = searchValue;
         }
 
-        public String getCreateBy() {
+        public Object getCreateBy() {
             return createBy;
         }
 
-        public void setCreateBy(String createBy) {
+        public void setCreateBy(Object createBy) {
             this.createBy = createBy;
         }
 
@@ -336,11 +157,11 @@ public class User implements Serializable {
             this.remark = remark;
         }
 
-        public ParamsBeanX getParams() {
+        public ParamsBean getParams() {
             return params;
         }
 
-        public void setParams(ParamsBeanX params) {
+        public void setParams(ParamsBean params) {
             this.params = params;
         }
 
@@ -472,14 +293,6 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public Object getRoleIds() {
-            return roleIds;
-        }
-
-        public void setRoleIds(Object roleIds) {
-            this.roleIds = roleIds;
-        }
-
         public Object getPostIds() {
             return postIds;
         }
@@ -504,18 +317,26 @@ public class User implements Serializable {
             this.admin = admin;
         }
 
-        public List<?> getRoles() {
+        public List<RolesBean> getRoles() {
             return roles;
         }
 
-        public void setRoles(List<?> roles) {
+        public void setRoles(List<RolesBean> roles) {
             this.roles = roles;
         }
 
-        public static class ParamsBeanX implements Serializable {
+        public List<Integer> getRoleIds() {
+            return roleIds;
         }
 
-        public static class DeptBean implements Serializable {
+        public void setRoleIds(List<Integer> roleIds) {
+            this.roleIds = roleIds;
+        }
+
+        public static class ParamsBean {
+        }
+
+        public static class DeptBean {
             /**
              * id : null
              * searchValue : null
@@ -526,14 +347,14 @@ public class User implements Serializable {
              * remark : null
              * params : {}
              * deptId : 100
-             * parentId : null
+             * parentId : 0
              * ancestors : null
              * deptName : 三亚试验
-             * orderNum : null
+             * orderNum : 0
              * leader : null
              * phone : null
              * email : null
-             * status : null
+             * status : 0
              * delFlag : null
              * parentName : null
              * list : null
@@ -546,19 +367,224 @@ public class User implements Serializable {
             private Object updateBy;
             private Object updateTime;
             private Object remark;
-            private ParamsBeanXX params;
+            private ParamsBeanX params;
             private int deptId;
-            private Object parentId;
+            private int parentId;
             private Object ancestors;
             private String deptName;
-            private Object orderNum;
+            private String orderNum;
             private Object leader;
             private Object phone;
             private Object email;
-            private Object status;
+            private String status;
             private Object delFlag;
             private Object parentName;
             private Object list;
+
+            public Object getId() {
+                return id;
+            }
+
+            public void setId(Object id) {
+                this.id = id;
+            }
+
+            public Object getSearchValue() {
+                return searchValue;
+            }
+
+            public void setSearchValue(Object searchValue) {
+                this.searchValue = searchValue;
+            }
+
+            public Object getCreateBy() {
+                return createBy;
+            }
+
+            public void setCreateBy(Object createBy) {
+                this.createBy = createBy;
+            }
+
+            public Object getCreateTime() {
+                return createTime;
+            }
+
+            public void setCreateTime(Object createTime) {
+                this.createTime = createTime;
+            }
+
+            public Object getUpdateBy() {
+                return updateBy;
+            }
+
+            public void setUpdateBy(Object updateBy) {
+                this.updateBy = updateBy;
+            }
+
+            public Object getUpdateTime() {
+                return updateTime;
+            }
+
+            public void setUpdateTime(Object updateTime) {
+                this.updateTime = updateTime;
+            }
+
+            public Object getRemark() {
+                return remark;
+            }
+
+            public void setRemark(Object remark) {
+                this.remark = remark;
+            }
+
+            public ParamsBeanX getParams() {
+                return params;
+            }
+
+            public void setParams(ParamsBeanX params) {
+                this.params = params;
+            }
+
+            public int getDeptId() {
+                return deptId;
+            }
+
+            public void setDeptId(int deptId) {
+                this.deptId = deptId;
+            }
+
+            public int getParentId() {
+                return parentId;
+            }
+
+            public void setParentId(int parentId) {
+                this.parentId = parentId;
+            }
+
+            public Object getAncestors() {
+                return ancestors;
+            }
+
+            public void setAncestors(Object ancestors) {
+                this.ancestors = ancestors;
+            }
+
+            public String getDeptName() {
+                return deptName;
+            }
+
+            public void setDeptName(String deptName) {
+                this.deptName = deptName;
+            }
+
+            public String getOrderNum() {
+                return orderNum;
+            }
+
+            public void setOrderNum(String orderNum) {
+                this.orderNum = orderNum;
+            }
+
+            public Object getLeader() {
+                return leader;
+            }
+
+            public void setLeader(Object leader) {
+                this.leader = leader;
+            }
+
+            public Object getPhone() {
+                return phone;
+            }
+
+            public void setPhone(Object phone) {
+                this.phone = phone;
+            }
+
+            public Object getEmail() {
+                return email;
+            }
+
+            public void setEmail(Object email) {
+                this.email = email;
+            }
+
+            public String getStatus() {
+                return status;
+            }
+
+            public void setStatus(String status) {
+                this.status = status;
+            }
+
+            public Object getDelFlag() {
+                return delFlag;
+            }
+
+            public void setDelFlag(Object delFlag) {
+                this.delFlag = delFlag;
+            }
+
+            public Object getParentName() {
+                return parentName;
+            }
+
+            public void setParentName(Object parentName) {
+                this.parentName = parentName;
+            }
+
+            public Object getList() {
+                return list;
+            }
+
+            public void setList(Object list) {
+                this.list = list;
+            }
+
+            public static class ParamsBeanX {
+            }
+        }
+
+        public static class RolesBean {
+            /**
+             * id : null
+             * searchValue : null
+             * createBy : null
+             * createTime : null
+             * updateBy : null
+             * updateTime : null
+             * remark : null
+             * params : {}
+             * roleId : 1
+             * roleName : 超级系统管理员
+             * roleKey : admin
+             * roleSort : 1
+             * dataScope : 1
+             * status : 0
+             * delFlag : null
+             * flag : false
+             * menuIds : null
+             * deptIds : null
+             */
+
+            private Object id;
+            private Object searchValue;
+            private Object createBy;
+            private Object createTime;
+            private Object updateBy;
+            private Object updateTime;
+            private Object remark;
+            private ParamsBeanXX params;
+            private int roleId;
+            private String roleName;
+            private String roleKey;
+            private String roleSort;
+            private String dataScope;
+            private String status;
+            private Object delFlag;
+            private boolean flag;
+            private Object menuIds;
+            private Object deptIds;
 
             public Object getId() {
                 return id;
@@ -624,75 +650,51 @@ public class User implements Serializable {
                 this.params = params;
             }
 
-            public int getDeptId() {
-                return deptId;
+            public int getRoleId() {
+                return roleId;
             }
 
-            public void setDeptId(int deptId) {
-                this.deptId = deptId;
+            public void setRoleId(int roleId) {
+                this.roleId = roleId;
             }
 
-            public Object getParentId() {
-                return parentId;
+            public String getRoleName() {
+                return roleName;
             }
 
-            public void setParentId(Object parentId) {
-                this.parentId = parentId;
+            public void setRoleName(String roleName) {
+                this.roleName = roleName;
             }
 
-            public Object getAncestors() {
-                return ancestors;
+            public String getRoleKey() {
+                return roleKey;
             }
 
-            public void setAncestors(Object ancestors) {
-                this.ancestors = ancestors;
+            public void setRoleKey(String roleKey) {
+                this.roleKey = roleKey;
             }
 
-            public String getDeptName() {
-                return deptName;
+            public String getRoleSort() {
+                return roleSort;
             }
 
-            public void setDeptName(String deptName) {
-                this.deptName = deptName;
+            public void setRoleSort(String roleSort) {
+                this.roleSort = roleSort;
             }
 
-            public Object getOrderNum() {
-                return orderNum;
+            public String getDataScope() {
+                return dataScope;
             }
 
-            public void setOrderNum(Object orderNum) {
-                this.orderNum = orderNum;
+            public void setDataScope(String dataScope) {
+                this.dataScope = dataScope;
             }
 
-            public Object getLeader() {
-                return leader;
-            }
-
-            public void setLeader(Object leader) {
-                this.leader = leader;
-            }
-
-            public Object getPhone() {
-                return phone;
-            }
-
-            public void setPhone(Object phone) {
-                this.phone = phone;
-            }
-
-            public Object getEmail() {
-                return email;
-            }
-
-            public void setEmail(Object email) {
-                this.email = email;
-            }
-
-            public Object getStatus() {
+            public String getStatus() {
                 return status;
             }
 
-            public void setStatus(Object status) {
+            public void setStatus(String status) {
                 this.status = status;
             }
 
@@ -704,23 +706,31 @@ public class User implements Serializable {
                 this.delFlag = delFlag;
             }
 
-            public Object getParentName() {
-                return parentName;
+            public boolean isFlag() {
+                return flag;
             }
 
-            public void setParentName(Object parentName) {
-                this.parentName = parentName;
+            public void setFlag(boolean flag) {
+                this.flag = flag;
             }
 
-            public Object getList() {
-                return list;
+            public Object getMenuIds() {
+                return menuIds;
             }
 
-            public void setList(Object list) {
-                this.list = list;
+            public void setMenuIds(Object menuIds) {
+                this.menuIds = menuIds;
             }
 
-            public static class ParamsBeanXX implements Serializable {
+            public Object getDeptIds() {
+                return deptIds;
+            }
+
+            public void setDeptIds(Object deptIds) {
+                this.deptIds = deptIds;
+            }
+
+            public static class ParamsBeanXX {
             }
         }
     }

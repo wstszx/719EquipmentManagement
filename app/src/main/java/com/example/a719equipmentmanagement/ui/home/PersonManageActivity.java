@@ -6,9 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
@@ -37,6 +40,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -52,8 +56,9 @@ public class PersonManageActivity extends BaseActivity {
 
 
     private static final int EDIT_DEPT = 1;
-    private static final int EDIT_PERSON = 2;
-    private static final int ADD_DEPT = 3;
+    private static final int EDIT_CHILD_DEPT = 2;
+    private static final int EDIT_PERSON = 3;
+    private static final int ADD_DEPT = 4;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
@@ -77,6 +82,9 @@ public class PersonManageActivity extends BaseActivity {
     private String parentDept;
     private User user;
     private PersonManageAdapter adapter1;
+    private PersonOne personOne;
+    private PersonTwo personTwo;
+    private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -92,7 +100,6 @@ public class PersonManageActivity extends BaseActivity {
         RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
-
                     @Override
                     public void onSuccess(List<User> users) {
                         PersonManageActivity.this.users = users;
@@ -104,71 +111,6 @@ public class PersonManageActivity extends BaseActivity {
 
     }
 
-//    private void initStickySectionLayout() {
-//        LinearLayoutManager manager = new LinearLayoutManager(this);
-//        stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
-//        stickySectionLayout.setLayoutManager(manager);
-//        adapter1 = new PeopleManageAdapter();
-//        stickySectionLayout.setAdapter(adapter1, true);
-//        list = new ArrayList<>();
-//
-//        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<User>, SectionItem<User>>() {
-//            @Override
-//            public void loadMore(QMUISection<SectionHeader<User>, SectionItem<User>> section, boolean loadMoreBefore) {
-//
-//            }
-//
-//            @Override
-//            public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-//                int itemViewType = holder.getItemViewType();
-//                switch (itemViewType) {
-//                    case 0:
-//                        adapter1.toggleFold(position, false);
-//                        break;
-//                    case 1:
-//                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
-//                        User listBean = sectionItem != null ? sectionItem.getListBean() : null;
-//                        PersonDetailActivity.start(PersonManageActivity.this, listBean);
-//                        break;
-//                }
-//            }
-//
-//            @Override
-//            public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-//                itemViewType = holder.getItemViewType();
-//                View view = holder.itemView;
-//                switch (itemViewType) {
-//                    case 0:
-//                        initListPopupIfNeed(parentdeletes);
-//                        TextView tvParent = view.findViewById(R.id.tv_parent);
-//                        parentTitle = tvParent.getText().toString();
-//                        QMUISection<SectionHeader<User>, SectionItem<User>> section = adapter1.getSection(position);
-//                        if (section != null) {
-//                            SectionHeader<User> header = section.getHeader();
-//                            user = header.getText();
-//                        }
-//                        break;
-//                    case 1:
-//                        initListPopupIfNeed(deletes);
-//                        TextView tv_1 = view.findViewById(R.id.tv_1);
-//                        TextView tv_2 = view.findViewById(R.id.tv_2);
-//                        TextView tv_3 = view.findViewById(R.id.tv_3);
-//                        childTitle1 = tv_1.getText().toString();
-//                        childTitle2 = tv_2.getText().toString();
-//                        childTitle3 = tv_3.getText().toString();
-//                        SectionItem<User> sectionItem = adapter1.getSectionItem(position);
-//                        if (sectionItem != null) {
-//                            user = sectionItem.getListBean();
-//                        }
-//                        break;
-//                }
-//                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-//                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-//                mListPopup.show(holder.itemView);
-//                return true;
-//            }
-//        });
-//    }
 
     private void createSection(List<User> users) {
         List<MultiItemEntity> list = new ArrayList<>();
@@ -200,22 +142,65 @@ public class PersonManageActivity extends BaseActivity {
         }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new PersonManageAdapter(this, list);
+        adapter1.bindToRecyclerView(recyclerview);
+        adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);
-        adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-
+        adapter1.setOnItemClickListener((adapter, view, position) -> {
+            itemViewType = adapter.getItemViewType(position);
+            ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
+            switch (itemViewType) {
+                case 0:
+                    personOne = (PersonOne) adapter.getData().get(position);
+                    if (personOne.isExpanded()) {
+                        adapter1.collapse(position, true);
+                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
+                    } else {
+                        adapter1.expand(position, true);
+                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
+                    }
+                    user = personOne.getUser();
+                    break;
+                case 1:
+                    personTwo = (PersonTwo) adapter.getData().get(position);
+                    if (personTwo.isExpanded()) {
+                        adapter1.collapse(position, true);
+                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
+                    } else {
+                        adapter1.expand(position, true);
+                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
+                    }
+                    user = personTwo.getUser();
+                    break;
+                case 2:
+                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
+                    user = personThree.getUser();
+                    break;
             }
         });
-        adapter1.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(BaseQuickAdapter adapter, View v, int position) {
-                initListPopupIfNeed(addTypes);
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(v);
-                return false;
+        adapter1.setOnItemLongClickListener((adapter, v, position) -> {
+            itemViewType = adapter.getItemViewType(position);
+            switch (itemViewType) {
+                case 0:
+                    personOne = (PersonOne) adapter.getData().get(position);
+                    user = personOne.getUser();
+                    deptId = user.getDeptId();
+                    break;
+                case 1:
+                    personTwo = (PersonTwo) adapter.getData().get(position);
+                    user = personTwo.getUser();
+                    deptId = user.getDeptId();
+                    break;
+                case 2:
+                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
+                    user = personThree.getUser();
+                    deptId = user.getDeptId();
+                    break;
             }
+            initListPopupIfNeed(parentdeletes);
+            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+            mListPopup.show(v);
+            return false;
         });
     }
 
@@ -274,22 +259,7 @@ public class PersonManageActivity extends BaseActivity {
                             delete();
                             break;
                         case "编辑":
-                            switch (itemViewType) {
-                                case 0:
-                                    Intent intent = new Intent();
-                                    intent.putExtra("parentDept", parentDept);
-                                    intent.putExtra("data", user);
-                                    intent.setClass(PersonManageActivity.this, EditDeptActivity.class);
-                                    startActivityForResult(intent, EDIT_DEPT);
-                                    break;
-                                case 1:
-                                    Intent intent1 = new Intent();
-                                    intent1.putExtra("text", parentTitle);
-                                    intent1.setClass(PersonManageActivity.this, EditPersonActivity.class);
-                                    startActivityForResult(intent1, EDIT_PERSON);
-                                    break;
-                            }
-
+                            edit();
                             break;
                     }
                     mListPopup.dismiss();
@@ -299,11 +269,63 @@ public class PersonManageActivity extends BaseActivity {
         }
     }
 
+    private void edit() {
+        switch (itemViewType) {
+            case 0:
+                parentTitle = "无";
+                break;
+            case 1:
+                parentTitle = personOne.getUser().getDeptName();
+                break;
+            case 2:
+                parentTitle = personTwo.getUser().getDeptName();
+                break;
+        }
+        Intent intent = new Intent();
+        intent.putExtra("parentTitle", parentTitle);
+        intent.putExtra("data", user);
+        intent.setClass(PersonManageActivity.this, EditDeptActivity.class);
+        startActivity(intent);
+//        switch (itemViewType) {
+//            case 0:
+//                Intent intent = new Intent();
+//                intent.putExtra("parentTitle", parentTitle);
+//                intent.putExtra("data", user);
+//                intent.setClass(PersonManageActivity.this, EditDeptActivity.class);
+//                startActivityForResult(intent, EDIT_DEPT);
+//                break;
+//            case 1:
+//                Intent intent1 = new Intent();
+//                intent1.putExtra("parentTitle", parentTitle);
+//                intent1.putExtra("data", user);
+//                intent1.setClass(PersonManageActivity.this, EditDeptActivity.class);
+//                startActivityForResult(intent1, EDIT_CHILD_DEPT);
+//                break;
+//            case 2:
+//                Intent intent2 = new Intent();
+//                intent2.putExtra("parentTitle", parentTitle);
+//                intent2.putExtra("data", user);
+//                intent2.setClass(PersonManageActivity.this, EditDeptActivity.class);
+//                startActivityForResult(intent2, EDIT_PERSON);
+//                break;
+//        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case EDIT_DEPT:
+                RetrofitClient.getInstance().getService().editDept()
+                        .compose(CommonCompose.io2main(PersonManageActivity.this))
+                        .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                            @Override
+                            public void onSuccess(BaseResponse baseResponse) {
+                                initData();
+                            }
+                        });
+                break;
+            case EDIT_CHILD_DEPT:
                 RetrofitClient.getInstance().getService().editDept()
                         .compose(CommonCompose.io2main(PersonManageActivity.this))
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
@@ -333,7 +355,8 @@ public class PersonManageActivity extends BaseActivity {
     private void delete() {
         switch (itemViewType) {
             case 0:
-                RetrofitClient.getInstance().getService().delete()
+            case 1:
+                RetrofitClient.getInstance().getService().delete(deptId)
                         .compose(CommonCompose.io2main(PersonManageActivity.this))
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                             @Override
@@ -342,7 +365,7 @@ public class PersonManageActivity extends BaseActivity {
                             }
                         });
                 break;
-            case 1:
+            case 2:
                 RetrofitClient.getInstance().getService().deleteUser("")
                         .compose(CommonCompose.io2main(PersonManageActivity.this))
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
