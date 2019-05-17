@@ -15,7 +15,7 @@ import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem<DeviceClassifiy>> {
+public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> {
 
     @NonNull
     @Override
@@ -32,7 +32,7 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -47,12 +47,13 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
             int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
             toggleFold(pos, false);
         });
-        tvParent.setText(section.getHeader().getText());
+        String name = section.getHeader().getText().getName();
+        tvParent.setText(name);
 
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<DeviceClassifiy>> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);

@@ -15,9 +15,24 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
-public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader, SectionItem<User.ListBean>> {
+public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<User>, SectionItem<User>> {
+
+    private List<QMUISection<SectionHeader<User>, SectionItem<User>>> list = new ArrayList<>();
+
+    public void setList(List<QMUISection<SectionHeader<User>, SectionItem<User>>> list) {
+        setData(list);
+        if (list.size() > 0) {
+            list.clear();
+        }
+//        this.list = list;
+//        refreshCustomData();
+    }
 
     @NonNull
     @Override
@@ -34,9 +49,12 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<User.ListBean>> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<User>, SectionItem<User>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
+        TextView tv_leader = view.findViewById(R.id.tv_leader);
+        TextView tv_status = view.findViewById(R.id.tv_status);
+//        TextView tv_create_time = view.findViewById(R.id.tv_create_time);
         ImageView ivRight = view.findViewById(R.id.iv_right);
 
         boolean fold = section.isFold();
@@ -49,20 +67,45 @@ public class PeopleManageAdapter extends QMUIDefaultStickySectionAdapter<Section
             int pos = holder.isForStickyHeader ? position : holder.getAdapterPosition();
             toggleFold(pos, false);
         });
-        tvParent.setText(section.getHeader().getText());
+        User user = section.getHeader().getText();
+        String deptName = user.getDeptName();
+        String leader = user.getLeader();
+        String status = user.getStatus();
+//        String createTime = user.getCreateTime();
+        tv_leader.setText(leader);
+        switch (status) {
+            case "0":
+                tv_status.setText("正常");
+                break;
+            case "1":
+                tv_status.setText("停用");
+                break;
+        }
+//        tv_create_time.setText(createTime);
+        tvParent.setText(deptName);
 
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader, SectionItem<User.ListBean>> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<User>, SectionItem<User>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
-        User.ListBean user = section.getItemAt(itemIndex).getListBean();
-        tv_1.setText(user.getDeptId()+"");
-        tv_2.setText(user.getLoginName());
-        tv_3.setText(user.getPhonenumber());
+        User user = section.getItemAt(itemIndex).getListBean();
+        String deptName = user.getDeptName();
+        String leader = user.getLeader();
+        String status = user.getStatus();
+        tv_1.setText(deptName);
+        tv_2.setText(leader);
+        switch (status) {
+            case "0":
+                tv_3.setText("正常");
+                break;
+            case "1":
+                tv_3.setText("停用");
+                break;
+        }
     }
 }

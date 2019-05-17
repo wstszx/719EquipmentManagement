@@ -92,7 +92,7 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void bindUi(List<ContainerData> body) {
-        ArrayList<QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>>> list = new ArrayList<>();
         for (ContainerData containerData : body) {
             list.add(createSection(containerData));
         }
@@ -105,9 +105,9 @@ public class ContainerManageActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new ContainerManageAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader, SectionItem<ContainerData.ListBean>>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>> section, boolean loadMoreBefore) {
 
             }
 
@@ -147,7 +147,7 @@ public class ContainerManageActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader, SectionItem<ContainerData.ListBean>> createSection(ContainerData containerData) {
+    private QMUISection<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>> createSection(ContainerData containerData) {
         String name = containerData.getName();
         SectionHeader header = new SectionHeader(name);
         ArrayList<SectionItem<ContainerData.ListBean>> contents = new ArrayList<>();
@@ -157,9 +157,6 @@ public class ContainerManageActivity extends BaseActivity {
                 contents.add(new SectionItem<>(listBean));
             }
         }
-        // if test load more, you can open the code
-//        section.setExistAfterDataToLoad(true);
-//        section.setExistBeforeDataToLoad(true);
         return new QMUISection<>(header, contents, true);
     }
 
