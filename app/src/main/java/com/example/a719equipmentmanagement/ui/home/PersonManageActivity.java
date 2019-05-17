@@ -100,7 +100,6 @@ public class PersonManageActivity extends BaseActivity {
         RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
-
                     @Override
                     public void onSuccess(List<User> users) {
                         PersonManageActivity.this.users = users;
@@ -143,10 +142,12 @@ public class PersonManageActivity extends BaseActivity {
         }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new PersonManageAdapter(this, list);
+        adapter1.bindToRecyclerView(recyclerview);
+        adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             itemViewType = adapter.getItemViewType(position);
-            ImageView imageView = (ImageView) adapter1.getViewByPosition(position, R.id.iv_right);
+            ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
             switch (itemViewType) {
                 case 0:
                     personOne = (PersonOne) adapter.getData().get(position);
@@ -158,7 +159,6 @@ public class PersonManageActivity extends BaseActivity {
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
                     user = personOne.getUser();
-                    parentTitle = "无";
                     break;
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
@@ -170,7 +170,6 @@ public class PersonManageActivity extends BaseActivity {
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
                     user = personTwo.getUser();
-                    parentTitle = personOne.getUser().getDeptName();
                     break;
                 case 2:
                     PersonThree personThree = (PersonThree) adapter.getData().get(position);
@@ -182,7 +181,6 @@ public class PersonManageActivity extends BaseActivity {
             itemViewType = adapter.getItemViewType(position);
             switch (itemViewType) {
                 case 0:
-                    parentTitle = "无";
                     personOne = (PersonOne) adapter.getData().get(position);
                     user = personOne.getUser();
                     deptId = user.getDeptId();
@@ -191,11 +189,11 @@ public class PersonManageActivity extends BaseActivity {
                     personTwo = (PersonTwo) adapter.getData().get(position);
                     user = personTwo.getUser();
                     deptId = user.getDeptId();
-                    parentTitle = personOne.getUser().getDeptName();
                     break;
                 case 2:
                     PersonThree personThree = (PersonThree) adapter.getData().get(position);
                     user = personThree.getUser();
+                    deptId = user.getDeptId();
                     break;
             }
             initListPopupIfNeed(parentdeletes);
@@ -272,6 +270,17 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void edit() {
+        switch (itemViewType) {
+            case 0:
+                parentTitle = "无";
+                break;
+            case 1:
+                parentTitle = personOne.getUser().getDeptName();
+                break;
+            case 2:
+                parentTitle = personTwo.getUser().getDeptName();
+                break;
+        }
         Intent intent = new Intent();
         intent.putExtra("parentTitle", parentTitle);
         intent.putExtra("data", user);
@@ -346,7 +355,8 @@ public class PersonManageActivity extends BaseActivity {
     private void delete() {
         switch (itemViewType) {
             case 0:
-                RetrofitClient.getInstance().getService().delete(String.valueOf(deptId))
+            case 1:
+                RetrofitClient.getInstance().getService().delete(deptId)
                         .compose(CommonCompose.io2main(PersonManageActivity.this))
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                             @Override
@@ -355,7 +365,7 @@ public class PersonManageActivity extends BaseActivity {
                             }
                         });
                 break;
-            case 1:
+            case 2:
                 RetrofitClient.getInstance().getService().deleteUser("")
                         .compose(CommonCompose.io2main(PersonManageActivity.this))
                         .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {

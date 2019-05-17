@@ -1,4 +1,4 @@
 package com.example.a719equipmentmanagement.entity;
 
-public class WaitReturnDevice {
+public class ToAudit {
 }

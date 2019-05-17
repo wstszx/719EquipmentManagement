@@ -2,21 +2,24 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
-import com.example.a719equipmentmanagement.entity.WaitApprovalItem;
-import com.example.a719equipmentmanagement.entity.WaitReturnDevice;
+import com.example.a719equipmentmanagement.entity.InvalidEquip;
+import com.example.a719equipmentmanagement.entity.Me;
+import com.example.a719equipmentmanagement.entity.ToAudit;
+import com.example.a719equipmentmanagement.entity.ToDo;
+import com.example.a719equipmentmanagement.entity.ToReturn;
+import com.example.a719equipmentmanagement.entity.UserToDo;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
@@ -61,19 +64,89 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getWaitApprovalItem()
+//        1,超级系统管理员2，普通用户3，实验室管理员
+        RetrofitClient.getInstance().getService().getMe()
                 .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<WaitApprovalItem>(getContext()) {
+                .subscribe(new BaseSubscriber<Me>(getContext()) {
                     @Override
-                    public void onSuccess(WaitApprovalItem waitApprovalItem) {
+                    public void onSuccess(Me me) {
+                        if (me != null) {
+                            getMeData(me);
+                        }
+                    }
+                });
+//        RetrofitClient.getInstance().getService().getWaitApprovalItem()
+//                .compose(CommonCompose.io2main(getContext()))
+//                .subscribe(new BaseSubscriber<InvalidEquip>(getContext()) {
+//                    @Override
+//                    public void onSuccess(InvalidEquip invalidEquip) {
+//
+//                    }
+//                });
+//        RetrofitClient.getInstance().getService().getWaitReturnDevice()
+//                .compose(CommonCompose.io2main(getContext()))
+//                .subscribe(new BaseSubscriber<ToAudit>(getContext()) {
+//                    @Override
+//                    public void onSuccess(ToAudit waitReturnDevice) {
+//
+//                    }
+//                });
+    }
+
+    private void getMeData(Me me) {
+        int roleId = me.getUser().getRoles().get(0).getRoleId();
+        SPUtils.getInstance().put("roleId", roleId);
+        switch (roleId) {
+            case 1:
+            case 2:
+//                getAdminData();
+                break;
+            case 3:
+//                getUserData();
+                break;
+        }
+    }
+
+    /**
+     * 获取普通用户事项
+     */
+    private void getUserData() {
+        RetrofitClient.getInstance().getService().userToDo()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<UserToDo>(getContext()) {
+                    @Override
+                    public void onSuccess(UserToDo data) {
 
                     }
                 });
-        RetrofitClient.getInstance().getService().getWaitReturnDevice()
+        RetrofitClient.getInstance().getService().toReturn()
                 .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<WaitReturnDevice>(getContext()) {
+                .subscribe(new BaseSubscriber<ToReturn>(getContext()) {
                     @Override
-                    public void onSuccess(WaitReturnDevice waitReturnDevice) {
+                    public void onSuccess(ToReturn data) {
+
+                    }
+                });
+
+    }
+
+    /**
+     * 获取管理员用户事项
+     */
+    private void getAdminData() {
+        RetrofitClient.getInstance().getService().toDo()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<ToDo>(getContext()) {
+                    @Override
+                    public void onSuccess(ToDo data) {
+
+                    }
+                });
+        RetrofitClient.getInstance().getService().toAudit()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<ToAudit>(getContext()) {
+                    @Override
+                    public void onSuccess(ToAudit data) {
 
                     }
                 });

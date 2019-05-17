@@ -33,15 +33,6 @@ public class PersonManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEnti
         addItemType(LEVEL_THREE, R.layout.base_three_level_item);
     }
 
-    private ClickListener listener;
-
-    public interface ClickListener {
-        void click(String parentText);
-    }
-
-    public void setListener(ClickListener listener) {
-        this.listener = listener;
-    }
 
     @Override
     protected void convert(BaseViewHolder helper, MultiItemEntity item) {

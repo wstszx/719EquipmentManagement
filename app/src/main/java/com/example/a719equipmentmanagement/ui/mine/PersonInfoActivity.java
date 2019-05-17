@@ -8,6 +8,7 @@ import android.view.View;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
@@ -42,9 +43,9 @@ public class PersonInfoActivity extends BaseActivity {
     private void initData() {
         RetrofitClient.getInstance().getService().getMe()
                 .compose(CommonCompose.io2main(PersonInfoActivity.this))
-                .subscribe(new BaseSubscriber<User>(PersonInfoActivity.this) {
+                .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
                     @Override
-                    public void onSuccess(User baseResponse) {
+                    public void onSuccess(Me baseResponse) {
                         if (baseResponse != null) {
                             initGroupListView();
                         }

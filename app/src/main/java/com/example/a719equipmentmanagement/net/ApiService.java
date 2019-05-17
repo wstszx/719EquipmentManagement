@@ -5,17 +5,20 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
-import com.example.a719equipmentmanagement.entity.DeviceTypeData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
 import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
-import com.example.a719equipmentmanagement.entity.LoginBean;
+import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.RoleData;
+import com.example.a719equipmentmanagement.entity.ToAudit;
+import com.example.a719equipmentmanagement.entity.ToDo;
+import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.User;
-import com.example.a719equipmentmanagement.entity.WaitApprovalItem;
-import com.example.a719equipmentmanagement.entity.WaitReturnDevice;
+import com.example.a719equipmentmanagement.entity.InvalidEquip;
+import com.example.a719equipmentmanagement.entity.UserToAudit;
+import com.example.a719equipmentmanagement.entity.UserToDo;
 
 import java.io.File;
 import java.util.IdentityHashMap;
@@ -32,7 +35,6 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
-import retrofit2.http.Url;
 
 /**
  *
@@ -93,7 +95,7 @@ public interface ApiService {
 
     //删除科室
     @GET("system/dept/remove/{deptId}")
-    Single<BaseResponse> delete(@Path("deptId") String deptId);
+    Single<BaseResponse> delete(@Path("deptId") int deptId);
 
 
     /* -------------- dict-data-controller  ----------------------- */
@@ -140,19 +142,35 @@ public interface ApiService {
     Single<MsgData> findMsgData();
 
 
-    //获取待办事项
-    @GET("system/msg/list")
-    Single<WaitApprovalItem> getWaitApprovalItem();
+    //管理员：即将过期的设备
+    @GET("invalidEquip")
+    Single<InvalidEquip> invalidEquip();
 
-    //获取待还设备
-    @GET("system/msg/list")
-    Single<WaitReturnDevice> getWaitReturnDevice();
+    //管理员：获取待办事项
+    @GET("toAudit")
+    Single<ToAudit> toAudit();
+
+    //管理员: 我的待办事项（送检、解封、报废）
+    @GET("toDo")
+    Single<ToDo> toDo();
+
+    //普通用户: 我的待还设备
+    @GET("toReturn")
+    Single<ToReturn> toReturn();
+
+    //普通用户: 我的申请进度
+    @GET("userToAudit")
+    Single<UserToAudit> userToAudit();
+
+    //普通用户: 我的待办事项
+    @GET("userToDo")
+    Single<UserToDo> userToDo();
 
 
     /*----------------- profile-controller  ----------------*/
     //APP获取当前用户信息
     @GET("system/user/profile/me")
-    Single<User> getMe();
+    Single<Me> getMe();
 
     //修改密码
     @POST("system/user/profile/resetPwd")
