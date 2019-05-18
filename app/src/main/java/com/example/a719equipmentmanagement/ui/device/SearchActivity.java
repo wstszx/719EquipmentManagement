@@ -85,16 +85,6 @@ public class SearchActivity extends BaseActivity {
                         }
                     }
 
-                    public void onSuccess(DeviceData.RowsBean baseResponse) {
-                        if (baseResponse != null ) {
-                            for(int i=0;i<=rowCount;i++){
-//                                deptOption.add(i,baseResponse.getDeptId());
-                                BaseSingleFilter filter= new BaseSingleFilter();
-                                filter.setId(baseResponse.getId());
-                                deptId.add(filter);
-                            }
-                        }
-                    }
                 });
     }
 
@@ -103,8 +93,8 @@ public class SearchActivity extends BaseActivity {
         BaseFilterAdapter adapter1 = new BaseFilterAdapter(R.layout.base_filter_item);
         recyclerView1.setLayoutManager(new LinearLayoutManager(this));
         recyclerView1.setAdapter(adapter1);
-//        adapter1.setNewData(filters);
-        adapter1.setNewData(deptId);
+        adapter1.setNewData(filters);
+//        adapter1.setNewData(deptId);
 
         adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
@@ -182,6 +172,10 @@ public class SearchActivity extends BaseActivity {
 
         dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
     }
+
+//    private void createSeaction(List<> ){
+//
+//    }
 
     private void initTopbar() {
         topbar.setTitle("设备搜索");
