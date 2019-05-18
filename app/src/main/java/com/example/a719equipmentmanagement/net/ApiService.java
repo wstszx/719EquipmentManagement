@@ -15,6 +15,7 @@ import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
+import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
@@ -97,6 +98,12 @@ public interface ApiService {
     //删除科室
     @GET("system/dept/remove/{deptId}")
     Single<BaseResponse> delete(@Path("deptId") int deptId);
+
+    //获取科室
+    @GET("system/dept/treeData")
+    Single<List<TreeData>> getTreeData();
+
+
 
 
     /* -------------- dict-data-controller  ----------------------- */

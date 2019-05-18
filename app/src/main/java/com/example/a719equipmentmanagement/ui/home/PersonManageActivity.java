@@ -147,6 +147,10 @@ public class PersonManageActivity extends BaseActivity {
         adapter1.bindToRecyclerView(recyclerview);
         adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);
+        for (int i = 0; i < adapter1.getData().size(); i++) {
+            adapter1.expand(i, true);
+        }
+
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             itemViewType = adapter.getItemViewType(position);
             ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
