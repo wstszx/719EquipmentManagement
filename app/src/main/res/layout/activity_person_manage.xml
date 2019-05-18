@@ -12,15 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height" />
 
-    <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
-        android:id="@+id/sticky_section_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/person_manage_header"/>
 
-    <!--<androidx.recyclerview.widget.RecyclerView-->
-        <!--android:id="@+id/recyclerview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/qmui_config_color_white"-->
-        <!--/>-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/qmui_config_color_white" />
 </LinearLayout>

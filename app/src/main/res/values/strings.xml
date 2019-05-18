@@ -21,4 +21,6 @@
     <string name="dept_type">科室分类</string>
     <string name="sort">分类</string>
     <string name="status">状态</string>
+    <string name="leader">负责人</string>
+    <string name="dept_name">部门名称</string>
 </resources>

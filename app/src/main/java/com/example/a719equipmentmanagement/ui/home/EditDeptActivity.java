@@ -27,9 +27,8 @@ import butterknife.BindView;
 
 public class EditDeptActivity extends BaseActivity {
 
-    private String[] containerAttrs = {"上级部门", "部门名称", "显示排序",
+    private String[] containerAttrs = {"上级部门", "部门名称",
             "负责人", "联系电话", "邮箱", "部门状态"};
-//    private String[] containerAttrValue = new String[3];
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
@@ -47,7 +46,7 @@ public class EditDeptActivity extends BaseActivity {
     private void initData() {
         deptDetails = new ArrayList<>();
         Intent intent = getIntent();
-        String parentDept = intent.getStringExtra("parentDept");
+        String parentTitle = intent.getStringExtra("parentTitle");
         User data = (User) intent.getSerializableExtra("data");
         String deptName = data.getDeptName();
         String orderNum = data.getOrderNum();
@@ -55,7 +54,7 @@ public class EditDeptActivity extends BaseActivity {
         String phone = data.getPhone();
         String email = data.getEmail();
         String status = data.getStatus();
-        deptDetails.add(parentDept);
+        deptDetails.add(parentTitle);
         deptDetails.add(deptName);
         deptDetails.add(orderNum);
         deptDetails.add(leader);

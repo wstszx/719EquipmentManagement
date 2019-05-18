@@ -77,14 +77,6 @@ public class AddDeptActivity extends BaseActivity {
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(0);
         section.addItemView(item, onClickListener);
-        item1 = groupListView.createItemView(
-                null,
-                containerAttrs[1],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item1.setTag(1);
-        section.addItemView(item1, onClickListener);
         item2 = groupListView.createItemView(
                 null,
                 containerAttrs[2],
@@ -135,7 +127,6 @@ public class AddDeptActivity extends BaseActivity {
 
     private void getInputData() {
         String input = item.getDetailText().toString();
-        String input1 = item1.getDetailText().toString();
         String input2 = item2.getDetailText().toString();
         String input3 = item3.getDetailText().toString();
         String input4 = item4.getDetailText().toString();
@@ -145,7 +136,6 @@ public class AddDeptActivity extends BaseActivity {
         try {
             map.put("parentId", "100");
             map.put("deptName", input);
-            map.put("orderNum", input1);
             map.put("leader", input2);
             map.put("phone", input3);
             map.put("email", input4);

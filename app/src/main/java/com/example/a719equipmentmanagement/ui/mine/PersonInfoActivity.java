@@ -3,10 +3,19 @@ package com.example.a719equipmentmanagement.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.Me;
+import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
+import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -15,6 +24,10 @@ public class PersonInfoActivity extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
+    @BindView(R.id.groupListView)
+    QMUIGroupListView groupListView;
+    private QMUICommonListItemView listItemView;
+    private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式"};
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -23,12 +36,73 @@ public class PersonInfoActivity extends BaseActivity {
 
     private void initView() {
         initTopbar();
-        initShowInfo();
-    }
-
-    private void initShowInfo() {
+        initData();
 
     }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getMe()
+                .compose(CommonCompose.io2main(PersonInfoActivity.this))
+                .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
+                    @Override
+                    public void onSuccess(Me baseResponse) {
+                        if (baseResponse != null) {
+                            initGroupListView();
+                        }
+                    }
+                });
+    }
+
+    private void initGroupListView() {
+        View.OnClickListener onClickListener = v -> {
+            listItemView = (QMUICommonListItemView) v;
+            int tag = (int) listItemView.getTag();
+            Intent intent = new Intent();
+            intent.putExtra("text", listItemView.getDetailText().toString());
+            intent.setClass(this, BaseItemEditActivity.class);
+            startActivityForResult(intent, tag);
+        };
+        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
+
+        QMUICommonListItemView item = groupListView.createItemView(
+                null,
+                containerAttrs[0],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(0);
+        section.addItemView(item, onClickListener);
+
+        QMUICommonListItemView item1 = groupListView.createItemView(
+                null,
+                containerAttrs[1],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(1);
+        section.addItemView(item1, onClickListener);
+
+        QMUICommonListItemView item2 = groupListView.createItemView(
+                null,
+                containerAttrs[2],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(2);
+        section.addItemView(item2, onClickListener);
+
+        QMUICommonListItemView item3 = groupListView.createItemView(
+                null,
+                containerAttrs[3],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(3);
+        section.addItemView(item3, onClickListener);
+
+        section.addTo(groupListView);
+    }
+
 
     private void initTopbar() {
         topbar.setTitle("个人信息");
@@ -48,10 +122,4 @@ public class PersonInfoActivity extends BaseActivity {
         context.startActivity(starter);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
