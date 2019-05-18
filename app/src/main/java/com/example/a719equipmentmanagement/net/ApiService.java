@@ -11,6 +11,7 @@ import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
+import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
@@ -87,7 +88,7 @@ public interface ApiService {
     @POST("system/dept/checkDeptNameUnique")
     Single<BaseResponse> matchDept();
 
-    //查找科室人员数据
+    //查找科室数据
     @GET("system/dept/deptlist")
     Single<List<User>> getUser();
 
@@ -103,7 +104,13 @@ public interface ApiService {
     @GET("system/dept/treeData")
     Single<List<TreeData>> getTreeData();
 
-
+    //获取人员列表
+    @FormUrlEncoded
+    @POST("system/user/list")
+    Single<Person> getPersonList(@Field("pageSize") int pageSize,
+                                 @Field("pageNum") int pageNum,
+                                 @Field("orderByColumn") String orderByColumn,
+                                 @Field("isAsc") String isAsc);
 
 
     /* -------------- dict-data-controller  ----------------------- */

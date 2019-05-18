@@ -4,14 +4,12 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
-import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.ToAudit;
@@ -30,12 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
-import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.BiFunction;
@@ -60,8 +53,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-    private String[] features = {"人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
-    private int[] featuresImg = {R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
+    private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
+    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
 
     private static HomeFragment fragment;
@@ -150,27 +143,30 @@ public class HomeFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             switch (position) {
                 case 0:
-                    PersonManageActivity.start(getContext());
+                    DeptManageActivity.start(getContext());
                     break;
                 case 1:
-                    ContainerManageActivity.start(getContext());
+                    PersonManageActivity.start(getContext());
                     break;
                 case 2:
-                    DeviceClassifiyActivity.start(getContext());
+                    ContainerManageActivity.start(getContext());
                     break;
                 case 3:
-                    AccountingActivity.start(getContext());
+                    DeviceClassifiyActivity.start(getContext());
                     break;
                 case 4:
-                    ScanActivity.start(getContext());
+                    AccountingActivity.start(getContext());
                     break;
                 case 5:
-                    InventoryActivity.start(getContext());
+                    ScanActivity.start(getContext());
                     break;
                 case 6:
-                    CheckActivity.start(getContext());
+                    InventoryActivity.start(getContext());
                     break;
                 case 7:
+                    CheckActivity.start(getContext());
+                    break;
+                case 8:
                     ScrappedActivity.start(getContext());
                     break;
             }
