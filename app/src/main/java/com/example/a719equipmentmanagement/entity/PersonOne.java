@@ -2,7 +2,7 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
+import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class PersonOne extends AbstractExpandableItem<PersonTwo> implements MultiItemEntity {
 
@@ -18,7 +18,7 @@ public class PersonOne extends AbstractExpandableItem<PersonTwo> implements Mult
 
     @Override
     public int getLevel() {
-        return PersonManageAdapter.LEVEL_ONE;
+        return DeptManageAdapter.LEVEL_ONE;
     }
 
     @Override

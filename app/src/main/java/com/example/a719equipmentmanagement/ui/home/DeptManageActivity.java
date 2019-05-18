@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
+import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.PersonOne;
@@ -69,7 +69,7 @@ public class DeptManageActivity extends BaseActivity {
     private String parentTitle;
     private String parentDept;
     private User user;
-    private PersonManageAdapter adapter1;
+    private DeptManageAdapter adapter1;
     private PersonOne personOne;
     private PersonTwo personTwo;
     private int deptId;
@@ -129,7 +129,7 @@ public class DeptManageActivity extends BaseActivity {
             }
         }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        adapter1 = new PersonManageAdapter(this, list);
+        adapter1 = new DeptManageAdapter(this, list);
         adapter1.bindToRecyclerView(recyclerview);
         adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);

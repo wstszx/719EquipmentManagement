@@ -36,7 +36,7 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        
+
     }
 
     private void initData() {
