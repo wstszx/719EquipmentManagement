@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,9 +45,8 @@ import retrofit2.Response;
 
 public class DeviceFragment extends BaseFragment {
 
+    private static final int ADD_DEVICE = 1;
     private static DeviceFragment fragment;
-//    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-//    private TextView mTextView5;
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
@@ -70,7 +70,7 @@ public class DeviceFragment extends BaseFragment {
 
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,ADD_DEVICE);
         });
         topbar.addLeftImageButton(R.mipmap.search, R.id.search).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
@@ -78,7 +78,16 @@ public class DeviceFragment extends BaseFragment {
         });
     }
 
-//    private void addDeviceTextDialog(){
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case ADD_DEVICE:
+                initData();
+                break;
+        }
+    }
+
+    //    private void addDeviceTextDialog(){
 //        CustomInputDialog deviceInputDialog=new CustomInputDialog(getActivity());
 //        final QMUIDialog.EditTextDialogBuilder builder=new QMUIDialog.EditTextDialogBuilder(getActivity());
 //        deviceInputDialog.setTitle("添加设备").setPlaceholder("设备名称").setPlaceholder1("设备编号")

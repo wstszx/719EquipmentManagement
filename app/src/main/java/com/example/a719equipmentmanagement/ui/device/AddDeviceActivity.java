@@ -75,7 +75,6 @@ public class AddDeviceActivity extends BaseActivity {
 
         topbar_addDevice.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
             getInputData();
-
         });
 
         RetrofitClient.getInstance().getService().findDeviceData()
@@ -100,12 +99,18 @@ public class AddDeviceActivity extends BaseActivity {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("id",rowCount);
+//            jsonObject.put("id",rowCount);
             jsonObject.put("equipNo",rowCount+"");
+            jsonObject.put("status",1);  //添加设备时默认状态为“可用”
 //                jsonObject.put("sn", 5);
-//                jsonObject.put("location_id", 5);
 //                jsonObject.put("category_id", 5);
-//                jsonObject.put("deptId", 5);
+
+            //此三行为目前展示需要，对应DeviceAdapter添加对应解析
+            int i=rowCount%4;
+            jsonObject.put("locationId", i);
+            jsonObject.put("deptId", i);
+            jsonObject.put("categoryId", i);
+
             jsonObject.put("name", input0);
             jsonObject.put("parameter", input1) ;
             jsonObject.put("manufactuer", input2);
@@ -119,7 +124,7 @@ public class AddDeviceActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        setResult(RESULT_OK,new Intent());
                     }
                 });
 

@@ -24,9 +24,38 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData.RowsBean, BaseVie
     protected void convert(BaseViewHolder helper, DeviceData.RowsBean item) {
         helper.setText(R.id.textView1, item.getName())
                 .setText(R.id.textView2,item.getParameter())
-                .setText(R.id.textView3, item.getEquipNo())
-                .setText(R.id.textView4,item.getDeptId()+"科室")
-                .setText(R.id.textView6,item.getLocationId()+"号货架");
+                .setText(R.id.textView3, item.getEquipNo());
+
+        //暂时添加部门和货架
+        switch (item.getDeptId()){
+            case 0:
+                helper.setText(R.id.textView4,"三室1组");
+                break;
+            case 1:
+                helper.setText(R.id.textView4,"三室2组");
+                break;
+            case 2:
+                helper.setText(R.id.textView4,"三室3组");
+                break;
+            case 3:
+                helper.setText(R.id.textView4,"三室4组");
+                break;
+        }
+        switch (item.getLocationId()){
+            case 0:
+                helper.setText(R.id.textView6,"1架1层");
+                break;
+            case 1:
+                helper.setText(R.id.textView6,"2架1层");
+                break;
+            case 2:
+                helper.setText(R.id.textView6,"3架1层");
+                break;
+            case 3:
+                helper.setText(R.id.textView6,"4架1层");
+                break;
+        }
+
 
         switch (item.getStatus()) {
             case 0:
