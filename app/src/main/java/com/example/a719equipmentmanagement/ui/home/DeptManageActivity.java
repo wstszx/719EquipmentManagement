@@ -348,48 +348,28 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void delete() {
-        switch (itemViewType) {
-            case 0:
-            case 1:
-                RetrofitClient.getInstance().getService().delete(deptId)
-                        .flatMap(new Function<BaseResponse, SingleSource<List<User>>>() {
-                            @Override
-                            public SingleSource<List<User>> apply(BaseResponse baseResponse) throws Exception {
-                                return RetrofitClient.getInstance().getService().getUser();
-                            }
-                        })
-                        .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
-                            @Override
-                            public void onSuccess(List<User> users) {
-                                if (users != null && users.size() > 0) {
-                                    createSection(users);
-                                }
-                            }
-                        });
-//                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
-//                            @Override
-//                            public void onSuccess(BaseResponse baseResponse) {
-//                                initData();
-//                            }
-//                        });
-                break;
-            case 2:
-                RetrofitClient.getInstance().getService().deleteUser("")
-                        .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
-                            @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                initData();
-                            }
-                        });
-                break;
-        }
+        RetrofitClient.getInstance().getService().delete(deptId)
+                .flatMap(new Function<BaseResponse, SingleSource<List<User>>>() {
+                    @Override
+                    public SingleSource<List<User>> apply(BaseResponse baseResponse) throws Exception {
+                        return RetrofitClient.getInstance().getService().getUser();
+                    }
+                })
+                .compose(CommonCompose.io2main(DeptManageActivity.this))
+                .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                    @Override
+                    public void onSuccess(List<User> users) {
+                        if (users != null && users.size() > 0) {
+                            createSection(users);
+                        }
+                    }
+                });
     }
 
-    /**
-     * 弹出带输入框的dialog
-     */
+
+/**
+ * 弹出带输入框的dialog
+ */
 //    private void showEditTextDialog(String text) {
 //        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
 //        builder.setTitle(text)

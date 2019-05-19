@@ -188,15 +188,18 @@ public interface ApiService {
     Single<Me> getMe();
 
     //修改密码
+    @FormUrlEncoded
     @POST("system/user/profile/resetPwd")
     Single<BaseResponse> editPassword(@Field("oldPassword") String oldPassword,
                                       @Field("newPassword") String newPassword);
 
     //APP更新个人信息
+    @FormUrlEncoded
     @POST("system/user/profile/update")
     Single<BaseResponse> updataUserData();
 
     //保存头像
+    @FormUrlEncoded
     @POST("system/user/profile/updateAvatar")
     Single<BaseResponse> saveAvatar(@Field("avatarfile") File avatarfile);
 
@@ -209,6 +212,7 @@ public interface ApiService {
 
     /*----------------- setup-controller  ----------------*/
     //添加建账入库记录
+    @FormUrlEncoded
     @POST("system/setup/add")
     Single<BaseResponse> addInRecord(@Body RequestBody requestBody);
 
@@ -219,23 +223,35 @@ public interface ApiService {
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户
+    @FormUrlEncoded
     @POST("system/user/add")
     Single<BaseResponse> addUser();
 
     //编辑保存用户
+    @FormUrlEncoded
     @POST("system/user/edit")
     Single<BaseResponse> editUser();
 
     //删除用户
+    @FormUrlEncoded
     @POST("system/user/remove")
-    Single<BaseResponse> deleteUser(@Field("ids") String ids);
+    Single<BaseResponse> deleteUser(@Field("ids") int ids);
 
     //重置密码
+    @FormUrlEncoded
     @POST("system/user/resetPwd")
-    Single<BaseResponse> resetPwd();
+    Single<BaseResponse> resetPwd(@Field("userId") int userId,
+                                  @Field("loginName") String loginName,
+                                  @Field("password") String password);
 
     //测试
     @GET("system/user/resetPwd")
     Single<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
+
+    //重置密码
+    @FormUrlEncoded
+    @POST("system/user/changeStatus")
+    Single<BaseResponse> changeStatus(@Field("userId") int userId,
+                                      @Field("status") int status);
 
 }

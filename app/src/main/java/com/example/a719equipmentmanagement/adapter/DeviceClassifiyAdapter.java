@@ -15,7 +15,7 @@ import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 
-public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> {
+public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> {
 
     @NonNull
     @Override
@@ -32,7 +32,7 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -53,12 +53,13 @@ public class DeviceClassifiyAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);
         TextView tv_2 = view.findViewById(R.id.tv_2);
         TextView tv_3 = view.findViewById(R.id.tv_3);
+        tv_1.setText(section.getItemAt(itemIndex).getListBean().getName());
 //        tv_1.setText(section.getItemAt(itemIndex).getTv_1());
 //        tv_2.setText(section.getItemAt(itemIndex).getTv_2());
 //        tv_3.setText(section.getItemAt(itemIndex).getTv_3());

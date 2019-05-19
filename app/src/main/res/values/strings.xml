@@ -23,4 +23,12 @@
     <string name="status">状态</string>
     <string name="leader">负责人</string>
     <string name="dept_name">部门名称</string>
+    <string name="dept">部门：</string>
+    <string name="phone">手机：</string>
+    <string name="create_time">创建时间：</string>
+    <string name="user_name">用户名称：</string>
+    <string name="user_status">用户状态</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="reset">重置</string>
 </resources>
