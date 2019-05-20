@@ -1,8 +1,9 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DeviceData {
+public class DeviceData implements Serializable{
 
 
     /**
@@ -39,7 +40,7 @@ public class DeviceData {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         /**
          * id : 1
          * searchValue : null
@@ -284,7 +285,7 @@ public class DeviceData {
             this.delFlag = delFlag;
         }
 
-        public static class ParamsBean {
+        public static class ParamsBean implements Serializable{
         }
     }
 }
