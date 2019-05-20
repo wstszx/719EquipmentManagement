@@ -1,21 +1,29 @@
 package com.example.a719equipmentmanagement.ui.home;
 
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.clj.fastble.BleManager;
+import com.clj.fastble.callback.BleGattCallback;
+import com.clj.fastble.callback.BleScanAndConnectCallback;
 import com.clj.fastble.callback.BleScanCallback;
 import com.clj.fastble.data.BleDevice;
+import com.clj.fastble.exception.BleException;
 import com.clj.fastble.scan.BleScanRuleConfig;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.qmuiteam.qmui.widget.QMUIEmptyView;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -31,11 +39,19 @@ public class GenarateQRActivity extends BaseActivity {
     ImageView imageView;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
+    private final String mAddress = "DC:0D:30:3C:C1:93";
+    @BindView(R.id.emptyView)
+    QMUIEmptyView emptyView;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        initBottomMenu();
         initTopbar();
         createChineseQRCode();
+    }
+
+    private void initBottomMenu() {
+
     }
 
 
@@ -48,10 +64,36 @@ public class GenarateQRActivity extends BaseActivity {
                 BleManager.getInstance().enableBluetooth();
             }
             initScanRule();
-            scanBlueDevice();
+//            scanBlueDevice();
+            connectBlueDevice();
         } else {
-            Toast.makeText(GenarateQRActivity.this,"您的设备不支持蓝牙",Toast.LENGTH_SHORT).show();
+            Toast.makeText(GenarateQRActivity.this, "您的设备不支持蓝牙", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void connectBlueDevice() {
+        BleManager.getInstance().connect(mAddress, new BleGattCallback() {
+            @Override
+            public void onStartConnect() {
+                emptyView.show(true);
+            }
+
+            @Override
+            public void onConnectFail(BleDevice bleDevice, BleException exception) {
+                Toast.makeText(GenarateQRActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
+                emptyView.show(false);
+                Toast.makeText(GenarateQRActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onDisConnected(boolean isActiveDisConnected, BleDevice device, BluetoothGatt gatt, int status) {
+                emptyView.show(false);
+            }
+        });
     }
 
     private void initTopbar() {
@@ -83,6 +125,8 @@ public class GenarateQRActivity extends BaseActivity {
         BleManager.getInstance().scan(new BleScanCallback() {
             @Override
             public void onScanStarted(boolean success) {
+//                emptyView.setVisibility(View.VISIBLE);
+                emptyView.show(true);
                 // 开始扫描（主线程）
                 LogUtils.i("开始扫描" + success);
             }
@@ -90,20 +134,42 @@ public class GenarateQRActivity extends BaseActivity {
             @Override
             public void onScanning(BleDevice bleDevice) {
                 // 扫描到一个符合扫描规则的BLE设备（主线程）
+                BluetoothDevice device = bleDevice.getDevice();
+                String address = device.getAddress();
                 LogUtils.i("扫描到一个符合扫描规则的BLE设备" + bleDevice.getName());
             }
 
             @Override
             public void onScanFinished(List<BleDevice> scanResultList) {
+//                emptyView.setVisibility(View.GONE);
+                emptyView.show(false);
                 // 扫描结束，列出所有扫描到的符合扫描规则的BLE设备（主线程）
                 if (scanResultList != null && scanResultList.size() > 0) {
-                    for (BleDevice bleDevice : scanResultList) {
-                        LogUtils.i("扫描结束，列出所有扫描到的符合扫描规则的BLE设备（主线程）" + bleDevice.getName());
-                    }
+                    List<BleDevice> bleDevices = scanResultList.subList(0, 3);
+                    showSimpleBottomSheetList(bleDevices);
+//                    for (BleDevice bleDevice : scanResultList) {
+//                        LogUtils.i("扫描结束，列出所有扫描到的符合扫描规则的BLE设备（主线程）" + bleDevice.getName());
+//                    }
                 }
 
             }
         });
+    }
+
+    private void showSimpleBottomSheetList(List<BleDevice> bleDevices) {
+        new QMUIBottomSheet.BottomListSheetBuilder(this)
+                .addItem(bleDevices.get(0).getName() != null ? bleDevices.get(0).getName() : "未知")
+                .addItem(bleDevices.get(1).getName() != null ? bleDevices.get(1).getName() : "未知")
+                .addItem(bleDevices.get(2).getName() != null ? bleDevices.get(2).getName() : "未知")
+                .setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+                    @Override
+                    public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                        dialog.dismiss();
+                        BleDevice bleDevice = bleDevices.get(position);
+                    }
+                })
+                .build()
+                .show();
     }
 
     @Override
