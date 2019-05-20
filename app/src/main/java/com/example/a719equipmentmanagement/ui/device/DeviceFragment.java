@@ -56,6 +56,8 @@ public class DeviceFragment extends BaseFragment {
 
     private DeviceAdapter adapter;
 
+    private List<DeviceData.RowsBean> rows;
+
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
@@ -68,10 +70,10 @@ public class DeviceFragment extends BaseFragment {
         topbar.setTitle("设备");
 //        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> addDeviceTextDialog());
 
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivityForResult(intent,ADD_DEVICE);
-        });
+//        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
+//            startActivityForResult(intent,ADD_DEVICE);
+//        });
         topbar.addLeftImageButton(R.mipmap.search, R.id.search).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivity(intent);
@@ -113,9 +115,9 @@ public class DeviceFragment extends BaseFragment {
                 .compose(CommonCompose.io2main(getContext()))
                 .subscribe(new BaseSubscriber<DeviceData>(getContext()) {
                     @Override
-                    public void onSuccess(DeviceData baseResponse) {
-                        if (baseResponse != null ) {
-                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+                    public void onSuccess(DeviceData datas) {
+                        if (datas != null ) {
+                            rows = datas.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
@@ -140,7 +142,8 @@ public class DeviceFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 //                Toast.makeText(getContext(), "当前点击条目为" + (position + 1), Toast.LENGTH_SHORT).show();
-                DeviceDetailActivity.start(getActivity());
+                DeviceData.RowsBean currentItemData=rows.get(position);
+                DeviceDetailActivity.start(getContext(), currentItemData);
             }
         });
     }

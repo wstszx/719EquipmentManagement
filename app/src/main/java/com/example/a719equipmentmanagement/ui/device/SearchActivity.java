@@ -45,10 +45,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.BiFunction;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.schedulers.Schedulers;
 
 import static java.lang.System.*;
 
@@ -102,41 +106,35 @@ public class SearchActivity extends BaseActivity {
             filter.setName(option);
             filters.add(filter);
         }
-        RetrofitClient.getInstance().getService().findDeviceData()
-                .compose(CommonCompose.io2main(this))
-                .subscribe(new BaseSubscriber<DeviceData>(this) {
+        convertRequest();
+    }
+
+    private void convertRequest() {
+        Single.zip(RetrofitClient.getInstance().getService().findDeviceData(),
+                RetrofitClient.getInstance().getService().getTreeData(),
+                new BiFunction<DeviceData, List<TreeData>, Object>() {
                     @Override
-                    public void onSuccess(DeviceData baseResponse) {
-                        if (baseResponse != null) {
-                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+                    public Object apply(DeviceData deviceData, List<TreeData> treeData) throws Exception {
+                        if(deviceData!=null){
+                            List<DeviceData.RowsBean> rows = deviceData.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
                             rowCount = rows.size();
                         }
-                    }
-
-                });
-        RetrofitClient.getInstance().getService().getTreeData()
-                .compose(CommonCompose.io2main(SearchActivity.this))
-                .subscribe(new BaseSubscriber<List<TreeData>>(SearchActivity.this) {
-                    @Override
-                    public void onSuccess(List<TreeData> treeData) {
                         if (treeData != null && treeData.size() > 0) {
                             createSeaction(treeData);
                         }
+                        return new Object();
+                    }
+                }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<Object>(SearchActivity.this) {
+                    @Override
+                    public void onSuccess(Object o) {
+
                     }
                 });
-//        RetrofitClient.getInstance().getService().findDeviceData(),
-//        RetrofitClient.getInstance().getService().getTreeData(),
-//        new BiFunction<DeviceData,List<TreeData>,Object>(){
-//            @Override
-//            public Object apply(DeviceData findDeviceData, List<TreeData> getTreeData) {
-//                return new Object();
-//            }
-//        }
     }
-
 
     private void initView() {
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
@@ -171,12 +169,14 @@ public class SearchActivity extends BaseActivity {
         adapter13.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                dropDownMenu.setTabText(position == 0 ? filterArray[1] : options[position]);
+//                dropDownMenu.setTabText(position == 0 ? filterArray[1] : options[position]);
+                dropDownMenu.setTabText((position == -1) ? filterArray[1] : deptThrees.get(position).getName());
                 dropDownMenu.closeMenu();
                 recyclerView12.setVisibility(View.INVISIBLE);
                 recyclerView13.setVisibility(View.INVISIBLE);
             }
         });
+
 
 
         View view = getLayoutInflater().inflate(R.layout.base_double_list, null);
