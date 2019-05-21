@@ -272,10 +272,8 @@ public class SearchActivity extends BaseActivity {
                     }
                 }
             }
-
         }
         adapter11.setNewData(deptOnes);
-
     }
 
     private void initTopbar() {

@@ -63,10 +63,17 @@ public class AddDeptActivity extends BaseActivity {
             }
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
-            Intent intent = new Intent();
-            intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseItemEditActivity.class);
-            startActivityForResult(intent, tag);
+            switch (tag) {
+                case 1:
+                    ChoiceDeptActivity.start(AddDeptActivity.this);
+                    break;
+                default:
+                    Intent intent = new Intent();
+                    intent.putExtra("text", listItemView.getDetailText().toString());
+                    intent.setClass(this, BaseItemEditActivity.class);
+                    startActivityForResult(intent, tag);
+                    break;
+            }
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
 

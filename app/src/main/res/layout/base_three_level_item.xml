@@ -33,13 +33,13 @@
         android:gravity="end"
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16"
-        android:text="@string/dept_type"
         android:textColor="@color/app_color_theme_7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_status"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/dept_type" />
 
     <TextView
         android:id="@+id/tv_status"
@@ -49,13 +49,13 @@
         android:gravity="end"
         android:paddingStart="@dimen/dp_16"
         android:paddingEnd="@dimen/dp_16"
-        android:text="@string/status"
         android:textColor="@color/app_color_theme_7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/iv_right"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_leader"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/status" />
 
 
     <ImageView

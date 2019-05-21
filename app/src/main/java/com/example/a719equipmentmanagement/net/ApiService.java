@@ -88,7 +88,7 @@ public interface ApiService {
     @POST("system/dept/checkDeptNameUnique")
     Single<BaseResponse> matchDept();
 
-    //查找科室数据
+    //查找科室人员数据
     @GET("system/dept/deptlist")
     Single<List<User>> getUser();
 
@@ -104,13 +104,13 @@ public interface ApiService {
     @GET("system/dept/treeData")
     Single<List<TreeData>> getTreeData();
 
-    //获取人员列表
-    @FormUrlEncoded
-    @POST("system/user/list")
-    Single<Person> getPersonList(@Field("pageSize") int pageSize,
-                                 @Field("pageNum") int pageNum,
-                                 @Field("orderByColumn") String orderByColumn,
-                                 @Field("isAsc") String isAsc);
+//    //获取人员列表
+//    @FormUrlEncoded
+//    @POST("system/user/list")
+//    Single<Person> getPersonList(@Field("pageSize") int pageSize,
+//                                 @Field("pageNum") int pageNum,
+//                                 @Field("orderByColumn") String orderByColumn,
+//                                 @Field("isAsc") String isAsc);
 
 
     /* -------------- dict-data-controller  ----------------------- */
@@ -247,6 +247,7 @@ public interface ApiService {
     //测试
     @GET("system/user/resetPwd")
     Single<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
+
 
     //重置密码
     @FormUrlEncoded

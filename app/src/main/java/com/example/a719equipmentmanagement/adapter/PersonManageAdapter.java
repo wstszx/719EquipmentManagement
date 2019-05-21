@@ -11,15 +11,18 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.Person;
+import com.example.a719equipmentmanagement.entity.User;
 
 import java.util.List;
 
-public class PersonManageAdapter extends BaseQuickAdapter<Person.RowsBean, BaseViewHolder> {
+public class PersonManageAdapter extends BaseQuickAdapter<User.ListBean, BaseViewHolder> {
 
     private SwitchListener listener;
-    public interface SwitchListener{
-        void check(Switch aSwitch ,boolean isCheck);
+
+    public interface SwitchListener {
+        void check(Switch aSwitch, boolean isCheck);
     }
+
     public PersonManageAdapter(int layoutResId) {
         super(layoutResId);
     }
@@ -29,7 +32,7 @@ public class PersonManageAdapter extends BaseQuickAdapter<Person.RowsBean, BaseV
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, Person.RowsBean item) {
+    protected void convert(BaseViewHolder helper, User.ListBean item) {
         helper.setText(R.id.tv_username, item.getUserName())
                 .setText(R.id.tv_dept, item.getDept().getDeptName())
                 .setText(R.id.tv_phone, item.getPhonenumber())
@@ -63,7 +66,7 @@ public class PersonManageAdapter extends BaseQuickAdapter<Person.RowsBean, BaseV
             @Override
             public void onClick(View v) {
                 boolean checked = aSwitch.isChecked();
-                listener.check(aSwitch,checked);
+                listener.check(aSwitch, checked);
             }
         });
     }

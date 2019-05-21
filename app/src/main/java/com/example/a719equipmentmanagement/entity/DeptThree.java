@@ -7,6 +7,19 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 public class DeptThree  implements MultiItemEntity {
 
     private TreeData dept;
+    private boolean isSelect;
+
+    public void setDept(TreeData dept) {
+        this.dept = dept;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 
     public TreeData getDept() {
         return dept;

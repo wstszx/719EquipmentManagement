@@ -28,6 +28,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -160,18 +161,19 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initData(int page) {
-        RetrofitClient.getInstance().getService().getPersonList(10, page, null, null)
+        RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<Person>(PersonManageActivity.this) {
+                .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
                     @Override
-                    public void onSuccess(Person person) {
-                        List<Person.RowsBean> rows = person.getRows();
-                        if (rows != null) {
-                            if (rows.size() > 0) {
+                    public void onSuccess(List<User> users) {
+
+                        if (users != null) {
+                            if (users.size() > 0) {
+                                List<User.ListBean> listBeans = transformData(users);
                                 if (page == 1) {
-                                    adapter.setNewData(rows);
+                                    adapter.setNewData(listBeans);
                                 } else {
-                                    adapter.addData(rows);
+                                    adapter.addData(listBeans);
                                 }
                             } else {
                                 adapter.loadMoreEnd(true);
@@ -179,7 +181,15 @@ public class PersonManageActivity extends BaseActivity {
                         }
                     }
                 });
+    }
 
+    private List<User.ListBean> transformData(List<User> users) {
+        List<User.ListBean> listBeans = new ArrayList<>();
+        for (User user : users) {
+            List<User.ListBean> list = user.getList();
+            listBeans.addAll(list);
+        }
+        return listBeans;
     }
 
     private void initTopbar() {
