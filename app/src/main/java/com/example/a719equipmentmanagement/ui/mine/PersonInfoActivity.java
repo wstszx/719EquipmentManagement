@@ -28,6 +28,7 @@ public class PersonInfoActivity extends BaseActivity {
     QMUIGroupListView groupListView;
     private QMUICommonListItemView listItemView;
     private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式"};
+    private Me baseResponse;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -44,9 +45,11 @@ public class PersonInfoActivity extends BaseActivity {
         RetrofitClient.getInstance().getService().getMe()
                 .compose(CommonCompose.io2main(PersonInfoActivity.this))
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
+
                     @Override
                     public void onSuccess(Me baseResponse) {
                         if (baseResponse != null) {
+                            PersonInfoActivity.this.baseResponse = baseResponse;
                             initGroupListView();
                         }
                     }
@@ -67,7 +70,7 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item = groupListView.createItemView(
                 null,
                 containerAttrs[0],
-                " ",
+                baseResponse.getUser().getUserName(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(0);
@@ -76,7 +79,7 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item1 = groupListView.createItemView(
                 null,
                 containerAttrs[1],
-                " ",
+                baseResponse.getUser().getSex(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(1);
@@ -85,7 +88,7 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item2 = groupListView.createItemView(
                 null,
                 containerAttrs[2],
-                " ",
+                baseResponse.getUser().getRoles().get(0).getRoleName(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(2);
@@ -94,7 +97,7 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item3 = groupListView.createItemView(
                 null,
                 containerAttrs[3],
-                " ",
+                baseResponse.getUser().getPhonenumber(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(3);

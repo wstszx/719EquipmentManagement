@@ -61,8 +61,8 @@ public class DeviceFragment extends BaseFragment {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
-        initData();
         initAdapter();
+        initData();
 
     }
 
@@ -121,27 +121,19 @@ public class DeviceFragment extends BaseFragment {
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
-//                            bindUi(baseResponse);
                         }
                     }
                 });
     }
 
-//    private void bindUi(List<DeviceData> baseResponse) {
-//        adapter.setNewData(baseResponse);
-//    }
-
     private void initAdapter() {
         adapter = new DeviceAdapter(R.layout.base_device02);
-
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
-//        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()),DividerItemDecoration.VERTICAL,10,getResources().getColor(R.color.app_color_blue)));
         recyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                Toast.makeText(getContext(), "当前点击条目为" + (position + 1), Toast.LENGTH_SHORT).show();
                 DeviceData.RowsBean currentItemData=rows.get(position);
                 DeviceDetailActivity.start(getContext(), currentItemData);
             }

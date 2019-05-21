@@ -63,7 +63,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
-                        if (code == 200) {
+                        if (code == 0) {
                             String token = baseResponse.getMsg();
                             SPUtils.putString(App.getContext(), "token", token);
                             SPUtils.putBoolean(App.getContext(), "main", true);
