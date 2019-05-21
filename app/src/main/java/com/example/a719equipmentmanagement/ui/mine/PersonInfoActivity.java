@@ -27,7 +27,7 @@ public class PersonInfoActivity extends BaseActivity {
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式","所在部门","邮箱"};
+    private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式"};
     private Me baseResponse;
 
     @Override
@@ -45,6 +45,7 @@ public class PersonInfoActivity extends BaseActivity {
         RetrofitClient.getInstance().getService().getMe()
                 .compose(CommonCompose.io2main(PersonInfoActivity.this))
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
+
                     @Override
                     public void onSuccess(Me baseResponse) {
                         if (baseResponse != null) {
@@ -101,24 +102,6 @@ public class PersonInfoActivity extends BaseActivity {
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(3);
         section.addItemView(item3, onClickListener);
-
-        QMUICommonListItemView item4 = groupListView.createItemView(
-                null,
-                containerAttrs[4],
-                baseResponse.getUser().getDept().getDeptName(),
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item.setTag(4);
-        section.addItemView(item4, onClickListener);
-
-        QMUICommonListItemView item5 = groupListView.createItemView(
-                null,
-                containerAttrs[5],
-                baseResponse.getUser().getEmail(),
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item.setTag(5);
-        section.addItemView(item5, onClickListener);
 
         section.addTo(groupListView);
     }

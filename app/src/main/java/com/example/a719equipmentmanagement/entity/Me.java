@@ -5,9 +5,10 @@ import java.util.List;
 
 public class Me {
 
+
     /**
      * postGroup : 董事长
-     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"29c67a30398638269fe600f73a054934","salt":"111111","status":"0","delFlag":"0","loginIp":"10.11.57.112","loginDate":"2019-05-16 17:22:29","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"admin":true}
+     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"00a18b1542eb4a095bba6b91401b0df7","salt":"96d9e0","status":"0","delFlag":"0","loginIp":"10.11.61.56","loginDate":"2019-05-21 13:53:23","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"admin":true}
      * roleGroup : 超级系统管理员
      */
 
@@ -58,12 +59,12 @@ public class Me {
          * phonenumber : 15888888888
          * sex : 男
          * avatar : 2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg
-         * password : 29c67a30398638269fe600f73a054934
-         * salt : 111111
+         * password : 00a18b1542eb4a095bba6b91401b0df7
+         * salt : 96d9e0
          * status : 0
          * delFlag : 0
-         * loginIp : 10.11.57.112
-         * loginDate : 2019-05-16 17:22:29
+         * loginIp : 10.11.61.56
+         * loginDate : 2019-05-21 13:53:23
          * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null}
          * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
          * roleIds : [1]
