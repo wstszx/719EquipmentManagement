@@ -3,19 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint"
-    android:background="@color/app_color_theme_6"
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
 
     <TextView
         android:id="@+id/tv_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:textColor="@color/white"
+        android:gravity="end"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
+        android:textColor="@color/app_color_theme_7"
         android:textSize="@dimen/sp_14"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -27,12 +28,13 @@
 
     <TextView
         android:id="@+id/tv_leader"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/white"
-
+        android:gravity="end"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
         android:text="@string/dept_type"
+        android:textColor="@color/app_color_theme_7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_status"
         app:layout_constraintHorizontal_bias="0.5"
@@ -41,27 +43,20 @@
 
     <TextView
         android:id="@+id/tv_status"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:textColor="@color/white"
-
+        android:layout_marginEnd="32dp"
+        android:gravity="end"
+        android:paddingStart="@dimen/dp_16"
+        android:paddingEnd="@dimen/dp_16"
         android:text="@string/status"
+        android:textColor="@color/app_color_theme_7"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/iv_right"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_leader"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<TextView-->
-    <!--android:id="@+id/tv_create_time"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginStart="20dp"-->
-    <!--android:text="@string/status"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintStart_toEndOf="@id/tv_status"-->
-    <!--app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageView
         android:id="@+id/iv_right"
