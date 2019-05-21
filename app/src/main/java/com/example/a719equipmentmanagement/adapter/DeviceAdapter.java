@@ -10,18 +10,19 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.Device;
 import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.entity.DeviceData2;
 
 import java.util.List;
 
 import androidx.annotation.Nullable;
 
-public class DeviceAdapter extends BaseQuickAdapter<DeviceData.RowsBean, BaseViewHolder> {
+public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseViewHolder> {
     public DeviceAdapter(int layoutResId) {
         super(layoutResId);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, DeviceData.RowsBean item) {
+    protected void convert(BaseViewHolder helper, DeviceData2.RowsBean item) {
         helper.setText(R.id.textView1, item.getName())
                 .setText(R.id.textView2, item.getParameter())
                 .setText(R.id.textView3, item.getEquipNo());

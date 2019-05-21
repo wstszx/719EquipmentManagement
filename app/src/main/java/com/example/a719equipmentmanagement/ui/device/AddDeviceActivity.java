@@ -77,17 +77,17 @@ public class AddDeviceActivity extends BaseActivity {
             getInputData();
         });
 
-        RetrofitClient.getInstance().getService().findDeviceData()
-                .compose(CommonCompose.io2main(AddDeviceActivity.this))
-                .subscribe(new BaseSubscriber<DeviceData>(AddDeviceActivity.this) {
-                    @Override
-                    public void onSuccess(DeviceData baseResponse) {
-                        if (baseResponse != null ) {
-                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
-                            rowCount=rows.size()+1;
-                        }
-                    }
-                });
+//        RetrofitClient.getInstance().getService().findDeviceData()
+//                .compose(CommonCompose.io2main(AddDeviceActivity.this))
+//                .subscribe(new BaseSubscriber<DeviceData>(AddDeviceActivity.this) {
+//                    @Override
+//                    public void onSuccess(DeviceData baseResponse) {
+//                        if (baseResponse != null ) {
+//                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+//                            rowCount=rows.size()+1;
+//                        }
+//                    }
+//                });
     }
 
     private void getInputData() {

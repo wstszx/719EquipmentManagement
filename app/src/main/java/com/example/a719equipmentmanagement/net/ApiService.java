@@ -5,6 +5,7 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
 import com.example.a719equipmentmanagement.entity.InventoryData;
@@ -126,7 +127,7 @@ public interface ApiService {
 
     //查找设备数据
     @GET("system/equip/list")
-    Single<DeviceData> findDeviceData();
+    Single<DeviceData2> findDeviceData();
 
 
     /*----------------- inventory-controller ----------------*/

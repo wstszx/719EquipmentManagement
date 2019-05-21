@@ -30,6 +30,7 @@ import com.example.a719equipmentmanagement.entity.DeptThree;
 import com.example.a719equipmentmanagement.entity.DeptTwo;
 import com.example.a719equipmentmanagement.entity.Device;
 import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
@@ -112,11 +113,11 @@ public class SearchActivity extends BaseActivity {
     private void convertRequest() {
         Single.zip(RetrofitClient.getInstance().getService().findDeviceData(),
                 RetrofitClient.getInstance().getService().getTreeData(),
-                new BiFunction<DeviceData, List<TreeData>, Object>() {
+                new BiFunction<DeviceData2, List<TreeData>, Object>() {
                     @Override
-                    public Object apply(DeviceData deviceData, List<TreeData> treeData) throws Exception {
+                    public Object apply(DeviceData2 deviceData, List<TreeData> treeData) throws Exception {
                         if (deviceData != null) {
-                            List<DeviceData.RowsBean> rows = deviceData.getRows();
+                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
