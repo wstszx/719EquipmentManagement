@@ -30,9 +30,6 @@ public class NetworkError {
             case -1:
                 LoginDialog.showDialog(context, "您的账号已过期，请重新登录");
                 break;
-            case 1:
-                Toast.makeText(context, responeThrowable.message, Toast.LENGTH_SHORT).show();
-                break;
             default:
                 Toast.makeText(context, responeThrowable.message, Toast.LENGTH_SHORT).show();
                 break;
