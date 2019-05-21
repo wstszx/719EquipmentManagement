@@ -62,6 +62,8 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
                         } else if (code == 1) {
                             value.close();
                             throw new ServerException(code, msg);
+                        } else if (code == 500) {
+                            throw new ServerException(code, msg);
                         }
                     }
                     body = json.toString();

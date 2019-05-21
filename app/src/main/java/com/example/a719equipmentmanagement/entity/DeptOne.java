@@ -4,24 +4,25 @@ import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
-public class PersonTwo extends AbstractExpandableItem<PersonThree> implements MultiItemEntity {
-    private User user;
+public class DeptOne extends AbstractExpandableItem<DeptTwo> implements MultiItemEntity {
 
-    public User getUser() {
-        return user;
+    private TreeData dept;
+
+    public TreeData getDept() {
+        return dept;
     }
 
-    public PersonTwo(User user) {
-        this.user = user;
+    public DeptOne(TreeData dept) {
+        this.dept = dept;
     }
 
     @Override
     public int getLevel() {
-        return DeptManageAdapter.LEVEL_TWO;
+        return DeptManageAdapter.LEVEL_ONE;
     }
 
     @Override
     public int getItemType() {
-        return 1;
+        return 0;
     }
 }

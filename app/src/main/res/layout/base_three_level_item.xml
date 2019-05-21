@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint"
+    android:background="@color/app_color_theme_6"
     android:layout_width="match_parent"
     android:layout_height="48dp">
 
@@ -14,9 +15,12 @@
         android:layout_marginStart="64dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
+        android:textColor="@color/white"
         android:textSize="@dimen/sp_14"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_leader"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="fjdkf" />
@@ -26,9 +30,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:textColor="@color/white"
+
         android:text="@string/dept_type"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_status"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,9 +44,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:textColor="@color/white"
+
         android:text="@string/status"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_leader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_leader"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!--<TextView-->

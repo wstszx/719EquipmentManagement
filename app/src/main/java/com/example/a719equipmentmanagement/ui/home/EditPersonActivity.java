@@ -2,6 +2,7 @@ package com.example.a719equipmentmanagement.ui.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -89,5 +90,10 @@ public class EditPersonActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
+    }
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, EditPersonActivity.class);
+        context.startActivity(starter);
     }
 }

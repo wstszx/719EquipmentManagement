@@ -11,14 +11,12 @@ import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
-import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
-import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
@@ -30,6 +28,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.BindView;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class HomeFragment extends BaseFragment {
 
@@ -49,8 +53,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-    private String[] features = {"人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
-    private int[] featuresImg = {R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
+    private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
+    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
 
     private static HomeFragment fragment;
@@ -66,90 +70,49 @@ public class HomeFragment extends BaseFragment {
     private void initData() {
 //        1,超级系统管理员2，普通用户3，实验室管理员
         RetrofitClient.getInstance().getService().getMe()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<Me>(getContext()) {
+                .subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<Me, SingleSource<Object>>() {
                     @Override
-                    public void onSuccess(Me me) {
-                        if (me != null) {
-                            getMeData(me);
-                        }
+                    public SingleSource<Object> apply(Me me) throws Exception {
+                        int roleId = me.getUser().getRoles().get(0).getRoleId();
+                        SPUtils.getInstance().put("roleId", roleId);
+                        return convertRequest(roleId);
                     }
-                });
-//        RetrofitClient.getInstance().getService().getWaitApprovalItem()
-//                .compose(CommonCompose.io2main(getContext()))
-//                .subscribe(new BaseSubscriber<InvalidEquip>(getContext()) {
-//                    @Override
-//                    public void onSuccess(InvalidEquip invalidEquip) {
-//
-//                    }
-//                });
-//        RetrofitClient.getInstance().getService().getWaitReturnDevice()
-//                .compose(CommonCompose.io2main(getContext()))
-//                .subscribe(new BaseSubscriber<ToAudit>(getContext()) {
-//                    @Override
-//                    public void onSuccess(ToAudit waitReturnDevice) {
-//
-//                    }
-//                });
+                }).subscribe(new BaseSubscriber<Object>(getContext()) {
+            @Override
+            public void onSuccess(Object o) {
+
+            }
+        });
     }
 
-    private void getMeData(Me me) {
-        int roleId = me.getUser().getRoles().get(0).getRoleId();
-        SPUtils.getInstance().put("roleId", roleId);
+
+    private Single<Object> convertRequest(int roleId) {
         switch (roleId) {
             case 1:
             case 2:
-//                getAdminData();
-                break;
+                return Single.zip(RetrofitClient.getInstance().getService().toDo(),
+                        RetrofitClient.getInstance().getService().toAudit(), new BiFunction<ToDo, ToAudit, Object>() {
+
+                            @Override
+                            public Object apply(ToDo toDo, ToAudit toAudit) throws Exception {
+                                return new Object();
+                            }
+                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        .observeOn(AndroidSchedulers.mainThread());
             case 3:
-//                getUserData();
-                break;
+                return Single.zip(RetrofitClient.getInstance().getService().userToDo(),
+                        RetrofitClient.getInstance().getService().toReturn(), new BiFunction<UserToDo, ToReturn, Object>() {
+
+                            @Override
+                            public Object apply(UserToDo userToDo, ToReturn toReturn) throws Exception {
+                                return new Object();
+                            }
+                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        .observeOn(AndroidSchedulers.mainThread());
         }
-    }
-
-    /**
-     * 获取普通用户事项
-     */
-    private void getUserData() {
-        RetrofitClient.getInstance().getService().userToDo()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<UserToDo>(getContext()) {
-                    @Override
-                    public void onSuccess(UserToDo data) {
-
-                    }
-                });
-        RetrofitClient.getInstance().getService().toReturn()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<ToReturn>(getContext()) {
-                    @Override
-                    public void onSuccess(ToReturn data) {
-
-                    }
-                });
-
-    }
-
-    /**
-     * 获取管理员用户事项
-     */
-    private void getAdminData() {
-        RetrofitClient.getInstance().getService().toDo()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<ToDo>(getContext()) {
-                    @Override
-                    public void onSuccess(ToDo data) {
-
-                    }
-                });
-        RetrofitClient.getInstance().getService().toAudit()
-                .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<ToAudit>(getContext()) {
-                    @Override
-                    public void onSuccess(ToAudit data) {
-
-                    }
-                });
+        return null;
     }
 
     private void initView() {
@@ -180,27 +143,30 @@ public class HomeFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             switch (position) {
                 case 0:
-                    PersonManageActivity.start(getContext());
+                    DeptManageActivity.start(getContext());
                     break;
                 case 1:
-                    ContainerManageActivity.start(getContext());
+                    PersonManageActivity.start(getContext());
                     break;
                 case 2:
-                    DeviceClassifiyActivity.start(getContext());
+                    ContainerManageActivity.start(getContext());
                     break;
                 case 3:
-                    AccountingActivity.start(getContext());
+                    DeviceClassifiyActivity.start(getContext());
                     break;
                 case 4:
-                    ScanActivity.start(getContext());
+                    AccountingActivity.start(getContext());
                     break;
                 case 5:
-                    InventoryActivity.start(getContext());
+                    ScanActivity.start(getContext());
                     break;
                 case 6:
-                    CheckActivity.start(getContext());
+                    InventoryActivity.start(getContext());
                     break;
                 case 7:
+                    CheckActivity.start(getContext());
+                    break;
+                case 8:
                     ScrappedActivity.start(getContext());
                     break;
             }

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,9 +45,8 @@ import retrofit2.Response;
 
 public class DeviceFragment extends BaseFragment {
 
+    private static final int ADD_DEVICE = 1;
     private static DeviceFragment fragment;
-//    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-//    private TextView mTextView5;
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
@@ -55,6 +55,8 @@ public class DeviceFragment extends BaseFragment {
     RecyclerView recyclerview;
 
     private DeviceAdapter adapter;
+
+    private List<DeviceData.RowsBean> rows;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -68,17 +70,26 @@ public class DeviceFragment extends BaseFragment {
         topbar.setTitle("设备");
 //        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> addDeviceTextDialog());
 
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
-            startActivity(intent);
-        });
+//        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), AddDeviceActivity.class);
+//            startActivityForResult(intent,ADD_DEVICE);
+//        });
         topbar.addLeftImageButton(R.mipmap.search, R.id.search).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), SearchActivity.class);
             startActivity(intent);
         });
     }
 
-//    private void addDeviceTextDialog(){
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        switch (requestCode) {
+            case ADD_DEVICE:
+                initData();
+                break;
+        }
+    }
+
+    //    private void addDeviceTextDialog(){
 //        CustomInputDialog deviceInputDialog=new CustomInputDialog(getActivity());
 //        final QMUIDialog.EditTextDialogBuilder builder=new QMUIDialog.EditTextDialogBuilder(getActivity());
 //        deviceInputDialog.setTitle("添加设备").setPlaceholder("设备名称").setPlaceholder1("设备编号")
@@ -104,9 +115,9 @@ public class DeviceFragment extends BaseFragment {
                 .compose(CommonCompose.io2main(getContext()))
                 .subscribe(new BaseSubscriber<DeviceData>(getContext()) {
                     @Override
-                    public void onSuccess(DeviceData baseResponse) {
-                        if (baseResponse != null ) {
-                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+                    public void onSuccess(DeviceData datas) {
+                        if (datas != null ) {
+                            rows = datas.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
@@ -131,7 +142,8 @@ public class DeviceFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
 //                Toast.makeText(getContext(), "当前点击条目为" + (position + 1), Toast.LENGTH_SHORT).show();
-                DeviceDetailActivity.start(getActivity());
+                DeviceData.RowsBean currentItemData=rows.get(position);
+                DeviceDetailActivity.start(getContext(), currentItemData);
             }
         });
     }

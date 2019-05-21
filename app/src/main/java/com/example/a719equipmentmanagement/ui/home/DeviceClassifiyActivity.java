@@ -13,7 +13,6 @@ import android.widget.Toast;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
-import com.example.a719equipmentmanagement.adapter.PeopleManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
@@ -81,7 +80,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void bindUi(List<DeviceClassifiy> body) {
-        ArrayList<QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>>> list = new ArrayList<>();
+        ArrayList<QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>>> list = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy : body) {
             list.add(createSection(deviceClassifiy));
         }
@@ -94,9 +93,9 @@ public class DeviceClassifiyActivity extends BaseActivity {
         stickySectionLayout.setLayoutManager(manager);
         adapter1 = new DeviceClassifiyAdapter();
         stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>>() {
+        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>>() {
             @Override
-            public void loadMore(QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> section, boolean loadMoreBefore) {
+            public void loadMore(QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> section, boolean loadMoreBefore) {
 
             }
 
@@ -123,13 +122,15 @@ public class DeviceClassifiyActivity extends BaseActivity {
         });
     }
 
-    private QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy>> createSection(DeviceClassifiy deviceClassifiy) {
-        String name = deviceClassifiy.getName();
-        SectionHeader header = new SectionHeader(name);
-        ArrayList<SectionItem<DeviceClassifiy>> contents = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            contents.add(new SectionItem(new ContainerData.ListBean()));
-//        }
+    private QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> createSection(DeviceClassifiy deviceClassifiy) {
+        ArrayList<SectionItem<DeviceClassifiy.ListBean>> contents = new ArrayList<>();
+        SectionHeader<DeviceClassifiy> header = new SectionHeader<>(deviceClassifiy);
+        List<DeviceClassifiy.ListBean> list = deviceClassifiy.getList();
+        if (list != null && list.size() > 0) {
+            for (DeviceClassifiy.ListBean listBean : list) {
+                contents.add(new SectionItem<>(listBean));
+            }
+        }
         // if test load more, you can open the code
 //        section.setExistAfterDataToLoad(true);
 //        section.setExistBeforeDataToLoad(true);

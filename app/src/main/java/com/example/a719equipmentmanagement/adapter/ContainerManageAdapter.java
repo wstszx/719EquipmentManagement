@@ -15,7 +15,7 @@ import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import androidx.annotation.NonNull;
 
-public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>> {
+public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<SectionHeader<ContainerData>, SectionItem<ContainerData.ListBean>> {
 
     @NonNull
     @Override
@@ -32,7 +32,7 @@ public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>> section) {
+    protected void onBindSectionHeader(ViewHolder holder, int position, QMUISection<SectionHeader<ContainerData>, SectionItem<ContainerData.ListBean>> section) {
         View view = holder.itemView;
         TextView tvParent = view.findViewById(R.id.tv_parent);
         ImageView ivRight = view.findViewById(R.id.iv_right);
@@ -53,10 +53,10 @@ public class ContainerManageAdapter extends QMUIDefaultStickySectionAdapter<Sect
     }
 
     @Override
-    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<ContainerData.ListBean>, SectionItem<ContainerData.ListBean>> section, int itemIndex) {
+    protected void onBindSectionItem(ViewHolder holder, int position, QMUISection<SectionHeader<ContainerData>, SectionItem<ContainerData.ListBean>> section, int itemIndex) {
         View view = holder.itemView;
         view.setTag(2);
         TextView tv_1 = view.findViewById(R.id.tv_1);
-//        tv_1.setText(section.getItemAt(itemIndex).getListBean().getName());
+        tv_1.setText(section.getItemAt(itemIndex).getListBean().getName());
     }
 }
