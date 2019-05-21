@@ -62,11 +62,14 @@ public class LoginActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(LoginActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        String token = baseResponse.getMsg();
-                        SPUtils.putString(App.getContext(), "token", token);
-                        SPUtils.putBoolean(App.getContext(), "main", true);
-                        MainActivity.start(LoginActivity.this);
-                        finish();
+                        int code = baseResponse.getCode();
+                        if (code == 0) {
+                            String token = baseResponse.getMsg();
+                            SPUtils.putString(App.getContext(), "token", token);
+                            SPUtils.putBoolean(App.getContext(), "main", true);
+                            MainActivity.start(LoginActivity.this);
+                            finish();
+                        }
                     }
                 });
 

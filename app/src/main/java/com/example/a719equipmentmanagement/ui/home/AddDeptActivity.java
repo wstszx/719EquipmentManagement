@@ -41,13 +41,14 @@ public class AddDeptActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"部门名称", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
+    private String[] containerAttrs = {"部门名称", "所属部门", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
     private QMUICommonListItemView item;
     private QMUICommonListItemView item1;
     private QMUICommonListItemView item2;
     private QMUICommonListItemView item3;
     private QMUICommonListItemView item4;
     private QMUICommonListItemView item5;
+    private QMUICommonListItemView item6;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -77,6 +78,16 @@ public class AddDeptActivity extends BaseActivity {
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(0);
         section.addItemView(item, onClickListener);
+
+        item1 = groupListView.createItemView(
+                null,
+                containerAttrs[1],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item1.setTag(1);
+        section.addItemView(item1, onClickListener);
+
         item2 = groupListView.createItemView(
                 null,
                 containerAttrs[2],
@@ -102,15 +113,24 @@ public class AddDeptActivity extends BaseActivity {
         item4.setTag(4);
         section.addItemView(item4, onClickListener);
 
-        item5 = groupListView.createItemView("部门状态");
-        item5.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
-        item5.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        item5 = groupListView.createItemView(
+                null,
+                containerAttrs[5],
+                " ",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item5.setTag(5);
+        section.addItemView(item5, onClickListener);
+
+        item6 = groupListView.createItemView("部门状态");
+        item6.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
+        item6.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
             }
         });
-        section.addItemView(item5, onClickListener);
+        section.addItemView(item6, onClickListener);
         section.addTo(groupListView);
     }
 
@@ -127,6 +147,7 @@ public class AddDeptActivity extends BaseActivity {
 
     private void getInputData() {
         String input = item.getDetailText().toString();
+        String input1 = item1.getDetailText().toString();
         String input2 = item2.getDetailText().toString();
         String input3 = item3.getDetailText().toString();
         String input4 = item4.getDetailText().toString();

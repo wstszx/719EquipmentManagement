@@ -34,32 +34,4 @@ public class BaseSubscriber<T> implements SingleObserver<T> {
         NetworkError.error(context, e);
     }
 
-//    private Context context;
-//
-//    public BaseSubscriber(Context context) {
-//        this.context = context;
-//    }
-//
-//    @Override
-//    public void onSubscribe(Disposable d) {
-//        boolean connected = NetworkUtils.isConnected();
-//        if (!connected) {
-//            this.onError(RetrofitException.retrofitException(new ConnectException()));
-//        }
-//    }
-//
-//    @Override
-//    public void onNext(T t) {
-//
-//    }
-//
-//    @Override
-//    public void onError(Throwable e) {
-//        NetworkError.error(context, e);
-//    }
-//
-//    @Override
-//    public void onComplete() {
-//
-//    }
 }
