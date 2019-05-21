@@ -28,6 +28,7 @@ public class PersonInfoActivity extends BaseActivity {
     QMUIGroupListView groupListView;
     private QMUICommonListItemView listItemView;
     private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式"};
+//    private Me body;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class PersonInfoActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
                     @Override
                     public void onSuccess(Me baseResponse) {
+//                        PersonInfoActivity.this.body = baseResponse;
                         if (baseResponse != null) {
                             initGroupListView();
                         }
@@ -70,6 +72,8 @@ public class PersonInfoActivity extends BaseActivity {
                 " ",
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+//        QMUICommonListItemView item = groupListView.createItemView(containerAttrs[0]);
+//        item.setDetailText(body.UserBean().getSex());
         item.setTag(0);
         section.addItemView(item, onClickListener);
 
