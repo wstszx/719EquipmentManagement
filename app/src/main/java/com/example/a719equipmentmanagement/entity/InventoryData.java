@@ -1,5 +1,6 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryData {
@@ -57,7 +58,7 @@ public class InventoryData {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return createTime == null ? "" : createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -81,7 +82,7 @@ public class InventoryData {
     }
 
     public String getRemark() {
-        return remark;
+        return remark == null ? "" : remark;
     }
 
     public void setRemark(String remark) {
@@ -97,7 +98,7 @@ public class InventoryData {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
@@ -121,6 +122,9 @@ public class InventoryData {
     }
 
     public List<?> getList() {
+        if (list == null) {
+            return new ArrayList<>();
+        }
         return list;
     }
 

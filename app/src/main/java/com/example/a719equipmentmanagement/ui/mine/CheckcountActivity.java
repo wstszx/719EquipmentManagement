@@ -9,7 +9,10 @@ import android.view.View;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.InventoryData;
+import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
@@ -35,25 +38,22 @@ public class CheckcountActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
-//        initData();
+        initData();
     }
 
-//    private void initData() {
-//        RetrofitClient.getInstance().getService().findInventoryData().enqueue(new Callback<List<InventoryData>>() {
-//            @Override
-//            public void onResponse(Call<List<InventoryData>> call, Response<List<InventoryData>> response) {
-//                body = response.body();
-//                if (body != null && body.size() > 0) {
-//                    initGroupListView();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<InventoryData>> call, Throwable t) {
-//
-//            }
-//        });
-//    }
+    private void initData() {
+        RetrofitClient.getInstance().getService().findInventoryData()
+                .compose(CommonCompose.io2main(CheckcountActivity.this))
+                .subscribe(new BaseSubscriber<List<InventoryData>>(CheckcountActivity.this) {
+                    @Override
+                    public void onSuccess(List<InventoryData> baseResponse) {
+                        if (baseResponse != null) {
+                            CheckcountActivity.this.body = baseResponse;
+                            initGroupListView();
+                        }
+                    }
+                });
+    }
 
     @Override
     protected int getLayoutId() {
@@ -77,20 +77,20 @@ public class CheckcountActivity extends BaseActivity {
         });
     }
 
-//    private void initGroupListView() {
-//        String time = "时间";
-//        String result = "盘点结果：";
-//        View.OnClickListener onClickListener = v -> {
-//        };
-//        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-//            for (int i = 0; i < body.size(); i++) {
-//                QMUICommonListItemView item = groupListView.createItemView(
-//                        null,
-//                        time + body.get(i).getCreateTime(),
-//                        result+(body.get(i).getState()==0?"盘点完成":"盘点未完成"),
-//                        QMUICommonListItemView.VERTICAL, 0);
-//                section.addItemView(item, onClickListener);
-//            }
-//        section.addTo(groupListView);
-//    }
+    private void initGroupListView() {
+        String time = "时间";
+        String result = "盘点结果：";
+        View.OnClickListener onClickListener = v -> {
+        };
+        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
+            for (int i = 0; i < body.size(); i++) {
+                QMUICommonListItemView item = groupListView.createItemView(
+                        null,
+                        time + body.get(i).getCreateTime(),
+                        result+(body.get(i).getState()==0?"盘点完成":"盘点未完成"),
+                        QMUICommonListItemView.VERTICAL, 0);
+                section.addItemView(item, onClickListener);
+            }
+        section.addTo(groupListView);
+    }
 }

@@ -27,8 +27,8 @@ public class PersonInfoActivity extends BaseActivity {
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式"};
-//    private Me body;
+    private String[] containerAttrs = {"姓名", "性别", "身份", "联系方式","所在部门","邮箱"};
+    private Me baseResponse;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -47,8 +47,8 @@ public class PersonInfoActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
                     @Override
                     public void onSuccess(Me baseResponse) {
-//                        PersonInfoActivity.this.body = baseResponse;
                         if (baseResponse != null) {
+                            PersonInfoActivity.this.baseResponse = baseResponse;
                             initGroupListView();
                         }
                     }
@@ -69,18 +69,16 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item = groupListView.createItemView(
                 null,
                 containerAttrs[0],
-                " ",
+                baseResponse.getUser().getUserName(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        QMUICommonListItemView item = groupListView.createItemView(containerAttrs[0]);
-//        item.setDetailText(body.UserBean().getSex());
         item.setTag(0);
         section.addItemView(item, onClickListener);
 
         QMUICommonListItemView item1 = groupListView.createItemView(
                 null,
                 containerAttrs[1],
-                " ",
+                baseResponse.getUser().getSex(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(1);
@@ -89,7 +87,7 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item2 = groupListView.createItemView(
                 null,
                 containerAttrs[2],
-                " ",
+                baseResponse.getUser().getRoles().get(0).getRoleName(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(2);
@@ -98,11 +96,29 @@ public class PersonInfoActivity extends BaseActivity {
         QMUICommonListItemView item3 = groupListView.createItemView(
                 null,
                 containerAttrs[3],
-                " ",
+                baseResponse.getUser().getPhonenumber(),
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(3);
         section.addItemView(item3, onClickListener);
+
+        QMUICommonListItemView item4 = groupListView.createItemView(
+                null,
+                containerAttrs[4],
+                baseResponse.getUser().getDept().getDeptName(),
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(4);
+        section.addItemView(item4, onClickListener);
+
+        QMUICommonListItemView item5 = groupListView.createItemView(
+                null,
+                containerAttrs[5],
+                baseResponse.getUser().getEmail(),
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item.setTag(5);
+        section.addItemView(item5, onClickListener);
 
         section.addTo(groupListView);
     }
