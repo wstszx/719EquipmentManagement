@@ -81,7 +81,7 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("system/dept/add")
     Single<BaseResponse> addDept(
-            @FieldMap Map<String, String> map
+            @FieldMap Map<String, Object> map
     );
 
     //校验部门名称

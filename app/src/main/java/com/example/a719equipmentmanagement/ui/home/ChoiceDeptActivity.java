@@ -3,6 +3,8 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.SparseArray;
+import android.util.SparseBooleanArray;
 import android.view.View;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -45,6 +47,8 @@ public class ChoiceDeptActivity extends BaseActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private ChoiceDeptAdapter adapter;
+    private String name;
+    private int id;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -107,10 +111,48 @@ public class ChoiceDeptActivity extends BaseActivity {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                singleChoice(position);
-                view.setBackgroundResource(R.color.app_color_blue);
+                MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
+                int itemType = multiItemEntity.getItemType();
+                switch (itemType) {
+                    case 0:
+                        DeptOne deptOne = (DeptOne) multiItemEntity;
+                        name = deptOne.getDept().getName();
+                        id = deptOne.getDept().getId();
+                        break;
+                    case 1:
+                        DeptTwo deptTwo = (DeptTwo) multiItemEntity;
+                        name = deptTwo.getDept().getName();
+                        id = deptTwo.getDept().getId();
+                        break;
+                    case 2:
+                        DeptThree deptThree = (DeptThree) multiItemEntity;
+                        name = deptThree.getDept().getName();
+                        id = deptThree.getDept().getId();
+                        break;
+                }
+                setChoice(position, view);
             }
         });
+    }
+
+    private SparseArray choiceArray = new SparseArray();
+
+    private void setChoice(int position, View view) {
+        if (mPosition == position) {
+            view.setBackgroundResource(R.color.white);
+            mPosition = -1;
+            choiceArray.delete(mPosition);
+        } else if (mPosition != -1) {
+            View mView = (View) choiceArray.get(mPosition);
+            mView.setBackgroundResource(R.color.white);
+            view.setBackgroundResource(R.color.app_color_blue);
+            choiceArray.put(position, view);
+            mPosition = position;
+        } else {
+            view.setBackgroundResource(R.color.app_color_blue);
+            choiceArray.put(position, view);
+            mPosition = position;
+        }
     }
 
     /**
@@ -119,13 +161,7 @@ public class ChoiceDeptActivity extends BaseActivity {
      * @param position
      */
     private void singleChoice(int position) {
-        if (adapter.getData().get(position) instanceof DeptOne) {
 
-        } else if (adapter.getData().get(position) instanceof DeptTwo) {
-
-        } else if (adapter.getData().get(position) instanceof DeptThree) {
-
-        }
 //        if (mPosition == position) {
 //            adapter.getData().get(position).setSelect(false);
 //            mPosition = -1;
@@ -141,11 +177,13 @@ public class ChoiceDeptActivity extends BaseActivity {
     }
 
 
-
     private void initTopbar() {
         topbar.setTitle("添加部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
-
+            Intent intent = new Intent();
+            intent.putExtra("name", name);
+            intent.putExtra("id", id);
+            setResult(RESULT_OK, intent);
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -162,4 +200,5 @@ public class ChoiceDeptActivity extends BaseActivity {
         Intent starter = new Intent(context, ChoiceDeptActivity.class);
         context.startActivity(starter);
     }
+
 }
