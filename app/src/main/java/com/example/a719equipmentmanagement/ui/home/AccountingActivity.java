@@ -12,11 +12,21 @@ import androidx.annotation.Nullable;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.InRecordData;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import butterknife.BindView;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 建账入库
@@ -33,7 +43,19 @@ public class AccountingActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
         initGroupListView();
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().findInRecordData()
+                .compose(CommonCompose.io2main(this))
+                .subscribe(new BaseSubscriber<InRecordData>(AccountingActivity.this){
+                    @Override
+                    public void onSuccess(InRecordData inRecordData) {
+
+                    }
+                });
     }
 
     private void initGroupListView() {
@@ -77,6 +99,7 @@ public class AccountingActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("建账入库");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+            accounting();
 //            Intent intent = new Intent();
 //            intent.putExtra("text", edittext.getText().toString());
 //            setResult(RESULT_OK, intent);
@@ -86,6 +109,22 @@ public class AccountingActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
+    }
+
+    private void accounting() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("pid", 0);
+            jsonObject.put("name", "压力计");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().addInRecord(requestBody)
+                .compose(CommonCompose.io2main(AccountingActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(AccountingActivity.this){
+
+                });
     }
 
     @Override

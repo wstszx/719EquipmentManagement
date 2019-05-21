@@ -1,104 +1,70 @@
 package com.example.a719equipmentmanagement.adapter;
 
-import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
+import androidx.annotation.NonNull;
+
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.entity.PersonOne;
-import com.example.a719equipmentmanagement.entity.PersonThree;
-import com.example.a719equipmentmanagement.entity.PersonTwo;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.Person;
 
 import java.util.List;
 
-public class PersonManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
-    /**
-     * Same as QuickAdapter#QuickAdapter(Context,int) but with
-     * some initialization data.
-     *
-     * @param data A new list is created out of this one to avoid mutable list
-     */
-    private Context mContext;
-    public static final int LEVEL_ONE = 0;
-    public static final int LEVEL_TWO = 1;
-    public static final int LEVEL_THREE = 2;
+public class PersonManageAdapter extends BaseQuickAdapter<Person.RowsBean, BaseViewHolder> {
 
-    public PersonManageAdapter(Context context, List<MultiItemEntity> data) {
-        super(data);
-        this.mContext = context;
-        addItemType(LEVEL_ONE, R.layout.base_one_level_item);
-        addItemType(LEVEL_TWO, R.layout.base_two_level_item);
-        addItemType(LEVEL_THREE, R.layout.base_three_level_item);
+    private SwitchListener listener;
+    public interface SwitchListener{
+        void check(Switch aSwitch ,boolean isCheck);
+    }
+    public PersonManageAdapter(int layoutResId) {
+        super(layoutResId);
     }
 
+    public void setListener(SwitchListener listener) {
+        this.listener = listener;
+    }
 
     @Override
-    protected void convert(BaseViewHolder helper, MultiItemEntity item) {
-        switch (item.getItemType()) {
-            case LEVEL_ONE:
-                PersonOne personOne = (PersonOne) item;
-                User user = personOne.getUser();
-                setLevelData(user, helper);
-                if (personOne.isExpanded()) {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-                } else {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-                }
-//                helper.getView(R.id.constraint).setOnClickListener(v -> {
-//                    int pos = helper.getAdapterPosition();
-//                    if (personOne.isExpanded()) {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-//                        collapse(pos, true);
-//                    } else {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-//                        expand(pos, true);
-//                    }
-//                });
-                break;
-            case LEVEL_TWO:
-                PersonTwo personTwo = (PersonTwo) item;
-                User user1 = personTwo.getUser();
-                setLevelData(user1, helper);
-                if (personTwo.isExpanded()) {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-                } else {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-                }
-//                helper.getView(R.id.constraint).setOnClickListener(v -> {
-//                    int pos = helper.getAdapterPosition();
-//                    if (personTwo.isExpanded()) {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-//                        collapse(pos, true);
-//                    } else {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-//                        expand(pos, true);
-//                    }
-//                });
-                break;
-            case LEVEL_THREE:
-                PersonThree personThree = (PersonThree) item;
-                User user2 = personThree.getUser();
-                setLevelData(user2, helper);
-                break;
-        }
-    }
+    protected void convert(BaseViewHolder helper, Person.RowsBean item) {
+        helper.setText(R.id.tv_username, item.getUserName())
+                .setText(R.id.tv_dept, item.getDept().getDeptName())
+                .setText(R.id.tv_phone, item.getPhonenumber())
+                .setText(R.id.tv_create_time, item.getCreateTime())
+                .addOnClickListener(R.id.tv_edit)
+                .addOnClickListener(R.id.tv_delete)
+                .addOnClickListener(R.id.tv_reset);
 
-    private void setLevelData(User user, BaseViewHolder helper) {
-        String deptName = user.getDeptName();
-        String leader = user.getLeader();
-        String status = user.getStatus();
+        Switch aSwitch = helper.getView(R.id.switch1);
+
+        String status = item.getStatus();
         switch (status) {
             case "0":
-                helper.setText(R.id.tv_status, "正常");
+                aSwitch.setChecked(true);
                 break;
             case "1":
-                helper.setText(R.id.tv_status, "停用");
+                aSwitch.setChecked(false);
                 break;
         }
-        helper.setText(R.id.tv_parent, deptName)
-                .setText(R.id.tv_leader, leader);
-
+//        aSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    listener.check(false);
+//                } else {
+//                    listener.check(true);
+//                }
+//            }
+//        });
+        aSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean checked = aSwitch.isChecked();
+                listener.check(aSwitch,checked);
+            }
+        });
     }
 }
