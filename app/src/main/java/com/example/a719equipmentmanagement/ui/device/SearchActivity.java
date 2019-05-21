@@ -115,7 +115,7 @@ public class SearchActivity extends BaseActivity {
                 new BiFunction<DeviceData, List<TreeData>, Object>() {
                     @Override
                     public Object apply(DeviceData deviceData, List<TreeData> treeData) throws Exception {
-                        if(deviceData!=null){
+                        if (deviceData != null) {
                             List<DeviceData.RowsBean> rows = deviceData.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
@@ -176,7 +176,6 @@ public class SearchActivity extends BaseActivity {
                 recyclerView13.setVisibility(View.INVISIBLE);
             }
         });
-
 
 
         View view = getLayoutInflater().inflate(R.layout.base_double_list, null);

@@ -1,6 +1,7 @@
 package com.example.a719equipmentmanagement.ui.device;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,7 +18,9 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
+import com.example.a719equipmentmanagement.ui.home.ScanActivity;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
@@ -43,14 +46,17 @@ public class DeviceDetailActivity extends BaseActivity {
     private QMUICommonListItemView item4;
     private QMUICommonListItemView item5;
     private QMUICommonListItemView item6;
+    private QMUICommonListItemView item7;
 
-    private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
+    private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态","测试1"};
     private String name;
     private String parameter;
     private String responsor;
+    private String manufactuer;
     //    private String[] containerAttrValue = {"数据", "数据", "数据", "数据", "数据", "数据",
 //            "数据", "数据", "数据"};
 
+    private int mStyle=R.style.QMUI_Dialog;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -64,7 +70,9 @@ public class DeviceDetailActivity extends BaseActivity {
         DeviceData.RowsBean rowsBean = (DeviceData.RowsBean) intent.getSerializableExtra("serializable");
         name = rowsBean.getName();
         parameter = rowsBean.getParameter();
+        manufactuer = rowsBean.getManufactuer();
         responsor = rowsBean.getResponsor();
+
         int status = rowsBean.getStatus();
         switch (status) {
             case 0:
@@ -119,6 +127,26 @@ public class DeviceDetailActivity extends BaseActivity {
             intent.setClass(this, BaseItemEditActivity.class);
             startActivityForResult(intent, tag);
         };
+
+        View.OnClickListener onClickListener7 = v -> {
+            listItemView = (QMUICommonListItemView) v;
+            int tag = (int) listItemView.getTag();
+            if(tag==7){
+                showSingleChoiceDialog();
+            }
+//            clickItem(v, tag);
+
+        };
+        View.OnClickListener onClickListener8 = v -> {
+            listItemView = (QMUICommonListItemView) v;
+            int tag = (int) listItemView.getTag();
+            if(tag==8){
+                showChoiceDialog();
+            }
+//            clickItem(v, tag);
+
+        };
+
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
 
         item0 = groupListView.createItemView(
@@ -140,7 +168,7 @@ public class DeviceDetailActivity extends BaseActivity {
         item2 = groupListView.createItemView(
                 null,
                 containerAttrs[2],
-                " ",
+                manufactuer,
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item2.setTag(2);
@@ -178,20 +206,47 @@ public class DeviceDetailActivity extends BaseActivity {
         item6.setTag(6);
         section.addItemView(item6, onClickListener);
 
+        //测试部分item7,8
+        item7 = groupListView.createItemView(
+                null,
+                containerAttrs[7],
+                "测试条目",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item7.setTag(7);
+        section.addItemView(item7, onClickListener7);
+        QMUICommonListItemView item8 = groupListView.createItemView(
+                null,
+                containerAttrs[7],
+                "测试弹窗",
+                QMUICommonListItemView.HORIZONTAL,
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+        item8.setTag(8);
+        section.addItemView(item8, onClickListener8);
+
+
         section.addTo(groupListView);
 
-//        for (int i = 0; i < containerAttrs.length; i++) {
-//            QMUICommonListItemView item = groupListView.createItemView(
-//                    null,
-//                    containerAttrs[i],
-//                    containerAttrValue[i]+(i+1),
-//                    QMUICommonListItemView.HORIZONTAL,
-//                    QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-//            item.setTag(i);
-//            section.addItemView(item, onClickListener);
-//        }
-//        section.addTo(groupListView);
+    }
 
+    //测试弹窗1
+    private void showSingleChoiceDialog(){
+        final String[] items=new String[]{"1组","2组","3组"};
+        new QMUIDialog.CheckableDialogBuilder(DeviceDetailActivity.this)
+                .setCheckedIndex(0).addItems(items,((dialog, which) -> {
+                dialog.dismiss();
+                item7.setDetailText(items[which]);
+        })).create(mStyle).show();
+    }
+
+    //测试弹窗2
+    private void showChoiceDialog(){
+        new QMUIDialog.MessageDialogBuilder(this).setTitle("提示").setMessage("重新选择设备所在位置？？？")
+                .addAction("取消",(dialog, index) -> dialog.dismiss())
+                .addAction("确定",((dialog, index) -> {
+                    dialog.dismiss();
+                    ScanActivity.start(this);
+                })).create(mStyle).show();
     }
 
     public static void start(Context context, Serializable serializable) {
