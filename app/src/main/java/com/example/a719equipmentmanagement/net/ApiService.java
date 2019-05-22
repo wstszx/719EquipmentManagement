@@ -9,6 +9,8 @@ import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.InRecordData;
 import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
+import com.example.a719equipmentmanagement.entity.ListMyAllBorrow;
+import com.example.a719equipmentmanagement.entity.ListMyAllInventory;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.Person;
@@ -203,6 +205,13 @@ public interface ApiService {
     @POST("system/user/profile/updateAvatar")
     Single<BaseResponse> saveAvatar(@Field("avatarfile") File avatarfile);
 
+    //APP查找当前用户的盘点历史
+    @GET("system/user/profile/listMyAllInventory")
+    Single<ListMyAllInventory> getListMyAllInventory();
+
+    //APP查找当前用户的借用历史
+    @GET("system/user/profile/listMyAllBorrow")
+    Single<ListMyAllBorrow> getListMyAllBorrow();
 
     /*----------------- role-controller  ----------------*/
     //查找角色数据
