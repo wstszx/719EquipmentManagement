@@ -150,17 +150,49 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void resetPwd() {
+        new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("提示")
+                .setMessage("您确定要重置？")
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确认", (dialog, index) -> {
+                    dialog.dismiss();
+                    resetUser();
+                })
+                .show();
+
+    }
+
+    /**
+     * 重置用户
+     */
+    private void resetUser() {
         RetrofitClient.getInstance().getService().resetPwd(userId, loginName, "123456")
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        initData();
                     }
                 });
     }
 
     private void delete() {
+        new QMUIDialog.MessageDialogBuilder(this)
+                .setTitle("提示")
+                .setMessage("您确定要删除？")
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确认", (dialog, index) -> {
+                    dialog.dismiss();
+                    deleteUser();
+                })
+                .show();
+
+    }
+
+    /**
+     * 删除用户
+     */
+    private void deleteUser() {
         RetrofitClient.getInstance().getService().deleteUser(userId)
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
