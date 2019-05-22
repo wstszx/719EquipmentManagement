@@ -129,6 +129,10 @@ public interface ApiService {
     @GET("system/equip/list")
     Single<DeviceData2> findDeviceData();
 
+    //更新设备
+    @POST("system/equip/update")
+    Single<BaseResponse> updateDevice(@Body RequestBody requestBody);
+
 
     /*----------------- inventory-controller ----------------*/
     //设置盘点货柜范围

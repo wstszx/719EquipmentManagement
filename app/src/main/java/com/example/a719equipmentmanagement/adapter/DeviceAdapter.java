@@ -27,6 +27,10 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
                 .setText(R.id.textView2, item.getParameter())
                 .setText(R.id.textView3, item.getEquipNo());
 
+//        DeviceData2.RowsBean.DeptBean dept = item.getDept();
+//        DeviceData2.RowsBean.LocationBean location = item.getLocation();
+//        helper.setText(R.id.textView4,dept.getDeptName().toString());
+//        helper.setText(R.id.textView6,location.getName());
         //暂时添加部门和货架
         switch (item.getDeptId()) {
             case 0:

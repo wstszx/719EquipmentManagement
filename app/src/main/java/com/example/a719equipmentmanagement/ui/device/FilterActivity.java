@@ -2,6 +2,8 @@ package com.example.a719equipmentmanagement.ui.device;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.ThreadUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
@@ -29,8 +32,11 @@ import com.example.a719equipmentmanagement.entity.DeptOne;
 import com.example.a719equipmentmanagement.entity.DeptThree;
 import com.example.a719equipmentmanagement.entity.DeptTwo;
 import com.example.a719equipmentmanagement.entity.Device;
+import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.SectionHeader;
+import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
@@ -41,23 +47,30 @@ import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+import com.qmuiteam.qmui.widget.section.QMUISection;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function3;
 import io.reactivex.schedulers.Schedulers;
+//import static java.lang.System.*;
 
-import static java.lang.System.*;
-
-public class SearchActivity extends BaseActivity {
+public class FilterActivity extends BaseActivity {
 
 
     @BindView(R.id.constrainlayout)
@@ -88,6 +101,10 @@ public class SearchActivity extends BaseActivity {
     private BaseFilterAdapter adapter11;
     private BaseFilterAdapter adapter12;
     private BaseFilterAdapter adapter13;
+    private List<BaseSingleFilter> deptOnes_classify;
+    private List<BaseSingleFilter> deptTwos_classify;
+    private BaseFilterAdapter adapter21;
+    private BaseFilterAdapter adapter22;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -111,13 +128,21 @@ public class SearchActivity extends BaseActivity {
     }
 
     private void convertRequest() {
-        Single.zip(RetrofitClient.getInstance().getService().findDeviceData(),
-                RetrofitClient.getInstance().getService().getTreeData(),
-                new BiFunction<DeviceData2, List<TreeData>, Object>() {
-                    @Override
-                    public Object apply(DeviceData2 deviceData, List<TreeData> treeData) throws Exception {
-                        if (deviceData != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
+        Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<List<TreeData>> treeData1 = RetrofitClient.getInstance().getService().getTreeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<List<DeviceClassifiy>> listSingle = RetrofitClient.getInstance().getService().findDeviceTypeData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single.zip(deviceData2Single, treeData1, listSingle,
+                (deviceData2, treeData, deviceClassifiys) -> {
+                    boolean mainThread = ThreadUtils.isMainThread();
+                    if (mainThread) {
+                        if (deviceData2 != null) {
+                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
@@ -126,18 +151,22 @@ public class SearchActivity extends BaseActivity {
                         if (treeData != null && treeData.size() > 0) {
                             createSeaction(treeData);
                         }
-                        return new Object();
+                        if (deviceClassifiys != null && deviceClassifiys.size() > 0) {
+                            createSection_classify(deviceClassifiys);
+                        }
                     }
+                    return new Object();
                 }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<Object>(SearchActivity.this) {
+                .subscribe(new BaseSubscriber<Object>(this) {
                     @Override
                     public void onSuccess(Object o) {
-
+                        super.onSuccess(o);
                     }
                 });
     }
 
     private void initView() {
+//        三列表
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
         RecyclerView recyclerView12 = view1.findViewById(R.id.recyclerView2);
@@ -151,8 +180,6 @@ public class SearchActivity extends BaseActivity {
         recyclerView11.setAdapter(adapter11);
         recyclerView12.setAdapter(adapter12);
         recyclerView13.setAdapter(adapter13);
-
-
         adapter11.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
@@ -170,7 +197,6 @@ public class SearchActivity extends BaseActivity {
         adapter13.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-//                dropDownMenu.setTabText(position == 0 ? filterArray[1] : options[position]);
                 dropDownMenu.setTabText((position == -1) ? filterArray[1] : deptThrees.get(position).getName());
                 dropDownMenu.closeMenu();
                 recyclerView12.setVisibility(View.INVISIBLE);
@@ -178,35 +204,38 @@ public class SearchActivity extends BaseActivity {
             }
         });
 
+//        双列表
+        View view2 = getLayoutInflater().inflate(R.layout.base_double_list, null);
+        RecyclerView recyclerView21 = view2.findViewById(R.id.recyclerView1);
+        RecyclerView recyclerView22 = view2.findViewById(R.id.recyclerView2);
+        recyclerView21.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView22.setLayoutManager(new LinearLayoutManager(this));
+        adapter21 = new BaseFilterAdapter(R.layout.base_filter_right_item);
+        adapter22 = new BaseFilterAdapter(R.layout.base_filter_item);
+        recyclerView21.setAdapter(adapter21);
+        recyclerView22.setAdapter(adapter22);
 
-        View view = getLayoutInflater().inflate(R.layout.base_double_list, null);
-        RecyclerView recyclerView2 = view.findViewById(R.id.recyclerView1);
-        RecyclerView recyclerView3 = view.findViewById(R.id.recyclerView2);
-        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView3.setLayoutManager(new LinearLayoutManager(this));
-        BaseFilterAdapter adapter2 = new BaseFilterAdapter(R.layout.base_filter_right_item);
-        BaseFilterAdapter adapter3 = new BaseFilterAdapter(R.layout.base_filter_item);
-        recyclerView2.setAdapter(adapter2);
-        recyclerView3.setAdapter(adapter3);
-        adapter2.setNewData(filters);
-        adapter2.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        recyclerView22.setVisibility(View.INVISIBLE);
+        adapter21.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                adapter3.setNewData(filters);
-                recyclerView3.setVisibility(View.VISIBLE);
+                recyclerView22.setVisibility(View.VISIBLE);
+                BaseSingleFilter baseSingleFilter = adapter21.getData().get(position);
+                List<BaseSingleFilter> baseSingleFilters = deviceClassifiysMap.get(baseSingleFilter);
+                adapter22.setNewData(baseSingleFilters);
             }
         });
-        adapter3.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+        adapter22.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                adapter3.setNewData(filters);
+//                adapter22.setNewData(filters);
                 dropDownMenu.setTabText(position == 0 ? filterArray[1] : options[position]);
                 dropDownMenu.closeMenu();
-                recyclerView3.setVisibility(View.INVISIBLE);
+                recyclerView22.setVisibility(View.INVISIBLE);
             }
         });
 
-
+//      单列表
         RecyclerView recyclerView4 = new RecyclerView(this);
         BaseFilterAdapter adapter4 = new BaseFilterAdapter(R.layout.base_filter_item);
         recyclerView4.setLayoutManager(new LinearLayoutManager(this));
@@ -221,7 +250,7 @@ public class SearchActivity extends BaseActivity {
         });
 
         popupViews.add(view1);
-        popupViews.add(view);
+        popupViews.add(view2);
         popupViews.add(recyclerView4);
 
         RecyclerView recyclerview5 = new RecyclerView(this);
@@ -272,14 +301,40 @@ public class SearchActivity extends BaseActivity {
                     }
                 }
             }
-
+            adapter11.setNewData(deptOnes);
         }
-        adapter11.setNewData(deptOnes);
-
     }
 
+    private Map<BaseSingleFilter, List<BaseSingleFilter>> deviceClassifiysMap = new HashMap<>();
+
+    private void createSection_classify(List<DeviceClassifiy> deviceClassifiys) {
+
+        for (DeviceClassifiy deviceClassifiy : deviceClassifiys) {
+            int id = deviceClassifiy.getId();
+            String name = deviceClassifiy.getName();
+            BaseSingleFilter filterKey = new BaseSingleFilter();
+            filterKey.setName(name);
+            filterKey.setId(id);
+            List<DeviceClassifiy.ListBean> deviceClassifiyListBeanList = deviceClassifiy.getList();
+            List<BaseSingleFilter> filterValueList = new ArrayList<>();
+            for (DeviceClassifiy.ListBean listBean : deviceClassifiyListBeanList) {
+                BaseSingleFilter filterValue = new BaseSingleFilter();
+                int id1 = listBean.getId();
+                String name1 = listBean.getName();
+                filterValue.setId(id1);
+                filterValue.setName(name1);
+                filterValueList.add(filterValue);
+            }
+            deviceClassifiysMap.put(filterKey, filterValueList);
+        }
+        Set<BaseSingleFilter> baseSingleFiltersSet = deviceClassifiysMap.keySet();
+        ArrayList<BaseSingleFilter> baseSingleFilters1 = new ArrayList<>(baseSingleFiltersSet);
+        adapter21.setNewData(baseSingleFilters1);
+    }
+
+
     private void initTopbar() {
-        topbar.setTitle("设备搜索");
+        topbar.setTitle("设备筛选");
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

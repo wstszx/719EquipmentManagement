@@ -79,8 +79,8 @@ public class DeviceDetailActivity extends BaseActivity {
         parameter = rowsBean.getParameter();
         manufactuer = rowsBean.getManufactuer();
         responsor = rowsBean.getResponsor();
-        deptName = deptBean.getDeptName()==null?"空值": deptBean.getDeptName().toString();
-        locationName=locationBean.getName()==null?"空值":locationBean.getName();
+//        deptName = (String) deptBean.getDeptName();
+//        locationName=locationBean.getName()==null?"空值":locationBean.getName();
         int status = rowsBean.getStatus();
         switch (status) {
             case 0:

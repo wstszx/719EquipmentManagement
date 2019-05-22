@@ -48,7 +48,7 @@
         <activity android:name=".ui.mine.CheckonActivity" />
         <activity android:name=".ui.mine.CheckcountActivity" />
         <activity android:name=".ui.mine.ReturnActivity" />
-        <activity android:name=".ui.device.SearchActivity" />
+        <activity android:name=".ui.device.FilterActivity" />
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseItemEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
