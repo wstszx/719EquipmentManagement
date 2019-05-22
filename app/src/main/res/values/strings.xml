@@ -27,7 +27,7 @@
     <string name="phone">手机：</string>
     <string name="create_time">创建时间：</string>
     <string name="user_name">用户名称：</string>
-    <string name="user_status">用户状态</string>
+    <string name="user_status">用户状态：</string>
     <string name="edit">编辑</string>
     <string name="delete">删除</string>
     <string name="reset">重置</string>

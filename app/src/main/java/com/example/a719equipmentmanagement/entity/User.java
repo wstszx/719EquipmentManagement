@@ -250,7 +250,7 @@ public class User implements Serializable {
          * admin : true
          */
 
-        private Object id;
+        private int id;
         private Object searchValue;
         private String createBy;
         private String createTime;
@@ -280,11 +280,11 @@ public class User implements Serializable {
         private boolean admin;
         private List<?> roles;
 
-        public Object getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Object id) {
+        public void setId(int id) {
             this.id = id;
         }
 

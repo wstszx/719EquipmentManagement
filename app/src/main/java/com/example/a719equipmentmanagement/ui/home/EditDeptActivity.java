@@ -62,7 +62,6 @@ public class EditDeptActivity extends BaseActivity {
     View include_6;
     @BindView(R.id.include_7)
     View include_7;
-    private List<String> deptDetails;
     private IncludedLayout includedLayout1;
     private IncludedLayout includedLayout2;
     private IncludedLayout includedLayout3;

@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,12 +38,12 @@ import butterknife.ButterKnife;
 
 public class PersonManageActivity extends BaseActivity {
 
+    private static final int EDIT_USER = 1;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private PersonManageAdapter adapter;
-    private int page = 1;
     private int userId;
     private String loginName;
     private Switch aSwitch;
@@ -52,7 +53,7 @@ public class PersonManageActivity extends BaseActivity {
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initAdapter();
-        initData(1);
+        initData();
     }
 
     private void initAdapter() {
@@ -67,23 +68,26 @@ public class PersonManageActivity extends BaseActivity {
         adapter.disableLoadMoreIfNotFullPage();
         recyclerview.setAdapter(adapter);
 
-        adapter.setListener((aSwitch, isCheck) -> {
-            PersonManageActivity.this.isCheck = isCheck;
-            PersonManageActivity.this.aSwitch = aSwitch;
-            if (isCheck) {
-                showDialog("确定暂停该人员？", 2);
-            } else {
-                showDialog("确定恢复该人员？", 3);
-            }
-        });
+//        adapter.setListener((aSwitch, isCheck) -> {
+//            PersonManageActivity.this.isCheck = isCheck;
+//            PersonManageActivity.this.aSwitch = aSwitch;
+//            if (isCheck) {
+//                showDialog("确定暂停该人员？", 2);
+//            } else {
+//                showDialog("确定恢复该人员？", 3);
+//            }
+//        });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            Person.RowsBean rowsBean = (Person.RowsBean) adapter.getData().get(position);
-            userId = rowsBean.getUserId();
-            loginName = rowsBean.getLoginName();
+            User.ListBean listBean = (User.ListBean) adapter.getData().get(position);
+            userId = listBean.getUserId();
+            loginName = listBean.getLoginName();
             switch (view.getId()) {
                 case R.id.tv_edit:
-                    EditPersonActivity.start(PersonManageActivity.this);
+                    Intent intent = new Intent();
+                    intent.putExtra("listBean", listBean);
+                    intent.setClass(PersonManageActivity.this, EditPersonActivity.class);
+                    startActivityForResult(intent, EDIT_USER);
                     break;
                 case R.id.tv_delete:
                     showDialog("确定删除该人员？", 0);
@@ -93,10 +97,17 @@ public class PersonManageActivity extends BaseActivity {
                     break;
             }
         });
-        adapter.setOnLoadMoreListener(() -> {
-            page++;
-            initData(page);
-        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        initData();
+//        switch (requestCode) {
+//            case EDIT_USER:
+//                initData();
+//                break;
+//        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showDialog(String msg, int tag) {
@@ -155,30 +166,33 @@ public class PersonManageActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        initData(1);
+                        initData();
                     }
                 });
     }
 
-    private void initData(int page) {
+    private void initData() {
         RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(List<User> users) {
-
-                        if (users != null) {
-                            if (users.size() > 0) {
-                                List<User.ListBean> listBeans = transformData(users);
-                                if (page == 1) {
-                                    adapter.setNewData(listBeans);
-                                } else {
-                                    adapter.addData(listBeans);
-                                }
-                            } else {
-                                adapter.loadMoreEnd(true);
-                            }
+                        if (users != null && users.size() > 0) {
+                            List<User.ListBean> listBeans = transformData(users);
+                            adapter.setNewData(listBeans);
                         }
+//                        if (users != null) {
+//                            if (users.size() > 0) {
+//                                List<User.ListBean> listBeans = transformData(users);
+////                                if (page == 1) {
+//                                    adapter.setNewData(listBeans);
+////                                } else {
+////                                    adapter.addData(listBeans);
+////                                }
+//                            } else {
+//                                adapter.loadMoreEnd(true);
+//                            }
+//                        }
                     }
                 });
     }

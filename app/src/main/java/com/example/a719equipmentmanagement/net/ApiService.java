@@ -231,7 +231,7 @@ public interface ApiService {
     //编辑保存用户
     @FormUrlEncoded
     @POST("system/user/edit")
-    Single<BaseResponse> editUser();
+    Single<BaseResponse> editUser(@FieldMap Map<String, Object> map);
 
     //删除用户
     @FormUrlEncoded
