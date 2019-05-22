@@ -93,8 +93,9 @@ public interface ApiService {
     Single<List<User>> getUser();
 
     //编辑科室
+    @FormUrlEncoded
     @POST("system/dept/edit")
-    Single<BaseResponse> editDept();
+    Single<BaseResponse> editDept(@FieldMap Map<String, Object> map);
 
     //删除科室
     @GET("system/dept/remove/{deptId}")

@@ -176,14 +176,14 @@ public class ChoiceDeptActivity extends BaseActivity {
 
     }
 
-
     private void initTopbar() {
         topbar.setTitle("添加部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("name", name);
             intent.putExtra("id", id);
+            intent.putExtra("name", name);
             setResult(RESULT_OK, intent);
+            finish();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -196,9 +196,9 @@ public class ChoiceDeptActivity extends BaseActivity {
         return R.layout.activity_choice_dept;
     }
 
-    public static void start(Context context) {
-        Intent starter = new Intent(context, ChoiceDeptActivity.class);
-        context.startActivity(starter);
-    }
+//    public static void start(Context context) {
+//        Intent starter = new Intent(context, ChoiceDeptActivity.class);
+//        context.startActivity(starter);
+//    }
 
 }

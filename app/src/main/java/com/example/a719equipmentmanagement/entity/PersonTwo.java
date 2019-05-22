@@ -6,13 +6,19 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class PersonTwo extends AbstractExpandableItem<PersonThree> implements MultiItemEntity {
     private User user;
+    private String parentTitle;
 
     public User getUser() {
         return user;
     }
 
-    public PersonTwo(User user) {
+    public String getParentTitle() {
+        return parentTitle == null ? "" : parentTitle;
+    }
+
+    public PersonTwo(User user, String parentTitle) {
         this.user = user;
+        this.parentTitle = parentTitle;
     }
 
     @Override

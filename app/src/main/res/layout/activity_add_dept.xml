@@ -10,10 +10,42 @@
         android:background="@color/qmui_config_color_background"
         android:fitsSystemWindows="true">
 
-        <com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView
+        <LinearLayout
             android:id="@+id/groupListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/include_1"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_2"
+                layout="@layout/base_enter_item" />
+
+            <include
+                android:id="@+id/include_3"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_4"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_5"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_6"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_7"
+                layout="@layout/base_switch_item" />
+
+
+        </LinearLayout>
     </ScrollView>
 
     <com.qmuiteam.qmui.widget.QMUITopBarLayout

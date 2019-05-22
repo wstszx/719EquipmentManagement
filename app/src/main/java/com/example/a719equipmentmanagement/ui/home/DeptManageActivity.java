@@ -73,6 +73,7 @@ public class DeptManageActivity extends BaseActivity {
     private PersonOne personOne;
     private PersonTwo personTwo;
     private int deptId;
+    private PersonThree personThree;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class DeptManageActivity extends BaseActivity {
             int id = user.getId();
             if (100 == id) {
                 int deptId = user.getDeptId();
+                String deptName = user.getDeptName();
                 PersonOne personOne = new PersonOne(user);
 
                 for (User user1 : users) {
@@ -113,12 +115,12 @@ public class DeptManageActivity extends BaseActivity {
 
                     if (deptId == parentId1) {
                         int deptId1 = user1.getDeptId();
-
-                        PersonTwo personTwo = new PersonTwo(user1);
+                        String deptName1 = user1.getDeptName();
+                        PersonTwo personTwo = new PersonTwo(user1, deptName);
                         for (User user2 : users) {
                             int parentId2 = user2.getParentId();
                             if (deptId1 == parentId2) {
-                                PersonThree personThree = new PersonThree(user2);
+                                PersonThree personThree = new PersonThree(user2, deptName1);
                                 personTwo.addSubItem(personThree);
                             }
                         }
@@ -174,16 +176,19 @@ public class DeptManageActivity extends BaseActivity {
             switch (itemViewType) {
                 case 0:
                     personOne = (PersonOne) adapter.getData().get(position);
+                    parentTitle = personOne.getParentTitle();
                     user = personOne.getUser();
                     deptId = user.getDeptId();
                     break;
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
+                    parentTitle = personTwo.getParentTitle();
                     user = personTwo.getUser();
                     deptId = user.getDeptId();
                     break;
                 case 2:
-                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
+                    personThree = (PersonThree) adapter.getData().get(position);
+                    parentTitle = personThree.getParentTitle();
                     user = personThree.getUser();
                     deptId = user.getDeptId();
                     break;
@@ -199,10 +204,6 @@ public class DeptManageActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("部门管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-//            initListPopupIfNeed(addTypes);
-//            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-//            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-//            mListPopup.show(v);
             Intent addDeptIntent = new Intent();
             addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
             startActivityForResult(addDeptIntent, ADD_DEPT);
@@ -242,14 +243,6 @@ public class DeptManageActivity extends BaseActivity {
                     TextView textView = (TextView) view;
                     String s = textView.getText().toString();
                     switch (s) {
-//                        case "添加部门":
-//                            Intent addDeptIntent = new Intent();
-//                            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
-//                            startActivityForResult(addDeptIntent, ADD_DEPT);
-//                            break;
-//                        case "添加人员":
-//                            AddPersonActivity.start(DeptManageActivity.this);
-//                            break;
                         case "删除":
                             delete();
                             break;
@@ -265,86 +258,17 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void edit() {
-        switch (itemViewType) {
-            case 0:
-                parentTitle = "无";
-                break;
-            case 1:
-                parentTitle = personOne.getUser().getDeptName();
-                break;
-            case 2:
-                parentTitle = personTwo.getUser().getDeptName();
-                break;
-        }
         Intent intent = new Intent();
         intent.putExtra("parentTitle", parentTitle);
         intent.putExtra("data", user);
         intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
-        startActivity(intent);
-//        switch (itemViewType) {
-//            case 0:
-//                Intent intent = new Intent();
-//                intent.putExtra("parentTitle", parentTitle);
-//                intent.putExtra("data", user);
-//                intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
-//                startActivityForResult(intent, EDIT_DEPT);
-//                break;
-//            case 1:
-//                Intent intent1 = new Intent();
-//                intent1.putExtra("parentTitle", parentTitle);
-//                intent1.putExtra("data", user);
-//                intent1.setClass(DeptManageActivity.this, EditDeptActivity.class);
-//                startActivityForResult(intent1, EDIT_CHILD_DEPT);
-//                break;
-//            case 2:
-//                Intent intent2 = new Intent();
-//                intent2.putExtra("parentTitle", parentTitle);
-//                intent2.putExtra("data", user);
-//                intent2.setClass(DeptManageActivity.this, EditDeptActivity.class);
-//                startActivityForResult(intent2, EDIT_PERSON);
-//                break;
-//        }
+        startActivityForResult(intent, EDIT_DEPT);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case EDIT_DEPT:
-                RetrofitClient.getInstance().getService().editDept()
-                        .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
-                            @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                initData();
-                            }
-                        });
-                break;
-            case EDIT_CHILD_DEPT:
-                RetrofitClient.getInstance().getService().editDept()
-                        .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
-                            @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                initData();
-                            }
-                        });
-                break;
-            case EDIT_PERSON:
-                RetrofitClient.getInstance().getService().editUser()
-                        .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
-                            @Override
-                            public void onSuccess(BaseResponse baseResponse) {
-                                initData();
-                            }
-                        });
-                break;
-            case ADD_DEPT:
-                initData();
-                break;
-
-        }
+        initData();
     }
 
     private void delete() {
