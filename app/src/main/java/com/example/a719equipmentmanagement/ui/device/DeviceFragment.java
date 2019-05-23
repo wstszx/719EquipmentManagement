@@ -15,7 +15,9 @@ import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
@@ -93,7 +95,7 @@ public class DeviceFragment extends BaseFragment {
 
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceData()
+        RetrofitClient.getInstance().getService().findDeviceData(new HashMap<>())
                 .compose(CommonCompose.io2main(getContext()))
                 .subscribe(new BaseSubscriber<DeviceData2>(getContext()) {
                     @Override
