@@ -3,38 +3,30 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
+import android.text.InputType;
 import android.widget.Switch;
 
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.a719equipmentmanagement.App;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.utils.SPUtils;
-import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
+import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -51,6 +43,10 @@ public class PersonManageActivity extends BaseActivity {
     private String loginName;
     private Switch aSwitch;
     private boolean isCheck;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
+    private CustomInputDialog customDialogBuilder;
+    private String userName;
+    private String password;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -71,20 +67,13 @@ public class PersonManageActivity extends BaseActivity {
         adapter.disableLoadMoreIfNotFullPage();
         recyclerview.setAdapter(adapter);
 
-//        adapter.setListener((aSwitch, isCheck) -> {
-//            PersonManageActivity.this.isCheck = isCheck;
-//            PersonManageActivity.this.aSwitch = aSwitch;
-//            if (isCheck) {
-//                showDialog("确定暂停该人员？", 2);
-//            } else {
-//                showDialog("确定恢复该人员？", 3);
-//            }
-//        });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
             User.ListBean listBean = (User.ListBean) adapter.getData().get(position);
             userId = listBean.getUserId();
             loginName = listBean.getLoginName();
+            userName = listBean.getUserName();
+            password = listBean.getPassword();
             switch (view.getId()) {
                 case R.id.tv_edit:
                     Intent intent = new Intent();
@@ -93,41 +82,51 @@ public class PersonManageActivity extends BaseActivity {
                     startActivityForResult(intent, EDIT_USER);
                     break;
                 case R.id.tv_delete:
-                    showDialog("确定删除该人员？", 0);
+                    showDeleteDialog();
                     break;
                 case R.id.tv_reset:
-                    showDialog("确定重置该人员？", 1);
+                    showResetDialog();
                     break;
             }
         });
     }
 
+    /**
+     * 显示重置对话框
+     */
+    private void showResetDialog() {
+        customDialogBuilder = new CustomInputDialog(this);
+//        customDialogBuilder.getEditText().setText(userName);
+//        customDialogBuilder.getEditText1().setText(password);
+        customDialogBuilder.setTitle("重置密码")
+                .setPlaceholder("用户名")
+                .setPlaceholder1("密码")
+                .setDefaultText(userName)
+                .setDefaultText1(password)
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .setInputType1(InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    resetUser();
+                })
+                .create(mCurrentDialogStyle).show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         initData();
-//        switch (requestCode) {
-//            case EDIT_USER:
-//                initData();
-//                break;
-//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void showDialog(String msg, int tag) {
+    private void showDeleteDialog() {
         new QMUIDialog.MessageDialogBuilder(this)
                 .setTitle("提示")
-                .setMessage(msg)
+                .setMessage("确定删除该人员？")
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
                     dialog.dismiss();
-                    switch (tag) {
-                        case 0:
-                            deleteUser();
-                            break;
-                        case 1:
-                            resetUser();
-                            break;
-                    }
+                    deleteUser();
                 })
                 .show();
     }
@@ -137,12 +136,21 @@ public class PersonManageActivity extends BaseActivity {
      * 重置用户
      */
     private void resetUser() {
-        RetrofitClient.getInstance().getService().resetPwd(userId, loginName, "123456")
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
+        String username = customDialogBuilder.getEditText().getText().toString();
+        String password = customDialogBuilder.getEditText1().getText().toString();
+        RetrofitClient.getInstance().getService().resetPwd(userId, username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        initData();
+                        if (baseResponse != null) {
+                            int code = baseResponse.getCode();
+                            if (code == 0) {
+                                ToastUtils.showShort("重置成功");
+                                initData();
+                            }
+                        }
                     }
                 });
     }
@@ -173,18 +181,6 @@ public class PersonManageActivity extends BaseActivity {
                             List<User.ListBean> listBeans = transformData(users);
                             adapter.setNewData(listBeans);
                         }
-//                        if (users != null) {
-//                            if (users.size() > 0) {
-//                                List<User.ListBean> listBeans = transformData(users);
-////                                if (page == 1) {
-//                                    adapter.setNewData(listBeans);
-////                                } else {
-////                                    adapter.addData(listBeans);
-////                                }
-//                            } else {
-//                                adapter.loadMoreEnd(true);
-//                            }
-//                        }
                     }
                 });
     }
@@ -201,7 +197,6 @@ public class PersonManageActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("人员管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-//            AddPersonActivity.start(PersonManageActivity.this);
             Intent intent = new Intent();
             intent.setClass(PersonManageActivity.this, AddPersonActivity.class);
             startActivityForResult(intent, ADD_PERSON);

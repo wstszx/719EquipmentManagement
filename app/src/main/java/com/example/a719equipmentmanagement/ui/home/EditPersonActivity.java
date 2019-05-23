@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.clj.fastble.data.BleDevice;
@@ -57,8 +59,10 @@ public class EditPersonActivity extends BaseActivity {
     View include_6;
     @BindView(R.id.include_8)
     View include_8;
-    @BindView(R.id.include_9)
-    View include_9;
+    @BindView(R.id.tv_title9)
+    TextView tv_title9;
+    @BindView(R.id.edittext9)
+    EditText edittext9;
     private String userName;
     private String sex;
     private String deptName;
@@ -77,7 +81,6 @@ public class EditPersonActivity extends BaseActivity {
     private TextView tvResult2;
     private EditDeptActivity.IncludedLayout includedLayout6;
     private EditDeptActivity.IncludedLayout includedLayout7;
-    private EditDeptActivity.IncludedLayout includedLayout9;
     private TextView textView8;
     private TextView tvResult8;
     private TextView tv_result1;
@@ -103,12 +106,10 @@ public class EditPersonActivity extends BaseActivity {
         includedLayout3 = new EditDeptActivity.IncludedLayout();
         includedLayout4 = new EditDeptActivity.IncludedLayout();
         includedLayout5 = new EditDeptActivity.IncludedLayout();
-        includedLayout9 = new EditDeptActivity.IncludedLayout();
         ButterKnife.bind(includedLayout, include);
         ButterKnife.bind(includedLayout3, include_3);
         ButterKnife.bind(includedLayout4, include_4);
         ButterKnife.bind(includedLayout5, include_5);
-        ButterKnife.bind(includedLayout9, include_9);
 //        0
         includedLayout.tv_title.setText(containerAttrs[0]);
         includedLayout.editText.setText(userName);
@@ -167,7 +168,7 @@ public class EditPersonActivity extends BaseActivity {
                 break;
         }
 
-//        7
+//        8
         textView8 = include_8.findViewById(R.id.tv_title);
         tvResult8 = include_8.findViewById(R.id.tv_result);
         textView8.setText(containerAttrs[7]);
@@ -178,9 +179,9 @@ public class EditPersonActivity extends BaseActivity {
                 showSimpleBottomSheetList(roleArray, 2);
             }
         });
-//        8
-        includedLayout9.tv_title.setText(containerAttrs[8]);
-        includedLayout9.editText.setText(remark);
+//        9
+        tv_title9.setText(containerAttrs[8]);
+        edittext9.setText(remark);
     }
 
     private void showSimpleBottomSheetList(String[] array, int flag) {
@@ -266,7 +267,7 @@ public class EditPersonActivity extends BaseActivity {
         String phoneNum = includedLayout3.editText.getText().toString();
         String email = includedLayout4.editText.getText().toString();
         String loginName = includedLayout5.editText.getText().toString();
-        String remark = includedLayout9.editText.getText().toString();
+        String remark = edittext9.getText().toString();
         if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
@@ -283,11 +284,11 @@ public class EditPersonActivity extends BaseActivity {
             map.put("sex", sexTag);
             map.put("deptId", deptId);
             map.put("deptName", dept);
-            map.put("phone", phoneNum);
+            map.put("phonenumber", phoneNum);
             map.put("email", email);
             map.put("loginName", loginName);
             map.put("status", switchs.isChecked() ? "0" : "1");
-            map.put("roleIds", roleId);
+            map.put("role", roleId);
             map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();

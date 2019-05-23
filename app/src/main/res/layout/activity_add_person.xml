@@ -286,7 +286,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             <!--6-->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint6"
@@ -295,6 +294,49 @@
 
                 <TextView
                     android:id="@+id/tv_title6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/login_pwd"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/edittext6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textSize="@dimen/sp_14"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/tv_title6"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <!--7-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraint7"
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <TextView
+                    android:id="@+id/tv_title7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -323,14 +365,14 @@
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--7-->
+            <!--8-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint7"
+                android:id="@+id/constraint8"
                 android:layout_width="match_parent"
                 android:layout_height="50dp">
 
                 <TextView
-                    android:id="@+id/tv_title7"
+                    android:id="@+id/tv_title8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -348,13 +390,13 @@
                     android:singleLine="true"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView7"
-                    app:layout_constraintStart_toEndOf="@+id/tv_title7"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView8"
+                    app:layout_constraintStart_toEndOf="@+id/tv_title8"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="TextView" />
 
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/imageView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -372,40 +414,41 @@
                     app:layout_constraintStart_toStartOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--8-->
+            <!--9-->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint8"
+                android:id="@+id/constraint9"
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="60dp">
 
                 <TextView
-                    android:id="@+id/tv_title8"
+                    android:id="@+id/tv_title9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:text="@string/remark"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <EditText
-                    android:id="@+id/edittext8"
+                    android:id="@+id/edittext9"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp"
                     android:background="@null"
-                    android:inputType="phone"
-                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:gravity="start"
+                    android:maxLength="40"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/tv_title8"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toEndOf="@id/tv_title9"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="放大镜看房价的看克积分开发巨额罚款金额" />
 
                 <View
                     android:layout_width="match_parent"

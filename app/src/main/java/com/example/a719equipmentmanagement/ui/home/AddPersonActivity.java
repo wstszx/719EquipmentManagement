@@ -3,14 +3,10 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -42,8 +38,6 @@ import butterknife.OnClick;
 
 public class AddPersonActivity extends BaseActivity {
     private static final int OWNER_DEPT = 1;
-    @BindView(R.id.topbar)
-    QMUITopBarLayout topbar;
     @BindView(R.id.edittext)
     EditText edittext;
     @BindView(R.id.tv_result1)
@@ -56,12 +50,17 @@ public class AddPersonActivity extends BaseActivity {
     EditText edittext4;
     @BindView(R.id.edittext5)
     EditText edittext5;
+    @BindView(R.id.edittext6)
+    EditText edittext6;
     @BindView(R.id.switchs)
     Switch switchs;
     @BindView(R.id.tv_result7)
     TextView tvResult7;
-    @BindView(R.id.edittext8)
-    EditText edittext8;
+    @BindView(R.id.edittext9)
+    EditText edittext9;
+    @BindView(R.id.topbar)
+    QMUITopBarLayout topbar;
+
     private String[] sexArray = {"男", "女", "未知"};
     private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
     private QMUIListPopup mListPopup;
@@ -160,7 +159,8 @@ public class AddPersonActivity extends BaseActivity {
         String phoneNum = edittext3.getText().toString();
         String email = edittext4.getText().toString();
         String loginName = edittext5.getText().toString();
-        String remark = edittext8.getText().toString();
+        String password = edittext6.getText().toString();
+        String remark = edittext9.getText().toString();
         if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
@@ -175,11 +175,12 @@ public class AddPersonActivity extends BaseActivity {
             map.put("sex", sexTag);
             map.put("deptId", deptId);
             map.put("deptName", dept);
-            map.put("phone", phoneNum);
+            map.put("phonenumber", phoneNum);
             map.put("email", email);
             map.put("loginName", loginName);
+            map.put("password", password);
             map.put("status", switchs.isChecked() ? "0" : "1");
-            map.put("roleIds", roleId);
+            map.put("role", roleId);
             map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,11 +190,10 @@ public class AddPersonActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddPersonActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        setResult(RESULT_OK);
+                        finish();
                     }
                 });
-        setResult(RESULT_OK);
-        finish();
     }
 
     @Override
@@ -242,7 +242,7 @@ public class AddPersonActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.constraint1, R.id.constraint2, R.id.constraint7})
+    @OnClick({R.id.constraint1, R.id.constraint2, R.id.constraint8})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.constraint1:
@@ -253,9 +253,10 @@ public class AddPersonActivity extends BaseActivity {
                 intent.setClass(AddPersonActivity.this, ChoiceDeptActivity.class);
                 startActivityForResult(intent, OWNER_DEPT);
                 break;
-            case R.id.constraint7:
+            case R.id.constraint8:
                 showSimpleBottomSheetList(roleArray, 2);
                 break;
         }
     }
+
 }
