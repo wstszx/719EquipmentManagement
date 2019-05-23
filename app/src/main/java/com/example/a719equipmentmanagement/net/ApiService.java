@@ -128,7 +128,7 @@ public interface ApiService {
 
     //查找设备数据
     @GET("system/equip/list")
-    Single<DeviceData2> findDeviceData();
+    Single<DeviceData2> findDeviceData(@QueryMap Map<String, Object> map);
 
     //更新设备
     @POST("system/equip/update")

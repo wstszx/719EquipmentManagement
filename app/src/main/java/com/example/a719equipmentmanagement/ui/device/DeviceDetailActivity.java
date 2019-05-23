@@ -109,20 +109,20 @@ public class DeviceDetailActivity extends BaseActivity {
             GenarateQRActivity.start(this);
         });
 
-        RetrofitClient.getInstance().getService().findDeviceData()
-                .compose(CommonCompose.io2main(this))
-                .subscribe(new BaseSubscriber<DeviceData2>(this) {
-                    @Override
-                    public void onSuccess(DeviceData2 deviceData) {
-                        if (deviceData != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
-                            if (rows != null && rows.size() > 0) {
-//                                adapter.setNewData(rows);
-
-                            }
-                        }
-                    }
-                });
+//        RetrofitClient.getInstance().getService().findDeviceData()
+//                .compose(CommonCompose.io2main(this))
+//                .subscribe(new BaseSubscriber<DeviceData2>(this) {
+//                    @Override
+//                    public void onSuccess(DeviceData2 deviceData) {
+//                        if (deviceData != null) {
+//                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
+//                            if (rows != null && rows.size() > 0) {
+////                                adapter.setNewData(rows);
+//
+//                            }
+//                        }
+//                    }
+//                });
 
     }
 

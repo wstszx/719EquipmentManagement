@@ -38,7 +38,7 @@ public class DeviceData2 implements Serializable {
         this.rows = rows;
     }
 
-    public static class RowsBean implements Serializable{
+    public static class RowsBean implements Serializable {
         /**
          * id : 1
          * searchValue : null
@@ -112,7 +112,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getCreateBy() {
-            return createBy;
+            return createBy == null ? "" : createBy;
         }
 
         public void setCreateBy(String createBy) {
@@ -120,7 +120,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getCreateTime() {
-            return createTime;
+            return createTime == null ? "" : createTime;
         }
 
         public void setCreateTime(String createTime) {
@@ -128,7 +128,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getUpdateBy() {
-            return updateBy;
+            return updateBy == null ? "" : updateBy;
         }
 
         public void setUpdateBy(String updateBy) {
@@ -136,7 +136,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getUpdateTime() {
-            return updateTime;
+            return updateTime == null ? "" : updateTime;
         }
 
         public void setUpdateTime(String updateTime) {
@@ -144,7 +144,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getRemark() {
-            return remark;
+            return remark == null ? "" : remark;
         }
 
         public void setRemark(String remark) {
@@ -160,7 +160,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getEquipNo() {
-            return equipNo;
+            return equipNo == null ? "" : equipNo;
         }
 
         public void setEquipNo(String equipNo) {
@@ -168,7 +168,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getSn() {
-            return sn;
+            return sn == null ? "" : sn;
         }
 
         public void setSn(String sn) {
@@ -200,7 +200,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getName() {
-            return name;
+            return name == null ? "" : name;
         }
 
         public void setName(String name) {
@@ -208,7 +208,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getSource() {
-            return source;
+            return source == null ? "" : source;
         }
 
         public void setSource(String source) {
@@ -216,7 +216,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getParameter() {
-            return parameter;
+            return parameter == null ? "" : parameter;
         }
 
         public void setParameter(String parameter) {
@@ -224,7 +224,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getManufactuer() {
-            return manufactuer;
+            return manufactuer == null ? "" : manufactuer;
         }
 
         public void setManufactuer(String manufactuer) {
@@ -240,7 +240,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getResponsor() {
-            return responsor;
+            return responsor == null ? "" : responsor;
         }
 
         public void setResponsor(String responsor) {
@@ -256,7 +256,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getLatestVerifyDate() {
-            return latestVerifyDate;
+            return latestVerifyDate == null ? "" : latestVerifyDate;
         }
 
         public void setLatestVerifyDate(String latestVerifyDate) {
@@ -264,7 +264,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public String getValidDate() {
-            return validDate;
+            return validDate == null ? "" : validDate;
         }
 
         public void setValidDate(String validDate) {
@@ -303,10 +303,10 @@ public class DeviceData2 implements Serializable {
             this.dept = dept;
         }
 
-        public static class ParamsBean implements Serializable{
+        public static class ParamsBean implements Serializable {
         }
 
-        public static class LocationBean implements Serializable{
+        public static class LocationBean implements Serializable {
             /**
              * id : 1
              * searchValue : null
@@ -431,11 +431,11 @@ public class DeviceData2 implements Serializable {
                 this.list = list;
             }
 
-            public static class ParamsBeanX implements Serializable{
+            public static class ParamsBeanX implements Serializable {
             }
         }
 
-        public static class DeptBean implements Serializable{
+        public static class DeptBean implements Serializable {
             /**
              * id : 1
              * searchValue : null
@@ -470,7 +470,7 @@ public class DeviceData2 implements Serializable {
             private int deptId;
             private Object parentId;
             private Object ancestors;
-            private Object deptName;
+            private String deptName;
             private Object orderNum;
             private Object leader;
             private Object phone;
@@ -568,11 +568,11 @@ public class DeviceData2 implements Serializable {
                 this.ancestors = ancestors;
             }
 
-            public Object getDeptName() {
-                return deptName;
+            public String getDeptName() {
+                return deptName == null ? "" : deptName;
             }
 
-            public void setDeptName(Object deptName) {
+            public void setDeptName(String deptName) {
                 this.deptName = deptName;
             }
 
@@ -640,7 +640,7 @@ public class DeviceData2 implements Serializable {
                 this.list = list;
             }
 
-            public static class ParamsBeanXX implements Serializable{
+            public static class ParamsBeanXX implements Serializable {
             }
         }
     }
