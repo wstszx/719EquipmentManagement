@@ -44,9 +44,7 @@
                 android:id="@+id/include_6"
                 layout="@layout/base_switch_item" />
 
-            <include
-                android:id="@+id/include_7"
-                layout="@layout/base_edit_item" />
+
 
             <include
                 android:id="@+id/include_8"

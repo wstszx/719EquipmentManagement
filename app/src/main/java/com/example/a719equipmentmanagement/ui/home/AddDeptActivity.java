@@ -44,8 +44,6 @@ public class AddDeptActivity extends BaseActivity {
     View include_1;
     @BindView(R.id.include_2)
     View include_2;
-    @BindView(R.id.include_3)
-    View include_3;
     @BindView(R.id.include_4)
     View include_4;
     @BindView(R.id.include_5)
@@ -57,7 +55,6 @@ public class AddDeptActivity extends BaseActivity {
     private String name;
     private int id;
     private IncludedLayout includedLayout1;
-    private IncludedLayout includedLayout2;
     private IncludedLayout includedLayout3;
     private IncludedLayout includedLayout4;
     private IncludedLayout includedLayout5;
@@ -79,12 +76,10 @@ public class AddDeptActivity extends BaseActivity {
 
     private void initView() {
         includedLayout1 = new IncludedLayout();
-        includedLayout2 = new IncludedLayout();
         includedLayout3 = new IncludedLayout();
         includedLayout4 = new IncludedLayout();
         includedLayout5 = new IncludedLayout();
         ButterKnife.bind(includedLayout1, include_1);
-        ButterKnife.bind(includedLayout2, include_3);
         ButterKnife.bind(includedLayout3, include_4);
         ButterKnife.bind(includedLayout4, include_5);
         ButterKnife.bind(includedLayout5, include_6);
@@ -98,11 +93,9 @@ public class AddDeptActivity extends BaseActivity {
                 startActivityForResult(new Intent(AddDeptActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
             }
         });
-        includedLayout2.tv_title.setText(containerAttrs[2]);
         includedLayout3.tv_title.setText(containerAttrs[3]);
         includedLayout4.tv_title.setText(containerAttrs[4]);
         includedLayout5.tv_title.setText(containerAttrs[5]);
-        includedLayout2.editText.setInputType(InputType.TYPE_CLASS_NUMBER);
         includedLayout4.editText.setInputType(InputType.TYPE_CLASS_PHONE);
         includedLayout5.editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         TextView textView7 = include_7.findViewById(R.id.tv_title);
@@ -124,7 +117,6 @@ public class AddDeptActivity extends BaseActivity {
     private void getInputData() {
         Map<String, Object> map = new HashMap<>();
         String deptName = includedLayout1.editText.getText().toString();
-        String orderNum = includedLayout2.editText.getText().toString();
         String leader = includedLayout3.editText.getText().toString();
         String email = includedLayout5.editText.getText().toString();
         String phone = includedLayout4.editText.getText().toString();
@@ -139,16 +131,10 @@ public class AddDeptActivity extends BaseActivity {
             return;
         }
 
-        if (!NumUtils.isInteger(orderNum)) {
-            ToastUtils.showShort("请填写正确的显示排序");
-            return;
-        }
-
         try {
             map.put("deptName", deptName);
             map.put("parentId", id);
             map.put("leader", leader);
-            map.put("orderNum", orderNum);
             map.put("phone", phone);
             map.put("email", email);
             map.put("status", switchs.isChecked() ? "0" : "1");

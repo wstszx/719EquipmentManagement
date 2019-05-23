@@ -35,10 +35,13 @@ import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class PersonManageActivity extends BaseActivity {
 
     private static final int EDIT_USER = 1;
+    private static final int ADD_PERSON = 2;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
@@ -116,51 +119,19 @@ public class PersonManageActivity extends BaseActivity {
                 .setMessage(msg)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
+                    dialog.dismiss();
                     switch (tag) {
                         case 0:
-                            delete();
+                            deleteUser();
                             break;
                         case 1:
-                            resetPwd();
-                            break;
-                        case 2:
-                            changeStatus(1);
-                            break;
-                        case 3:
-                            changeStatus(0);
+                            resetUser();
                             break;
                     }
                 })
                 .show();
     }
 
-    private void changeStatus(int status) {
-        RetrofitClient.getInstance().getService().changeStatus(userId, status)
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        if (isCheck) {
-                            aSwitch.setChecked(false);
-                        } else {
-                            aSwitch.setChecked(true);
-                        }
-                    }
-                });
-    }
-
-    private void resetPwd() {
-        new QMUIDialog.MessageDialogBuilder(this)
-                .setTitle("提示")
-                .setMessage("您确定要重置？")
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确认", (dialog, index) -> {
-                    dialog.dismiss();
-                    resetUser();
-                })
-                .show();
-
-    }
 
     /**
      * 重置用户
@@ -176,25 +147,14 @@ public class PersonManageActivity extends BaseActivity {
                 });
     }
 
-    private void delete() {
-        new QMUIDialog.MessageDialogBuilder(this)
-                .setTitle("提示")
-                .setMessage("您确定要删除？")
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确认", (dialog, index) -> {
-                    dialog.dismiss();
-                    deleteUser();
-                })
-                .show();
-
-    }
 
     /**
      * 删除用户
      */
     private void deleteUser() {
         RetrofitClient.getInstance().getService().deleteUser(userId)
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
@@ -241,7 +201,10 @@ public class PersonManageActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("人员管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            AddPersonActivity.start(PersonManageActivity.this);
+//            AddPersonActivity.start(PersonManageActivity.this);
+            Intent intent = new Intent();
+            intent.setClass(PersonManageActivity.this, AddPersonActivity.class);
+            startActivityForResult(intent, ADD_PERSON);
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();

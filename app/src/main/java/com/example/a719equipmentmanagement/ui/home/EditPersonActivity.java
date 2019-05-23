@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.clj.fastble.data.BleDevice;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -16,9 +19,12 @@ import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.utils.NumUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,14 +34,13 @@ import butterknife.ButterKnife;
 
 public class EditPersonActivity extends BaseActivity {
 
+    private static final int OWNER_DEPT = 1;
     private String[] containerAttrs = {"用户名称：", "用户性别：", "归属部门：", "手机号码：", "邮箱：",
-            "登录账号：", "用户状态：", "岗位：", "角色：", "备注："};
+            "登录账号：", "用户状态：", "角色：", "备注："};
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     @BindView(R.id.switchs)
     Switch switchs;
-//    @BindView(R.id.tv_result)
-//    TextView tvResult;
     @BindView(R.id.include)
     View include;
     @BindView(R.id.include_1)
@@ -50,8 +55,6 @@ public class EditPersonActivity extends BaseActivity {
     View include_5;
     @BindView(R.id.include_6)
     View include_6;
-    @BindView(R.id.include_7)
-    View include_7;
     @BindView(R.id.include_8)
     View include_8;
     @BindView(R.id.include_9)
@@ -78,8 +81,15 @@ public class EditPersonActivity extends BaseActivity {
     private TextView textView8;
     private TextView tvResult8;
     private TextView tv_result1;
-    private int id;
+    private int userId;
     private int deptId;
+    private String[] sexArray = {"男", "女", "未知"};
+    private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
+    private int id;
+    private String name;
+    private int roleId;
+    private int sexTag;
+
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -93,13 +103,11 @@ public class EditPersonActivity extends BaseActivity {
         includedLayout3 = new EditDeptActivity.IncludedLayout();
         includedLayout4 = new EditDeptActivity.IncludedLayout();
         includedLayout5 = new EditDeptActivity.IncludedLayout();
-        includedLayout7 = new EditDeptActivity.IncludedLayout();
         includedLayout9 = new EditDeptActivity.IncludedLayout();
         ButterKnife.bind(includedLayout, include);
         ButterKnife.bind(includedLayout3, include_3);
         ButterKnife.bind(includedLayout4, include_4);
         ButterKnife.bind(includedLayout5, include_5);
-        ButterKnife.bind(includedLayout7, include_7);
         ButterKnife.bind(includedLayout9, include_9);
 //        0
         includedLayout.tv_title.setText(containerAttrs[0]);
@@ -119,11 +127,25 @@ public class EditPersonActivity extends BaseActivity {
                 tv_result1.setText("未知");
                 break;
         }
+        include_1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleBottomSheetList(sexArray, 1);
+            }
+        });
 //        2
         textView2 = include_2.findViewById(R.id.tv_title);
         tvResult2 = include_2.findViewById(R.id.tv_result);
         textView2.setText(containerAttrs[2]);
         tvResult2.setText(deptName);
+        include_2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(EditPersonActivity.this, ChoiceDeptActivity.class);
+                startActivityForResult(intent, OWNER_DEPT);
+            }
+        });
 //        3
         includedLayout3.tv_title.setText(containerAttrs[3]);
         includedLayout3.editText.setText(phonenumber);
@@ -144,24 +166,56 @@ public class EditPersonActivity extends BaseActivity {
                 switchs.setChecked(false);
                 break;
         }
+
 //        7
-        includedLayout7.tv_title.setText(containerAttrs[7]);
-        includedLayout7.editText.setText("");
-//        8
         textView8 = include_8.findViewById(R.id.tv_title);
         tvResult8 = include_8.findViewById(R.id.tv_result);
-        textView8.setText(containerAttrs[8]);
-        tvResult8.setText(deptName);
-//        9
-        includedLayout9.tv_title.setText(containerAttrs[9]);
+        textView8.setText(containerAttrs[7]);
+        tvResult8.setText("");
+        include_8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSimpleBottomSheetList(roleArray, 2);
+            }
+        });
+//        8
+        includedLayout9.tv_title.setText(containerAttrs[8]);
         includedLayout9.editText.setText(remark);
+    }
+
+    private void showSimpleBottomSheetList(String[] array, int flag) {
+        QMUIBottomSheet.BottomListSheetBuilder bottomListSheetBuilder = new QMUIBottomSheet.BottomListSheetBuilder(this);
+        for (String s : array) {
+            bottomListSheetBuilder.addItem(s != null ? s : "未知");
+        }
+
+        bottomListSheetBuilder.setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
+
+            @Override
+            public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
+                roleId = position;
+                switch (flag) {
+                    case 1:
+                        sexTag = position;
+                        tv_result1.setText(tag);
+                        break;
+                    case 2:
+                        tvResult8.setText(tag);
+                        break;
+                }
+                dialog.dismiss();
+            }
+        })
+                .build()
+                .show();
     }
 
     private void initData() {
         Intent intent = getIntent();
         User.ListBean listBean = (User.ListBean) intent.getSerializableExtra("listBean");
-        id = listBean.getId();
+        userId = listBean.getUserId();
         deptId = listBean.getDeptId();
+        roleId = listBean.getRoleIds();
         userName = listBean.getUserName();
         sex = listBean.getSex();
         deptName = listBean.getDept().getDeptName();
@@ -169,7 +223,6 @@ public class EditPersonActivity extends BaseActivity {
         email = listBean.getEmail();
         loginName = listBean.getLoginName();
         status = listBean.getStatus();
-        Object roleIds = listBean.getRoleIds();
         remark = listBean.getRemark();
     }
 
@@ -181,6 +234,16 @@ public class EditPersonActivity extends BaseActivity {
     }
 
     @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        if (data != null) {
+            id = data.getIntExtra("id", 0);
+            name = data.getStringExtra("name");
+            tvResult2.setText(name);
+        }
+        super.onActivityReenter(resultCode, data);
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.activity_edit_person;
     }
@@ -189,7 +252,6 @@ public class EditPersonActivity extends BaseActivity {
         topbar.setTitle("编辑人员");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             editPerson();
-
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -204,16 +266,29 @@ public class EditPersonActivity extends BaseActivity {
         String phoneNum = includedLayout3.editText.getText().toString();
         String email = includedLayout4.editText.getText().toString();
         String loginName = includedLayout5.editText.getText().toString();
-        String postion = includedLayout7.editText.getText().toString();
+        String remark = includedLayout9.editText.getText().toString();
+        if (!RegexUtils.isEmail(email)) {
+            ToastUtils.showShort("请填写正确的邮箱");
+            return;
+        }
+
+        if (!RegexUtils.isMobileExact(phoneNum)) {
+            ToastUtils.showShort("请填写正确的手机号");
+            return;
+        }
+
         try {
+            map.put("userId", userId);
             map.put("userName", username);
-            map.put("userId", id);
+            map.put("sex", sexTag);
             map.put("deptId", deptId);
             map.put("deptName", dept);
-            map.put("loginName", loginName);
             map.put("phone", phoneNum);
             map.put("email", email);
+            map.put("loginName", loginName);
             map.put("status", switchs.isChecked() ? "0" : "1");
+            map.put("roleIds", roleId);
+            map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -222,8 +297,11 @@ public class EditPersonActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditPersonActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
+
                     }
                 });
+        setResult(RESULT_OK);
+        finish();
     }
 
     public static void start(Context context) {

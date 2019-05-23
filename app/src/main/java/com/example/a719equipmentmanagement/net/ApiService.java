@@ -231,7 +231,7 @@ public interface ApiService {
     //新增保存用户
     @FormUrlEncoded
     @POST("system/user/add")
-    Single<BaseResponse> addUser();
+    Single<BaseResponse> addUser(@FieldMap Map<String, Object> map);
 
     //编辑保存用户
     @FormUrlEncoded
