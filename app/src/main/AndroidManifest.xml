@@ -20,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.ChoiceDeptActivity"></activity>
+        <activity android:name=".ui.home.GenerateContainerCodeActivity"></activity>
+        <activity android:name=".ui.home.AddContainerActivity" />
+        <activity android:name=".ui.home.ChoiceDeptActivity" />
         <activity android:name=".ui.home.PersonManageActivity" />
         <activity android:name=".ui.home.ConfirmBorrowResultsActivity" />
         <activity android:name=".ui.home.EditDeptActivity" />

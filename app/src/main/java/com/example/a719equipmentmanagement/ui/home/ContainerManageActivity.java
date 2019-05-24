@@ -47,6 +47,8 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -140,10 +142,10 @@ public class ContainerManageActivity extends BaseActivity {
                     SectionHeader<ContainerData> header = section.getHeader();
                     id = header.getText().getId();
                     initListPopupIfNeed(itemDeletes);
+                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                    mListPopup.show(holder.itemView);
                 }
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(holder.itemView);
                 return true;
             }
         });
@@ -164,7 +166,7 @@ public class ContainerManageActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("货柜管理");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> showEditTextDialog());
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> AddContainerActivity.start(this));
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> finish());
     }
 
@@ -184,10 +186,8 @@ public class ContainerManageActivity extends BaseActivity {
             mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    delete();
-//                    TextView textView = (TextView) view;
-//                    String s = textView.getText().toString();
                     mListPopup.dismiss();
+                    delete();
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
@@ -195,7 +195,15 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void delete() {
-
+        RetrofitClient.getInstance().getService().deleteContainer(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        initData();
+                    }
+                });
     }
 
     @Override
@@ -211,46 +219,28 @@ public class ContainerManageActivity extends BaseActivity {
     /**
      * 弹出带输入框的dialog
      */
-    private void showEditTextDialog() {
-        CustomInputDialog customDialogBuilder = new CustomInputDialog(this);
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        customDialogBuilder.setTitle("添加货柜")
-                .setPlaceholder("请输入货柜名")
-                .setPlaceholder1("请输入层数")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .setInputType1(InputType.TYPE_CLASS_NUMBER)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text = customDialogBuilder.getEditText().getText();
-                    CharSequence text1 = customDialogBuilder.getEditText1().getText();
-                    dialog.dismiss();
-                    addContainer(text, text1);
-//                    if (text1 != null && text1.length() > 0) {
-//                        Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
-//                    } else {
-//                        Toast.makeText(ContainerManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-//                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    private void showEditTextDialog() {
+//        CustomInputDialog customDialogBuilder = new CustomInputDialog(this);
+//        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//        customDialogBuilder.setTitle("添加货柜")
+//                .setPlaceholder("请输入货柜名")
+//                .setPlaceholder1("请输入层数")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .setInputType1(InputType.TYPE_CLASS_NUMBER)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text = customDialogBuilder.getEditText().getText();
+//                    CharSequence text1 = customDialogBuilder.getEditText1().getText();
+//                    dialog.dismiss();
+////                    if (text1 != null && text1.length() > 0) {
+////                        Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
+////                        dialog.dismiss();
+////                    } else {
+////                        Toast.makeText(ContainerManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+////                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
 
-    private void addContainer(CharSequence text, CharSequence text2) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("pid", text);
-            jsonObject.put("name", text2);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addContainer(requestBody)
-                .compose(CommonCompose.io2main(ContainerManageActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        ToastUtils.showShort("添加货柜成功");
-                    }
-                });
-    }
+
 }

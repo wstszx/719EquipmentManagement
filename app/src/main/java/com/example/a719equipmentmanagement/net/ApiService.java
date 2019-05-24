@@ -76,6 +76,11 @@ public interface ApiService {
     @GET("system/container/list")
     Single<List<ContainerData>> findContainerData();
 
+    //删除货柜
+    @FormUrlEncoded
+    @POST("system/container/del")
+    Single<BaseResponse> deleteContainer(@Field("id") int id);
+
 
     /*------  dept-controller -------*/
     //添加科室
