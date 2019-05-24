@@ -20,7 +20,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.GenerateContainerCodeActivity"></activity>
+        <activity android:name=".ui.home.GenerateContainerCodeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.home.AddContainerActivity" />
         <activity android:name=".ui.home.ChoiceDeptActivity" />
         <activity android:name=".ui.home.PersonManageActivity" />
@@ -40,11 +46,7 @@
         <activity android:name=".ui.home.DeviceClassifiyActivity" />
         <activity android:name=".ui.home.MsgActivity" />
         <activity android:name=".ui.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ui.mine.DiscardActivity" />
         <activity android:name=".ui.mine.CheckonActivity" />

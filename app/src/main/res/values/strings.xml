@@ -46,4 +46,5 @@
     <string name="container_name">货柜名称：</string>
     <string name="container_num">货柜层数：</string>
     <string name="Generate_container_code">生成货柜码</string>
+    <string name="connect">连接</string>
 </resources>

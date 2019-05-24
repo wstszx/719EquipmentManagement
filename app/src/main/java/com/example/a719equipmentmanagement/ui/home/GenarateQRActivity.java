@@ -39,7 +39,6 @@ public class GenarateQRActivity extends BaseActivity {
     ImageView imageView;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    private final String mAddress = "DC:0D:30:3C:C1:93";
     @BindView(R.id.emptyView)
     QMUIEmptyView emptyView;
 
@@ -72,6 +71,7 @@ public class GenarateQRActivity extends BaseActivity {
     }
 
     private void connectBlueDevice() {
+        String mAddress = "DC:0D:30:3C:C1:93";
         BleManager.getInstance().connect(mAddress, new BleGattCallback() {
             @Override
             public void onStartConnect() {
@@ -179,7 +179,6 @@ public class GenarateQRActivity extends BaseActivity {
 
     private void createChineseQRCode() {
         new MyTask(GenarateQRActivity.this, imageView).execute();
-
     }
 
     static class MyTask extends AsyncTask<Void, Void, Bitmap> {

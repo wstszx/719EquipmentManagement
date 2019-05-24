@@ -79,13 +79,8 @@ public class AddContainerActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddContainerActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        int code = baseResponse.getCode();
-                        if (code == 0) {
-                            ToastUtils.showShort("添加货柜成功");
-                            roundButton.setVisibility(View.VISIBLE);
-                        } else {
-                            roundButton.setVisibility(View.GONE);
-                        }
+                        ToastUtils.showShort("添加货柜成功");
+                        roundButton.setVisibility(View.VISIBLE);
                     }
                 });
 
@@ -115,9 +110,9 @@ public class AddContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(AddContainerActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
                 break;
             case R.id.round_button:
-                String name = edittext.getText().toString();
+                int id = 1;
 
-                GenerateContainerCodeActivity.start(this);
+                GenerateContainerCodeActivity.start(this,id);
                 finish();
                 break;
         }
