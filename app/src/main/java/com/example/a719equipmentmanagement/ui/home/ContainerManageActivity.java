@@ -30,6 +30,7 @@ import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.section.QMUISection;
@@ -40,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.json.JSONException;
@@ -60,6 +62,7 @@ import retrofit2.Response;
  */
 public class ContainerManageActivity extends BaseActivity {
 
+    private static final int EDIT_CONTAINER = 1;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -72,6 +75,7 @@ public class ContainerManageActivity extends BaseActivity {
 //            "删除"
 //    };
     String[] itemDeletes = new String[]{
+            "编辑",
             "删除"
     };
     private ContainerManageAdapter adapter1;
@@ -126,7 +130,10 @@ public class ContainerManageActivity extends BaseActivity {
                         break;
                     case 1:
                         SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
-                        ContainerData.ListBean listBean = sectionItem.getListBean();
+                        ContainerData.ListBean listBean = null;
+                        if (sectionItem != null) {
+                            listBean = sectionItem.getListBean();
+                        }
                         if (listBean != null) {
                             ContainerDetailActivity.start(ContainerManageActivity.this, listBean);
                         }
@@ -139,8 +146,13 @@ public class ContainerManageActivity extends BaseActivity {
                 int itemViewType = holder.getItemViewType();
                 if (itemViewType == 0) {
                     QMUISection<SectionHeader<ContainerData>, SectionItem<ContainerData.ListBean>> section = adapter1.getSection(position);
-                    SectionHeader<ContainerData> header = section.getHeader();
-                    id = header.getText().getId();
+                    SectionHeader<ContainerData> header = null;
+                    if (section != null) {
+                        header = section.getHeader();
+                    }
+                    if (header != null) {
+                        id = header.getText().getId();
+                    }
                     initListPopupIfNeed(itemDeletes);
                     mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                     mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -187,11 +199,30 @@ public class ContainerManageActivity extends BaseActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     mListPopup.dismiss();
-                    delete();
+                    TextView textView = (TextView) view;
+                    String s = textView.getText().toString();
+                    switch (s) {
+                        case "编辑":
+                            startActivityForResult(new Intent(ContainerManageActivity.this, EditContainerActivity.class), EDIT_CONTAINER);
+                            break;
+                        case "删除":
+                            delete();
+                            break;
+                    }
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null) {
+            if (requestCode == EDIT_CONTAINER) {
+                initData();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void delete() {

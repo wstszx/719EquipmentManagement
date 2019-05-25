@@ -62,6 +62,15 @@ public interface ApiService {
     @POST("system/category/add")
     Single<BaseResponse> addDeviceType(@Body RequestBody requestBody);
 
+    //添加设备分类
+    @POST("system/category/add")
+    Single<BaseResponse> editDeviceType(@Body RequestBody requestBody);
+
+    //删除设备分类
+    @FormUrlEncoded
+    @POST("system/category/add")
+    Single<BaseResponse> deleteDeviceType(@Field("id") int id);
+
     //查找设备分类数据
     @GET("system/category/list")
     Single<List<DeviceClassifiy>> findDeviceTypeData();
@@ -71,6 +80,10 @@ public interface ApiService {
     //添加货柜
     @POST("system/container/add")
     Single<BaseResponse> addContainer(@Body RequestBody requestBody);
+
+    //编辑货柜
+    @POST("system/container/add")
+    Single<BaseResponse> editContainer(@Body RequestBody requestBody);
 
     //查找货柜数据
     @GET("system/container/list")

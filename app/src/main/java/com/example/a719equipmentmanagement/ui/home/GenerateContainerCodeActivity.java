@@ -26,6 +26,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +77,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("货柜码");
-        topbar.addRightTextButton(R.string.connect, R.id.connect).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> {
             initBle();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
@@ -102,7 +103,9 @@ public class GenerateContainerCodeActivity extends BaseActivity {
     }
 
     private void initScanRule() {
+
         BleScanRuleConfig scanRuleConfig = new BleScanRuleConfig.Builder()
+
 //                .setServiceUuids(serviceUuids)      // 只扫描指定的服务的设备，可选
 //                .setDeviceName(true, names)         // 只扫描指定广播名的设备，可选
 //                .setDeviceMac(mac)                  // 只扫描指定mac的设备，可选
@@ -126,6 +129,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
             @Override
             public void onConnectSuccess(BleDevice bleDevice, BluetoothGatt gatt, int status) {
                 ToastUtils.showShort("连接成功");
+
             }
 
             @Override

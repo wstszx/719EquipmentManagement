@@ -1,13 +1,13 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import android.content.Context;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
@@ -23,14 +23,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class AddContainerActivity extends BaseActivity {
+public class EditContainerActivity extends BaseActivity {
 
-    private static final int ADD_DEPT = 1;
+
+    private static final int EDIT_DEPT = 1;
     @BindView(R.id.edittext)
     EditText edittext;
     @BindView(R.id.tv_result1)
@@ -51,10 +51,10 @@ public class AddContainerActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("添加货柜");
+        topbar.setTitle("编辑货柜");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             topbar.removeAllRightViews();
-            addContainer();
+            editContainer();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
@@ -62,11 +62,12 @@ public class AddContainerActivity extends BaseActivity {
         });
     }
 
-    private void addContainer() {
+    private void editContainer() {
         String containerName = edittext.getText().toString();
         String containerNum = edittext2.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("id", id);
             jsonObject.put("deptId", deptId);
             jsonObject.put("name", containerName);
             jsonObject.put("num", containerNum);
@@ -74,26 +75,20 @@ public class AddContainerActivity extends BaseActivity {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addContainer(requestBody)
-                .compose(CommonCompose.io2main(AddContainerActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(AddContainerActivity.this) {
+        RetrofitClient.getInstance().getService().editContainer(requestBody)
+                .compose(CommonCompose.io2main(EditContainerActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(EditContainerActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         ToastUtils.showShort("添加货柜成功");
                         roundButton.setVisibility(View.VISIBLE);
                     }
                 });
-
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_add_container;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_DEPT) {
+        if (requestCode == EDIT_DEPT) {
             if (data != null) {
                 name = data.getStringExtra("name");
                 deptId = data.getIntExtra("id", 0);
@@ -107,7 +102,7 @@ public class AddContainerActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.constraint1:
-                startActivityForResult(new Intent(AddContainerActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
+                startActivityForResult(new Intent(EditContainerActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
                 break;
             case R.id.round_button:
                 int id = 1;
@@ -117,9 +112,8 @@ public class AddContainerActivity extends BaseActivity {
         }
     }
 
-    public static void start(Context context) {
-        Intent starter = new Intent(context, AddContainerActivity.class);
-        context.startActivity(starter);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_edit_container;
     }
-
 }
