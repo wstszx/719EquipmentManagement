@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.json.JSONException;
@@ -69,6 +70,9 @@ public class DeviceClassifiyActivity extends BaseActivity {
     };
     private DeviceClassifiyAdapter adapter1;
     private int id;
+    private String parentClassifiy;
+    private String name;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -121,14 +125,30 @@ public class DeviceClassifiyActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
                 int itemViewType = holder.getItemViewType();
-                if (itemViewType == 0) {
-                    SectionHeader<DeviceClassifiy> header = Objects.requireNonNull(adapter1.getSection(position)).getHeader();
-                    id = header.getText().getId();
-                    initListPopupIfNeed(deletes);
-                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                    mListPopup.show(holder.itemView);
+                switch (itemViewType) {
+                    case 0:
+                        pid = -1;
+                        parentClassifiy = "无";
+                        QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> headerSection = Objects.requireNonNull(adapter1.getSection(position));
+                        SectionHeader<DeviceClassifiy> header = headerSection.getHeader();
+                        id = header.getText().getId();
+                        name = header.getText().getName();
+                        break;
+                    case 1:
+                        SectionItem<DeviceClassifiy.ListBean> sectionItem = adapter1.getSectionItem(position);
+                        SectionHeader<DeviceClassifiy> header1 = adapter1.getSection(position).getHeader();
+                        parentClassifiy = header1.getText().getName();
+                        if (sectionItem != null) {
+                            pid = sectionItem.getListBean().getPid();
+                            id = sectionItem.getListBean() != null ? sectionItem.getListBean().getId() : id;
+                            name = sectionItem.getListBean() != null ? sectionItem.getListBean().getName() : "";
+                        }
+                        break;
                 }
+                initListPopupIfNeed(deletes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(holder.itemView);
                 return true;
             }
         });
@@ -201,7 +221,12 @@ public class DeviceClassifiyActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "编辑":
-                            startActivityForResult(new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class), EDIT_DEVICE_CLASSIFIY);
+                            Intent intent = new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class);
+                            intent.putExtra("id", id);
+                            intent.putExtra("name", name);
+                            intent.putExtra("parentClassifiy", parentClassifiy);
+                            intent.putExtra("pid", pid);
+                            startActivityForResult(intent, EDIT_DEVICE_CLASSIFIY);
                             break;
                         case "删除":
                             delete();
@@ -214,6 +239,12 @@ public class DeviceClassifiyActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        initData();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void showEditTextDialog() {
         final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
         builder.setTitle("编辑设备分类名称")
@@ -223,7 +254,6 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 .addAction("确定", (dialog, index) -> {
                     CharSequence text = builder.getEditText().getText();
                     if (text != null && text.length() > 0) {
-                        edit();
                         dialog.dismiss();
                     } else {
                         ToastUtils.showShort("输入不能为空");
@@ -233,6 +263,13 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void delete() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("id", id);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
         RetrofitClient.getInstance().getService().deleteDeviceType(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -244,26 +281,6 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 });
     }
 
-    private void edit() {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("pid", 0);
-            jsonObject.put("name", "压力计");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().editDeviceType(requestBody)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<BaseResponse>(DeviceClassifiyActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        initData();
-                    }
-                });
-
-    }
 
     @Override
     protected int getLayoutId() {

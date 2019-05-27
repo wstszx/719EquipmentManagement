@@ -62,18 +62,20 @@ public interface ApiService {
     @POST("system/category/add")
     Single<BaseResponse> addDeviceType(@Body RequestBody requestBody);
 
-    //添加设备分类
-    @POST("system/category/add")
-    Single<BaseResponse> editDeviceType(@Body RequestBody requestBody);
 
     //删除设备分类
     @FormUrlEncoded
-    @POST("system/category/add")
+    @POST("system/category/del")
+//    Single<BaseResponse> deleteDeviceType(@Body RequestBody requestBody);
     Single<BaseResponse> deleteDeviceType(@Field("id") int id);
 
     //查找设备分类数据
     @GET("system/category/list")
     Single<List<DeviceClassifiy>> findDeviceTypeData();
+
+    //更新设备分类数据
+    @POST("system/category/update")
+    Single<BaseResponse> updataDeviceType(@Body RequestBody requestBody);
 
 
     /*------  container-controller -------*/

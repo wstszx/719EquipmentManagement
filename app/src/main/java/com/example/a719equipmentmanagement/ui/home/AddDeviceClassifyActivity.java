@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -20,18 +21,22 @@ import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class AddDeviceClassifyActivity extends BaseActivity {
 
 
+    private static final int DEVICE_TYPE = 1;
     @BindView(R.id.edittext)
     EditText edittext;
-    @BindView(R.id.edittext1)
-    EditText edittext1;
+    @BindView(R.id.tv_result1)
+    TextView tv_result1;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
+    private int id;
+    private String name;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -52,11 +57,12 @@ public class AddDeviceClassifyActivity extends BaseActivity {
 
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
-        String ownerDeviceClassify = edittext1.getText().toString();
+        String ownerDeviceClassify = tv_result1.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("pid", id);
             jsonObject.put("name", deviceClassifyName);
-            jsonObject.put("ownername", ownerDeviceClassify);
+//            jsonObject.put("ownername", ownerDeviceClassify);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -74,6 +80,11 @@ public class AddDeviceClassifyActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null) {
+            name = data.getStringExtra("name");
+            id = data.getIntExtra("id", 0);
+            tv_result1.setText(name);
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -87,4 +98,9 @@ public class AddDeviceClassifyActivity extends BaseActivity {
         context.startActivity(starter);
     }
 
+
+    @OnClick(R.id.constraint1)
+    public void onViewClicked() {
+        startActivityForResult(new Intent(AddDeviceClassifyActivity.this, ChoiceDeviceClassifiyActivity.class), DEVICE_TYPE);
+    }
 }

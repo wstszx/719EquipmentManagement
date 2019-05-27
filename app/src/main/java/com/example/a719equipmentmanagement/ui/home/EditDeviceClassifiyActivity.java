@@ -25,11 +25,14 @@ import okhttp3.RequestBody;
 public class EditDeviceClassifiyActivity extends BaseActivity {
     @BindView(R.id.edittext)
     EditText edittext;
-    @BindView(R.id.edittext1)
-    EditText edittext1;
+//    @BindView(R.id.edittext1)
+//    EditText edittext1;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private int id;
+    private String parentClassifiy;
+    private String name;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -40,6 +43,11 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        pid = intent.getIntExtra("pid", 0);
+        parentClassifiy = intent.getStringExtra("parentClassifiy");
+        name = intent.getStringExtra("name");
+        edittext.setText(name);
+//        edittext1.setText(parentClassifiy);
     }
 
     private void initTopbar() {
@@ -55,17 +63,17 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
 
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
-        String ownerDeviceClassify = edittext1.getText().toString();
+//        String ownerDeviceClassify = edittext1.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);
             jsonObject.put("name", deviceClassifyName);
-            jsonObject.put("ownername", ownerDeviceClassify);
+            jsonObject.put("pid", pid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addDeviceType(requestBody)
+        RetrofitClient.getInstance().getService().updataDeviceType(requestBody)
                 .compose(CommonCompose.io2main(EditDeviceClassifiyActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(EditDeviceClassifiyActivity.this) {
                     @Override
