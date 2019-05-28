@@ -288,7 +288,7 @@ public class DeviceData2 implements Serializable {
         }
 
         public LocationBean getLocation() {
-            return location;
+            return  location;
         }
 
         public void setLocation(LocationBean location) {
@@ -569,7 +569,7 @@ public class DeviceData2 implements Serializable {
             }
 
             public String getDeptName() {
-                return deptName == null ? "" : deptName;
+                return  deptName;
             }
 
             public void setDeptName(String deptName) {
