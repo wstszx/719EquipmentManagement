@@ -27,11 +27,12 @@ public class CustomInputDialog extends QMUIDialogBuilder<CustomInputDialog> {
     protected EditText mEditText;
     protected ImageView mRightImageView;
     private int mInputType = InputType.TYPE_CLASS_TEXT;
-    private int mInputType1 = InputType.TYPE_CLASS_NUMBER;
+    private int mInputType1 = InputType.TYPE_TEXT_VARIATION_PASSWORD;
     private CharSequence mDefaultText = null;
     private EditText mEditText1;
     private ImageView mRightImageView1;
     private RelativeLayout mMainLayout1;
+    private CharSequence mDefaultText1;
 
     public CustomInputDialog(Context context) {
         super(context);
@@ -63,6 +64,10 @@ public class CustomInputDialog extends QMUIDialogBuilder<CustomInputDialog> {
         mDefaultText = defaultText;
         return this;
     }
+    public CustomInputDialog setDefaultText1(CharSequence defaultText) {
+        mDefaultText1 = defaultText;
+        return this;
+    }
 
     /**
      * 设置 EditText 的 transformationMethod
@@ -77,6 +82,10 @@ public class CustomInputDialog extends QMUIDialogBuilder<CustomInputDialog> {
      */
     public CustomInputDialog setInputType(int inputType) {
         mInputType = inputType;
+        return this;
+    }
+    public CustomInputDialog setInputType1(int inputType) {
+        mInputType1 = inputType;
         return this;
     }
 
@@ -127,7 +136,7 @@ public class CustomInputDialog extends QMUIDialogBuilder<CustomInputDialog> {
         mEditText1.setId(R.id.qmui_dialog_edit_input);
 
         if (!QMUILangHelper.isNullOrEmpty(mDefaultText)) {
-            mEditText1.setText(mDefaultText);
+            mEditText1.setText(mDefaultText1);
         }
 
         mRightImageView1 = new ImageView(context);
@@ -204,7 +213,7 @@ public class CustomInputDialog extends QMUIDialogBuilder<CustomInputDialog> {
      * 注意该方法只在调用 {@link #create()} 或 {@link #create(int)} 或 {@link #show()} 生成 Dialog 之后
      * 才能返回对应的 EditText，在此之前将返回 null
      */
-    @Deprecated
+
     public EditText getEditText() {
         return mEditText;
     }

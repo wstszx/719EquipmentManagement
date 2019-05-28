@@ -250,7 +250,7 @@ public class User implements Serializable {
          * admin : true
          */
 
-        private Object id;
+        private int id;
         private Object searchValue;
         private String createBy;
         private String createTime;
@@ -274,17 +274,17 @@ public class User implements Serializable {
         private String loginIp;
         private String loginDate;
         private DeptBean dept;
-        private Object roleIds;
+        private int roleIds;
         private Object postIds;
         private Object list;
         private boolean admin;
         private List<?> roles;
 
-        public Object getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Object id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -472,11 +472,11 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public Object getRoleIds() {
+        public int getRoleIds() {
             return roleIds;
         }
 
-        public void setRoleIds(Object roleIds) {
+        public void setRoleIds(int roleIds) {
             this.roleIds = roleIds;
         }
 

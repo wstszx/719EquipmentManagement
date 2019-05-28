@@ -1,12 +1,11 @@
 package com.example.a719equipmentmanagement.ui.home;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.TextView;
-
-import androidx.annotation.Nullable;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -20,32 +19,39 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-public class AddDeviceClassifyActivity extends BaseActivity {
-
-
-    private static final int DEVICE_TYPE = 1;
+public class EditDeviceClassifiyActivity extends BaseActivity {
     @BindView(R.id.edittext)
     EditText edittext;
-    @BindView(R.id.tv_result1)
-    TextView tv_result1;
+//    @BindView(R.id.edittext1)
+//    EditText edittext1;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private int id;
+    private String parentClassifiy;
     private String name;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
     }
 
+    private void initData() {
+        Intent intent = getIntent();
+        id = intent.getIntExtra("id", 0);
+        pid = intent.getIntExtra("pid", 0);
+        parentClassifiy = intent.getStringExtra("parentClassifiy");
+        name = intent.getStringExtra("name");
+        edittext.setText(name);
+//        edittext1.setText(parentClassifiy);
+    }
 
     private void initTopbar() {
-        topbar.setTitle("添加设备分类");
+        topbar.setTitle("编辑设备分类");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             getInputData();
         });
@@ -57,19 +63,19 @@ public class AddDeviceClassifyActivity extends BaseActivity {
 
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
-        String ownerDeviceClassify = tv_result1.getText().toString();
+//        String ownerDeviceClassify = edittext1.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("pid", id);
+            jsonObject.put("id", id);
             jsonObject.put("name", deviceClassifyName);
-//            jsonObject.put("ownername", ownerDeviceClassify);
+            jsonObject.put("pid", pid);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        RetrofitClient.getInstance().getService().addDeviceType(requestBody)
-                .compose(CommonCompose.io2main(AddDeviceClassifyActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceClassifyActivity.this) {
+        RetrofitClient.getInstance().getService().updataDeviceType(requestBody)
+                .compose(CommonCompose.io2main(EditDeviceClassifiyActivity.this))
+                .subscribe(new BaseSubscriber<BaseResponse>(EditDeviceClassifiyActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         setResult(RESULT_OK);
@@ -79,28 +85,13 @@ public class AddDeviceClassifyActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null) {
-            name = data.getStringExtra("name");
-            id = data.getIntExtra("id", 0);
-            tv_result1.setText(name);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
     protected int getLayoutId() {
-        return R.layout.activity_add_device_classify;
+        return R.layout.activity_edit_device_classifiy;
     }
 
-    public static void start(Context context) {
-        Intent starter = new Intent(context, AddDeviceClassifyActivity.class);
+    public static void start(Context context, int id) {
+        Intent starter = new Intent(context, EditDeviceClassifiyActivity.class);
+        starter.putExtra("id", id);
         context.startActivity(starter);
-    }
-
-
-    @OnClick(R.id.constraint1)
-    public void onViewClicked() {
-        startActivityForResult(new Intent(AddDeviceClassifyActivity.this, ChoiceDeviceClassifiyActivity.class), DEVICE_TYPE);
     }
 }

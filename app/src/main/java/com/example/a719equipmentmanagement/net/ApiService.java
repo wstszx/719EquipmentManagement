@@ -62,9 +62,20 @@ public interface ApiService {
     @POST("system/category/add")
     Single<BaseResponse> addDeviceType(@Body RequestBody requestBody);
 
+
+    //删除设备分类
+    @FormUrlEncoded
+    @POST("system/category/del")
+//    Single<BaseResponse> deleteDeviceType(@Body RequestBody requestBody);
+    Single<BaseResponse> deleteDeviceType(@Field("id") int id);
+
     //查找设备分类数据
     @GET("system/category/list")
     Single<List<DeviceClassifiy>> findDeviceTypeData();
+
+    //更新设备分类数据
+    @POST("system/category/update")
+    Single<BaseResponse> updataDeviceType(@Body RequestBody requestBody);
 
 
     /*------  container-controller -------*/
@@ -72,9 +83,18 @@ public interface ApiService {
     @POST("system/container/add")
     Single<BaseResponse> addContainer(@Body RequestBody requestBody);
 
+    //编辑货柜
+    @POST("system/container/add")
+    Single<BaseResponse> editContainer(@Body RequestBody requestBody);
+
     //查找货柜数据
     @GET("system/container/list")
     Single<List<ContainerData>> findContainerData();
+
+    //删除货柜
+    @FormUrlEncoded
+    @POST("system/container/del")
+    Single<BaseResponse> deleteContainer(@Field("id") int id);
 
 
     /*------  dept-controller -------*/
@@ -82,20 +102,21 @@ public interface ApiService {
     @FormUrlEncoded
     @POST("system/dept/add")
     Single<BaseResponse> addDept(
-            @FieldMap Map<String, String> map
+            @FieldMap Map<String, Object> map
     );
 
     //校验部门名称
     @POST("system/dept/checkDeptNameUnique")
     Single<BaseResponse> matchDept();
 
-    //查找科室数据
+    //查找科室人员数据
     @GET("system/dept/deptlist")
     Single<List<User>> getUser();
 
     //编辑科室
+    @FormUrlEncoded
     @POST("system/dept/edit")
-    Single<BaseResponse> editDept();
+    Single<BaseResponse> editDept(@FieldMap Map<String, Object> map);
 
     //删除科室
     @GET("system/dept/remove/{deptId}")
@@ -105,13 +126,13 @@ public interface ApiService {
     @GET("system/dept/treeData")
     Single<List<TreeData>> getTreeData();
 
-    //获取人员列表
-    @FormUrlEncoded
-    @POST("system/user/list")
-    Single<Person> getPersonList(@Field("pageSize") int pageSize,
-                                 @Field("pageNum") int pageNum,
-                                 @Field("orderByColumn") String orderByColumn,
-                                 @Field("isAsc") String isAsc);
+//    //获取人员列表
+//    @FormUrlEncoded
+//    @POST("system/user/list")
+//    Single<Person> getPersonList(@Field("pageSize") int pageSize,
+//                                 @Field("pageNum") int pageNum,
+//                                 @Field("orderByColumn") String orderByColumn,
+//                                 @Field("isAsc") String isAsc);
 
 
     /* -------------- dict-data-controller  ----------------------- */
@@ -230,12 +251,12 @@ public interface ApiService {
     //新增保存用户
     @FormUrlEncoded
     @POST("system/user/add")
-    Single<BaseResponse> addUser();
+    Single<BaseResponse> addUser(@FieldMap Map<String, Object> map);
 
     //编辑保存用户
     @FormUrlEncoded
     @POST("system/user/edit")
-    Single<BaseResponse> editUser();
+    Single<BaseResponse> editUser(@FieldMap Map<String, Object> map);
 
     //删除用户
     @FormUrlEncoded
@@ -252,6 +273,7 @@ public interface ApiService {
     //测试
     @GET("system/user/resetPwd")
     Single<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
+
 
     //重置密码
     @FormUrlEncoded

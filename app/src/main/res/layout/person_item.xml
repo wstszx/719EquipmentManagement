@@ -82,15 +82,24 @@
         app:layout_constraintTop_toTopOf="@+id/textView17"
         tools:text="TextView" />
 
-    <Switch
-        android:id="@+id/switch1"
+    <TextView
+        android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginTop="16dp"
         android:text="@string/user_status"
-        app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+        app:layout_constraintStart_toStartOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@id/textView17" />
 
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/blue"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toTopOf="@+id/textView18"
+        tools:text="TextView" />
 
     <TextView
         android:id="@+id/tv_edit"
@@ -99,17 +108,19 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="@dimen/dp_16"
         android:text="@string/edit"
+        android:textColor="@color/blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_delete"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <TextView
         android:id="@+id/tv_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delete"
+        android:textColor="@color/blue"
         app:layout_constraintEnd_toStartOf="@+id/tv_reset"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_edit"
@@ -120,6 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset"
+        android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/tv_delete"

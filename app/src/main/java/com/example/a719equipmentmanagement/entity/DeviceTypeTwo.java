@@ -4,12 +4,12 @@ import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
-public class DeptTwo extends AbstractExpandableItem<DeptThree> implements MultiItemEntity {
+public class DeviceTypeTwo implements MultiItemEntity {
 
-    private TreeData dept;
+    private DeviceClassifiy.ListBean dept;
     private boolean isSelect;
 
-    public void setDept(TreeData dept) {
+    public void setDept(DeviceClassifiy.ListBean dept) {
         this.dept = dept;
     }
 
@@ -21,17 +21,12 @@ public class DeptTwo extends AbstractExpandableItem<DeptThree> implements MultiI
         isSelect = select;
     }
 
-    public TreeData getDept() {
+    public DeviceClassifiy.ListBean getDept() {
         return dept;
     }
 
-    public DeptTwo(TreeData dept) {
+    public DeviceTypeTwo(DeviceClassifiy.ListBean dept) {
         this.dept = dept;
-    }
-
-    @Override
-    public int getLevel() {
-        return DeptManageAdapter.LEVEL_TWO;
     }
 
     @Override

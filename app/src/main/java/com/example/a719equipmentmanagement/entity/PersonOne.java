@@ -8,6 +8,10 @@ public class PersonOne extends AbstractExpandableItem<PersonTwo> implements Mult
 
     private User user;
 
+    public String getParentTitle() {
+        return "无";
+    }
+
     public User getUser() {
         return user;
     }

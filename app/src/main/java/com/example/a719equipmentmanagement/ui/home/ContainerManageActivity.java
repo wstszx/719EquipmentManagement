@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
@@ -29,6 +30,7 @@ import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.section.QMUISection;
@@ -39,10 +41,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -52,6 +62,7 @@ import retrofit2.Response;
  */
 public class ContainerManageActivity extends BaseActivity {
 
+    private static final int EDIT_CONTAINER = 1;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -59,16 +70,16 @@ public class ContainerManageActivity extends BaseActivity {
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
-    String[] headerDeletes = new String[]{
-            "编辑",
-            "添加",
-            "删除"
-    };
+    //    String[] headerDeletes = new String[]{
+//            "编辑",
+//            "删除"
+//    };
     String[] itemDeletes = new String[]{
             "编辑",
             "删除"
     };
     private ContainerManageAdapter adapter1;
+    private int id;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -119,7 +130,10 @@ public class ContainerManageActivity extends BaseActivity {
                         break;
                     case 1:
                         SectionItem<ContainerData.ListBean> sectionItem = adapter1.getSectionItem(position);
-                        ContainerData.ListBean listBean = sectionItem.getListBean();
+                        ContainerData.ListBean listBean = null;
+                        if (sectionItem != null) {
+                            listBean = sectionItem.getListBean();
+                        }
                         if (listBean != null) {
                             ContainerDetailActivity.start(ContainerManageActivity.this, listBean);
                         }
@@ -130,17 +144,20 @@ public class ContainerManageActivity extends BaseActivity {
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
                 int itemViewType = holder.getItemViewType();
-                switch (itemViewType) {
-                    case 0:
-                        initListPopupIfNeed(headerDeletes);
-                        break;
-                    case 1:
-                        initListPopupIfNeed(itemDeletes);
-                        break;
+                if (itemViewType == 0) {
+                    QMUISection<SectionHeader<ContainerData>, SectionItem<ContainerData.ListBean>> section = adapter1.getSection(position);
+                    SectionHeader<ContainerData> header = null;
+                    if (section != null) {
+                        header = section.getHeader();
+                    }
+                    if (header != null) {
+                        id = header.getText().getId();
+                    }
+                    initListPopupIfNeed(itemDeletes);
+                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                    mListPopup.show(holder.itemView);
                 }
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(holder.itemView);
                 return true;
             }
         });
@@ -161,7 +178,7 @@ public class ContainerManageActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("货柜管理");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> showEditTextDialog());
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> AddContainerActivity.start(this));
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> finish());
     }
 
@@ -181,13 +198,43 @@ public class ContainerManageActivity extends BaseActivity {
             mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    mListPopup.dismiss();
                     TextView textView = (TextView) view;
                     String s = textView.getText().toString();
-                    mListPopup.dismiss();
+                    switch (s) {
+                        case "编辑":
+                            startActivityForResult(new Intent(ContainerManageActivity.this, EditContainerActivity.class), EDIT_CONTAINER);
+                            break;
+                        case "删除":
+                            delete();
+                            break;
+                    }
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null) {
+            if (requestCode == EDIT_CONTAINER) {
+                initData();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void delete() {
+        RetrofitClient.getInstance().getService().deleteContainer(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        initData();
+                    }
+                });
     }
 
     @Override
@@ -203,24 +250,28 @@ public class ContainerManageActivity extends BaseActivity {
     /**
      * 弹出带输入框的dialog
      */
-    private void showEditTextDialog() {
-        CustomInputDialog customDialogBuilder = new CustomInputDialog(this);
-        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-        customDialogBuilder.setTitle("添加货柜")
-                .setPlaceholder("请输入货柜名")
-                .setPlaceholder1("请输入层数")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", (dialog, index) -> {
-                    CharSequence text = customDialogBuilder.getEditText().getText();
-                    CharSequence text1 = customDialogBuilder.getEditText1().getText();
-                    if (text1 != null && text1.length() > 0) {
-                        Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(ContainerManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .create(mCurrentDialogStyle).show();
-    }
+//    private void showEditTextDialog() {
+//        CustomInputDialog customDialogBuilder = new CustomInputDialog(this);
+//        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//        customDialogBuilder.setTitle("添加货柜")
+//                .setPlaceholder("请输入货柜名")
+//                .setPlaceholder1("请输入层数")
+//                .setInputType(InputType.TYPE_CLASS_TEXT)
+//                .setInputType1(InputType.TYPE_CLASS_NUMBER)
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", (dialog, index) -> {
+//                    CharSequence text = customDialogBuilder.getEditText().getText();
+//                    CharSequence text1 = customDialogBuilder.getEditText1().getText();
+//                    dialog.dismiss();
+////                    if (text1 != null && text1.length() > 0) {
+////                        Toast.makeText(ContainerManageActivity.this, "成功" + "添加货柜" + ":" + text + text1, Toast.LENGTH_SHORT).show();
+////                        dialog.dismiss();
+////                    } else {
+////                        Toast.makeText(ContainerManageActivity.this, "输入不能为空", Toast.LENGTH_SHORT).show();
+////                    }
+//                })
+//                .create(mCurrentDialogStyle).show();
+//    }
+
+
 }

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
@@ -35,17 +36,27 @@ import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DeviceClassifiyActivity extends BaseActivity {
 
+    private static final int EDIT_DEVICE_CLASSIFIY = 1;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.sticky_section_layout)
@@ -54,10 +65,14 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     String[] deletes = new String[]{
-            "删除",
-            "编辑"
+            "编辑",
+            "删除"
     };
     private DeviceClassifiyAdapter adapter1;
+    private int id;
+    private String parentClassifiy;
+    private String name;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -102,17 +117,34 @@ public class DeviceClassifiyActivity extends BaseActivity {
             @Override
             public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
                 int itemViewType = holder.getItemViewType();
-                switch (itemViewType) {
-                    case 0:
-                        adapter1.toggleFold(position, false);
-                        break;
-                    case 1:
-                        break;
+                if (itemViewType == 0) {
+                    adapter1.toggleFold(position, false);
                 }
             }
 
             @Override
             public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
+                int itemViewType = holder.getItemViewType();
+                switch (itemViewType) {
+                    case 0:
+                        pid = -1;
+                        parentClassifiy = "无";
+                        QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> headerSection = Objects.requireNonNull(adapter1.getSection(position));
+                        SectionHeader<DeviceClassifiy> header = headerSection.getHeader();
+                        id = header.getText().getId();
+                        name = header.getText().getName();
+                        break;
+                    case 1:
+                        SectionItem<DeviceClassifiy.ListBean> sectionItem = adapter1.getSectionItem(position);
+                        SectionHeader<DeviceClassifiy> header1 = adapter1.getSection(position).getHeader();
+                        parentClassifiy = header1.getText().getName();
+                        if (sectionItem != null) {
+                            pid = sectionItem.getListBean().getPid();
+                            id = sectionItem.getListBean() != null ? sectionItem.getListBean().getId() : id;
+                            name = sectionItem.getListBean() != null ? sectionItem.getListBean().getName() : "";
+                        }
+                        break;
+                }
                 initListPopupIfNeed(deletes);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -187,12 +219,68 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     TextView textView = (TextView) view;
                     String s = textView.getText().toString();
+                    switch (s) {
+                        case "编辑":
+                            Intent intent = new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class);
+                            intent.putExtra("id", id);
+                            intent.putExtra("name", name);
+                            intent.putExtra("parentClassifiy", parentClassifiy);
+                            intent.putExtra("pid", pid);
+                            startActivityForResult(intent, EDIT_DEVICE_CLASSIFIY);
+                            break;
+                        case "删除":
+                            delete();
+                            break;
+                    }
                     mListPopup.dismiss();
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        initData();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showEditTextDialog() {
+        final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+        builder.setTitle("编辑设备分类名称")
+                .setPlaceholder("请输入")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    CharSequence text = builder.getEditText().getText();
+                    if (text != null && text.length() > 0) {
+                        dialog.dismiss();
+                    } else {
+                        ToastUtils.showShort("输入不能为空");
+                    }
+                })
+                .create(mCurrentDialogStyle).show();
+    }
+
+    private void delete() {
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("id", id);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().deleteDeviceType(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceClassifiyActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        initData();
+                    }
+                });
+    }
+
 
     @Override
     protected int getLayoutId() {
