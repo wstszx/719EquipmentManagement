@@ -88,6 +88,9 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
                 helper.setTextColor(R.id.textView5, Color.parseColor("#B22222"));
                 helper.setText(R.id.textView5, "外借");
                 break;
+            default:
+                helper.setBackgroundColor(R.id.textView5,Color.parseColor("#ffffff"));
+                break;
 
         }
     }

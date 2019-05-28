@@ -114,6 +114,9 @@ public class DeviceDetailActivity extends BaseActivity {
             case 9:
                 deviceStatus = "外借";
                 break;
+            default:
+                deviceStatus="无状态信息";
+                break;
         }
     }
 
@@ -121,12 +124,11 @@ public class DeviceDetailActivity extends BaseActivity {
         topbar.setTitle("设备详情");
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
-            //                    ?????????
 //            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
-        });
+//        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+//            GenarateQRActivity.start(this);
+//        });
 
 //        RetrofitClient.getInstance().getService().findDeviceData()
 //                .compose(CommonCompose.io2main(this))
@@ -147,27 +149,27 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {
-            listItemView = (QMUICommonListItemView) v;
-            int tag = (int) listItemView.getTag();
-            Intent intent = new Intent();
-            intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseItemEditActivity.class);
-            startActivityForResult(intent, tag);
+//            listItemView = (QMUICommonListItemView) v;
+//            int tag = (int) listItemView.getTag();
+//            Intent intent = new Intent();
+//            intent.putExtra("text", listItemView.getDetailText().toString());
+//            intent.setClass(this, BaseItemEditActivity.class);
+//            startActivityForResult(intent, tag);
         };
 
         View.OnClickListener onClickListener4 = v -> {
             listItemView = (QMUICommonListItemView) v;
-            int tag = (int) listItemView.getTag();
-            if(tag==4){
-                showSingleChoiceDialog();
-            }
+//            int tag = (int) listItemView.getTag();
+//            if(tag==4){
+//                showSingleChoiceDialog();
+//            }
         };
         View.OnClickListener onClickListener5 = v -> {
             listItemView = (QMUICommonListItemView) v;
-            int tag = (int) listItemView.getTag();
-            if(tag==5){
-                showChoiceDialog();
-            }
+//            int tag = (int) listItemView.getTag();
+//            if(tag==5){
+//                showChoiceDialog();
+//            }
         };
 
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
@@ -177,7 +179,8 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[0],
                 name,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item0.setTag(0);
         section.addItemView(item0, onClickListener);
         item1 = groupListView.createItemView(
@@ -185,7 +188,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[1],
                 parameter,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item1.setTag(1);
         section.addItemView(item1, onClickListener);
         item2 = groupListView.createItemView(
@@ -193,7 +196,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[2],
                 manufactuer,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item2.setTag(2);
         section.addItemView(item2, onClickListener);
         item3 = groupListView.createItemView(
@@ -201,7 +204,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[3],
                 responsor,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item3.setTag(3);
         section.addItemView(item3, onClickListener);
         item4 = groupListView.createItemView(
@@ -209,7 +212,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[4],
                 deptName,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item4.setTag(4);
         section.addItemView(item4, onClickListener4);
         item5 = groupListView.createItemView(
@@ -217,7 +220,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[5],
                 locationName,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item5.setTag(5);
         section.addItemView(item5, onClickListener5);
         item6 = groupListView.createItemView(

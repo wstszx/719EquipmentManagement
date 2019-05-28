@@ -107,7 +107,7 @@ public class FilterActivity extends BaseActivity {
     private BaseFilterAdapter adapter21;
     private BaseFilterAdapter adapter22;
     private Map<String, Object> map = new HashMap<>();
-
+    private List<DeviceData2.RowsBean> rows;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -145,11 +145,10 @@ public class FilterActivity extends BaseActivity {
                     boolean mainThread = ThreadUtils.isMainThread();
                     if (mainThread) {
                         if (deviceData2 != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+                            rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             }
-                            rowCount = rows.size();
                         }
                         if (treeData != null && treeData.size() > 0) {
 //                            createSeaction(treeData);
@@ -309,6 +308,14 @@ public class FilterActivity extends BaseActivity {
 //        adapter5.setNewData(devices);
         adapter = new DeviceAdapter(R.layout.base_device02);
         recyclerview5.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                DeviceData2.RowsBean currentItemData=rows.get(position);
+                DeviceDetailActivity.start(FilterActivity.this, currentItemData);
+            }
+        });
+
 
         dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
     }
@@ -320,7 +327,7 @@ public class FilterActivity extends BaseActivity {
                     @Override
                     public void onSuccess(DeviceData2 deviceData2) {
                         if (deviceData2 != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+                            rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
                             } else {
