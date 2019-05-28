@@ -59,6 +59,7 @@ public class HomeFragment extends BaseFragment {
 
     private static HomeFragment fragment;
     private HomeAdapter adapter;
+    private WaitReturnDeviceAdapter adapter2;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -127,7 +128,7 @@ public class HomeFragment extends BaseFragment {
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HomeAdapter(R.layout.square_match_item);
         WaitApprovalItemAdapter adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
-        WaitReturnDeviceAdapter adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
+        adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
         recyclerview.setAdapter(adapter);
         recyclerview1.setAdapter(adapter1);
         recyclerview2.setAdapter(adapter2);
@@ -171,6 +172,11 @@ public class HomeFragment extends BaseFragment {
                     break;
             }
         });
+        List<ToAudit> test2=new ArrayList<>();
+
+        ToAudit t2=new ToAudit("差压变送器","2019年7月1日",20);
+        test2.add(t2);
+        adapter2.setNewData(test2);
     }
 
     @Override
