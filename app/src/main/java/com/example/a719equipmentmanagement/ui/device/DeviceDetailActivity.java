@@ -60,7 +60,7 @@ public class DeviceDetailActivity extends BaseActivity {
     //    private String[] containerAttrValue = {"数据", "数据", "数据", "数据", "数据", "数据",
 //            "数据", "数据", "数据"};
 
-    private int mStyle=R.style.QMUI_Dialog;
+    private int mStyle = R.style.QMUI_Dialog;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -72,8 +72,8 @@ public class DeviceDetailActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         DeviceData2.RowsBean rowsBean = (DeviceData2.RowsBean) intent.getSerializableExtra("serializable");
-        DeviceData2.RowsBean.DeptBean deptBean=rowsBean.getDept();
-        DeviceData2.RowsBean.LocationBean locationBean=rowsBean.getLocation();
+        DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
+        DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
 
         name = rowsBean.getName();
         parameter = rowsBean.getParameter();
@@ -106,7 +106,7 @@ public class DeviceDetailActivity extends BaseActivity {
 //            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
+            GenarateQRActivity.start(this, 0);
         });
 
 //        RetrofitClient.getInstance().getService().findDeviceData()
@@ -139,14 +139,14 @@ public class DeviceDetailActivity extends BaseActivity {
         View.OnClickListener onClickListener4 = v -> {
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
-            if(tag==4){
+            if (tag == 4) {
                 showSingleChoiceDialog();
             }
         };
         View.OnClickListener onClickListener5 = v -> {
             listItemView = (QMUICommonListItemView) v;
             int tag = (int) listItemView.getTag();
-            if(tag==5){
+            if (tag == 5) {
                 showChoiceDialog();
             }
         };
@@ -233,20 +233,20 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     //列表选择对话框
-    private void showSingleChoiceDialog(){
-        final String[] items=new String[]{"1组","2组","3组"};
+    private void showSingleChoiceDialog() {
+        final String[] items = new String[]{"1组", "2组", "3组"};
         new QMUIDialog.CheckableDialogBuilder(DeviceDetailActivity.this)
-                .setCheckedIndex(0).addItems(items,((dialog, which) -> {
-                dialog.dismiss();
-                item4.setDetailText(items[which]);
+                .setCheckedIndex(0).addItems(items, ((dialog, which) -> {
+            dialog.dismiss();
+            item4.setDetailText(items[which]);
         })).create(mStyle).show();
     }
 
     //提示对话框
-    private void showChoiceDialog(){
+    private void showChoiceDialog() {
         new QMUIDialog.MessageDialogBuilder(this).setTitle("提示").setMessage("重新选择设备所在位置？？？")
-                .addAction("取消",(dialog, index) -> dialog.dismiss())
-                .addAction("确定",((dialog, index) -> {
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", ((dialog, index) -> {
                     dialog.dismiss();
                     ScanActivity.start(this);
                 })).create(mStyle).show();

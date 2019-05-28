@@ -30,6 +30,7 @@ public class ContainerDetailActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
+    private int id;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initData() {
         ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
         String name = listBean.getName();
+        id = listBean.getId();
 //        String dept = listBean.getDept();
         String createTime = listBean.getCreateTime();
         containerAttrValue[0] = name;
@@ -75,7 +77,7 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("货柜详情");
         topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this);
+            GenarateQRActivity.start(this,id);
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();

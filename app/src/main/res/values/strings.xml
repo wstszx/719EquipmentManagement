@@ -14,6 +14,7 @@
     <string name="input_account">请输入账号</string>
     <string name="carry_on">继续</string>
     <string name="scan_tip1">将二维码放入框中，即可自动扫描</string>
+    <string name="scan">扫描</string>
     <string name="Scan_container_code">扫描货柜码</string>
     <string name="Current_container">当前货柜:</string>
     <string name="start_scan_device">开始扫描设备</string>
@@ -47,4 +48,25 @@
     <string name="container_num">货柜层数：</string>
     <string name="Generate_container_code">生成货柜码</string>
     <string name="connect">连接</string>
+    <string name="qrcode_print">二维码打印</string>
+    <string name="blue_tooth_connect">蓝牙连接</string>
+    <string name="bluetooth_is_not_enabled">蓝牙没有开启</string>
+    <string name="str_title_pairedev">已配对</string>
+    <string name="none_paired">没有已配对设备</string>
+    <string name="select_bluetooth_device">选择蓝牙设备</string>
+    <string name="none_bluetooth_device_found">没有找到蓝牙设备</string>
+    <string name="str_title_newdev">未配对</string>
+    <string name="str_printer_conn_normal">打印机连接正常</string>
+    <string name="str_printer_out_of_paper">打印机缺纸</string>
+    <string name="str_printer_open_cover">打印机开盖</string>
+    <string name="str_printer_error">打印机出错</string>
+    <string name="str_printer_printmode_esc">打印模式:ESC</string>
+    <string name="str_printer_printmode_tsc">打印模式:CPCL</string>
+    <string name="str_printer_printmode_cpcl">打印模式:CPCL</string>
+    <string name="str_disconnect_success">成功断开连接</string>
+    <string name="str_choice_printer_command">请选择正确的打印机指令</string>
+    <string name="str_cann_printer">请先连接打印机</string>
+    <string name="str_conn_state_disconnect">连接状态：未连接</string>
+    <string name="str_conn_state_connecting">连接状态：连接中</string>
+    <string name="str_conn_state_connected">连接状态：已连接</string>
 </resources>
