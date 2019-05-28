@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.ui.device;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -79,21 +80,39 @@ public class DeviceDetailActivity extends BaseActivity {
         parameter = rowsBean.getParameter();
         manufactuer = rowsBean.getManufactuer();
         responsor = rowsBean.getResponsor();
-//        deptName = (String) deptBean.getDeptName();
-//        locationName=locationBean.getName()==null?"空值":locationBean.getName();
+        deptName =  deptBean==null?"无部门信息":deptBean.getDeptName();
+        locationName=locationBean==null?"无位置信息":locationBean.getName();
         int status = rowsBean.getStatus();
         switch (status) {
             case 0:
                 deviceStatus = "可用";
                 break;
             case 1:
-                deviceStatus = "封存";
+                deviceStatus = "借用";
                 break;
             case 2:
-                deviceStatus = "占用";
+                deviceStatus = "送检占用";
                 break;
             case 3:
+                deviceStatus = "送检";
+                break;
+            case 4:
+                deviceStatus = "报废占用";
+                break;
+            case 5:
                 deviceStatus = "报废";
+                break;
+            case 6:
+                deviceStatus = "封存";
+                break;
+            case 7:
+                deviceStatus = "解封占用";
+                break;
+            case 8:
+                deviceStatus = "过期";
+                break;
+            case 9:
+                deviceStatus = "外借";
                 break;
         }
     }
