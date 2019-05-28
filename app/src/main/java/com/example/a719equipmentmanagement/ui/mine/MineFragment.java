@@ -76,11 +76,11 @@ public class MineFragment extends BaseFragment {
                         .setMessage("您确定要退出登录吗？")
                         .addAction("取消", (dialog, index) -> dialog.dismiss())
                         .addAction("确认", (dialog, index) -> {
+                            dialog.dismiss();
                             SPUtils.putBoolean(App.getContext(), "main", false);
                             logout();
-                            dialog.dismiss();
-                            Intent intent = new Intent("quit_login");
-                            ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
+//                            Intent intent = new Intent("quit_login");
+//                            ((BaseActivity) Objects.requireNonNull(getActivity())).localBroadcastManager.sendBroadcast(intent);
                         })
                         .show();
             }
@@ -97,7 +97,8 @@ public class MineFragment extends BaseFragment {
                 .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        ActivityCollector.finishAll();
+                        LoginActivity.start(getContext());
                     }
                 });
     }
