@@ -13,6 +13,7 @@ import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.HashMap;

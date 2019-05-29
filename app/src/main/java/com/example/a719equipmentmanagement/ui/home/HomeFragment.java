@@ -2,15 +2,20 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
+import android.text.InputType;
+import android.transition.Visibility;
+import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
 import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
+import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
@@ -18,7 +23,10 @@ import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +61,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
+    private int mStyle=R.style.QMUI_Dialog;
+
     private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
@@ -60,7 +70,7 @@ public class HomeFragment extends BaseFragment {
     private static HomeFragment fragment;
     private HomeAdapter adapter;
     private WaitReturnDeviceAdapter adapter2;
-
+    private WaitApprovalItemAdapter adapter1;
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
@@ -127,7 +137,7 @@ public class HomeFragment extends BaseFragment {
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HomeAdapter(R.layout.square_match_item);
-        WaitApprovalItemAdapter adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
+        adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
         adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
         recyclerview.setAdapter(adapter);
         recyclerview1.setAdapter(adapter1);
@@ -172,12 +182,35 @@ public class HomeFragment extends BaseFragment {
                     break;
             }
         });
-        List<ToAudit> test2=new ArrayList<>();
+        List<InvalidEquip> test1=new ArrayList<>();
+        for (int i = 0; i <3; i++) {
+            InvalidEquip t1=new InvalidEquip(i+1,"热感温度计","申请报废");
+            test1.add(t1);
+        }
+//        int size1 = test1.size();
+//        if(size1<3){tvMore1.setVisibility(View.INVISIBLE);}
+        tvMore1.setVisibility(View.INVISIBLE);
+        adapter1.setNewData(test1);
+        adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                InvalidEquip invalidEquip=test1.get(position);
+                WaitApprovalItem.start(getContext(),invalidEquip);
+            }
+        });
 
-        ToAudit t2=new ToAudit("差压变送器","2019年7月1日",20);
-        test2.add(t2);
+        List<ToAudit> test2=new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            ToAudit t2;
+            t2=new ToAudit("差压变送器","2019.7.1",20);
+            test2.add(t2);
+        }
         adapter2.setNewData(test2);
+
+
     }
+
+
 
     @Override
     protected int getLayoutId() {

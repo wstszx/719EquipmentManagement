@@ -16,4 +16,6 @@ public class WaitReturnDeviceAdapter extends BaseQuickAdapter<ToAudit, BaseViewH
                 .setText(R.id.returnDate,item.getReturnDate())
                 .setText(R.id.days,item.getDays()+"");
     }
+
+
 }
