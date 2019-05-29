@@ -2,15 +2,15 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.example.a719equipmentmanagement.adapter.ChoiceDeviceClassifiyAdapter;
+import com.example.a719equipmentmanagement.adapter.ChoiceContainerAdapter;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
-public class DeviceTypeOne extends AbstractExpandableItem<DeviceTypeTwo> implements MultiItemEntity {
+public class ContainerOne extends AbstractExpandableItem<ContainerTwo> implements MultiItemEntity {
 
-    private DeviceClassifiy dept;
+    private ContainerData dept;
     private boolean isSelect;
 
-    public void setDept(DeviceClassifiy dept) {
+    public void setDept(ContainerData dept) {
         this.dept = dept;
     }
 
@@ -22,17 +22,17 @@ public class DeviceTypeOne extends AbstractExpandableItem<DeviceTypeTwo> impleme
         isSelect = select;
     }
 
-    public DeviceClassifiy getDept() {
+    public ContainerData getDept() {
         return dept;
     }
 
-    public DeviceTypeOne(DeviceClassifiy dept) {
+    public ContainerOne(ContainerData dept) {
         this.dept = dept;
     }
 
     @Override
     public int getLevel() {
-        return ChoiceDeviceClassifiyAdapter.LEVEL_ONE;
+        return ChoiceContainerAdapter.LEVEL_ONE;
     }
 
     @Override

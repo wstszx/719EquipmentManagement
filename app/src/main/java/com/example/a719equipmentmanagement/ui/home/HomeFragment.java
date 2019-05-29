@@ -156,7 +156,7 @@ public class HomeFragment extends BaseFragment {
                     DeviceClassifiyActivity.start(getContext());
                     break;
                 case 4:
-                    AccountingActivity.start(getContext());
+                    AccountingListActivity.start(getContext());
                     break;
                 case 5:
                     ScanActivity.start(getContext());
@@ -172,9 +172,9 @@ public class HomeFragment extends BaseFragment {
                     break;
             }
         });
-        List<ToAudit> test2=new ArrayList<>();
+        List<ToAudit> test2 = new ArrayList<>();
 
-        ToAudit t2=new ToAudit("差压变送器","2019年7月1日",20);
+        ToAudit t2 = new ToAudit("差压变送器", "2019年7月1日", 20);
         test2.add(t2);
         adapter2.setNewData(test2);
     }

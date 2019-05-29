@@ -1,37 +1,31 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.View;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.adapter.ChoiceContainerAdapter;
 import com.example.a719equipmentmanagement.adapter.ChoiceDeviceClassifiyAdapter;
-import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.entity.DeptOne;
-import com.example.a719equipmentmanagement.entity.DeptThree;
-import com.example.a719equipmentmanagement.entity.DeptTwo;
+import com.example.a719equipmentmanagement.entity.ContainerData;
+import com.example.a719equipmentmanagement.entity.ContainerOne;
+import com.example.a719equipmentmanagement.entity.ContainerTwo;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceTypeOne;
 import com.example.a719equipmentmanagement.entity.DeviceTypeTwo;
-import com.example.a719equipmentmanagement.entity.SectionHeader;
-import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
-import com.qmuiteam.qmui.widget.section.QMUISection;
-import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,12 +33,11 @@ import java.util.Objects;
 
 import butterknife.BindView;
 
-public class ChoiceDeviceClassifiyActivity extends BaseActivity {
+public class ChoiceContainerActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    private ChoiceDeviceClassifiyAdapter adapter;
     private String name;
     private int id;
 
@@ -55,11 +48,11 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().findDeviceTypeData()
-                .compose(CommonCompose.io2main(ChoiceDeviceClassifiyActivity.this))
-                .subscribe(new BaseSubscriber<List<DeviceClassifiy>>(ChoiceDeviceClassifiyActivity.this) {
+        RetrofitClient.getInstance().getService().findContainerData()
+                .compose(CommonCompose.io2main(ChoiceContainerActivity.this))
+                .subscribe(new BaseSubscriber<List<ContainerData>>(ChoiceContainerActivity.this) {
                     @Override
-                    public void onSuccess(List<DeviceClassifiy> baseResponse) {
+                    public void onSuccess(List<ContainerData> baseResponse) {
                         if (baseResponse != null && baseResponse.size() > 0) {
                             createSection(baseResponse);
                         }
@@ -67,22 +60,22 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
                 });
     }
 
-    private void createSection(List<DeviceClassifiy> baseResponse) {
+    private void createSection(List<ContainerData> baseResponse) {
         List<MultiItemEntity> list = new ArrayList<>();
-        for (DeviceClassifiy deviceClassifiy1 : baseResponse) {
-            DeviceTypeOne typeOne = new DeviceTypeOne(deviceClassifiy1);
-            List<DeviceClassifiy.ListBean> list1 = deviceClassifiy1.getList();
-            for (DeviceClassifiy.ListBean listBean : list1) {
-                DeviceTypeTwo typeTwo = new DeviceTypeTwo(listBean);
-                typeOne.addSubItem(typeTwo);
+        for (ContainerData containerData : baseResponse) {
+            ContainerOne containerOne = new ContainerOne(containerData);
+            List<ContainerData.ListBean> list1 = containerData.getList();
+            for (ContainerData.ListBean listBean : list1) {
+                ContainerTwo containerTwo = new ContainerTwo(listBean);
+                containerOne.addSubItem(containerTwo);
             }
-            list.add(typeOne);
+            list.add(containerOne);
         }
         initAdapter(list);
     }
 
     private void initAdapter(List<MultiItemEntity> list) {
-        adapter = new ChoiceDeviceClassifiyAdapter(list);
+        ChoiceContainerAdapter adapter = new ChoiceContainerAdapter(list);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
@@ -90,25 +83,22 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
         for (int i = 0; i < adapter.getData().size(); i++) {
             adapter.expand(i, true);
         }
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
-                int itemType = multiItemEntity.getItemType();
-                switch (itemType) {
-                    case 0:
-                        DeviceTypeOne typeOne = (DeviceTypeOne) multiItemEntity;
-                        name = typeOne.getDept().getName();
-                        id = typeOne.getDept().getId();
-                        break;
-                    case 1:
-                        DeviceTypeTwo typeTwo = (DeviceTypeTwo) multiItemEntity;
-                        name = typeTwo.getDept().getName();
-                        id = typeTwo.getDept().getId();
-                        break;
-                }
-                setChoice(position, view);
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            MultiItemEntity multiItemEntity = (MultiItemEntity) adapter1.getData().get(position);
+            int itemType = multiItemEntity.getItemType();
+            switch (itemType) {
+                case 0:
+                    ContainerOne containerOne = (ContainerOne) multiItemEntity;
+                    name = containerOne.getDept().getName();
+                    id = containerOne.getDept().getId();
+                    break;
+                case 1:
+                    ContainerTwo containerTwo = (ContainerTwo) multiItemEntity;
+                    name = containerTwo.getDept().getName();
+                    id = containerTwo.getDept().getId();
+                    break;
             }
+            setChoice(position, view);
         });
     }
 
@@ -135,7 +125,7 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
 
 
     private void initTopbar() {
-        topbar.setTitle("选择设备分类");
+        topbar.setTitle("选择货柜");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("id", id);
@@ -152,11 +142,11 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_choice_device_classifiy;
+        return R.layout.activity_choice_container;
     }
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, ChoiceDeviceClassifiyActivity.class);
+        Intent starter = new Intent(context, ChoiceContainerActivity.class);
         context.startActivity(starter);
     }
 }

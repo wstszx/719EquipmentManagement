@@ -177,7 +177,7 @@ public class ChoiceDeptActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("添加部门");
+        topbar.setTitle("选择部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("id", id);

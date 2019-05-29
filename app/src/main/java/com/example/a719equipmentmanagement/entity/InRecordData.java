@@ -5,6 +5,7 @@ import java.util.List;
 
 public class InRecordData {
 
+
     /**
      * id : 1
      * searchValue : null

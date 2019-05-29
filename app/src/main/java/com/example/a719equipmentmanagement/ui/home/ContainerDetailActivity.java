@@ -18,6 +18,7 @@ import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import androidx.annotation.Nullable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -77,7 +78,7 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("货柜详情");
         topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            GenarateQRActivity.start(this,id);
+            GenarateQRActivity.start(this, new ArrayList<>(id));
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();

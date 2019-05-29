@@ -235,10 +235,8 @@ public interface ApiService {
     @GET("system/role/listByApp")
     Single<RoleData> findRoleData();
 
-
     /*----------------- setup-controller  ----------------*/
     //添加建账入库记录
-    @FormUrlEncoded
     @POST("system/setup/add")
     Single<BaseResponse> addInRecord(@Body RequestBody requestBody);
 
@@ -246,6 +244,9 @@ public interface ApiService {
     @GET("system/setup/list")
     Single<InRecordData> findInRecordData();
 
+    //查找建账入库数据
+    @GET("system/setup/nextId")
+    Single<Integer> getNextId();
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户

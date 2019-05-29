@@ -12,11 +12,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="true" />
-
-
 
     <application
         android:name=".App"
@@ -27,10 +26,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.ChoiceDeviceClassifiyActivity"></activity>
+        <activity android:name=".ui.home.AccountingListActivity"></activity>
+        <activity android:name=".ui.home.ChoiceDeviceClassifiyActivity" />
         <activity android:name=".ui.home.EditDeviceClassifiyActivity" />
         <activity android:name=".ui.home.EditContainerActivity" />
-        <activity android:name=".ui.home.GenerateContainerCodeActivity"></activity>
+        <activity android:name=".ui.home.GenerateContainerCodeActivity" />
         <activity android:name=".ui.home.AddContainerActivity" />
         <activity android:name=".ui.home.ChoiceDeptActivity" />
         <activity android:name=".ui.home.PersonManageActivity" />
@@ -69,6 +69,7 @@
         <activity android:name=".ui.home.ScanActivity" />
         <activity android:name=".ui.home.AddDeviceClassifyActivity" />
         <activity android:name=".ui.home.BluetoothDeviceList" />
+        <activity android:name=".ui.home.ChoiceContainerActivity" />
 
         <meta-data
             android:name="design_width_in_dp"

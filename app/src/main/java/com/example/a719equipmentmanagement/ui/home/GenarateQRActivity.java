@@ -100,6 +100,7 @@ public class GenarateQRActivity extends BaseActivity {
             Manifest.permission.BLUETOOTH
     };
     private static final int REQUEST_CODE = 0x004;
+    private ArrayList<Integer> ids;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -107,7 +108,7 @@ public class GenarateQRActivity extends BaseActivity {
         checkPermission();
         requestPermission();
         initData();
-        createChineseQRCode();
+//        createChineseQRCode();
     }
 
     private void checkPermission() {
@@ -128,7 +129,7 @@ public class GenarateQRActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        containerId = intent.getIntExtra("id", 0);
+        ids = intent.getIntegerArrayListExtra("id");
     }
 
     @Override
@@ -557,9 +558,9 @@ public class GenarateQRActivity extends BaseActivity {
         }
     }
 
-    public static void start(Context context, int id) {
+    public static void start(Context context, ArrayList<Integer> ids) {
         Intent starter = new Intent(context, GenarateQRActivity.class);
-        starter.putExtra("id", id);
+        starter.putIntegerArrayListExtra("id", ids);
         context.startActivity(starter);
     }
 }
