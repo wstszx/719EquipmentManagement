@@ -121,7 +121,7 @@ public class HomeFragment extends BaseFragment {
         topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
             MsgActivity.start(getActivity());
         });
-        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
+//        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -162,7 +162,8 @@ public class HomeFragment extends BaseFragment {
                     ScanActivity.start(getContext());
                     break;
                 case 6:
-                    InventoryActivity.start(getContext());
+//                    InventoryActivity.start(getContext());
+                    InventoryRangeActivity.start(getContext());
                     break;
                 case 7:
                     CheckActivity.start(getContext());

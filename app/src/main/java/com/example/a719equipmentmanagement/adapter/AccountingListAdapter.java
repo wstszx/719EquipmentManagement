@@ -20,8 +20,9 @@ public class AccountingListAdapter extends BaseQuickAdapter<JSONObject, BaseView
     @Override
     protected void convert(BaseViewHolder helper, JSONObject item) {
         try {
-            String name = item.getString("name");
-            int status = item.getInt("status");
+            JSONObject equip = (JSONObject) item.get("equip");
+            String name = equip.getString("name");
+            int status = equip.getInt("status");
             helper.setText(R.id.tv_name, name);
             switch (status) {
                 case 0:

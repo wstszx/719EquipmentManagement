@@ -1,28 +1,16 @@
 package com.example.a719equipmentmanagement.ui.mine;
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.a719equipmentmanagement.App;
-import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.DeviceData;
-import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
-import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.utils.SPUtils;
@@ -31,13 +19,8 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.util.List;
-import java.util.Objects;
-
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import butterknife.OnClick;
 
 public class MineFragment extends BaseFragment {
 
@@ -45,7 +28,6 @@ public class MineFragment extends BaseFragment {
     private static MineFragment fragment;
     @BindView(R.id.textView)
     TextView textView;
-    private IntentFilter intentFilter;
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
     @BindView(R.id.topbar)
@@ -61,13 +43,11 @@ public class MineFragment extends BaseFragment {
     }
 
 
-
     private void initTopbar() {
         topbar.setTitle("我的");
     }
 
     private void initTextView() {
-
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,7 +65,6 @@ public class MineFragment extends BaseFragment {
                         .show();
             }
         });
-
     }
 
     /**
@@ -142,7 +121,6 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-
         return R.layout.fragment_mine;
     }
 
@@ -153,4 +131,8 @@ public class MineFragment extends BaseFragment {
         return fragment;
     }
 
+    @OnClick(R.id.tv_change_assword)
+    public void onViewClicked() {
+        ChangePasswordActivity.start(getContext());
+    }
 }

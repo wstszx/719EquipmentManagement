@@ -2,11 +2,13 @@ package com.example.a719equipmentmanagement.net;
 
 
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.DictData;
+import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
 import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
@@ -174,7 +176,11 @@ public interface ApiService {
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
-    Single<InventoryRevordId> findInventoryRevordId();
+    Single<Integer> findInventoryRevordId();
+
+    //查找当前用户处理历史
+    @GET("system/user/profile/listMyAllHandle")
+    Single<List<HandleHistory>> getHandle();
 
 
     /*----------------- msg-controller  ----------------*/
@@ -224,6 +230,11 @@ public interface ApiService {
     @POST("system/user/profile/update")
     Single<BaseResponse> updataUserData();
 
+    //操作设备
+    @FormUrlEncoded
+    @POST("system/eqLog/oper")
+    Single<BaseResponse> operatingEquip(@FieldMap Map<String, Object> map);
+
     //保存头像
     @FormUrlEncoded
     @POST("system/user/profile/updateAvatar")
@@ -248,6 +259,10 @@ public interface ApiService {
     @GET("system/setup/nextId")
     Single<Integer> getNextId();
 
+    //查找建账入库数据
+    @GET("system/user/profile/listMyAllBorrow")
+    Single<BorrowHistory> getBorrowHistory();
+
     /*----------------- user-controller  ----------------*/
     //新增保存用户
     @FormUrlEncoded
@@ -271,15 +286,16 @@ public interface ApiService {
                                   @Field("loginName") String loginName,
                                   @Field("password") String password);
 
+    //重置密码
+    @FormUrlEncoded
+    @POST("system/user/resetPwd")
+    Single<BaseResponse> resetPwd(
+            @Field("oldPassword") String oldPassword,
+            @Field("newPassword") String newPassword);
+
     //测试
     @GET("system/user/resetPwd")
     Single<BaseResponse> test(@QueryMap IdentityHashMap<String, String> map);
 
-
-    //重置密码
-    @FormUrlEncoded
-    @POST("system/user/changeStatus")
-    Single<BaseResponse> changeStatus(@Field("userId") int userId,
-                                      @Field("status") int status);
 
 }

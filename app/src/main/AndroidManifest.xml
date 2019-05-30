@@ -26,7 +26,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.AccountingListActivity"></activity>
+        <activity android:name=".ui.mine.ChangePasswordActivity"></activity>
+        <activity android:name=".ui.home.InventoryRangeActivity" />
+        <activity android:name=".ui.home.AccountingListActivity" />
         <activity android:name=".ui.home.ChoiceDeviceClassifiyActivity" />
         <activity android:name=".ui.home.EditDeviceClassifiyActivity" />
         <activity android:name=".ui.home.EditContainerActivity" />

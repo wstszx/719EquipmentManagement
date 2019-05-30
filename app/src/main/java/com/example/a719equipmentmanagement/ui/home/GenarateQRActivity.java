@@ -447,8 +447,9 @@ public class GenarateQRActivity extends BaseActivity {
 //        Bitmap b = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 //        Bitmap b = BitmapFactory.decodeResource(getResources(), drawable);
 //        tsc.addBitmap(0, 0, LabelCommand.BITMAP_MODE.OVERWRITE, 150, b);
-
-        tsc.addQRCode(60, 60, LabelCommand.EEC.LEVEL_M, 5, LabelCommand.ROTATION.ROTATION_0, " www.smarnet.cc");
+        for (Integer integer : ids) {
+            tsc.addQRCode(60, 60, LabelCommand.EEC.LEVEL_M, 5, LabelCommand.ROTATION.ROTATION_0, integer + "");
+        }
         /* 绘制一维条码 */
 //        tsc.add1DBarcode(10, 450, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
         /* 打印标签 */

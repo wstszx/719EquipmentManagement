@@ -40,7 +40,6 @@ public class AccountingListActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    private List<JSONObject> jsonObjects = new ArrayList<>();
     private AccountingListAdapter adapter;
 
     @Override
@@ -69,7 +68,8 @@ public class AccountingListActivity extends BaseActivity {
     private void accounting() {
         ArrayList<Integer> setups = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
-        for (JSONObject jsonObject : jsonObjects) {
+        List<JSONObject> data = adapter.getData();
+        for (JSONObject jsonObject : data) {
             try {
                 int setupId = jsonObject.getInt("setupId");
                 setups.add(setupId);
@@ -102,10 +102,17 @@ public class AccountingListActivity extends BaseActivity {
             switch (requestCode) {
                 case ACCOUNTING:
                     if (data != null) {
-                        JSONObject jsonObject = (JSONObject) data.getSerializableExtra("accounting");
-                        if (jsonObject != null) {
-                            jsonObjects.add(jsonObject);
-                            adapter.addData(jsonObjects);
+                        String accounting = data.getStringExtra("accounting");
+                        if (accounting != null) {
+                            JSONObject jsonObject;
+                            try {
+                                jsonObject = new JSONObject(accounting);
+//                                jsonObjects.add(jsonObject);
+                                adapter.addData(jsonObject);
+//                                adapter.addData(jsonObjects);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                     break;

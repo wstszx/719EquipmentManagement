@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
@@ -62,9 +63,12 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        setTitle("扫描结果为：" + result);
+//        setTitle("扫描结果为：" + result);
         vibrate();
-        zxingview.startSpot(); // 开始识别
+//        zxingview.startSpot(); // 开始识别
+        if (!StringUtils.isEmpty(result)) {
+            DeviceDetailActivity.start(this, result);
+        }
     }
 
     @Override

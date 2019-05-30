@@ -44,9 +44,15 @@ public class WaitCheckFragment extends BaseFragment {
                 .subscribe(new BaseSubscriber<InvalidEquip>(getContext()){
                     @Override
                     public void onSuccess(InvalidEquip invalidEquip) {
-
+                        if (invalidEquip != null) {
+                            bindUi(invalidEquip);
+                        }
                     }
                 });
+    }
+
+    private void bindUi(InvalidEquip invalidEquip) {
+        
     }
 
     private void initView() {

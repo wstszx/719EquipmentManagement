@@ -15,9 +15,8 @@ public class CheckActivity extends BaseActivity {
 
     @Override
     protected void init(Bundle savedInstanceState) {
+
     }
-
-
 
     @Override
     protected int getLayoutId() {

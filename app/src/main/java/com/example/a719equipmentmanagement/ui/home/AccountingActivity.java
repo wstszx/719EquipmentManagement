@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.blankj.utilcode.util.TimeUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -131,10 +132,13 @@ public class AccountingActivity extends BaseActivity {
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case DATE_ONE:
-                    tvResult12.setText(dateFormat.format(calendar.getTime()));
+                    String date = TimeUtils.date2String(calendar.getTime());
+                    tvResult12.setText(date);
+//                    tvResult12.setText(dateFormat.format(calendar.getTime()));
                     break;
                 case DATE_TWO:
-                    tvResult13.setText(dateFormat.format(calendar.getTime()));
+                    String date1 = TimeUtils.date2String(calendar.getTime());
+                    tvResult13.setText(date1);
                     break;
             }
         });
@@ -214,8 +218,9 @@ public class AccountingActivity extends BaseActivity {
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
             JSONObject jsonObject = accounting();
             Intent intent = new Intent();
-            intent.putExtra("accounting", (Serializable) jsonObject);
+            intent.putExtra("accounting", jsonObject.toString());
             setResult(RESULT_OK, intent);
+            finish();
 //            accounting();
         });
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
