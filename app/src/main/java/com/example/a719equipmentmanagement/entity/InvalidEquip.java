@@ -5,20 +5,16 @@ import java.io.Serializable;
 public class InvalidEquip implements Serializable{
     private int number;
 
-    public int getNumber() {
-        return number;
-    }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
 
     private  String deviceName;
     private String currentStatus;
-    public InvalidEquip(int number,String deviceName,String currentStatus) {
+    private String person;
+    public InvalidEquip(int number,String deviceName,String currentStatus,String person) {
         this.number=number;
         this.deviceName=deviceName;
         this.currentStatus=currentStatus;
+        this.person=person;
     }
 
     public String getDeviceName() {
@@ -35,5 +31,19 @@ public class InvalidEquip implements Serializable{
 
     public void setCurrentStatus(String currentStatus) {
         this.currentStatus = currentStatus;
+    }
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
+    }
+    public String getPerson() {
+        return person == null ? "" : person;
+    }
+
+    public void setPerson(String person) {
+        this.person = person;
     }
 }

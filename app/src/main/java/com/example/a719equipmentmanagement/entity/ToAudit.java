@@ -1,6 +1,8 @@
 package com.example.a719equipmentmanagement.entity;
 
-public class ToAudit {
+import java.io.Serializable;
+
+public class ToAudit implements Serializable {
     private  String deviceName;
     private String returnDate;
     private int days;

@@ -1,9 +1,8 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
-import android.transition.Visibility;
 import android.view.View;
 import android.widget.TextView;
 
@@ -23,14 +22,13 @@ import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.view.CustomInputDialog;
+import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,6 +49,8 @@ public class HomeFragment extends BaseFragment {
     RecyclerView recyclerview;
     @BindView(R.id.tv_1)
     TextView tv1;
+    @BindView(R.id.tv_11)
+    TextView tv11;
     @BindView(R.id.tv_more1)
     TextView tvMore1;
     @BindView(R.id.recyclerview1)
@@ -61,7 +61,7 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-    private int mStyle=R.style.QMUI_Dialog;
+//    private int mStyle=R.style.QMUI_Dialog;
 
     private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
@@ -71,6 +71,7 @@ public class HomeFragment extends BaseFragment {
     private HomeAdapter adapter;
     private WaitReturnDeviceAdapter adapter2;
     private WaitApprovalItemAdapter adapter1;
+
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
@@ -182,34 +183,47 @@ public class HomeFragment extends BaseFragment {
                     break;
             }
         });
-        List<InvalidEquip> test1=new ArrayList<>();
-        for (int i = 0; i <3; i++) {
-            InvalidEquip t1=new InvalidEquip(i+1,"热感温度计","申请报废");
-            test1.add(t1);
-        }
-//        int size1 = test1.size();
+        List<InvalidEquip> test1 = new ArrayList<>();
+        InvalidEquip t1;
+        t1 = new InvalidEquip(1, "热感温度计", "申请报废","王二");
+        test1.add(t1);
+        t1 = new InvalidEquip(2, "气压表", "申请送检","李四");
+        test1.add(t1);
+        t1 = new InvalidEquip(3, "减压装置", "申请类型3","张三");
+        test1.add(t1);
+        t1 = new InvalidEquip(4, "压差变送器", "申请类型4","麻子");
+        test1.add(t1);
+        int size1 = test1.size();
 //        if(size1<3){tvMore1.setVisibility(View.INVISIBLE);}
+        tv11.setText(size1+"");
         tvMore1.setVisibility(View.INVISIBLE);
         adapter1.setNewData(test1);
         adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InvalidEquip invalidEquip=test1.get(position);
-                WaitApprovalItem.start(getContext(),invalidEquip);
+                InvalidEquip invalidEquip = test1.get(position);
+                WaitApprovalItemActivity.start(getContext(), invalidEquip);
             }
         });
 
-        List<ToAudit> test2=new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        List<ToAudit> test2 = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
             ToAudit t2;
-            t2=new ToAudit("差压变送器","2019.7.1",20);
+            t2 = new ToAudit("差压变送器", "2019.7.1", 20);
             test2.add(t2);
         }
+        tvMore2.setVisibility(View.INVISIBLE);
         adapter2.setNewData(test2);
+        adapter2.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                ToAudit toAudit=test2.get(position);
+                WaitReturnDeviceActivity.start(getContext(),toAudit);
+            }
+        });
 
 
     }
-
 
 
     @Override

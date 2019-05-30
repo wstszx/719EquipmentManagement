@@ -39,13 +39,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:textSize="@dimen/sp_16"
-                android:text="待审事项："
+                android:text="待审事项("
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
+            <TextView
+                android:id="@+id/tv_11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_16"
+                android:text="个数"
+                android:textColor="#ff0000"
+                app:layout_constraintStart_toEndOf="@id/tv_1"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+            <TextView
+                android:id="@+id/tv_12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_16"
+                android:text="):"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/tv_11"
+                app:layout_constraintTop_toTopOf="parent"
+                />
             <TextView
                 android:id="@+id/tv_more1"
                 android:layout_width="wrap_content"
@@ -61,7 +79,6 @@
                 android:id="@+id/recyclerview1"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintTop_toBottomOf="@id/tv_1"
                 >
 
@@ -72,7 +89,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:text="待还设备："
                 android:textStyle="bold"
                 android:textSize="@dimen/sp_16"
@@ -93,8 +109,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_height="70dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_2">
 
             </androidx.recyclerview.widget.RecyclerView>
