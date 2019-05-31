@@ -47,22 +47,11 @@
                 tools:text="待审事项：" />
 
             <TextView
-                android:id="@+id/tv_11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/qmui_config_color_red"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintBottom_toBottomOf="@id/tv_1"
-                app:layout_constraintStart_toEndOf="@id/tv_1"
-                app:layout_constraintTop_toTopOf="@id/tv_1"
-                tools:text="(12)" />
-
-            <TextView
                 android:id="@+id/tv_more1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="@string/more"
+                android:text="处理"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -90,22 +79,11 @@
                 tools:text="待还设备：" />
 
             <TextView
-                android:id="@+id/tv_22"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/qmui_config_color_red"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintBottom_toBottomOf="@id/tv_2"
-                app:layout_constraintStart_toEndOf="@id/tv_2"
-                app:layout_constraintTop_toTopOf="@id/tv_2"
-                tools:text="(12)" />
-
-            <TextView
                 android:id="@+id/tv_more2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="@string/more"
+                android:text="处理"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -133,22 +111,11 @@
                 tools:text="待还设备：" />
 
             <TextView
-                android:id="@+id/tv_33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/qmui_config_color_red"
-                android:textSize="@dimen/sp_16"
-                app:layout_constraintBottom_toBottomOf="@id/tv_3"
-                app:layout_constraintStart_toEndOf="@id/tv_3"
-                app:layout_constraintTop_toTopOf="@id/tv_3"
-                tools:text="(12)" />
-
-            <TextView
                 android:id="@+id/tv_more3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="@string/more"
+                android:text="处理"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_3"
                 app:layout_constraintEnd_toEndOf="parent"

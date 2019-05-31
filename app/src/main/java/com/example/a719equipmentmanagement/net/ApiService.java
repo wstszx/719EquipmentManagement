@@ -196,7 +196,7 @@ public interface ApiService {
     @GET("invalidEquip")
     Single<InvalidEquip> invalidEquip();
 
-    //管理员：获取待办事项
+    //管理员：我的待审任务
     @GET("toAudit")
     Single<ToAudit> toAudit();
 
