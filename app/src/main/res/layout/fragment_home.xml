@@ -31,7 +31,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/qmui_config_color_white">
 
             <TextView
@@ -39,37 +39,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textSize="@dimen/sp_16"
-                android:text="待审事项("
+                android:layout_marginTop="16dp"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <TextView
-                android:id="@+id/tv_11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_16"
-                android:text="个数"
-                android:textColor="#ff0000"
-                app:layout_constraintStart_toEndOf="@id/tv_1"
                 app:layout_constraintTop_toTopOf="parent"
-                />
-            <TextView
-                android:id="@+id/tv_12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/sp_16"
-                android:text="):"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/tv_11"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+                tools:text="待审事项：" />
+
             <TextView
                 android:id="@+id/tv_more1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="更多"
+                android:text="@string/more"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -78,9 +60,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview1"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                app:layout_constraintTop_toBottomOf="@id/tv_1"
-                >
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                app:layout_constraintTop_toBottomOf="@id/tv_1">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -89,18 +71,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:text="待还设备："
+                android:layout_marginTop="16dp"
+                android:textColor="@color/blue"
                 android:textStyle="bold"
-                android:textSize="@dimen/sp_16"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recyclerview1" />
+                app:layout_constraintTop_toBottomOf="@id/recyclerview1"
+                tools:text="待还设备：" />
 
             <TextView
                 android:id="@+id/tv_more2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="更多"
+                android:text="@string/more"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,8 +92,41 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview2"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintTop_toBottomOf="@id/tv_2">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/tv_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/blue"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recyclerview2"
+                tools:text="待还设备：" />
+
+            <TextView
+                android:id="@+id/tv_more3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="32dp"
+                android:text="@string/more"
+                android:textColor="@color/qmui_btn_blue_text"
+                app:layout_constraintBottom_toBottomOf="@id/tv_3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_3" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                app:layout_constraintTop_toBottomOf="@id/tv_3">
 
             </androidx.recyclerview.widget.RecyclerView>
 

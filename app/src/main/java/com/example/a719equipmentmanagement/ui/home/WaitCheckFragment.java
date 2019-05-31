@@ -11,6 +11,10 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.Device;
+import com.example.a719equipmentmanagement.entity.InvalidEquip;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.Objects;
@@ -35,7 +39,20 @@ public class WaitCheckFragment extends BaseFragment {
     }
 
     private void initData() {
+        RetrofitClient.getInstance().getService().invalidEquip()
+                .compose(CommonCompose.io2main(getContext()))
+                .subscribe(new BaseSubscriber<InvalidEquip>(getContext()){
+                    @Override
+                    public void onSuccess(InvalidEquip invalidEquip) {
+                        if (invalidEquip != null) {
+                            bindUi(invalidEquip);
+                        }
+                    }
+                });
+    }
 
+    private void bindUi(InvalidEquip invalidEquip) {
+        
     }
 
     private void initView() {
@@ -48,7 +65,9 @@ public class WaitCheckFragment extends BaseFragment {
         topbar.setTitle("点检");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> Objects.requireNonNull(getActivity()).finish());
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
+            Objects.requireNonNull(getActivity()).finish();
+        });
     }
 
     @Override

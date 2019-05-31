@@ -135,7 +135,7 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
 
 
     private void initTopbar() {
-        topbar.setTitle("添加部门");
+        topbar.setTitle("选择设备分类");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("id", id);
@@ -143,7 +143,7 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
             setResult(RESULT_OK, intent);
             finish();
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

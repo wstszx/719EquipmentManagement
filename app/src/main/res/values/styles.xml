@@ -6,10 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="QMUITopBarStyle">@style/QDTopBar</item>
     </style>
 
     <style name="ScrollbarRecyclerView" parent="android:Widget">
         <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="QDTopBar" parent="QMUI.TopBar">
+        <item name="qmui_topbar_separator_color">@color/white</item>
+        <item name="qmui_topbar_text_btn_color_state_list">@color/white</item>
+        <item name="qmui_topbar_bg_color">@color/blue</item>
+        <item name="qmui_topbar_title_color">@color/white</item>
+        <item name="qmui_topbar_height">@dimen/dp_40</item>
     </style>
 
 </resources>

@@ -11,8 +11,8 @@ import com.example.a719equipmentmanagement.entity.DeviceTypeTwo;
 import java.util.List;
 
 public class ChoiceDeviceClassifiyAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
-    private static final int LEVEL_ONE = 0;
-    private static final int LEVEL_TWO = 1;
+    public static final int LEVEL_ONE = 0;
+    public static final int LEVEL_TWO = 1;
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with

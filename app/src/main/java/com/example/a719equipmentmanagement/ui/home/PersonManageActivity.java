@@ -201,7 +201,7 @@ public class PersonManageActivity extends BaseActivity {
             intent.setClass(PersonManageActivity.this, AddPersonActivity.class);
             startActivityForResult(intent, ADD_PERSON);
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

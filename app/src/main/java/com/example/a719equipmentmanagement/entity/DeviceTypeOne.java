@@ -2,6 +2,7 @@ package com.example.a719equipmentmanagement.entity;
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
+import com.example.a719equipmentmanagement.adapter.ChoiceDeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class DeviceTypeOne extends AbstractExpandableItem<DeviceTypeTwo> implements MultiItemEntity {
@@ -31,7 +32,7 @@ public class DeviceTypeOne extends AbstractExpandableItem<DeviceTypeTwo> impleme
 
     @Override
     public int getLevel() {
-        return DeptManageAdapter.LEVEL_ONE;
+        return ChoiceDeviceClassifiyAdapter.LEVEL_ONE;
     }
 
     @Override

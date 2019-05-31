@@ -57,12 +57,12 @@ public class HomeFragment extends BaseFragment {
     RecyclerView recyclerview1;
     @BindView(R.id.tv_2)
     TextView tv2;
+    @BindView(R.id.tv_3)
+    TextView tv3;
     @BindView(R.id.tv_more2)
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-//    private int mStyle=R.style.QMUI_Dialog;
-
     private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
@@ -105,34 +105,36 @@ public class HomeFragment extends BaseFragment {
             case 1:
             case 2:
                 return Single.zip(RetrofitClient.getInstance().getService().toDo(),
-                        RetrofitClient.getInstance().getService().toAudit(), new BiFunction<ToDo, ToAudit, Object>() {
-
-                            @Override
-                            public Object apply(ToDo toDo, ToAudit toAudit) throws Exception {
-                                return new Object();
-                            }
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        RetrofitClient.getInstance().getService().toAudit(), (toDo, toAudit) -> new Object()).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                         .observeOn(AndroidSchedulers.mainThread());
             case 3:
                 return Single.zip(RetrofitClient.getInstance().getService().userToDo(),
-                        RetrofitClient.getInstance().getService().toReturn(), new BiFunction<UserToDo, ToReturn, Object>() {
-
-                            @Override
-                            public Object apply(UserToDo userToDo, ToReturn toReturn) throws Exception {
-                                return new Object();
-                            }
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        RetrofitClient.getInstance().getService().toReturn(), (userToDo, toReturn) -> new Object()).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                         .observeOn(AndroidSchedulers.mainThread());
         }
         return null;
     }
 
     private void initView() {
+        int roleId = SPUtils.getInstance().getInt("roleId", 0);
         topbar.setTitle("首页");
         topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
             MsgActivity.start(getActivity());
         });
-        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
+        switch (roleId) {
+            case 1:
+            case 3:
+                tv1.setText("即将过期的设备");
+                tv2.setText("我的待审任务");
+                tv3.setText("我的待办事项");
+                break;
+            case 2:
+                tv1.setText("我的待还设备");
+                tv2.setText("我的申请进度");
+                tv3.setText("我的待办事项");
+                break;
+        }
+//        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -167,13 +169,14 @@ public class HomeFragment extends BaseFragment {
                     DeviceClassifiyActivity.start(getContext());
                     break;
                 case 4:
-                    AccountingActivity.start(getContext());
+                    AccountingListActivity.start(getContext());
                     break;
                 case 5:
                     ScanActivity.start(getContext());
                     break;
                 case 6:
-                    InventoryActivity.start(getContext());
+//                    InventoryActivity.start(getContext());
+                    InventoryRangeActivity.start(getContext());
                     break;
                 case 7:
                     CheckActivity.start(getContext());
