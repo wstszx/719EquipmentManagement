@@ -66,62 +66,28 @@ public class PersonInfoActivity extends BaseActivity {
                         if (baseResponse != null) {
                             PersonInfoActivity.this.baseResponse = baseResponse;
                             id = baseResponse.getUser().getId();
-//                            initGroupListView();
+                            String userName = baseResponse.getUser().getUserName();
+                            String sex = baseResponse.getUser().getSex();
+                            int roleId = baseResponse.getUser().getRoles().get(0).getRoleId();
+                            String phonenumber = baseResponse.getUser().getPhonenumber();
+                            edittext.setText(userName);
+                            tvResult1.setText(sex);
+                            switch (roleId) {
+                                case 1:
+                                    tvResult2.setText("超级系统管理员");
+                                    break;
+                                case 2:
+                                    tvResult2.setText("普通用户");
+                                    break;
+                                case 3:
+                                    tvResult2.setText("实验室管理员");
+                                    break;
+                            }
+                            edittext3.setText(phonenumber);
                         }
                     }
                 });
     }
-
-//    private void initGroupListView() {
-//        View.OnClickListener onClickListener = v -> {
-//            listItemView = (QMUICommonListItemView) v;
-//            int tag = (int) listItemView.getTag();
-//            Intent intent = new Intent();
-//            intent.putExtra("text", listItemView.getDetailText().toString());
-//            intent.setClass(this, BaseItemEditActivity.class);
-//            startActivityForResult(intent, tag);
-//        };
-//        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-//
-//        item = groupListView.createItemView(
-//                null,
-//                containerAttrs[0],
-//                baseResponse.getUser().getUserName(),
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item.setTag(0);
-//        section.addItemView(item, onClickListener);
-//
-//        item1 = groupListView.createItemView(
-//                null,
-//                containerAttrs[1],
-//                baseResponse.getUser().getSex(),
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item1.setTag(1);
-//        section.addItemView(item1, onClickListener);
-//
-//        item2 = groupListView.createItemView(
-//                null,
-//                containerAttrs[2],
-//                baseResponse.getUser().getRoles().get(0).getRoleName(),
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item2.setTag(2);
-//        section.addItemView(item2, onClickListener);
-//
-//        item3 = groupListView.createItemView(
-//                null,
-//                containerAttrs[3],
-//                baseResponse.getUser().getPhonenumber(),
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item3.setTag(3);
-//        section.addItemView(item3, onClickListener);
-//
-//        section.addTo(groupListView);
-//    }
-
 
     private void initTopbar() {
         topbar.setTitle("个人信息");

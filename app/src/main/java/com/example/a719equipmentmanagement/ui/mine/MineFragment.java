@@ -112,7 +112,7 @@ public class MineFragment extends BaseFragment {
 
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
         switch (roleId) {
-            case 0:
+            case 2:
                 for (String containerAttr : containerAttrs) {
                     QMUICommonListItemView item = groupListView.createItemView(
                             null,
@@ -125,6 +125,7 @@ public class MineFragment extends BaseFragment {
                 }
                 break;
             case 1:
+            case 3:
                 for (String containerAttr1 : containerAttrs1) {
                     QMUICommonListItemView item = groupListView.createItemView(
                             null,
