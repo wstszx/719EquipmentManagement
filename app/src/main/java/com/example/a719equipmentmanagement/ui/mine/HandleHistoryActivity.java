@@ -78,7 +78,7 @@ public class HandleHistoryActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("处理历史");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

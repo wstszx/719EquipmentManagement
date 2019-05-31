@@ -49,6 +49,8 @@ public class HomeFragment extends BaseFragment {
     RecyclerView recyclerview1;
     @BindView(R.id.tv_2)
     TextView tv2;
+    @BindView(R.id.tv_3)
+    TextView tv3;
     @BindView(R.id.tv_more2)
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
@@ -60,9 +62,11 @@ public class HomeFragment extends BaseFragment {
     private static HomeFragment fragment;
     private HomeAdapter adapter;
     private WaitReturnDeviceAdapter adapter2;
+    private WaitApprovalItemAdapter adapter1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+
         initView();
         initMenu();
         initData();
@@ -105,17 +109,31 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
+        int roleId = SPUtils.getInstance().getInt("roleId", 0);
         topbar.setTitle("首页");
         topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
             MsgActivity.start(getActivity());
         });
+        switch (roleId) {
+            case 1:
+            case 3:
+                tv1.setText("即将过期的设备");
+                tv2.setText("我的待审任务");
+                tv3.setText("我的待办事项");
+                break;
+            case 2:
+                tv1.setText("我的待还设备");
+                tv2.setText("我的申请进度");
+                tv3.setText("我的待办事项");
+                break;
+        }
 //        topbar.addRightImageButton(R.mipmap.scan, R.id.scan).setOnClickListener(v -> ScanActivity.start(getActivity()));
 
         recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new HomeAdapter(R.layout.square_match_item);
-        WaitApprovalItemAdapter adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
+        adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
         adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
         recyclerview.setAdapter(adapter);
         recyclerview1.setAdapter(adapter1);

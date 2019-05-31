@@ -215,9 +215,9 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("设备详情");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
-//            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
 //        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
 //            GenarateQRActivity.start(this);

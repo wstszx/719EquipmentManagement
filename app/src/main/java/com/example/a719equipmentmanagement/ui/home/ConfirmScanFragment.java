@@ -44,7 +44,7 @@ public class ConfirmScanFragment extends BaseFragment {
 
     private void initView() {
         topbar.setTitle("扫描货柜码");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             Navigation.findNavController(v).navigateUp();
         });
     }

@@ -2,8 +2,6 @@ package com.example.a719equipmentmanagement.net;
 
 
 import com.blankj.utilcode.util.SPUtils;
-import com.example.a719equipmentmanagement.App;
-import com.example.a719equipmentmanagement.utils.SPUtil;
 
 import java.io.IOException;
 

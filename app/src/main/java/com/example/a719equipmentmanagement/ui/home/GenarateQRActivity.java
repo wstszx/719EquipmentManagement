@@ -275,7 +275,7 @@ public class GenarateQRActivity extends BaseActivity {
 //        topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> {
 //            initBle();
 //        });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

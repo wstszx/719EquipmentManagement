@@ -55,11 +55,11 @@ public class AccountingListActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("新增建账入库");
+        topbar.setTitle("建账入库");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
             accounting();
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

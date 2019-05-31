@@ -45,7 +45,7 @@ public class WaitScrappedFragment extends BaseFragment {
         topbar.setTitle("点检");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> Objects.requireNonNull(getActivity()).finish());
+        topbar.addLeftBackImageButton().setOnClickListener(v -> Objects.requireNonNull(getActivity()).finish());
     }
 
     @Override

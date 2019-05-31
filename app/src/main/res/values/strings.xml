@@ -87,4 +87,5 @@
     <string name="sign_out">退出登录</string>
     <string name="old_password">原密码</string>
     <string name="new_password">新密码</string>
+    <string name="more">更多</string>
 </resources>

@@ -466,11 +466,9 @@ public class FilterActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("设备筛选");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
     }
 }

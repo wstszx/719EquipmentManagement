@@ -61,7 +61,7 @@ public class InventoryGuideFragment extends BaseFragment {
         Button button = topbar.addRightTextButton(R.string.carry_on, R.id.carry_on);
         button.setTextColor(getResources().getColor(R.color.blue));
         button.setOnClickListener(v -> Navigation.findNavController(topbar).navigate(R.id.action_inventoryGuideFragment2_to_scanFragment));
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             Objects.requireNonNull(getActivity()).finish();
         });
     }

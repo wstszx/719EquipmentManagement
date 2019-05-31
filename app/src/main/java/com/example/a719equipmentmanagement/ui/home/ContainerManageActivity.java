@@ -42,6 +42,7 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.json.JSONException;
@@ -179,7 +180,10 @@ public class ContainerManageActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("货柜管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> AddContainerActivity.start(this));
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> finish());
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
+        });
     }
 
     private void initListPopupIfNeed(String[] listItems) {
