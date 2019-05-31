@@ -231,7 +231,7 @@ public interface ApiService {
     //APP更新个人信息
     @FormUrlEncoded
     @POST("system/user/profile/update")
-    Single<BaseResponse> updataUserData();
+    Single<BaseResponse> updataUserData(@FieldMap Map<String, Object> map);
 
     //操作设备
     @FormUrlEncoded
