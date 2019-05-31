@@ -52,5 +52,4 @@ public class WaitScrappedFragment extends BaseFragment {
     protected int getLayoutId() {
         return R.layout.fragment_wait_scrapped;
     }
-
 }
