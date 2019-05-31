@@ -58,10 +58,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.mine.DiscardActivity" />
-        <activity android:name=".ui.mine.CheckonActivity" />
-        <activity android:name=".ui.mine.CheckcountActivity" />
-        <activity android:name=".ui.mine.ReturnActivity" />
+        <activity android:name=".ui.mine.ReviewHistoryActivity" />
+        <activity android:name=".ui.mine.HandleHistoryActivity" />
+        <activity android:name=".ui.mine.InventoryHistoryActivity" />
+        <activity android:name=".ui.mine.BorrowHistoryActivity" />
         <activity android:name=".ui.device.FilterActivity" />
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseItemEditActivity" />
@@ -83,6 +83,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />
+        <activity android:name=".ui.mine.ApplyHistoryActivity" />
     </application>
 
 </manifest>

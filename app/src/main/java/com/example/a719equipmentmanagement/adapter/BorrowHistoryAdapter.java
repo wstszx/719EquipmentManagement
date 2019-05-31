@@ -8,9 +8,9 @@ import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ReturnAdapter extends BaseQuickAdapter<BorrowHistory.RowsBean, BaseViewHolder> {
+public class BorrowHistoryAdapter extends BaseQuickAdapter<BorrowHistory.RowsBean, BaseViewHolder> {
 
-    public ReturnAdapter(int layoutResId) {
+    public BorrowHistoryAdapter(int layoutResId) {
         super(layoutResId);
     }
 

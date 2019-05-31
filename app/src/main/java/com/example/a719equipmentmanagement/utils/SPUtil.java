@@ -3,10 +3,10 @@ package com.example.a719equipmentmanagement.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class SPUtils {
+public class SPUtil {
     public static String PREFERENCE_NAME = "kuche";
 
-    private SPUtils() {
+    private SPUtil() {
         throw new AssertionError();
     }
 

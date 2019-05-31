@@ -2,12 +2,12 @@ package com.example.a719equipmentmanagement.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.ui.LoginActivity;
 import com.example.a719equipmentmanagement.ui.mine.ActivityCollector;
-import com.example.a719equipmentmanagement.utils.SPUtils;
+import com.example.a719equipmentmanagement.utils.SPUtil;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
@@ -29,7 +29,7 @@ public class LoginDialog {
                     public void onClick(QMUIDialog dialog, int index) {
                         dialog.dismiss();
                         // 跳转到登陆页面
-                        SPUtils.putBoolean(App.getContext(), "main", false);
+                        SPUtils.getInstance().put("main", false);
                         context.startActivity(new Intent(context, LoginActivity.class));
                         ActivityCollector.finishAll();
                     }

@@ -94,23 +94,11 @@ public class HomeFragment extends BaseFragment {
             case 1:
             case 2:
                 return Single.zip(RetrofitClient.getInstance().getService().toDo(),
-                        RetrofitClient.getInstance().getService().toAudit(), new BiFunction<ToDo, ToAudit, Object>() {
-
-                            @Override
-                            public Object apply(ToDo toDo, ToAudit toAudit) throws Exception {
-                                return new Object();
-                            }
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        RetrofitClient.getInstance().getService().toAudit(), (toDo, toAudit) -> new Object()).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                         .observeOn(AndroidSchedulers.mainThread());
             case 3:
                 return Single.zip(RetrofitClient.getInstance().getService().userToDo(),
-                        RetrofitClient.getInstance().getService().toReturn(), new BiFunction<UserToDo, ToReturn, Object>() {
-
-                            @Override
-                            public Object apply(UserToDo userToDo, ToReturn toReturn) throws Exception {
-                                return new Object();
-                            }
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                        RetrofitClient.getInstance().getService().toReturn(), (userToDo, toReturn) -> new Object()).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                         .observeOn(AndroidSchedulers.mainThread());
         }
         return null;

@@ -1,6 +1,7 @@
 package com.example.a719equipmentmanagement.net;
 
 
+import com.example.a719equipmentmanagement.entity.ApplyHistory;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.ContainerData;
@@ -11,10 +12,12 @@ import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
 import com.example.a719equipmentmanagement.entity.InventoryData;
+import com.example.a719equipmentmanagement.entity.InventoryHistory;
 import com.example.a719equipmentmanagement.entity.InventoryRevordId;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
 import com.example.a719equipmentmanagement.entity.Person;
+import com.example.a719equipmentmanagement.entity.ReviewHistory;
 import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
@@ -171,8 +174,8 @@ public interface ApiService {
     Single<BaseResponse> setEndInventory(@Body RequestBody requestBody);
 
     //查找盘点数据
-    @GET("system/inventory/list")
-    Single<List<InventoryData>> findInventoryData();
+    @GET("system/user/profile/listMyAllInventory")
+    Single<InventoryHistory> findInventoryData();
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
@@ -180,7 +183,7 @@ public interface ApiService {
 
     //查找当前用户处理历史
     @GET("system/user/profile/listMyAllHandle")
-    Single<List<HandleHistory>> getHandle();
+    Single<HandleHistory> getHandle();
 
 
     /*----------------- msg-controller  ----------------*/
@@ -254,6 +257,13 @@ public interface ApiService {
     //查找建账入库数据
     @GET("system/setup/list")
     Single<InRecordData> findInRecordData();
+    //查找当前用户的审核历史
+    @GET("system/user/profile/listMyAllVerify")
+    Single<ReviewHistory> findReviewHistory();
+
+    //查找当前用户的申请历史
+    @GET("system/user/profile/listMyAllApply")
+    Single<List<ApplyHistory>> findUserApplyHistory();
 
     //查找建账入库数据
     @GET("system/setup/nextId")

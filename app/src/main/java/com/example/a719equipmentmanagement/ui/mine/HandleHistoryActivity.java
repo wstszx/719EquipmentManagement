@@ -3,7 +3,6 @@ package com.example.a719equipmentmanagement.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,24 +10,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.HandleAdapter;
-import com.example.a719equipmentmanagement.adapter.InventoryAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
-import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class CheckonActivity extends BaseActivity {
+public class HandleHistoryActivity extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
@@ -49,18 +43,19 @@ public class CheckonActivity extends BaseActivity {
     private void initAdapter() {
         adapter = new HandleAdapter(R.layout.return_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
     }
 
     private void initData() {
         RetrofitClient.getInstance().getService().getHandle()
-                .compose(CommonCompose.io2main(CheckonActivity.this))
-                .subscribe(new BaseSubscriber<List<HandleHistory>>(CheckonActivity.this) {
+                .compose(CommonCompose.io2main(HandleHistoryActivity.this))
+                .subscribe(new BaseSubscriber<HandleHistory>(HandleHistoryActivity.this) {
                     @Override
-                    public void onSuccess(List<HandleHistory> histories) {
-                        if (histories != null && histories.size() > 0) {
-                            adapter.setNewData(histories);
+                    public void onSuccess(HandleHistory histories) {
+                        List<?> rows = histories.getRows();
+                        if (rows != null && rows.size() > 0) {
+//                            adapter.setNewData(histories);
                         }
                     }
                 });
@@ -73,7 +68,7 @@ public class CheckonActivity extends BaseActivity {
     }
 
     public static void start(Context context) {
-        Intent starter = new Intent(context, CheckonActivity.class);
+        Intent starter = new Intent(context, HandleHistoryActivity.class);
         context.startActivity(starter);
     }
 
@@ -82,7 +77,7 @@ public class CheckonActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("送检记录");
+        topbar.setTitle("处理历史");
         topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);

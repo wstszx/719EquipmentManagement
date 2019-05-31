@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.mine.ReturnActivity">
+    tools:context=".ui.mine.BorrowHistoryActivity">
 
     <com.qmuiteam.qmui.widget.QMUITopBar
         android:id="@+id/topbar"

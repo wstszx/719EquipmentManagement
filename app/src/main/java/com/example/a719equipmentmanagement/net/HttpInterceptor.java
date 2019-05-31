@@ -1,8 +1,9 @@
 package com.example.a719equipmentmanagement.net;
 
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.App;
-import com.example.a719equipmentmanagement.utils.SPUtils;
+import com.example.a719equipmentmanagement.utils.SPUtil;
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ public class HttpInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-        String token = SPUtils.getString(App.getContext(), "token", "");
+        String token = SPUtils.getInstance().getString( "token", "");
         Request original = chain.request();
         Request request = original.newBuilder()
                 .addHeader("token", token)
