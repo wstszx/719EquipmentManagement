@@ -104,32 +104,36 @@ public class DeptManageActivity extends BaseActivity {
     private void createSection(List<User> users) {
         List<MultiItemEntity> list = new ArrayList<>();
         for (User user : users) {
-            int id = user.getId();
-            if (100 == id) {
-                int deptId = user.getDeptId();
-                String deptName = user.getDeptName();
-                PersonOne personOne = new PersonOne(user);
-
-                for (User user1 : users) {
-                    int parentId1 = user1.getParentId();
-
-                    if (deptId == parentId1) {
-                        int deptId1 = user1.getDeptId();
-                        String deptName1 = user1.getDeptName();
-                        PersonTwo personTwo = new PersonTwo(user1, deptName);
-                        for (User user2 : users) {
-                            int parentId2 = user2.getParentId();
-                            if (deptId1 == parentId2) {
-                                PersonThree personThree = new PersonThree(user2, deptName1);
-                                personTwo.addSubItem(personThree);
-                            }
-                        }
-                        personOne.addSubItem(personTwo);
-                    }
-                }
-                list.add(personOne);
-            }
+            String deptName = user.getDeptName();
+            List<User.ListBean> beanList = user.getList();
         }
+//        for (User user : users) {
+//            int id = user.getId();
+//            if (100 == id) {
+//                int deptId = user.getDeptId();
+//                String deptName = user.getDeptName();
+//                PersonOne personOne = new PersonOne(user);
+//
+//                for (User user1 : users) {
+//                    int parentId1 = user1.getParentId();
+//
+//                    if (deptId == parentId1) {
+//                        int deptId1 = user1.getDeptId();
+//                        String deptName1 = user1.getDeptName();
+//                        PersonTwo personTwo = new PersonTwo(user1, deptName);
+//                        for (User user2 : users) {
+//                            int parentId2 = user2.getParentId();
+//                            if (deptId1 == parentId2) {
+//                                PersonThree personThree = new PersonThree(user2, deptName1);
+//                                personTwo.addSubItem(personThree);
+//                            }
+//                        }
+//                        personOne.addSubItem(personTwo);
+//                    }
+//                }
+//                list.add(personOne);
+//            }
+//        }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new DeptManageAdapter(this, list);
         adapter1.bindToRecyclerView(recyclerview);

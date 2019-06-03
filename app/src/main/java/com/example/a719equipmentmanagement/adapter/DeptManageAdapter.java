@@ -23,14 +23,14 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
     private Context mContext;
     public static final int LEVEL_ONE = 0;
     public static final int LEVEL_TWO = 1;
-    public static final int LEVEL_THREE = 2;
+//    public static final int LEVEL_THREE = 2;
 
     public DeptManageAdapter(Context context, List<MultiItemEntity> data) {
         super(data);
         this.mContext = context;
         addItemType(LEVEL_ONE, R.layout.base_one_level_item);
         addItemType(LEVEL_TWO, R.layout.base_two_level_item);
-        addItemType(LEVEL_THREE, R.layout.base_three_level_item);
+//        addItemType(LEVEL_THREE, R.layout.base_three_level_item);
     }
 
 
@@ -77,11 +77,11 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
 //                    }
 //                });
                 break;
-            case LEVEL_THREE:
-                PersonThree personThree = (PersonThree) item;
-                User user2 = personThree.getUser();
-                setLevelData(user2, helper);
-                break;
+//            case LEVEL_THREE:
+//                PersonThree personThree = (PersonThree) item;
+//                User user2 = personThree.getUser();
+//                setLevelData(user2, helper);
+//                break;
         }
     }
 
