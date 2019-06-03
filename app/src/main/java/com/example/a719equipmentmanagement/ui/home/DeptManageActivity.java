@@ -104,8 +104,13 @@ public class DeptManageActivity extends BaseActivity {
     private void createSection(List<User> users) {
         List<MultiItemEntity> list = new ArrayList<>();
         for (User user : users) {
-            String deptName = user.getDeptName();
+            PersonOne personOne = new PersonOne(user);
             List<User.ListBean> beanList = user.getList();
+            for (User.ListBean listBean : beanList) {
+                PersonTwo personTwo = new PersonTwo(listBean);
+                personOne.addSubItem(personTwo);
+            }
+            list.add(personOne);
         }
 //        for (User user : users) {
 //            int id = user.getId();
@@ -167,12 +172,12 @@ public class DeptManageActivity extends BaseActivity {
                         adapter1.expand(position, true);
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
-                    user = personTwo.getUser();
+                    User.ListBean user = personTwo.getUser();
                     break;
-                case 2:
-                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
-                    user = personThree.getUser();
-                    break;
+//                case 2:
+//                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
+//                    user = personThree.getUser();
+//                    break;
             }
         });
         adapter1.setOnItemLongClickListener((adapter, v, position) -> {
@@ -187,15 +192,15 @@ public class DeptManageActivity extends BaseActivity {
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
                     parentTitle = personTwo.getParentTitle();
-                    user = personTwo.getUser();
-                    deptId = user.getDeptId();
+                    User.ListBean user = personTwo.getUser();
+                    deptId = this.user.getDeptId();
                     break;
-                case 2:
-                    personThree = (PersonThree) adapter.getData().get(position);
-                    parentTitle = personThree.getParentTitle();
-                    user = personThree.getUser();
-                    deptId = user.getDeptId();
-                    break;
+//                case 2:
+//                    personThree = (PersonThree) adapter.getData().get(position);
+//                    parentTitle = personThree.getParentTitle();
+//                    user = personThree.getUser();
+//                    deptId = user.getDeptId();
+//                    break;
             }
             initListPopupIfNeed(parentdeletes);
             mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);

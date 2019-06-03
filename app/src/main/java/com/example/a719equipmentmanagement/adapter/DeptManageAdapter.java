@@ -59,8 +59,8 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
                 break;
             case LEVEL_TWO:
                 PersonTwo personTwo = (PersonTwo) item;
-                User user1 = personTwo.getUser();
-                setLevelData(user1, helper);
+                User.ListBean user1 = personTwo.getUser();
+                setLevel1Data(user1, helper);
                 if (personTwo.isExpanded()) {
                     helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
                 } else {
@@ -99,6 +99,20 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
         }
         helper.setText(R.id.tv_parent, deptName)
                 .setText(R.id.tv_leader, leader);
+
+    }
+    private void setLevel1Data(User.ListBean user, BaseViewHolder helper) {
+        String deptName = user.getUserName();
+        String status = user.getStatus();
+        switch (status) {
+            case "0":
+                helper.setText(R.id.tv_status, "正常");
+                break;
+            case "1":
+                helper.setText(R.id.tv_status, "停用");
+                break;
+        }
+        helper.setText(R.id.tv_parent, deptName);
 
     }
 }
