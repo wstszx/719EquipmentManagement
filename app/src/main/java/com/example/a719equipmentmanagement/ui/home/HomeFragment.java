@@ -278,15 +278,8 @@ public class HomeFragment extends BaseFragment {
 //                    ScanActivity.start(getContext());
 //                    break;
                 case 5:
-//                    InventoryActivity.start(getContext());
                     InventoryRangeActivity.start(getContext());
                     break;
-//                case 7:
-//                    CheckActivity.start(getContext());
-//                    break;
-//                case 8:
-//                    ScrappedActivity.start(getContext());
-//                    break;
             }
         });
 
