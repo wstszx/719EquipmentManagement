@@ -104,32 +104,41 @@ public class DeptManageActivity extends BaseActivity {
     private void createSection(List<User> users) {
         List<MultiItemEntity> list = new ArrayList<>();
         for (User user : users) {
-            int id = user.getId();
-            if (100 == id) {
-                int deptId = user.getDeptId();
-                String deptName = user.getDeptName();
-                PersonOne personOne = new PersonOne(user);
-
-                for (User user1 : users) {
-                    int parentId1 = user1.getParentId();
-
-                    if (deptId == parentId1) {
-                        int deptId1 = user1.getDeptId();
-                        String deptName1 = user1.getDeptName();
-                        PersonTwo personTwo = new PersonTwo(user1, deptName);
-                        for (User user2 : users) {
-                            int parentId2 = user2.getParentId();
-                            if (deptId1 == parentId2) {
-                                PersonThree personThree = new PersonThree(user2, deptName1);
-                                personTwo.addSubItem(personThree);
-                            }
-                        }
-                        personOne.addSubItem(personTwo);
-                    }
-                }
-                list.add(personOne);
+            PersonOne personOne = new PersonOne(user);
+            List<User.ListBean> beanList = user.getList();
+            for (User.ListBean listBean : beanList) {
+                PersonTwo personTwo = new PersonTwo(listBean);
+                personOne.addSubItem(personTwo);
             }
+            list.add(personOne);
         }
+//        for (User user : users) {
+//            int id = user.getId();
+//            if (100 == id) {
+//                int deptId = user.getDeptId();
+//                String deptName = user.getDeptName();
+//                PersonOne personOne = new PersonOne(user);
+//
+//                for (User user1 : users) {
+//                    int parentId1 = user1.getParentId();
+//
+//                    if (deptId == parentId1) {
+//                        int deptId1 = user1.getDeptId();
+//                        String deptName1 = user1.getDeptName();
+//                        PersonTwo personTwo = new PersonTwo(user1, deptName);
+//                        for (User user2 : users) {
+//                            int parentId2 = user2.getParentId();
+//                            if (deptId1 == parentId2) {
+//                                PersonThree personThree = new PersonThree(user2, deptName1);
+//                                personTwo.addSubItem(personThree);
+//                            }
+//                        }
+//                        personOne.addSubItem(personTwo);
+//                    }
+//                }
+//                list.add(personOne);
+//            }
+//        }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new DeptManageAdapter(this, list);
         adapter1.bindToRecyclerView(recyclerview);
@@ -163,12 +172,12 @@ public class DeptManageActivity extends BaseActivity {
                         adapter1.expand(position, true);
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
-                    user = personTwo.getUser();
+                    User.ListBean user = personTwo.getUser();
                     break;
-                case 2:
-                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
-                    user = personThree.getUser();
-                    break;
+//                case 2:
+//                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
+//                    user = personThree.getUser();
+//                    break;
             }
         });
         adapter1.setOnItemLongClickListener((adapter, v, position) -> {
@@ -183,15 +192,15 @@ public class DeptManageActivity extends BaseActivity {
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
                     parentTitle = personTwo.getParentTitle();
-                    user = personTwo.getUser();
-                    deptId = user.getDeptId();
+                    User.ListBean user = personTwo.getUser();
+                    deptId = this.user.getDeptId();
                     break;
-                case 2:
-                    personThree = (PersonThree) adapter.getData().get(position);
-                    parentTitle = personThree.getParentTitle();
-                    user = personThree.getUser();
-                    deptId = user.getDeptId();
-                    break;
+//                case 2:
+//                    personThree = (PersonThree) adapter.getData().get(position);
+//                    parentTitle = personThree.getParentTitle();
+//                    user = personThree.getUser();
+//                    deptId = user.getDeptId();
+//                    break;
             }
             initListPopupIfNeed(parentdeletes);
             mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);

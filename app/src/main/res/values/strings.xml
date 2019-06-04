@@ -88,4 +88,6 @@
     <string name="old_password">原密码</string>
     <string name="new_password">新密码</string>
     <string name="more">更多</string>
+    <string name="Identity">身份：</string>
+    <string name="Contact_information">联系方式：</string>
 </resources>

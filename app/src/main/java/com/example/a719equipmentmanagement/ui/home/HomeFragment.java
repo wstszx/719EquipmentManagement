@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,7 +68,7 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore3;
     @BindView(R.id.recyclerview3)
     RecyclerView recyclerview3;
-    private String[] features = {"部门管理", "人员管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点", "点检", "报废"};
+    private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
             R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
 
@@ -185,7 +186,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
-        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
         adapter = new HomeAdapter(R.layout.square_match_item);
         recyclerview.setAdapter(adapter);
         int roleId = SPUtils.getInstance().getInt("roleId", 0);
@@ -262,29 +263,30 @@ public class HomeFragment extends BaseFragment {
                     DeptManageActivity.start(getContext());
                     break;
                 case 1:
-                    PersonManageActivity.start(getContext());
-                    break;
-                case 2:
                     ContainerManageActivity.start(getContext());
                     break;
-                case 3:
+                case 2:
                     DeviceClassifiyActivity.start(getContext());
                     break;
-                case 4:
+                case 3:
                     AccountingListActivity.start(getContext());
                     break;
-                case 5:
+                case 4:
                     ScanActivity.start(getContext());
                     break;
-                case 6:
+//                case 5:
+//                    ScanActivity.start(getContext());
+//                    break;
+                case 5:
+//                    InventoryActivity.start(getContext());
                     InventoryRangeActivity.start(getContext());
                     break;
-                case 7:
-                    CheckActivity.start(getContext());
-                    break;
-                case 8:
-                    ScrappedActivity.start(getContext());
-                    break;
+//                case 7:
+//                    CheckActivity.start(getContext());
+//                    break;
+//                case 8:
+//                    ScrappedActivity.start(getContext());
+//                    break;
             }
         });
 

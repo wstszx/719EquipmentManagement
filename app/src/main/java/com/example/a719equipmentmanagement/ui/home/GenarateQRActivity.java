@@ -108,7 +108,7 @@ public class GenarateQRActivity extends BaseActivity {
         checkPermission();
         requestPermission();
         initData();
-//        createChineseQRCode();
+        createChineseQRCode();
     }
 
     private void checkPermission() {

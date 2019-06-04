@@ -53,7 +53,7 @@ public class ChangePasswordActivity extends BaseActivity {
             ToastUtils.showShort("原密码或新密码不能为空");
             return;
         }
-        RetrofitClient.getInstance().getService().resetPwd(oldPassword, newPassword)
+        RetrofitClient.getInstance().getService().editPassword(oldPassword, newPassword)
                 .compose(CommonCompose.io2main(ChangePasswordActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(ChangePasswordActivity.this) {
                     @Override
