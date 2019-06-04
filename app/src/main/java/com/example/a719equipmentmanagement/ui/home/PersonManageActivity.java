@@ -69,7 +69,7 @@ public class PersonManageActivity extends BaseActivity {
 
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            User.ListBean listBean = (User.ListBean) adapter.getData().get(position);
+            User.UsersBean listBean = (User.UsersBean) adapter.getData().get(position);
             userId = listBean.getUserId();
             loginName = listBean.getLoginName();
             userName = listBean.getUserName();
@@ -178,17 +178,17 @@ public class PersonManageActivity extends BaseActivity {
                     @Override
                     public void onSuccess(List<User> users) {
                         if (users != null && users.size() > 0) {
-                            List<User.ListBean> listBeans = transformData(users);
+                            List<User.UsersBean> listBeans = transformData(users);
                             adapter.setNewData(listBeans);
                         }
                     }
                 });
     }
 
-    private List<User.ListBean> transformData(List<User> users) {
-        List<User.ListBean> listBeans = new ArrayList<>();
+    private List<User.UsersBean> transformData(List<User> users) {
+        List<User.UsersBean> listBeans = new ArrayList<>();
         for (User user : users) {
-            List<User.ListBean> list = user.getList();
+            List<User.UsersBean> list = user.getUsers();
             listBeans.addAll(list);
         }
         return listBeans;

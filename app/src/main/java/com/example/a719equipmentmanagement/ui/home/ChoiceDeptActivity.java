@@ -22,6 +22,7 @@ import com.example.a719equipmentmanagement.entity.DeptOne;
 import com.example.a719equipmentmanagement.entity.DeptThree;
 import com.example.a719equipmentmanagement.entity.DeptTwo;
 import com.example.a719equipmentmanagement.entity.DeviceData;
+import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.PersonOne;
 import com.example.a719equipmentmanagement.entity.PersonThree;
 import com.example.a719equipmentmanagement.entity.PersonTwo;
@@ -46,9 +47,8 @@ public class ChoiceDeptActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    private ChoiceDeptAdapter adapter;
     private String name;
-    private int id;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -57,42 +57,33 @@ public class ChoiceDeptActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getTreeData()
+        RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(ChoiceDeptActivity.this))
-                .subscribe(new BaseSubscriber<List<TreeData>>(ChoiceDeptActivity.this) {
+                .subscribe(new BaseSubscriber<List<User>>(ChoiceDeptActivity.this) {
                     @Override
-                    public void onSuccess(List<TreeData> treeData) {
-                        if (treeData != null && treeData.size() > 0) {
-                            createSection(treeData);
+                    public void onSuccess(List<User> users) {
+                        if (users != null && users.size() > 0) {
+                            createSection(users);
                         }
                     }
                 });
+//        RetrofitClient.getInstance().getService().getTreeData()
+//                .compose(CommonCompose.io2main(ChoiceDeptActivity.this))
+//                .subscribe(new BaseSubscriber<List<TreeData>>(ChoiceDeptActivity.this) {
+//                    @Override
+//                    public void onSuccess(List<TreeData> treeData) {
+//                        if (treeData != null && treeData.size() > 0) {
+//                            createSection(treeData);
+//                        }
+//                    }
+//                });
     }
 
-    private void createSection(List<TreeData> treeData) {
+    private void createSection(List<User> users) {
         List<MultiItemEntity> list = new ArrayList<>();
-        for (TreeData treeData1 : treeData) {
-            int id = treeData1.getId();
-            if (100 == id) {
-                DeptOne deptOne = new DeptOne(treeData1);
-                for (TreeData treeData2 : treeData) {
-                    int pId2 = treeData2.getPId();
-                    if (id == pId2) {
-                        int id2 = treeData2.getId();
-
-                        DeptTwo deptTwo = new DeptTwo(treeData2);
-                        for (TreeData treeData3 : treeData) {
-                            int pId3 = treeData3.getPId();
-                            if (id2 == pId3) {
-                                DeptThree deptThree = new DeptThree(treeData3);
-                                deptTwo.addSubItem(deptThree);
-                            }
-                        }
-                        deptOne.addSubItem(deptTwo);
-                    }
-                }
-                list.add(deptOne);
-            }
+        for (User user : users) {
+            PersonOne personOne = new PersonOne(user);
+            list.add(personOne);
         }
         initAdapter(list);
     }
@@ -100,38 +91,23 @@ public class ChoiceDeptActivity extends BaseActivity {
     private int mPosition = -1;
 
     private void initAdapter(List<MultiItemEntity> list) {
-        adapter = new ChoiceDeptAdapter(this, list);
+        ChoiceDeptAdapter adapter = new ChoiceDeptAdapter(this, list);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
 
         for (int i = 0; i < adapter.getData().size(); i++) {
             adapter.expand(i, true);
         }
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
-                int itemType = multiItemEntity.getItemType();
-                switch (itemType) {
-                    case 0:
-                        DeptOne deptOne = (DeptOne) multiItemEntity;
-                        name = deptOne.getDept().getName();
-                        id = deptOne.getDept().getId();
-                        break;
-                    case 1:
-                        DeptTwo deptTwo = (DeptTwo) multiItemEntity;
-                        name = deptTwo.getDept().getName();
-                        id = deptTwo.getDept().getId();
-                        break;
-                    case 2:
-                        DeptThree deptThree = (DeptThree) multiItemEntity;
-                        name = deptThree.getDept().getName();
-                        id = deptThree.getDept().getId();
-                        break;
-                }
-                setChoice(position, view);
+        adapter.setOnItemClickListener((adapter1, view, position) -> {
+            MultiItemEntity multiItemEntity = (MultiItemEntity) adapter1.getData().get(position);
+            int itemType = multiItemEntity.getItemType();
+            if (itemType == 0) {
+                PersonOne deptOne = (PersonOne) multiItemEntity;
+                name = deptOne.getUser().getDeptName();
+                pid = deptOne.getUser().getParentId();
             }
+            setChoice(position, view);
         });
     }
 
@@ -180,7 +156,7 @@ public class ChoiceDeptActivity extends BaseActivity {
         topbar.setTitle("选择部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("id", id);
+            intent.putExtra("pid", pid);
             intent.putExtra("name", name);
             setResult(RESULT_OK, intent);
             finish();

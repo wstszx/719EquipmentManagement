@@ -42,9 +42,8 @@ import io.reactivex.functions.Function;
 
 public class DeptManageActivity extends BaseActivity {
 
-
     private static final int EDIT_DEPT = 1;
-    private static final int EDIT_CHILD_DEPT = 2;
+    private static final int ADD_PERSON = 2;
     private static final int EDIT_PERSON = 3;
     private static final int ADD_DEPT = 4;
     @BindView(R.id.topbar)
@@ -67,13 +66,11 @@ public class DeptManageActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private int itemViewType = -1;
     private String parentTitle;
-    private String parentDept;
     private User user;
     private DeptManageAdapter adapter1;
     private PersonOne personOne;
     private PersonTwo personTwo;
     private int deptId;
-    private PersonThree personThree;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -97,7 +94,6 @@ public class DeptManageActivity extends BaseActivity {
                         }
                     }
                 });
-
     }
 
 
@@ -105,8 +101,8 @@ public class DeptManageActivity extends BaseActivity {
         List<MultiItemEntity> list = new ArrayList<>();
         for (User user : users) {
             PersonOne personOne = new PersonOne(user);
-            List<User.ListBean> beanList = user.getList();
-            for (User.ListBean listBean : beanList) {
+            List<User.UsersBean> users1 = user.getUsers();
+            for (User.UsersBean listBean : users1) {
                 PersonTwo personTwo = new PersonTwo(listBean);
                 personOne.addSubItem(personTwo);
             }
@@ -172,7 +168,7 @@ public class DeptManageActivity extends BaseActivity {
                         adapter1.expand(position, true);
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
-                    User.ListBean user = personTwo.getUser();
+                    User.UsersBean user = personTwo.getUser();
                     break;
 //                case 2:
 //                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
@@ -192,7 +188,7 @@ public class DeptManageActivity extends BaseActivity {
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
                     parentTitle = personTwo.getParentTitle();
-                    User.ListBean user = personTwo.getUser();
+                    User.UsersBean user = personTwo.getUser();
                     deptId = this.user.getDeptId();
                     break;
 //                case 2:
@@ -211,11 +207,13 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topbar.setTitle("部门管理");
+        topbar.setTitle("组织管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            Intent addDeptIntent = new Intent();
-            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
-            startActivityForResult(addDeptIntent, ADD_DEPT);
+            initListPopupIfNeed(addTypes);
+            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+            mListPopup.show(v);
+
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
@@ -258,6 +256,16 @@ public class DeptManageActivity extends BaseActivity {
                         case "编辑":
                             edit();
                             break;
+                        case "添加部门":
+                            Intent addDeptIntent = new Intent();
+                            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
+                            startActivityForResult(addDeptIntent, ADD_DEPT);
+                            break;
+                        case "添加人员":
+                            Intent addPersonIntent = new Intent();
+                            addPersonIntent.setClass(DeptManageActivity.this, AddPersonActivity.class);
+                            startActivityForResult(addPersonIntent, ADD_PERSON);
+                            break;
                     }
                     mListPopup.dismiss();
                 }
@@ -282,12 +290,7 @@ public class DeptManageActivity extends BaseActivity {
 
     private void delete() {
         RetrofitClient.getInstance().getService().delete(deptId)
-                .flatMap(new Function<BaseResponse, SingleSource<List<User>>>() {
-                    @Override
-                    public SingleSource<List<User>> apply(BaseResponse baseResponse) throws Exception {
-                        return RetrofitClient.getInstance().getService().getUser();
-                    }
-                })
+                .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> RetrofitClient.getInstance().getService().getUser())
                 .compose(CommonCompose.io2main(DeptManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
                     @Override

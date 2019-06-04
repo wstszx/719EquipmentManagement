@@ -15,7 +15,7 @@ import com.example.a719equipmentmanagement.entity.User;
 
 import java.util.List;
 
-public class PersonManageAdapter extends BaseQuickAdapter<User.ListBean, BaseViewHolder> {
+public class PersonManageAdapter extends BaseQuickAdapter<User.UsersBean, BaseViewHolder> {
 
     public PersonManageAdapter(int layoutResId) {
         super(layoutResId);
@@ -23,7 +23,7 @@ public class PersonManageAdapter extends BaseQuickAdapter<User.ListBean, BaseVie
 
 
     @Override
-    protected void convert(BaseViewHolder helper, User.ListBean item) {
+    protected void convert(BaseViewHolder helper, User.UsersBean item) {
         helper.setText(R.id.tv_username, item.getUserName())
                 .setText(R.id.tv_dept, item.getDept().getDeptName())
                 .setText(R.id.tv_phone, item.getPhonenumber())
