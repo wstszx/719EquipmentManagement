@@ -278,7 +278,8 @@ public class DeviceFragment extends BaseFragment {
         recyclerview5.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = rows.get(position);
-            DeviceDetailActivity.start(Objects.requireNonNull(getContext()), currentItemData);
+            int deviceId = currentItemData.getId();
+            DeviceDetailActivity.start(getContext(),deviceId+"");
         });
 
 

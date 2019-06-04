@@ -151,6 +151,11 @@ public interface ApiService {
     @POST("system/equip/add")
     Single<BaseResponse> addDevice(@Body RequestBody requestBody);
 
+    //依据id查询设备详情
+    @FormUrlEncoded
+    @POST("system/equip/get")
+    Single<DeviceData2> getDeviceDetail(@Field("id") String id);
+
     //查找设备数据
     @GET("system/equip/list")
     Single<DeviceData2> findDeviceData(@QueryMap Map<String, Object> map);

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,14 +20,22 @@ import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.home.AddDeptActivity;
+import com.example.a719equipmentmanagement.ui.home.AddPersonActivity;
+import com.example.a719equipmentmanagement.ui.home.DeptManageActivity;
 import com.example.a719equipmentmanagement.ui.home.ScanActivity;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -34,6 +44,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class DeviceDetailActivity extends BaseActivity {
 
@@ -67,7 +79,9 @@ public class DeviceDetailActivity extends BaseActivity {
     private int mStyle = R.style.QMUI_Dialog;
     private int status;
     private String equipNo;
-
+    private QMUIListPopup mListPopup;
+    private ArrayAdapter<String> adapter;
+    String[] handleTypes = new String[]{"处理1", "处理2"};
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
@@ -78,82 +92,46 @@ public class DeviceDetailActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         String id = intent.getStringExtra("id");
-        if (!StringUtils.isEmpty(id)) {
-            getDeviceDetail(id);
-            bt.setVisibility(View.VISIBLE);
-        } else {
-            DeviceData2.RowsBean rowsBean = (DeviceData2.RowsBean) intent.getSerializableExtra("serializable");
-            if (rowsBean != null) {
-                bt.setVisibility(View.GONE);
-                setData(rowsBean);
-//            DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
-//
-//            DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
-//            name = rowsBean.getName();
-//            parameter = rowsBean.getParameter();
-//            manufactuer = rowsBean.getManufactuer();
-//            responsor = rowsBean.getResponsor();
-//            deptName = deptBean == null ? "无部门信息" : deptBean.getDeptName();
-//            locationName = locationBean == null ? "无位置信息" : locationBean.getName();
-//            int status = rowsBean.getStatus();
-//            switch (status) {
-//                case 0:
-//                    deviceStatus = "可用";
-//                    break;
-//                case 1:
-//                    deviceStatus = "借用";
-//                    break;
-//                case 2:
-//                    deviceStatus = "送检占用";
-//                    break;
-//                case 3:
-//                    deviceStatus = "送检";
-//                    break;
-//                case 4:
-//                    deviceStatus = "报废占用";
-//                    break;
-//                case 5:
-//                    deviceStatus = "报废";
-//                    break;
-//                case 6:
-//                    deviceStatus = "封存";
-//                    break;
-//                case 7:
-//                    deviceStatus = "解封占用";
-//                    break;
-//                case 8:
-//                    deviceStatus = "过期";
-//                    break;
-//                case 9:
-//                    deviceStatus = "外借";
-//                    break;
-//                default:
-//                    deviceStatus = "无状态信息";
-//                    break;
+        getDeviceDetail(id);
+//        DeviceData2.RowsBean rowsBean = (DeviceData2.RowsBean) intent.getSerializableExtra("serializable");
+//        if (rowsBean != null) {
+//            bt.setVisibility(View.GONE);
+//            setData(rowsBean);
 //            }
-            }
-        }
     }
 
-    private void getDeviceDetail(String id) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("equipNo", id);
-        RetrofitClient.getInstance().getService().findDeviceData(map)
+//    private void getDeviceDetail(String id) {
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("equipNo", id);
+//        RetrofitClient.getInstance().getService().findDeviceData(map)
+//                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
+//                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
+//                    @Override
+//                    public void onSuccess(DeviceData2 deviceData2) {
+//                        if (deviceData2 != null) {
+//                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+//                            if (rows != null && rows.size() > 0) {
+//                                DeviceData2.RowsBean rowsBean = rows.get(0);
+//                                setData(rowsBean);
+//                            }
+//                        }
+//                    }
+//                });
+//    }
+
+    private void getDeviceDetail(String id){
+        RetrofitClient.getInstance().getService().getDeviceDetail(id)
                 .compose(CommonCompose.io2main(DeviceDetailActivity.this))
                 .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
                     @Override
                     public void onSuccess(DeviceData2 deviceData2) {
-                        if (deviceData2 != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-                            if (rows != null && rows.size() > 0) {
-                                DeviceData2.RowsBean rowsBean = rows.get(0);
-                                setData(rowsBean);
-                            }
-                        }
+//                        if (deviceData2 != null) {
+//
+//                        }
                     }
                 });
-    }
 
+    }
     private void setData(DeviceData2.RowsBean rowsBean) {
         DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
         DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
@@ -219,10 +197,12 @@ public class DeviceDetailActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-//        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-//            GenarateQRActivity.start(this);
-//        });
-
+        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+            initListPopupIfNeed(handleTypes);
+            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+            mListPopup.show(v);
+        });
 //        RetrofitClient.getInstance().getService().findDeviceData()
 //                .compose(CommonCompose.io2main(this))
 //                .subscribe(new BaseSubscriber<DeviceData2>(this) {
@@ -237,7 +217,41 @@ public class DeviceDetailActivity extends BaseActivity {
 //                        }
 //                    }
 //                });
+    }
 
+    private void initListPopupIfNeed(String[] listItems) {
+        List<String> data = new ArrayList<>();
+        Collections.addAll(data, listItems);
+        if (adapter == null) {
+            adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
+        } else {
+            adapter.addAll(data);
+            adapter.notifyDataSetChanged();
+        }
+        if (mListPopup == null) {
+            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    TextView textView = (TextView) view;
+                    String s = textView.getText().toString();
+                    switch (s) {
+                        case "处理1":
+//                            Intent addDeptIntent = new Intent();
+//                            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
+//                            startActivityForResult(addDeptIntent, ADD_DEPT);
+                            break;
+                        case "处理2":
+//                            Intent addPersonIntent = new Intent();
+//                            addPersonIntent.setClass(DeptManageActivity.this, AddPersonActivity.class);
+//                            startActivityForResult(addPersonIntent, ADD_PERSON);
+                            break;
+                    }
+                    mListPopup.dismiss();
+                }
+            });
+            mListPopup.setOnDismissListener(data::clear);
+        }
     }
 
     private void initGroupListView() {
@@ -367,18 +381,16 @@ public class DeviceDetailActivity extends BaseActivity {
                 })).create(mStyle).show();
     }
 
-    public static void start(Context context, Serializable serializable) {
-        Intent starter = new Intent(context, DeviceDetailActivity.class);
-        starter.putExtra("serializable", serializable);
-        context.startActivity(starter);
-
-    }
+//    public static void start(Context context, Serializable serializable) {
+//        Intent starter = new Intent(context, DeviceDetailActivity.class);
+//        starter.putExtra("serializable", serializable);
+//        context.startActivity(starter);
+//    }
 
     public static void start(Context context, String id) {
         Intent starter = new Intent(context, DeviceDetailActivity.class);
         starter.putExtra("id", id);
         context.startActivity(starter);
-
     }
 
     @Override
