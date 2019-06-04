@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.WaitApprovalItemActivity">
+    tools:context=".ui.home.AdminInvalidItemActivity">
     <com.qmuiteam.qmui.widget.QMUITopBar
         android:id="@+id/topbar"
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
         android:id="@+id/tv03"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="事项:"
+        android:text="到期时间:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv01"
@@ -45,7 +45,7 @@
         android:id="@+id/tv04"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="事项"
+        android:text="时间"
         app:layout_constraintStart_toEndOf="@id/tv03"
         app:layout_constraintTop_toBottomOf="@id/tv01"
         android:layout_marginLeft="@dimen/dp_16"
@@ -54,7 +54,7 @@
         android:id="@+id/tv05"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="申请人:"
+        android:text="剩余天数:"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv03"
@@ -64,7 +64,7 @@
         android:id="@+id/tv06"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="申请人"
+        android:text="天数"
         app:layout_constraintStart_toEndOf="@id/tv05"
         app:layout_constraintTop_toBottomOf="@id/tv03"
         android:layout_marginLeft="@dimen/dp_16"
@@ -81,14 +81,14 @@
             android:id="@+id/btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="通过"
+            android:text="选择1"
             android:background="#008000"
             android:layout_marginRight="50dp"/>
         <Button
             android:id="@+id/btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="驳回"
+            android:text="选择2"
             android:background="#ff0000"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,17 +4,22 @@ import java.io.Serializable;
 
 public class InvalidEquip implements Serializable{
     private int number;
-
-
-
     private  String deviceName;
-    private String currentStatus;
-    private String person;
-    public InvalidEquip(int number,String deviceName,String currentStatus,String person) {
+    private String returnDate;
+    private int days;
+    public InvalidEquip(int number,String deviceName,String returnDate,int days) {
         this.number=number;
         this.deviceName=deviceName;
-        this.currentStatus=currentStatus;
-        this.person=person;
+        this.returnDate=returnDate;
+        this.days=days;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public String getDeviceName() {
@@ -25,25 +30,19 @@ public class InvalidEquip implements Serializable{
         this.deviceName = deviceName;
     }
 
-    public String getCurrentStatus() {
-        return currentStatus == null ? "" : currentStatus;
+    public String getReturnDate() {
+        return returnDate == null ? "" : returnDate;
     }
 
-    public void setCurrentStatus(String currentStatus) {
-        this.currentStatus = currentStatus;
-    }
-    public int getNumber() {
-        return number;
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-    public String getPerson() {
-        return person == null ? "" : person;
+    public int getDays() {
+        return days;
     }
 
-    public void setPerson(String person) {
-        this.person = person;
+    public void setDays(int days) {
+        this.days = days;
     }
 }

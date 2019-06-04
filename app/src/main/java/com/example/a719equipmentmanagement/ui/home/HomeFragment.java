@@ -1,14 +1,12 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.AdminInvalidEquipAdapter;
 import com.example.a719equipmentmanagement.adapter.AdminToAuditAdapter;
@@ -17,10 +15,7 @@ import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.UserToAuditAdapter;
 import com.example.a719equipmentmanagement.adapter.UserToDoAdapter;
 import com.example.a719equipmentmanagement.adapter.UserToReturnAdapter;
-import com.example.a719equipmentmanagement.adapter.WaitApprovalItemAdapter;
-import com.example.a719equipmentmanagement.adapter.WaitReturnDeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
-import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.Me;
@@ -31,14 +26,12 @@ import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,7 +40,6 @@ import butterknife.BindView;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -91,8 +83,11 @@ public class HomeFragment extends BaseFragment {
     private UserToDoAdapter userToDoAdapter;
 
     //展示用adapter，待后台有数据后删除
-    private WaitReturnDeviceAdapter adapter2;
-    private WaitApprovalItemAdapter adapter1;
+    private AdminToAuditAdapter adapter2;
+    private AdminInvalidEquipAdapter adapter1;
+
+    private List<InvalidEquip> invalidEquipList;
+    private List<ToAudit> toAuditList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -103,7 +98,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initAdapter() {
-        adminInvalidEquipAdapter = new AdminInvalidEquipAdapter(R.layout.square_match_item);
+        adminInvalidEquipAdapter = new AdminInvalidEquipAdapter(R.layout.admin_invalid_equip_item);
         adminToAuditAdapter = new AdminToAuditAdapter(R.layout.square_match_item);
         adminToDoAdapter = new AdminToDoAdapter(R.layout.square_match_item);
         userToReturnAdapter = new UserToReturnAdapter(R.layout.square_match_item);
@@ -217,7 +212,19 @@ public class HomeFragment extends BaseFragment {
                 tvMore1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        AdminInvalidEquipActivity.start(getContext());
+                        AdminInvalidEquipActivity.start(getContext(), (Serializable) invalidEquipList);
+                    }
+                });
+                tvMore2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AdminToAuditActivity.start(getContext(), (Serializable) toAuditList);
+                    }
+                });
+                tvMore3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
                     }
                 });
                 break;
@@ -236,8 +243,8 @@ public class HomeFragment extends BaseFragment {
 
 
         //展示用，待后台数据后删
-        adapter1 = new WaitApprovalItemAdapter(R.layout.wait_approval_item);
-        adapter2 = new WaitReturnDeviceAdapter(R.layout.wait_return_device);
+        adapter1 = new AdminInvalidEquipAdapter(R.layout.admin_invalid_equip_item);
+        adapter2 = new AdminToAuditAdapter(R.layout.admin_to_audit_item);
         recyclerview1.setAdapter(adapter1);
         recyclerview2.setAdapter(adapter2);
     }
@@ -284,37 +291,22 @@ public class HomeFragment extends BaseFragment {
 
         //展示用数据和点击，待后台数据后删
         List<InvalidEquip> test1 = new ArrayList<>();
-        InvalidEquip t1;
-        t1 = new InvalidEquip(1, "热感温度计", "申请报废", "王二");
-        test1.add(t1);
-        t1 = new InvalidEquip(2, "气压表", "申请送检", "李四");
-        test1.add(t1);
-        t1 = new InvalidEquip(3, "减压装置", "申请类型3", "张三");
-        test1.add(t1);
-        t1 = new InvalidEquip(4, "压差变送器", "申请类型4", "麻子");
-        test1.add(t1);
+        for(int i = 0; i < 25; i++){
+            InvalidEquip t1;
+            t1 = new InvalidEquip(i+1, "热感温度计", "2019.7.1", 20);
+            test1.add(t1);
+        }
         adapter1.setNewData(test1);
-        adapter1.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                InvalidEquip invalidEquip = test1.get(position);
-                WaitApprovalItemActivity.start(getContext(), invalidEquip);
-            }
-        });
+        invalidEquipList=test1;
+
         List<ToAudit> test2 = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 25; i++) {
             ToAudit t2;
-            t2 = new ToAudit("差压变送器", "2019.7.1", 20);
+            t2 = new ToAudit(i+1,"差压变送器", "申请报废", "李四");
             test2.add(t2);
         }
         adapter2.setNewData(test2);
-        adapter2.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                ToAudit toAudit = test2.get(position);
-                WaitReturnDeviceActivity.start(getContext(), toAudit);
-            }
-        });
+        toAuditList=test2;
     }
 
     @Override

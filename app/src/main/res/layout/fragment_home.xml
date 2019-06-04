@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="处理"
+                android:text="更多"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_1"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -60,7 +60,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintTop_toBottomOf="@id/tv_1">
 
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="处理"
+                android:text="更多"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginTop="@dimen/dp_8"
                 app:layout_constraintTop_toBottomOf="@id/tv_2">
 
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="32dp"
-                android:text="处理"
+                android:text="更多"
                 android:textColor="@color/qmui_btn_blue_text"
                 app:layout_constraintBottom_toBottomOf="@id/tv_3"
                 app:layout_constraintEnd_toEndOf="parent"

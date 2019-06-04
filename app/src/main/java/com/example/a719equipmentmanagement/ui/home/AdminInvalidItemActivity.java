@@ -1,14 +1,11 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
@@ -18,14 +15,14 @@ import java.io.Serializable;
 
 import butterknife.BindView;
 
-public class WaitApprovalItemActivity extends BaseActivity {
+public class AdminInvalidItemActivity extends BaseActivity {
 
     @BindView(R.id.tv02)
     TextView textView_deviceName;
     @BindView(R.id.tv04)
-    TextView textView_status;
+    TextView textView_invalidDate;
     @BindView(R.id.tv06)
-    TextView textView_person;
+    TextView textView_days;
     @BindView(R.id.topbar)
     QMUITopBar topBar;
     @BindView(R.id.btn1)
@@ -35,7 +32,7 @@ public class WaitApprovalItemActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_wait_approval_item;
+        return R.layout.activity_admin_invalid_item;
     }
 
     @Override
@@ -55,7 +52,7 @@ public class WaitApprovalItemActivity extends BaseActivity {
     }
 
     private void initTopbar() {
-        topBar.setTitle("事项审批");
+        topBar.setTitle("即将过期处理");
         topBar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
             finish();
         });
@@ -65,17 +62,18 @@ public class WaitApprovalItemActivity extends BaseActivity {
         Intent intent = this.getIntent();
         InvalidEquip invalidEquip = (InvalidEquip) intent.getSerializableExtra("serializable");
         String deviceName = invalidEquip.getDeviceName();
-        String currentStatus = invalidEquip.getCurrentStatus();
-        String person = invalidEquip.getPerson();
+        String returnDate = invalidEquip.getReturnDate();
+        int days = invalidEquip.getDays();
+
 
         textView_deviceName.setText(deviceName);
-        textView_status.setText(currentStatus);
-        textView_person.setText(person);
+        textView_invalidDate.setText(returnDate);
+        textView_days.setText(days+"");
     }
 
 
     public static void start(Context context, Serializable serializable) {
-        Intent starter = new Intent(context, WaitApprovalItemActivity.class);
+        Intent starter = new Intent(context, AdminInvalidItemActivity.class);
         starter.putExtra("serializable", serializable);
         context.startActivity(starter);
     }
