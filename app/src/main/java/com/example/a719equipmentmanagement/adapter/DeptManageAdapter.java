@@ -99,8 +99,8 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
         }
         helper.setText(R.id.tv_parent, deptName)
                 .setText(R.id.tv_leader, leader);
-
     }
+
     private void setLevel1Data(User.ListBean user, BaseViewHolder helper) {
         String deptName = user.getUserName();
         String status = user.getStatus();
