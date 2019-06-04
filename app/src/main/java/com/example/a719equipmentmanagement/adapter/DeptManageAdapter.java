@@ -59,7 +59,7 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
                 break;
             case LEVEL_TWO:
                 PersonTwo personTwo = (PersonTwo) item;
-                User.ListBean user1 = personTwo.getUser();
+                User.UsersBean user1 = personTwo.getUser();
                 setLevel1Data(user1, helper);
                 if (personTwo.isExpanded()) {
                     helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
@@ -101,7 +101,7 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
                 .setText(R.id.tv_leader, leader);
     }
 
-    private void setLevel1Data(User.ListBean user, BaseViewHolder helper) {
+    private void setLevel1Data(User.UsersBean user, BaseViewHolder helper) {
         String deptName = user.getUserName();
         String status = user.getStatus();
         switch (status) {

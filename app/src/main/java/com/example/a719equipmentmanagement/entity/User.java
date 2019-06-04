@@ -1,33 +1,32 @@
 package com.example.a719equipmentmanagement.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Serializable {
 
 
     /**
-     * id : 100
+     * id : 135
      * searchValue : null
      * createBy : admin
-     * createTime : 2018-03-16 11:33:00
+     * createTime : 2019-05-20 17:29:46
      * updateBy : null
      * updateTime : null
      * remark : null
      * params : {}
-     * deptId : 100
-     * parentId : 0
-     * ancestors : 0
-     * deptName : 三亚试验
+     * deptId : 135
+     * parentId : 100
+     * ancestors : 0,100
+     * deptName : 修改后
      * orderNum : 0
-     * leader : 若依
-     * phone : 15888888888
-     * email : ry@qq.com
+     * leader : 聚餐
+     * phone : 13925362514
+     * email : hh@qq.com
      * status : 0
      * delFlag : 0
      * parentName : null
-     * list : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"0","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"29c67a30398638269fe600f73a054934","salt":"111111","status":"0","delFlag":"0","loginIp":"10.11.53.64","loginDate":"2019-05-14 19:21:43","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":true}]
+     * users : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-05-23 19:27:05","updateBy":null,"updateTime":null,"remark":"444","params":{},"userId":111,"deptId":135,"parentId":null,"loginName":"张三","userName":"张三","email":"dd@qq.com","phonenumber":"13698253245","sex":"1","avatar":"","password":"d30f949396dbaa2bad6d1c42415fb3fb","salt":"4b0a65","status":"0","delFlag":"0","loginIp":"","loginDate":null,"dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-06-03 14:32:17","updateBy":null,"updateTime":null,"remark":"1取321","params":{},"userId":114,"deptId":135,"parentId":null,"loginName":"manager","userName":"manager","email":"manager@qq.com","phonenumber":"18627099265","sex":"0","avatar":"","password":"115d73a2ba5c897b6f3e36d0c0ce24f2","salt":"a7660e","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-06-03 16:24:20","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false}]
      */
 
     private int id;
@@ -49,7 +48,7 @@ public class User implements Serializable {
     private String status;
     private String delFlag;
     private Object parentName;
-    private List<ListBean> list;
+    private List<UsersBean> users;
 
     public int getId() {
         return id;
@@ -68,7 +67,7 @@ public class User implements Serializable {
     }
 
     public String getCreateBy() {
-        return createBy == null ? "" : createBy;
+        return createBy;
     }
 
     public void setCreateBy(String createBy) {
@@ -76,7 +75,7 @@ public class User implements Serializable {
     }
 
     public String getCreateTime() {
-        return createTime == null ? "" : createTime;
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -132,7 +131,7 @@ public class User implements Serializable {
     }
 
     public String getAncestors() {
-        return ancestors == null ? "" : ancestors;
+        return ancestors;
     }
 
     public void setAncestors(String ancestors) {
@@ -140,7 +139,7 @@ public class User implements Serializable {
     }
 
     public String getDeptName() {
-        return deptName == null ? "" : deptName;
+        return deptName;
     }
 
     public void setDeptName(String deptName) {
@@ -148,7 +147,7 @@ public class User implements Serializable {
     }
 
     public String getOrderNum() {
-        return orderNum == null ? "" : orderNum;
+        return orderNum;
     }
 
     public void setOrderNum(String orderNum) {
@@ -156,7 +155,7 @@ public class User implements Serializable {
     }
 
     public String getLeader() {
-        return leader == null ? "" : leader;
+        return leader;
     }
 
     public void setLeader(String leader) {
@@ -164,7 +163,7 @@ public class User implements Serializable {
     }
 
     public String getPhone() {
-        return phone == null ? "" : phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
@@ -172,7 +171,7 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email == null ? "" : email;
+        return email;
     }
 
     public void setEmail(String email) {
@@ -180,7 +179,7 @@ public class User implements Serializable {
     }
 
     public String getStatus() {
-        return status == null ? "" : status;
+        return status;
     }
 
     public void setStatus(String status) {
@@ -188,7 +187,7 @@ public class User implements Serializable {
     }
 
     public String getDelFlag() {
-        return delFlag == null ? "" : delFlag;
+        return delFlag;
     }
 
     public void setDelFlag(String delFlag) {
@@ -203,54 +202,51 @@ public class User implements Serializable {
         this.parentName = parentName;
     }
 
-    public List<ListBean> getList() {
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
+    public List<UsersBean> getUsers() {
+        return users;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setUsers(List<UsersBean> users) {
+        this.users = users;
     }
 
     public static class ParamsBean implements Serializable {
     }
 
-    public static class ListBean implements Serializable {
+    public static class UsersBean implements Serializable {
         /**
          * id : null
          * searchValue : null
          * createBy : admin
-         * createTime : 2018-03-16 11:33:00
+         * createTime : 2019-05-23 19:27:05
          * updateBy : null
          * updateTime : null
-         * remark : 管理员
+         * remark : 444
          * params : {}
-         * userId : 1
-         * deptId : 100
+         * userId : 111
+         * deptId : 135
          * parentId : null
-         * loginName : admin
-         * userName : 王刚
-         * email : wg@163.com
-         * phonenumber : 15888888888
-         * sex : 0
-         * avatar : 2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg
-         * password : 29c67a30398638269fe600f73a054934
-         * salt : 111111
+         * loginName : 张三
+         * userName : 张三
+         * email : dd@qq.com
+         * phonenumber : 13698253245
+         * sex : 1
+         * avatar :
+         * password : d30f949396dbaa2bad6d1c42415fb3fb
+         * salt : 4b0a65
          * status : 0
          * delFlag : 0
-         * loginIp : 10.11.53.64
-         * loginDate : 2019-05-14 19:21:43
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":null,"ancestors":null,"deptName":"三亚试验","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"list":null}
+         * loginIp :
+         * loginDate : null
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null}
          * roles : []
          * roleIds : null
          * postIds : null
          * list : null
-         * admin : true
+         * admin : false
          */
 
-        private int id;
+        private Object id;
         private Object searchValue;
         private String createBy;
         private String createTime;
@@ -272,19 +268,19 @@ public class User implements Serializable {
         private String status;
         private String delFlag;
         private String loginIp;
-        private String loginDate;
+        private Object loginDate;
         private DeptBean dept;
-        private int roleIds;
+        private Object roleIds;
         private Object postIds;
         private Object list;
         private boolean admin;
         private List<?> roles;
 
-        public int getId() {
+        public Object getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Object id) {
             this.id = id;
         }
 
@@ -456,11 +452,11 @@ public class User implements Serializable {
             this.loginIp = loginIp;
         }
 
-        public String getLoginDate() {
+        public Object getLoginDate() {
             return loginDate;
         }
 
-        public void setLoginDate(String loginDate) {
+        public void setLoginDate(Object loginDate) {
             this.loginDate = loginDate;
         }
 
@@ -472,11 +468,11 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public int getRoleIds() {
+        public Object getRoleIds() {
             return roleIds;
         }
 
-        public void setRoleIds(int roleIds) {
+        public void setRoleIds(Object roleIds) {
             this.roleIds = roleIds;
         }
 
@@ -525,10 +521,10 @@ public class User implements Serializable {
              * updateTime : null
              * remark : null
              * params : {}
-             * deptId : 100
+             * deptId : 135
              * parentId : null
              * ancestors : null
-             * deptName : 三亚试验
+             * deptName : 修改后
              * orderNum : null
              * leader : null
              * phone : null
@@ -536,7 +532,7 @@ public class User implements Serializable {
              * status : null
              * delFlag : null
              * parentName : null
-             * list : null
+             * users : null
              */
 
             private Object id;
@@ -558,7 +554,7 @@ public class User implements Serializable {
             private Object status;
             private Object delFlag;
             private Object parentName;
-            private Object list;
+            private Object users;
 
             public Object getId() {
                 return id;
@@ -712,12 +708,12 @@ public class User implements Serializable {
                 this.parentName = parentName;
             }
 
-            public Object getList() {
-                return list;
+            public Object getUsers() {
+                return users;
             }
 
-            public void setList(Object list) {
-                this.list = list;
+            public void setUsers(Object users) {
+                this.users = users;
             }
 
             public static class ParamsBeanXX implements Serializable {

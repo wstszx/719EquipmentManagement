@@ -44,7 +44,7 @@
         android:inputType="textPassword"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="123456"
+        android:text="admin123"
         android:textColor="@color/app_color_description"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
