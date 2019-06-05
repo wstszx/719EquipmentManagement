@@ -11,6 +11,7 @@
         android:layout_marginTop="?attr/qmui_topbar_height"
         android:background="@color/qmui_config_color_background"
         android:fitsSystemWindows="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,17 +23,28 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_marginTop="@dimen/dp_16"
-                android:background="@color/white"
-                android:id="@+id/textView"
+                android:id="@+id/tv_change_assword"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/dp_16"
                 android:paddingEnd="@dimen/dp_16"
-                android:textSize="@dimen/sp_16"
-                android:text="退出登录"
-                />
+                android:text="@string/change_assword"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_48"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dp_16"
+                android:paddingEnd="@dimen/dp_16"
+                android:text="@string/sign_out"
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
     </ScrollView>

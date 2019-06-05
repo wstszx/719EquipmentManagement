@@ -3,55 +3,56 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.CompoundButton;
+import android.text.InputType;
 import android.widget.Switch;
 
-import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.example.a719equipmentmanagement.App;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.utils.SPUtils;
-import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
+import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class PersonManageActivity extends BaseActivity {
 
+    private static final int EDIT_USER = 1;
+    private static final int ADD_PERSON = 2;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private PersonManageAdapter adapter;
-    private int page = 1;
     private int userId;
     private String loginName;
     private Switch aSwitch;
     private boolean isCheck;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
+    private CustomInputDialog customDialogBuilder;
+    private String userName;
+    private String password;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initAdapter();
-        initData(1);
+        initData();
     }
 
     private void initAdapter() {
@@ -66,128 +67,141 @@ public class PersonManageActivity extends BaseActivity {
         adapter.disableLoadMoreIfNotFullPage();
         recyclerview.setAdapter(adapter);
 
-        adapter.setListener((aSwitch, isCheck) -> {
-            PersonManageActivity.this.isCheck = isCheck;
-            PersonManageActivity.this.aSwitch = aSwitch;
-            if (isCheck) {
-                showDialog("确定暂停该人员？", 2);
-            } else {
-                showDialog("确定恢复该人员？", 3);
-            }
-        });
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            Person.RowsBean rowsBean = (Person.RowsBean) adapter.getData().get(position);
-            userId = rowsBean.getUserId();
-            loginName = rowsBean.getLoginName();
+            User.UsersBean listBean = (User.UsersBean) adapter.getData().get(position);
+            userId = listBean.getUserId();
+            loginName = listBean.getLoginName();
+            userName = listBean.getUserName();
+            password = listBean.getPassword();
             switch (view.getId()) {
                 case R.id.tv_edit:
-                    EditPersonActivity.start(PersonManageActivity.this);
+                    Intent intent = new Intent();
+                    intent.putExtra("listBean", listBean);
+                    intent.setClass(PersonManageActivity.this, EditPersonActivity.class);
+                    startActivityForResult(intent, EDIT_USER);
                     break;
                 case R.id.tv_delete:
-                    showDialog("确定删除该人员？", 0);
+                    showDeleteDialog();
                     break;
                 case R.id.tv_reset:
-                    showDialog("确定重置该人员？", 1);
+                    showResetDialog();
                     break;
             }
-        });
-        adapter.setOnLoadMoreListener(() -> {
-            page++;
-            initData(page);
         });
     }
 
-    private void showDialog(String msg, int tag) {
+    /**
+     * 显示重置对话框
+     */
+    private void showResetDialog() {
+        customDialogBuilder = new CustomInputDialog(this);
+//        customDialogBuilder.getEditText().setText(userName);
+//        customDialogBuilder.getEditText1().setText(password);
+        customDialogBuilder.setTitle("重置密码")
+                .setPlaceholder("用户名")
+                .setPlaceholder1("密码")
+                .setDefaultText(userName)
+                .setDefaultText1(password)
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .setInputType1(InputType.TYPE_TEXT_VARIATION_PASSWORD)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    resetUser();
+                })
+                .create(mCurrentDialogStyle).show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        initData();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showDeleteDialog() {
         new QMUIDialog.MessageDialogBuilder(this)
                 .setTitle("提示")
-                .setMessage(msg)
+                .setMessage("确定删除该人员？")
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确认", (dialog, index) -> {
-                    switch (tag) {
-                        case 0:
-                            delete();
-                            break;
-                        case 1:
-                            resetPwd();
-                            break;
-                        case 2:
-                            changeStatus(1);
-                            break;
-                        case 3:
-                            changeStatus(0);
-                            break;
-                    }
+                    dialog.dismiss();
+                    deleteUser();
                 })
                 .show();
     }
 
-    private void changeStatus(int status) {
-        RetrofitClient.getInstance().getService().changeStatus(userId, status)
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
+
+    /**
+     * 重置用户
+     */
+    private void resetUser() {
+        String username = customDialogBuilder.getEditText().getText().toString();
+        String password = customDialogBuilder.getEditText1().getText().toString();
+        RetrofitClient.getInstance().getService().resetPwd(userId, username, password)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        if (isCheck) {
-                            aSwitch.setChecked(false);
-                        } else {
-                            aSwitch.setChecked(true);
-                        }
-                    }
-                });
-    }
-
-    private void resetPwd() {
-        RetrofitClient.getInstance().getService().resetPwd(userId, loginName, "123456")
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-
-                    }
-                });
-    }
-
-    private void delete() {
-        RetrofitClient.getInstance().getService().deleteUser(userId)
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        initData(1);
-                    }
-                });
-    }
-
-    private void initData(int page) {
-        RetrofitClient.getInstance().getService().getPersonList(10, page, null, null)
-                .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<Person>(PersonManageActivity.this) {
-                    @Override
-                    public void onSuccess(Person person) {
-                        List<Person.RowsBean> rows = person.getRows();
-                        if (rows != null) {
-                            if (rows.size() > 0) {
-                                if (page == 1) {
-                                    adapter.setNewData(rows);
-                                } else {
-                                    adapter.addData(rows);
-                                }
-                            } else {
-                                adapter.loadMoreEnd(true);
+                        if (baseResponse != null) {
+                            int code = baseResponse.getCode();
+                            if (code == 0) {
+                                ToastUtils.showShort("重置成功");
+                                initData();
                             }
                         }
                     }
                 });
+    }
 
+
+    /**
+     * 删除用户
+     */
+    private void deleteUser() {
+        RetrofitClient.getInstance().getService().deleteUser(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(PersonManageActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        initData();
+                    }
+                });
+    }
+
+    private void initData() {
+        RetrofitClient.getInstance().getService().getUser()
+                .compose(CommonCompose.io2main(PersonManageActivity.this))
+                .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
+                    @Override
+                    public void onSuccess(List<User> users) {
+                        if (users != null && users.size() > 0) {
+                            List<User.UsersBean> listBeans = transformData(users);
+                            adapter.setNewData(listBeans);
+                        }
+                    }
+                });
+    }
+
+    private List<User.UsersBean> transformData(List<User> users) {
+        List<User.UsersBean> listBeans = new ArrayList<>();
+        for (User user : users) {
+            List<User.UsersBean> list = user.getUsers();
+            listBeans.addAll(list);
+        }
+        return listBeans;
     }
 
     private void initTopbar() {
         topbar.setTitle("人员管理");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            AddPersonActivity.start(PersonManageActivity.this);
+            Intent intent = new Intent();
+            intent.setClass(PersonManageActivity.this, AddPersonActivity.class);
+            startActivityForResult(intent, ADD_PERSON);
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

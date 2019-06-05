@@ -163,7 +163,7 @@ public class PersonDetailActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("人员详情");
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
@@ -182,14 +182,14 @@ public class PersonDetailActivity extends BaseActivity {
      * 更新用户详情
      */
     private void updatePersonDetail() {
-        RetrofitClient.getInstance().getService().editUser()
-                .compose(CommonCompose.io2main(PersonDetailActivity.this))
-                .subscribe(new BaseSubscriber<BaseResponse>(PersonDetailActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        ToastUtils.showShort("更新成功");
-                    }
-                });
+//        RetrofitClient.getInstance().getService().editUser()
+//                .compose(CommonCompose.io2main(PersonDetailActivity.this))
+//                .subscribe(new BaseSubscriber<BaseResponse>(PersonDetailActivity.this) {
+//                    @Override
+//                    public void onSuccess(BaseResponse baseResponse) {
+//                        ToastUtils.showShort("更新成功");
+//                    }
+//                });
     }
 
 

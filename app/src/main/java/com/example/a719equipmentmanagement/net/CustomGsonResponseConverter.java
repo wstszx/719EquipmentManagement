@@ -1,31 +1,14 @@
 package com.example.a719equipmentmanagement.net;
 
-import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
-import com.example.a719equipmentmanagement.App;
-import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.ui.LoginActivity;
-import com.example.a719equipmentmanagement.ui.mine.ActivityCollector;
 import com.example.a719equipmentmanagement.utils.JsonUtils;
-import com.example.a719equipmentmanagement.utils.SPUtils;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;

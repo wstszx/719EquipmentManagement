@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
@@ -14,11 +15,9 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.utils.SPUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 
 public class LoginActivity extends BaseActivity {
 
@@ -35,7 +34,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        boolean main = SPUtils.getBoolean(getApplicationContext(), "main", false);
+        boolean main =  SPUtils.getInstance().getBoolean( "main", false);
         if (main) {
             MainActivity.start(this);
             LoginActivity.this.finish();
@@ -65,8 +64,9 @@ public class LoginActivity extends BaseActivity {
                         int code = baseResponse.getCode();
                         if (code == 0) {
                             String token = baseResponse.getMsg();
-                            SPUtils.putString(App.getContext(), "token", token);
-                            SPUtils.putBoolean(App.getContext(), "main", true);
+                            SPUtils.getInstance().put( "token", token);
+                            SPUtils.getInstance().put( "main", true);
+
                             MainActivity.start(LoginActivity.this);
                             finish();
                         }

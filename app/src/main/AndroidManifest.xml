@@ -10,6 +10,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <uses-feature
+        android:name="android.hardware.usb.host"
+        android:required="true" />
 
     <application
         android:name=".App"
@@ -20,7 +26,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.ChoiceDeptActivity"></activity>
+        <activity android:name=".ui.home.AdminToAuditActivity"></activity>
+        <activity android:name=".ui.home.AdminInvalidEquipActivity" />
+        <activity android:name=".ui.mine.ChangePasswordActivity" />
+        <activity android:name=".ui.home.InventoryRangeActivity" />
+        <activity android:name=".ui.home.AccountingListActivity" />
+        <activity android:name=".ui.home.ChoiceDeviceClassifiyActivity" />
+        <activity android:name=".ui.home.AdminInvalidItemActivity" />
+        <activity android:name=".ui.home.EditDeviceClassifiyActivity" />
+        <activity android:name=".ui.home.EditContainerActivity" />
+        <activity android:name=".ui.home.GenerateContainerCodeActivity" />
+        <activity android:name=".ui.home.AddContainerActivity" />
+        <activity android:name=".ui.home.ChoiceDeptActivity" />
         <activity android:name=".ui.home.PersonManageActivity" />
         <activity android:name=".ui.home.ConfirmBorrowResultsActivity" />
         <activity android:name=".ui.home.EditDeptActivity" />
@@ -44,11 +61,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.mine.DiscardActivity" />
-        <activity android:name=".ui.mine.CheckonActivity" />
-        <activity android:name=".ui.mine.CheckcountActivity" />
-        <activity android:name=".ui.mine.ReturnActivity" />
-        <activity android:name=".ui.device.SearchActivity" />
+        <activity android:name=".ui.mine.ReviewHistoryActivity" />
+        <activity android:name=".ui.mine.HandleHistoryActivity" />
+        <activity android:name=".ui.mine.InventoryHistoryActivity" />
+        <activity android:name=".ui.mine.BorrowHistoryActivity" />
+        <activity android:name=".ui.device.FilterActivity" />
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseItemEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
@@ -56,6 +73,8 @@
         <activity android:name=".ui.home.DeptManageActivity" />
         <activity android:name=".ui.home.ScanActivity" />
         <activity android:name=".ui.home.AddDeviceClassifyActivity" />
+        <activity android:name=".ui.home.BluetoothDeviceList" />
+        <activity android:name=".ui.home.ChoiceContainerActivity" />
 
         <meta-data
             android:name="design_width_in_dp"
@@ -67,6 +86,8 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />
+        <activity android:name=".ui.mine.ApplyHistoryActivity" />
+        <activity android:name=".ui.home.WaitReturnDeviceActivity" />
     </application>
 
 </manifest>

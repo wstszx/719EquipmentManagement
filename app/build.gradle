@@ -54,7 +54,7 @@ dependencies {
     implementation 'me.jessyan:autosize:1.1.2'
     
     //网络日志输出
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.0-alpha02'
     
     //    工具类
     implementation 'com.blankj:utilcodex:1.23.7'
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
 //    navigation
-    def nav_version = "2.1.0-alpha03"
+    def nav_version = '2.1.0-alpha04'
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
 //    SmartRefreshLayout
@@ -82,6 +82,6 @@ dependencies {
     //retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     
 }
