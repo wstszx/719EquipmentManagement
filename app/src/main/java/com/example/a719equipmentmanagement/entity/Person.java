@@ -1,8 +1,9 @@
 package com.example.a719equipmentmanagement.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Person {
+public class Person implements Serializable {
 
     /**
      * total : 5
@@ -38,7 +39,7 @@ public class Person {
         this.rows = rows;
     }
 
-    public static class RowsBean {
+    public static class RowsBean implements Serializable {
         /**
          * id : null
          * searchValue : null
@@ -333,10 +334,10 @@ public class Person {
             this.roles = roles;
         }
 
-        public static class ParamsBean {
+        public static class ParamsBean implements Serializable {
         }
 
-        public static class DeptBean {
+        public static class DeptBean implements Serializable {
             /**
              * id : null
              * searchValue : null
@@ -541,7 +542,7 @@ public class Person {
                 this.list = list;
             }
 
-            public static class ParamsBeanX {
+            public static class ParamsBeanX implements Serializable {
             }
         }
     }

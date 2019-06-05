@@ -1,37 +1,37 @@
 package com.example.a719equipmentmanagement.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InventoryData {
 
+
     /**
-     * id : 1
+     * id : 4
      * searchValue : null
-     * createBy : null
-     * createTime : null
-     * updateBy : null
-     * updateTime : null
-     * remark :
+     * createBy : admin
+     * createTime : 2019-05-16 08:56:43
+     * updateBy : admin
+     * updateTime : 2019-05-16 08:56:48
+     * remark : 444
      * params : {}
-     * name : 11
+     * name : 44
      * state : 0
-     * containerIds : null
-     * list : []
+     * containerIds : 2
+     * list : [{"id":4,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"inventoryId":4,"equipId":4,"state":1}]
      */
 
     private int id;
     private Object searchValue;
-    private Object createBy;
+    private String createBy;
     private String createTime;
-    private Object updateBy;
-    private Object updateTime;
+    private String updateBy;
+    private String updateTime;
     private String remark;
     private ParamsBean params;
     private String name;
     private int state;
-    private Object containerIds;
-    private List<?> list;
+    private String containerIds;
+    private List<ListBean> list;
 
     public int getId() {
         return id;
@@ -49,40 +49,40 @@ public class InventoryData {
         this.searchValue = searchValue;
     }
 
-    public Object getCreateBy() {
+    public String getCreateBy() {
         return createBy;
     }
 
-    public void setCreateBy(Object createBy) {
+    public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
 
     public String getCreateTime() {
-        return createTime == null ? "" : createTime;
+        return createTime;
     }
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Object getUpdateBy() {
+    public String getUpdateBy() {
         return updateBy;
     }
 
-    public void setUpdateBy(Object updateBy) {
+    public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
 
-    public Object getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Object updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
     public String getRemark() {
-        return remark == null ? "" : remark;
+        return remark;
     }
 
     public void setRemark(String remark) {
@@ -98,7 +98,7 @@ public class InventoryData {
     }
 
     public String getName() {
-        return name == null ? "" : name;
+        return name;
     }
 
     public void setName(String name) {
@@ -113,25 +113,141 @@ public class InventoryData {
         this.state = state;
     }
 
-    public Object getContainerIds() {
+    public String getContainerIds() {
         return containerIds;
     }
 
-    public void setContainerIds(Object containerIds) {
+    public void setContainerIds(String containerIds) {
         this.containerIds = containerIds;
     }
 
-    public List<?> getList() {
-        if (list == null) {
-            return new ArrayList<>();
-        }
+    public List<ListBean> getList() {
         return list;
     }
 
-    public void setList(List<?> list) {
+    public void setList(List<ListBean> list) {
         this.list = list;
     }
 
     public static class ParamsBean {
+    }
+
+    public static class ListBean {
+        /**
+         * id : 4
+         * searchValue : null
+         * createBy : null
+         * createTime : null
+         * updateBy : null
+         * updateTime : null
+         * remark : null
+         * params : {}
+         * inventoryId : 4
+         * equipId : 4
+         * state : 1
+         */
+
+        private int id;
+        private Object searchValue;
+        private Object createBy;
+        private Object createTime;
+        private Object updateBy;
+        private Object updateTime;
+        private Object remark;
+        private ParamsBeanX params;
+        private int inventoryId;
+        private int equipId;
+        private int state;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public Object getSearchValue() {
+            return searchValue;
+        }
+
+        public void setSearchValue(Object searchValue) {
+            this.searchValue = searchValue;
+        }
+
+        public Object getCreateBy() {
+            return createBy;
+        }
+
+        public void setCreateBy(Object createBy) {
+            this.createBy = createBy;
+        }
+
+        public Object getCreateTime() {
+            return createTime;
+        }
+
+        public void setCreateTime(Object createTime) {
+            this.createTime = createTime;
+        }
+
+        public Object getUpdateBy() {
+            return updateBy;
+        }
+
+        public void setUpdateBy(Object updateBy) {
+            this.updateBy = updateBy;
+        }
+
+        public Object getUpdateTime() {
+            return updateTime;
+        }
+
+        public void setUpdateTime(Object updateTime) {
+            this.updateTime = updateTime;
+        }
+
+        public Object getRemark() {
+            return remark;
+        }
+
+        public void setRemark(Object remark) {
+            this.remark = remark;
+        }
+
+        public ParamsBeanX getParams() {
+            return params;
+        }
+
+        public void setParams(ParamsBeanX params) {
+            this.params = params;
+        }
+
+        public int getInventoryId() {
+            return inventoryId;
+        }
+
+        public void setInventoryId(int inventoryId) {
+            this.inventoryId = inventoryId;
+        }
+
+        public int getEquipId() {
+            return equipId;
+        }
+
+        public void setEquipId(int equipId) {
+            this.equipId = equipId;
+        }
+
+        public int getState() {
+            return state;
+        }
+
+        public void setState(int state) {
+            this.state = state;
+        }
+
+        public static class ParamsBeanX {
+        }
     }
 }

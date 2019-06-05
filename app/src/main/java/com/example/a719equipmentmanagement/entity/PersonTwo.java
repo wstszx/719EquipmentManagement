@@ -5,14 +5,19 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class PersonTwo extends AbstractExpandableItem<PersonThree> implements MultiItemEntity {
-    private User user;
+    private User.UsersBean listBean;
+    private String parentTitle;
 
-    public User getUser() {
-        return user;
+    public User.UsersBean getUser() {
+        return listBean;
     }
 
-    public PersonTwo(User user) {
-        this.user = user;
+    public String getParentTitle() {
+        return parentTitle == null ? "" : parentTitle;
+    }
+
+    public PersonTwo(User.UsersBean listBean) {
+        this.listBean = listBean;
     }
 
     @Override

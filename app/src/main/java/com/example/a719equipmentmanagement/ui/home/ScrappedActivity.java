@@ -26,7 +26,7 @@ public class ScrappedActivity extends BaseActivity {
         topbar.setTitle("报废");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });

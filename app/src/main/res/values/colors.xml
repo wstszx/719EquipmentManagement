@@ -72,4 +72,8 @@
     <color name="mask_color">#88888888</color>
     <color name="check_bg">#f2f2f2</color>
     <color name="un_press_color">#9C27B0</color>
+    <color name="black90">#383431</color><!--黑色 -->
+    <color name="black">#000000</color><!--黑色 -->
+    <color name="dimgray">#696969</color><!--暗灰色 -->
+    <color name="whitesmoke">#F5F5F5</color><!--烟白色 -->
 </resources>

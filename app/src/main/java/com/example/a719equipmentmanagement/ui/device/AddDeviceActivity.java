@@ -68,7 +68,7 @@ public class AddDeviceActivity extends BaseActivity {
     private void initTopbar() {
         topbar_addDevice.setTitle("添加设备");
 
-        topbar_addDevice.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar_addDevice.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
@@ -77,17 +77,17 @@ public class AddDeviceActivity extends BaseActivity {
             getInputData();
         });
 
-        RetrofitClient.getInstance().getService().findDeviceData()
-                .compose(CommonCompose.io2main(AddDeviceActivity.this))
-                .subscribe(new BaseSubscriber<DeviceData>(AddDeviceActivity.this) {
-                    @Override
-                    public void onSuccess(DeviceData baseResponse) {
-                        if (baseResponse != null ) {
-                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
-                            rowCount=rows.size()+1;
-                        }
-                    }
-                });
+//        RetrofitClient.getInstance().getService().findDeviceData()
+//                .compose(CommonCompose.io2main(AddDeviceActivity.this))
+//                .subscribe(new BaseSubscriber<DeviceData>(AddDeviceActivity.this) {
+//                    @Override
+//                    public void onSuccess(DeviceData baseResponse) {
+//                        if (baseResponse != null ) {
+//                            List<DeviceData.RowsBean> rows = baseResponse.getRows();
+//                            rowCount=rows.size()+1;
+//                        }
+//                    }
+//                });
     }
 
     private void getInputData() {

@@ -73,7 +73,7 @@ public class Me {
          * admin : true
          */
 
-        private Object id;
+        private int id;
         private Object searchValue;
         private Object createBy;
         private String createTime;
@@ -103,11 +103,11 @@ public class Me {
         private List<RolesBean> roles;
         private List<Integer> roleIds;
 
-        public Object getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Object id) {
+        public void setId(int id) {
             this.id = id;
         }
 

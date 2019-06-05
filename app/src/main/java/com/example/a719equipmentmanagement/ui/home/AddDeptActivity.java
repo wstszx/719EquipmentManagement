@@ -1,166 +1,143 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.text.InputType;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.utils.NumUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
-import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.http.Field;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AddDeptActivity extends BaseActivity {
 
-    @BindView(R.id.groupListView)
-    QMUIGroupListView groupListView;
+    private static final int ADD_DEPT = 1;
+    private String[] containerAttrs = {"部门名称:", "所属部门:", "显示排序:",
+            "负责人:", "联系电话:", "邮箱:", "部门状态:"};
+    @BindView(R.id.switchs)
+    Switch switchs;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"部门名称", "所属部门", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
-    private QMUICommonListItemView item;
-    private QMUICommonListItemView item1;
-    private QMUICommonListItemView item2;
-    private QMUICommonListItemView item3;
-    private QMUICommonListItemView item4;
-    private QMUICommonListItemView item5;
-    private QMUICommonListItemView item6;
+    @BindView(R.id.tv_result)
+    TextView tvResult;
+    @BindView(R.id.include_1)
+    View include_1;
+    @BindView(R.id.include_2)
+    View include_2;
+    @BindView(R.id.include_4)
+    View include_4;
+    @BindView(R.id.include_5)
+    View include_5;
+    @BindView(R.id.include_6)
+    View include_6;
+    @BindView(R.id.include_7)
+    View include_7;
+    private String name;
+    private int pid;
+    private IncludedLayout includedLayout1;
+    private IncludedLayout includedLayout3;
+    private IncludedLayout includedLayout4;
+    private IncludedLayout includedLayout5;
+    private TextView tv_result;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        initView();
         initTopbar();
-        initGroupListView();
     }
 
-    private void initGroupListView() {
-        View.OnClickListener onClickListener = v -> {
-            if (((QMUICommonListItemView) v).getAccessoryType() == QMUICommonListItemView.ACCESSORY_TYPE_SWITCH) {
-                ((QMUICommonListItemView) v).getSwitch().toggle();
-            }
-            listItemView = (QMUICommonListItemView) v;
-            int tag = (int) listItemView.getTag();
-            Intent intent = new Intent();
-            intent.putExtra("text", listItemView.getDetailText().toString());
-            intent.setClass(this, BaseItemEditActivity.class);
-            startActivityForResult(intent, tag);
-        };
-        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
 
-        item = groupListView.createItemView(
-                null,
-                containerAttrs[0],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item.setTag(0);
-        section.addItemView(item, onClickListener);
+    static class IncludedLayout {
+        @BindView(R.id.tv_title)
+        TextView tv_title;
+        @BindView(R.id.edittext)
+        EditText editText;
+    }
 
-        item1 = groupListView.createItemView(
-                null,
-                containerAttrs[1],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item1.setTag(1);
-        section.addItemView(item1, onClickListener);
-
-        item2 = groupListView.createItemView(
-                null,
-                containerAttrs[2],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item2.setTag(2);
-        section.addItemView(item2, onClickListener);
-        item3 = groupListView.createItemView(
-                null,
-                containerAttrs[3],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item3.setTag(3);
-        section.addItemView(item3, onClickListener);
-        item4 = groupListView.createItemView(
-                null,
-                containerAttrs[4],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item4.setTag(4);
-        section.addItemView(item4, onClickListener);
-
-        item5 = groupListView.createItemView(
-                null,
-                containerAttrs[5],
-                " ",
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-        item5.setTag(5);
-        section.addItemView(item5, onClickListener);
-
-        item6 = groupListView.createItemView("部门状态");
-        item6.setAccessoryType(QMUICommonListItemView.ACCESSORY_TYPE_SWITCH);
-        item6.getSwitch().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void initView() {
+        includedLayout1 = new IncludedLayout();
+        includedLayout3 = new IncludedLayout();
+        includedLayout4 = new IncludedLayout();
+        includedLayout5 = new IncludedLayout();
+        ButterKnife.bind(includedLayout1, include_1);
+        ButterKnife.bind(includedLayout3, include_4);
+        ButterKnife.bind(includedLayout4, include_5);
+        ButterKnife.bind(includedLayout5, include_6);
+        includedLayout1.tv_title.setText(containerAttrs[0]);
+        TextView textView2 = include_2.findViewById(R.id.tv_title);
+        tv_result = include_2.findViewById(R.id.tv_result);
+        textView2.setText(containerAttrs[1]);
+        include_2.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            public void onClick(View v) {
+                startActivityForResult(new Intent(AddDeptActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
             }
         });
-        section.addItemView(item6, onClickListener);
-        section.addTo(groupListView);
+        includedLayout3.tv_title.setText(containerAttrs[3]);
+        includedLayout4.tv_title.setText(containerAttrs[4]);
+        includedLayout5.tv_title.setText(containerAttrs[5]);
+        includedLayout4.editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        includedLayout5.editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        TextView textView7 = include_7.findViewById(R.id.tv_title);
+        textView7.setText(containerAttrs[6]);
     }
+
 
     private void initTopbar() {
         topbar.setTitle("添加部门");
         topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
             getInputData();
         });
-        topbar.addLeftImageButton(R.mipmap.back, R.id.back).setOnClickListener(v -> {
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
     }
 
     private void getInputData() {
-        String input = item.getDetailText().toString();
-        String input1 = item1.getDetailText().toString();
-        String input2 = item2.getDetailText().toString();
-        String input3 = item3.getDetailText().toString();
-        String input4 = item4.getDetailText().toString();
-        boolean checked = item5.getSwitch().isChecked();
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
+        String deptName = includedLayout1.editText.getText().toString();
+        String leader = includedLayout3.editText.getText().toString();
+        String email = includedLayout5.editText.getText().toString();
+        String phone = includedLayout4.editText.getText().toString();
+
+        if (!RegexUtils.isEmail(email)) {
+            ToastUtils.showShort("请填写正确的邮箱");
+            return;
+        }
+
+        if (!RegexUtils.isMobileExact(phone)) {
+            ToastUtils.showShort("请填写正确的手机号");
+            return;
+        }
 
         try {
-            map.put("parentId", "100");
-            map.put("deptName", input);
-            map.put("leader", input2);
-            map.put("phone", input3);
-            map.put("email", input4);
-            map.put("status", checked ? "0" : "1");
+            map.put("deptName", deptName);
+            map.put("parentId", pid);
+            map.put("leader", leader);
+            map.put("phone", phone);
+            map.put("email", email);
+            map.put("status", switchs.isChecked() ? "0" : "1");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -173,20 +150,21 @@ public class AddDeptActivity extends BaseActivity {
                         finish();
                     }
                 });
-
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            String text = data.getStringExtra("text");
-            TextView detailTextView = listItemView.getDetailTextView();
-            detailTextView.setSingleLine(true);
-            detailTextView.setMaxEms(8);
-            detailTextView.setEllipsize(TextUtils.TruncateAt.END);
-            detailTextView.setText(text);
+        switch (requestCode) {
+            case ADD_DEPT:
+                if (data != null) {
+                    name = data.getStringExtra("name");
+                    pid = data.getIntExtra("pid", 0);
+                    tv_result.setText(name);
+                }
+                break;
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
