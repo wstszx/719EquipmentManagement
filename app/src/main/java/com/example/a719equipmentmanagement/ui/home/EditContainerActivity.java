@@ -105,8 +105,7 @@ public class EditContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(EditContainerActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
                 break;
             case R.id.round_button:
-                int id = 1;
-                GenerateContainerCodeActivity.start(this, id);
+                GenerateContainerCodeActivity.start(this, "");
                 finish();
                 break;
         }

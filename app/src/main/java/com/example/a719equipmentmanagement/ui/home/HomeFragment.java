@@ -69,8 +69,8 @@ public class HomeFragment extends BaseFragment {
     @BindView(R.id.recyclerview3)
     RecyclerView recyclerview3;
     private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点"};
-    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
-            R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
+    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
+            R.mipmap.inventory};
 
     private static HomeFragment fragment;
     private HomeAdapter adapter;

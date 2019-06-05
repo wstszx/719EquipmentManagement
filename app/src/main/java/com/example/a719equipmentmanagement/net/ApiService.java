@@ -88,6 +88,10 @@ public interface ApiService {
     @POST("system/container/add")
     Single<BaseResponse> addContainer(@Body RequestBody requestBody);
 
+    //批量添加货柜
+    @POST("system/container/addBatch")
+    Single<BaseResponse> addBatchContainer(@Body RequestBody requestBody);
+
     //编辑货柜
     @POST("system/container/add")
     Single<BaseResponse> editContainer(@Body RequestBody requestBody);

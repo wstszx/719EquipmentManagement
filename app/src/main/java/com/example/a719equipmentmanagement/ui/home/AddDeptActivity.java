@@ -53,7 +53,7 @@ public class AddDeptActivity extends BaseActivity {
     @BindView(R.id.include_7)
     View include_7;
     private String name;
-    private int pid;
+    private int pid = 100;
     private IncludedLayout includedLayout1;
     private IncludedLayout includedLayout3;
     private IncludedLayout includedLayout4;
@@ -159,7 +159,7 @@ public class AddDeptActivity extends BaseActivity {
             case ADD_DEPT:
                 if (data != null) {
                     name = data.getStringExtra("name");
-                    pid = data.getIntExtra("pid", 0);
+                    pid = data.getIntExtra("pid", 100);
                     tv_result.setText(name);
                 }
                 break;

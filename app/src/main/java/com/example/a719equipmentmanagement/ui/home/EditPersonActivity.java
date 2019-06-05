@@ -213,7 +213,7 @@ public class EditPersonActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("listBean");
+        User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("data");
         userId = listBean.getUserId();
         deptId = listBean.getDeptId();
 //        roleId = listBean.getRoleIds();
