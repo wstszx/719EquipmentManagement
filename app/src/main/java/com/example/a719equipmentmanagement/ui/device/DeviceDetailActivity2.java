@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -18,9 +20,13 @@ import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
 import com.example.a719equipmentmanagement.ui.home.EditDeptActivity;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -68,6 +74,9 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private IncludedLayout includedLayout5;
     private IncludedLayout includedLayout6;
     private IncludedLayout includedLayout7;
+
+    private QMUIListPopup mListPopup;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -171,10 +180,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
         }
         if (this.opers.size() > 0) {
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-//                initListPopupIfNeed();
-//                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-//                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-//                mListPopup.show(v);
+                initListPopupIfNeed();
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
             });
         }
         initGroupListView();
@@ -220,29 +229,69 @@ public class DeviceDetailActivity2 extends BaseActivity {
         include_6.setOnClickListener(v -> {
 
         });
-
+        includedLayout7.editText.setEnabled(false);
         if (opers.contains("Edit")) {
             includedLayout1.editText.setEnabled(true);
             includedLayout2.editText.setEnabled(true);
             includedLayout3.editText.setEnabled(true);
             includedLayout4.editText.setEnabled(true);
-            includedLayout7.editText.setEnabled(true);
             include_5.setEnabled(true);
-//            tv_result5.setFocusable(false);
-//            tv_result5.setKeyListener(null);
-//            tv_result5.addTextChangedListener(null);
             include_6.setEnabled(true);
         } else {
             includedLayout1.editText.setEnabled(false);
             includedLayout2.editText.setEnabled(false);
             includedLayout3.editText.setEnabled(false);
             includedLayout4.editText.setEnabled(false);
-            includedLayout7.editText.setEnabled(false);
             include_5.setEnabled(false);
-//            tv_result5.setFocusable(false);
-//            tv_result5.setKeyListener(null);
-//            tv_result5.addTextChangedListener(null);
             include_6.setEnabled(false);
+        }
+    }
+
+    private void initListPopupIfNeed() {
+        int size = opers.size();
+        String[] handleTypes = new String[size];
+        for (int i = 0; i < size; i++) {
+            String handleEnglish = opers.get(i);
+            switch (handleEnglish) {
+                case "Edit":
+                    handleTypes[i] = "编辑";
+                    break;
+                case "Del":
+                    handleTypes[i] = "删除";
+                    break;
+            }
+        }
+        List<String> data = new ArrayList<>();
+        Collections.addAll(data, handleTypes);
+        if (adapter == null) {
+            adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
+        } else {
+            adapter.addAll(data);
+            adapter.notifyDataSetChanged();
+        }
+        if (mListPopup == null) {
+            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    TextView textView = (TextView) view;
+                    String s = textView.getText().toString();
+                    switch (s) {
+                        case "处理1":
+//                            Intent addDeptIntent = new Intent();
+//                            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
+//                            startActivityForResult(addDeptIntent, ADD_DEPT);
+                            break;
+                        case "处理2":
+//                            Intent addPersonIntent = new Intent();
+//                            addPersonIntent.setClass(DeptManageActivity.this, AddPersonActivity.class);
+//                            startActivityForResult(addPersonIntent, ADD_PERSON);
+                            break;
+                    }
+                    mListPopup.dismiss();
+                }
+            });
+            mListPopup.setOnDismissListener(data::clear);
         }
     }
 }
