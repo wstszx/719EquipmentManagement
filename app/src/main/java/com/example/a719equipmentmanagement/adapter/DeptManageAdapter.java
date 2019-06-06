@@ -61,11 +61,11 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
                 PersonTwo personTwo = (PersonTwo) item;
                 User.UsersBean user1 = personTwo.getUser();
                 setLevel1Data(user1, helper);
-                if (personTwo.isExpanded()) {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-                } else {
-                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-                }
+//                if (personTwo.isExpanded()) {
+//                    helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+//                } else {
+//                    helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+//                }
 //                helper.getView(R.id.constraint).setOnClickListener(v -> {
 //                    int pos = helper.getAdapterPosition();
 //                    if (personTwo.isExpanded()) {

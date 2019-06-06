@@ -274,7 +274,7 @@ public class User implements Serializable {
         private String loginIp;
         private Object loginDate;
         private DeptBean dept;
-        private Object roleIds;
+        private int[] roleIds;
         private Object postIds;
         private Object list;
         private boolean admin;
@@ -472,11 +472,11 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public Object getRoleIds() {
+        public int[] getRoleIds() {
             return roleIds;
         }
 
-        public void setRoleIds(Object roleIds) {
+        public void setRoleIds(int[] roleIds) {
             this.roleIds = roleIds;
         }
 

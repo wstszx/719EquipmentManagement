@@ -68,8 +68,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvMore3;
     @BindView(R.id.recyclerview3)
     RecyclerView recyclerview3;
-    private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点"};
-    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
+    private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "盘点"};
+    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage,
             R.mipmap.inventory};
 
     private static HomeFragment fragment;
@@ -186,14 +186,16 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
-        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerview.setLayoutManager(new GridLayoutManager(getContext(),5));
         adapter = new HomeAdapter(R.layout.square_match_item);
         recyclerview.setAdapter(adapter);
         int roleId = SPUtils.getInstance().getInt("roleId", 0);
         topbar.setTitle("首页");
-        topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
-            MsgActivity.start(getActivity());
-        });
+//        topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
+//            MsgActivity.start(getActivity());
+//        });
+        topbar.addRightImageButton(R.mipmap.qr, R.id.scan).setOnClickListener(v -> GenarateQRActivity.start(getContext(), null));
 
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -210,23 +212,10 @@ public class HomeFragment extends BaseFragment {
 //                adminInvalidEquipAdapter.setNewData();
 //                adminToAuditAdapter.setNewData();
 //                adminToDoAdapter.setNewData();
-                tvMore1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AdminInvalidEquipActivity.start(getContext(), (Serializable) invalidEquipList);
-                    }
-                });
-                tvMore2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AdminToAuditActivity.start(getContext(), (Serializable) toAuditList);
-                    }
-                });
-                tvMore3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                tvMore1.setOnClickListener(v -> AdminInvalidEquipActivity.start(getContext(), (Serializable) invalidEquipList));
+                tvMore2.setOnClickListener(v -> AdminToAuditActivity.start(getContext(), (Serializable) toAuditList));
+                tvMore3.setOnClickListener(v -> {
 
-                    }
                 });
                 break;
             case 2:         //普通用户
@@ -272,36 +261,36 @@ public class HomeFragment extends BaseFragment {
                     AccountingListActivity.start(getContext());
                     break;
                 case 4:
-                    ScanActivity.start(getContext());
+//                    ScanActivity.start(getContext());
+                    InventoryRangeActivity.start(getContext());
                     break;
 //                case 5:
 //                    ScanActivity.start(getContext());
 //                    break;
-                case 5:
-                    InventoryRangeActivity.start(getContext());
-                    break;
+//                case 5:
+//                    break;
             }
         });
 
 
         //展示用数据和点击，待后台数据后删
         List<InvalidEquip> test1 = new ArrayList<>();
-        for(int i = 0; i < 25; i++){
+        for (int i = 0; i < 25; i++) {
             InvalidEquip t1;
-            t1 = new InvalidEquip(i+1, "热感温度计", "2019.7.1", 20);
+            t1 = new InvalidEquip(i + 1, "热感温度计", "2019.7.1", 20);
             test1.add(t1);
         }
         adapter1.setNewData(test1);
-        invalidEquipList=test1;
+        invalidEquipList = test1;
 
         List<ToAudit> test2 = new ArrayList<>();
         for (int i = 0; i < 25; i++) {
             ToAudit t2;
-            t2 = new ToAudit(i+1,"差压变送器", "申请报废", "李四");
+            t2 = new ToAudit(i + 1, "差压变送器", "申请报废", "李四");
             test2.add(t2);
         }
         adapter2.setNewData(test2);
-        toAuditList=test2;
+        toAuditList = test2;
     }
 
     @Override

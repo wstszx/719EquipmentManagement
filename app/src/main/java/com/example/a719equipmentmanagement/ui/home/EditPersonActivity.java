@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.RegexUtils;
@@ -87,10 +88,10 @@ public class EditPersonActivity extends BaseActivity {
     private int userId;
     private int deptId;
     private String[] sexArray = {"男", "女", "未知"};
-    private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
+    private String[] roleArray = {"超级系统管理员", "实验室管理员", "普通用户"};
     private int id;
     private String name;
-    private int roleId;
+    private int[] roleId = {3};
     private int sexTag;
 
 
@@ -128,24 +129,16 @@ public class EditPersonActivity extends BaseActivity {
                 tv_result1.setText("未知");
                 break;
         }
-        include_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSimpleBottomSheetList(sexArray, 1);
-            }
-        });
+        include_1.setOnClickListener(v -> showSimpleBottomSheetList(sexArray, 1));
 //        2
         textView2 = include_2.findViewById(R.id.tv_title);
         tvResult2 = include_2.findViewById(R.id.tv_result);
         textView2.setText(containerAttrs[2]);
         tvResult2.setText(deptName);
-        include_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(EditPersonActivity.this, ChoiceDeptActivity.class);
-                startActivityForResult(intent, OWNER_DEPT);
-            }
+        include_2.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(EditPersonActivity.this, ChoiceDeptActivity.class);
+            startActivityForResult(intent, OWNER_DEPT);
         });
 //        3
         includedLayout3.tv_title.setText(containerAttrs[3]);
@@ -173,12 +166,7 @@ public class EditPersonActivity extends BaseActivity {
         tvResult8 = include_8.findViewById(R.id.tv_result);
         textView8.setText(containerAttrs[7]);
         tvResult8.setText("");
-        include_8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSimpleBottomSheetList(roleArray, 2);
-            }
-        });
+        include_8.setOnClickListener(v -> showSimpleBottomSheetList(roleArray, 2));
 //        9
         tv_title9.setText(containerAttrs[8]);
         edittext9.setText(remark);
@@ -190,22 +178,18 @@ public class EditPersonActivity extends BaseActivity {
             bottomListSheetBuilder.addItem(s != null ? s : "未知");
         }
 
-        bottomListSheetBuilder.setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                roleId = position;
-                switch (flag) {
-                    case 1:
-                        sexTag = position;
-                        tv_result1.setText(tag);
-                        break;
-                    case 2:
-                        tvResult8.setText(tag);
-                        break;
-                }
-                dialog.dismiss();
+        bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+            roleId[0] = position;
+            switch (flag) {
+                case 1:
+                    sexTag = position;
+                    tv_result1.setText(tag);
+                    break;
+                case 2:
+                    tvResult8.setText(tag);
+                    break;
             }
+            dialog.dismiss();
         })
                 .build()
                 .show();
@@ -216,7 +200,7 @@ public class EditPersonActivity extends BaseActivity {
         User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("data");
         userId = listBean.getUserId();
         deptId = listBean.getDeptId();
-//        roleId = listBean.getRoleIds();
+        roleId = listBean.getRoleIds();
         userName = listBean.getUserName();
         sex = listBean.getSex();
         deptName = listBean.getDept().getDeptName();
@@ -235,14 +219,18 @@ public class EditPersonActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        if (data != null) {
-            id = data.getIntExtra("id", 0);
-            name = data.getStringExtra("name");
-            tvResult2.setText(name);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null && resultCode == RESULT_OK) {
+            if (requestCode == OWNER_DEPT) {
+                id = data.getIntExtra("id", 0);
+                name = data.getStringExtra("name");
+                deptId = data.getIntExtra("deptId", 0);
+                tvResult2.setText(name);
+            }
         }
-        super.onActivityReenter(resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -288,7 +276,7 @@ public class EditPersonActivity extends BaseActivity {
             map.put("email", email);
             map.put("loginName", loginName);
             map.put("status", switchs.isChecked() ? "0" : "1");
-            map.put("role", roleId);
+            map.put("roleIds", roleId);
             map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();

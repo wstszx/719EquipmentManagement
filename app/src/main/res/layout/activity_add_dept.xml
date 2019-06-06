@@ -20,9 +20,6 @@
                 android:id="@+id/include_1"
                 layout="@layout/base_edit_item" />
 
-            <include
-                android:id="@+id/include_2"
-                layout="@layout/base_enter_item" />
 
             <!--<include-->
                 <!--android:id="@+id/include_3"-->

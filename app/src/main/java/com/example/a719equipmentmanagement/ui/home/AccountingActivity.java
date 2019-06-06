@@ -123,7 +123,7 @@ public class AccountingActivity extends BaseActivity {
     private int status;
     private Calendar calendar = Calendar.getInstance(Locale.CHINA);
     private int tech_statu;
-    private Integer id;
+//    private Integer id;
 
 
     @Override
@@ -142,19 +142,19 @@ public class AccountingActivity extends BaseActivity {
                     break;
             }
         });
-        initData();
+//        initData();
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().getNextId()
-                .compose(CommonCompose.io2main(this))
-                .subscribe(new BaseSubscriber<Integer>(AccountingActivity.this) {
-                    @Override
-                    public void onSuccess(Integer integer) {
-                        id = integer;
-                    }
-                });
-    }
+//    private void initData() {
+//        RetrofitClient.getInstance().getService().getNextId()
+//                .compose(CommonCompose.io2main(this))
+//                .subscribe(new BaseSubscriber<Integer>(AccountingActivity.this) {
+//                    @Override
+//                    public void onSuccess(Integer integer) {
+//                        id = integer;
+//                    }
+//                });
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -244,7 +244,7 @@ public class AccountingActivity extends BaseActivity {
 //        jsonArray.put(jsonObject);
         try {
             jsonObject.put("equip", jsonObject1);
-            jsonObject.put("setupId", id);
+//            jsonObject.put("setupId", id);
             jsonObject1.put("name", name);
             jsonObject1.put("categoryId", categoryId);
             jsonObject1.put("equipNo", equipNo);

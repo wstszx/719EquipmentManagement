@@ -93,7 +93,7 @@ public interface ApiService {
     Single<BaseResponse> addBatchContainer(@Body RequestBody requestBody);
 
     //编辑货柜
-    @POST("system/container/add")
+    @POST("system/container/update")
     Single<BaseResponse> editContainer(@Body RequestBody requestBody);
 
     //查找货柜数据
@@ -101,9 +101,8 @@ public interface ApiService {
     Single<List<ContainerData>> findContainerData();
 
     //删除货柜
-    @FormUrlEncoded
     @POST("system/container/del")
-    Single<BaseResponse> deleteContainer(@Field("id") int id);
+    Single<BaseResponse> deleteContainer(@Body RequestBody requestBody);
 
 
     /*------  dept-controller -------*/
@@ -261,6 +260,7 @@ public interface ApiService {
     //查找建账入库数据
     @GET("system/setup/list")
     Single<InRecordData> findInRecordData();
+
     //查找当前用户的审核历史
     @GET("system/user/profile/listMyAllVerify")
     Single<ReviewHistory> findReviewHistory();

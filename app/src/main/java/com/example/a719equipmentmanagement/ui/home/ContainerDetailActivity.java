@@ -41,7 +41,7 @@ public class ContainerDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
+        ContainerData.ContainersBean listBean = (ContainerData.ContainersBean) getIntent().getSerializableExtra("serializable");
         String name = listBean.getName();
         id = listBean.getId();
 //        String dept = listBean.getDept();

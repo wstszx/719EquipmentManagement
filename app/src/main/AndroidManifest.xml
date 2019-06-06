@@ -26,7 +26,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.home.AdminToAuditActivity"></activity>
+        <activity android:name=".ui.home.EditContainerLevelActivity"></activity>
+        <activity android:name=".ui.home.AdminToAuditActivity" />
         <activity android:name=".ui.home.AdminInvalidEquipActivity" />
         <activity android:name=".ui.mine.ChangePasswordActivity" />
         <activity android:name=".ui.home.InventoryRangeActivity" />

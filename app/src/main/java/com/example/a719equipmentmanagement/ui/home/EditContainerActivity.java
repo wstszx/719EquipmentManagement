@@ -43,11 +43,20 @@ public class EditContainerActivity extends BaseActivity {
     QMUIRoundButton roundButton;
     private String name;
     private int id;
+    private int pid;
     private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+        pid = intent.getIntExtra("pid", 0);
+        id = intent.getIntExtra("id", 0);
+        name = intent.getStringExtra("name");
     }
 
     private void initTopbar() {
@@ -64,13 +73,12 @@ public class EditContainerActivity extends BaseActivity {
 
     private void editContainer() {
         String containerName = edittext.getText().toString();
-        String containerNum = edittext2.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);
             jsonObject.put("deptId", deptId);
+            jsonObject.put("pid", pid);
             jsonObject.put("name", containerName);
-            jsonObject.put("num", containerNum);
         } catch (JSONException e) {
             e.printStackTrace();
         }
