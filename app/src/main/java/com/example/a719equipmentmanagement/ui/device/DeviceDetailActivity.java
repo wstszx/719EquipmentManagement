@@ -11,18 +11,17 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.home.AddDeptActivity;
-import com.example.a719equipmentmanagement.ui.home.AddPersonActivity;
-import com.example.a719equipmentmanagement.ui.home.DeptManageActivity;
+import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.ScanActivity;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -33,19 +32,16 @@ import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 public class DeviceDetailActivity extends BaseActivity {
 
@@ -54,8 +50,10 @@ public class DeviceDetailActivity extends BaseActivity {
 
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
-    @BindView(R.id.bt)
-    QMUIRoundButton bt;
+    @BindView(R.id.bt1)
+    QMUIRoundButton bt1;
+    @BindView(R.id.bt2)
+    QMUIRoundButton bt2;
 
     private QMUICommonListItemView listItemView;
     private QMUICommonListItemView item0;
@@ -68,127 +66,25 @@ public class DeviceDetailActivity extends BaseActivity {
     private QMUICommonListItemView item7;
 
     private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
-    private String name;
+    private String deviceName;
     private String parameter;
     private String manufactuer;
     private String responsor;
     private String deptName;
     private String locationName;
     private String deviceStatus;
+    private int deviceId;
+    private List<String> opers;
 
     private int mStyle = R.style.QMUI_Dialog;
     private int status;
-    private String equipNo;
     private QMUIListPopup mListPopup;
     private ArrayAdapter<String> adapter;
-    String[] handleTypes = new String[]{"处理1", "处理2"};
+
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initData();
-        initGroupListView();
-    }
-
-    private void initData() {
-        Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        getDeviceDetail(id);
-//        DeviceData2.RowsBean rowsBean = (DeviceData2.RowsBean) intent.getSerializableExtra("serializable");
-//        if (rowsBean != null) {
-//            bt.setVisibility(View.GONE);
-//            setData(rowsBean);
-//            }
-    }
-
-//    private void getDeviceDetail(String id) {
-//        HashMap<String, Object> map = new HashMap<>();
-//        map.put("equipNo", id);
-//        RetrofitClient.getInstance().getService().findDeviceData(map)
-//                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
-//                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
-//                    @Override
-//                    public void onSuccess(DeviceData2 deviceData2) {
-//                        if (deviceData2 != null) {
-//                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-//                            if (rows != null && rows.size() > 0) {
-//                                DeviceData2.RowsBean rowsBean = rows.get(0);
-//                                setData(rowsBean);
-//                            }
-//                        }
-//                    }
-//                });
-//    }
-
-    private void getDeviceDetail(String id){
-        RetrofitClient.getInstance().getService().getDeviceDetail(id)
-                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
-                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
-                    @Override
-                    public void onSuccess(DeviceData2 deviceData2) {
-//                        if (deviceData2 != null) {
-//
-//                        }
-                    }
-                });
-
-    }
-    private void setData(DeviceData2.RowsBean rowsBean) {
-        DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
-        DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
-        equipNo = rowsBean.getEquipNo();
-        name = rowsBean.getName();
-        parameter = rowsBean.getParameter();
-        manufactuer = rowsBean.getManufactuer();
-        responsor = rowsBean.getResponsor();
-        deptName = deptBean == null ? "无部门信息" : deptBean.getDeptName();
-        locationName = locationBean == null ? "无位置信息" : locationBean.getName();
-        status = rowsBean.getStatus();
-        switch (status) {
-            case 0:
-                bt.setText("借用");
-                deviceStatus = "可用";
-                break;
-            case 1:
-                bt.setText("归还");
-                deviceStatus = "借用";
-                break;
-            case 2:
-                bt.setText("归还");
-                deviceStatus = "送检占用";
-                break;
-            case 3:
-                bt.setText("送检");
-                deviceStatus = "送检";
-                break;
-            case 4:
-                bt.setText("无法使用");
-                deviceStatus = "报废占用";
-                break;
-            case 5:
-                bt.setText("无法使用");
-                deviceStatus = "报废";
-                break;
-            case 6:
-                bt.setText("解封");
-                deviceStatus = "封存";
-                break;
-            case 7:
-                bt.setText("无法使用");
-                deviceStatus = "解封占用";
-                break;
-            case 8:
-                bt.setText("送检");
-                deviceStatus = "过期";
-                break;
-            case 9:
-                bt.setText("无法使用");
-                deviceStatus = "外借";
-                break;
-            default:
-                bt.setText("无法使用");
-                deviceStatus = "无状态信息";
-                break;
-        }
     }
 
     private void initTopbar() {
@@ -197,31 +93,110 @@ public class DeviceDetailActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            initListPopupIfNeed(handleTypes);
-            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-            mListPopup.show(v);
+        bt1.setOnClickListener(v -> {
+            ArrayList<Integer> idList = new ArrayList<>();
+            idList.add(deviceId);
+            GenarateQRActivity.start(DeviceDetailActivity.this, idList);
         });
-//        RetrofitClient.getInstance().getService().findDeviceData()
-//                .compose(CommonCompose.io2main(this))
-//                .subscribe(new BaseSubscriber<DeviceData2>(this) {
-//                    @Override
-//                    public void onSuccess(DeviceData2 deviceData) {
-//                        if (deviceData != null) {
-//                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
-//                            if (rows != null && rows.size() > 0) {
-////                                adapter.setNewData(rows);
-//
-//                            }
-//                        }
-//                    }
-//                });
+        bt2.setOnClickListener(v -> {
+
+        });
     }
 
-    private void initListPopupIfNeed(String[] listItems) {
+    private void initData() {
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        getDetail(id);
+        deviceId = Integer.parseInt(id);
+    }
+
+    private void getDetail(String id) {
+        RetrofitClient.getInstance().getService().getDeviceDetail(id)
+                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
+                .subscribe(new BaseSubscriber<DeviceDetailData>(DeviceDetailActivity.this) {
+                    @Override
+                    public void onSuccess(DeviceDetailData deviceDetailData) {
+                        if (deviceDetailData != null) {
+                            setData(deviceDetailData);
+                        }
+                    }
+                });
+
+    }
+
+    private void setData(DeviceDetailData deviceDetailData) {
+//        DeviceDetailData.DeptBean dept = deviceDetailData.getDept();
+//        DeviceDetailData.LocationBean location = deviceDetailData.getLocation();
+//        deviceName = deviceDetailData.getName();
+//        parameter = deviceDetailData.getParameter();
+//        manufactuer = deviceDetailData.getManufactuer();
+//        responsor = deviceDetailData.getResponsor();
+//        status = deviceDetailData.getStatus();
+//        deptName = dept.getDeptName();
+//        locationName = location.getName();
+//        opers = deviceDetailData.getOpers();
+        switch (status) {
+            case 0:
+                deviceStatus = "可用";
+                break;
+            case 1:
+                deviceStatus = "借用";
+                break;
+            case 2:
+                deviceStatus = "送检占用";
+                break;
+            case 3:
+                deviceStatus = "送检";
+                break;
+            case 4:
+                deviceStatus = "报废占用";
+                break;
+            case 5:
+                deviceStatus = "报废";
+                break;
+            case 6:
+                deviceStatus = "封存";
+                break;
+            case 7:
+                deviceStatus = "解封占用";
+                break;
+            case 8:
+                deviceStatus = "过期";
+                break;
+            case 9:
+                deviceStatus = "外借";
+                break;
+            default:
+                deviceStatus = "无状态信息";
+                break;
+        }
+        if(opers.size()>0){
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+                initListPopupIfNeed();
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
+            });
+        }
+        initGroupListView();
+    }
+
+    private void initListPopupIfNeed() {
+        int size = opers.size();
+        String[] handleTypes = new String[size];
+        for (int i = 0; i < size; i++) {
+            String handleEnglish = opers.get(i);
+            switch (handleEnglish) {
+                case "Edit":
+                    handleTypes[i] = "编辑";
+                    break;
+                case "Del":
+                    handleTypes[i] = "删除";
+                    break;
+            }
+        }
         List<String> data = new ArrayList<>();
-        Collections.addAll(data, listItems);
+        Collections.addAll(data, handleTypes);
         if (adapter == null) {
             adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
         } else {
@@ -256,12 +231,14 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {
-//            listItemView = (QMUICommonListItemView) v;
-//            int tag = (int) listItemView.getTag();
-//            Intent intent = new Intent();
-//            intent.putExtra("text", listItemView.getDetailText().toString());
-//            intent.setClass(this, BaseItemEditActivity.class);
-//            startActivityForResult(intent, tag);
+            listItemView = (QMUICommonListItemView) v;
+            int tag = (int) listItemView.getTag();
+            if (tag >= 0 && tag <= 3) {
+                Intent intent = new Intent();
+                intent.putExtra("text", listItemView.getDetailText().toString());
+                intent.setClass(this, BaseItemEditActivity.class);
+                startActivityForResult(intent, tag);
+            }
         };
 
         View.OnClickListener onClickListener4 = v -> {
@@ -284,10 +261,10 @@ public class DeviceDetailActivity extends BaseActivity {
         item0 = groupListView.createItemView(
                 null,
                 containerAttrs[0],
-                name,
+                deviceName,
                 QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+//                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item0.setTag(0);
         section.addItemView(item0, onClickListener);
         item1 = groupListView.createItemView(
@@ -295,7 +272,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[1],
                 parameter,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item1.setTag(1);
         section.addItemView(item1, onClickListener);
         item2 = groupListView.createItemView(
@@ -303,7 +280,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[2],
                 manufactuer,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item2.setTag(2);
         section.addItemView(item2, onClickListener);
         item3 = groupListView.createItemView(
@@ -311,7 +288,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 containerAttrs[3],
                 responsor,
                 QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
+                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item3.setTag(3);
         section.addItemView(item3, onClickListener);
         item4 = groupListView.createItemView(
@@ -338,24 +315,6 @@ public class DeviceDetailActivity extends BaseActivity {
                 QMUICommonListItemView.ACCESSORY_TYPE_NONE);
         item6.setTag(6);
         section.addItemView(item6, onClickListener);
-
-//        //测试部分item7,8
-//        item7 = groupListView.createItemView(
-//                null,
-//                containerAttrs[7],
-//                "测试条目",
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item7.setTag(7);
-//        section.addItemView(item7, onClickListener7);
-//        QMUICommonListItemView item8 = groupListView.createItemView(
-//                null,
-//                containerAttrs[7],
-//                "测试弹窗",
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item8.setTag(8);
-//        section.addItemView(item8, onClickListener8);
 
         section.addTo(groupListView);
 
@@ -411,81 +370,81 @@ public class DeviceDetailActivity extends BaseActivity {
         return R.layout.activity_device_detail;
     }
 
-    @OnClick(R.id.bt)
-    public void onViewClicked() {
-        switch (status) {
-            case 0:
-                bt.setText("借用");
-//                deviceStatus = "可用";
-                operatingEquip(0,0);
-                break;
-            case 1:
-                bt.setText("归还");
-//                deviceStatus = "借用";
-                operatingEquip(1, 1);
-                break;
-            case 2:
-                bt.setText("归还");
-//                deviceStatus = "送检占用";
-                operatingEquip(1,2);
-                break;
-            case 3:
-                bt.setText("送检");
-//                deviceStatus = "送检";
-                operatingEquip(3, 3);
-                break;
-            case 4:
-                bt.setText("无法使用");
-//                deviceStatus = "报废占用";
-                break;
-            case 5:
-                bt.setText("无法使用");
-//                deviceStatus = "报废";
-                break;
-            case 6:
-                bt.setText("解封");
-//                deviceStatus = "封存";
-                operatingEquip(6, 6);
-                break;
-            case 7:
-                bt.setText("无法使用");
-//                deviceStatus = "解封占用";
-                break;
-            case 8:
-                bt.setText("送检");
-//                deviceStatus = "过期";
-                operatingEquip(8, 8);
-                break;
-            case 9:
-                bt.setText("无法使用");
-//                deviceStatus = "外借";
-                break;
-            default:
-                bt.setText("无法使用");
-//                deviceStatus = "无状态信息";
-                break;
-        }
+//    @OnClick(R.id.bt1)
+//    public void onViewClicked() {
+//        switch (status) {
+//            case 0:
+//                bt.setText("借用");
+////                deviceStatus = "可用";
+//                operatingEquip(0,0);
+//                break;
+//            case 1:
+//                bt.setText("归还");
+////                deviceStatus = "借用";
+//                operatingEquip(1, 1);
+//                break;
+//            case 2:
+//                bt.setText("归还");
+////                deviceStatus = "送检占用";
+//                operatingEquip(1,2);
+//                break;
+//            case 3:
+//                bt.setText("送检");
+////                deviceStatus = "送检";
+//                operatingEquip(3, 3);
+//                break;
+//            case 4:
+//                bt.setText("无法使用");
+////                deviceStatus = "报废占用";
+//                break;
+//            case 5:
+//                bt.setText("无法使用");
+////                deviceStatus = "报废";
+//                break;
+//            case 6:
+//                bt.setText("解封");
+////                deviceStatus = "封存";
+//                operatingEquip(6, 6);
+//                break;
+//            case 7:
+//                bt.setText("无法使用");
+////                deviceStatus = "解封占用";
+//                break;
+//            case 8:
+//                bt.setText("送检");
+////                deviceStatus = "过期";
+//                operatingEquip(8, 8);
+//                break;
+//            case 9:
+//                bt.setText("无法使用");
+////                deviceStatus = "外借";
+//                break;
+//            default:
+//                bt.setText("无法使用");
+////                deviceStatus = "无状态信息";
+//                break;
+//        }
+//
+//    }
 
-    }
-
-    private void operatingEquip(int operType, int operState) {
-        String nowString = TimeUtils.getNowString();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("equipId", equipNo);
-        map.put("operType", operType);
-        map.put("msg", "");
-        map.put("operState", operState);
-        map.put("dealer", responsor);
-        map.put("validDate", nowString);
-        map.put("latestVerifyDate", nowString);
-        RetrofitClient.getInstance().getService().operatingEquip(map)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity.this) {
-                    @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-
-                    }
-                });
-    }
+//    private void operatingEquip(int operType, int operState) {
+//        String nowString = TimeUtils.getNowString();
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("equipId", equipNo);
+//        map.put("operType", operType);
+//        map.put("msg", "");
+//        map.put("operState", operState);
+//        map.put("dealer", responsor);
+//        map.put("validDate", nowString);
+//        map.put("latestVerifyDate", nowString);
+//        RetrofitClient.getInstance().getService().operatingEquip(map)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity.this) {
+//                    @Override
+//                    public void onSuccess(BaseResponse baseResponse) {
+//
+//                    }
+//                });
+//    }
 }

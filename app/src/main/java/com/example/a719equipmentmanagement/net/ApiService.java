@@ -5,18 +5,15 @@ import com.example.a719equipmentmanagement.entity.ApplyHistory;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.ContainerData;
+import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
-import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
-import com.example.a719equipmentmanagement.entity.InventoryData;
 import com.example.a719equipmentmanagement.entity.InventoryHistory;
-import com.example.a719equipmentmanagement.entity.InventoryRevordId;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
-import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.ReviewHistory;
 import com.example.a719equipmentmanagement.entity.RoleData;
 import com.example.a719equipmentmanagement.entity.ToAudit;
@@ -33,7 +30,6 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -154,7 +150,7 @@ public interface ApiService {
     //依据id查询设备详情
     @FormUrlEncoded
     @POST("system/equip/get")
-    Single<DeviceData2> getDeviceDetail(@Field("id") String id);
+    Single<DeviceDetailData> getDeviceDetail(@Field("id") String id);
 
     //查找设备数据
     @GET("system/equip/list")

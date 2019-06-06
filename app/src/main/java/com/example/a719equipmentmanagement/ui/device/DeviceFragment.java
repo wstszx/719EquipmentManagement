@@ -279,7 +279,7 @@ public class DeviceFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = rows.get(position);
             int deviceId = currentItemData.getId();
-            DeviceDetailActivity.start(getContext(),deviceId+"");
+            DeviceDetailActivity2.start(getContext(),deviceId+"");
         });
 
 
