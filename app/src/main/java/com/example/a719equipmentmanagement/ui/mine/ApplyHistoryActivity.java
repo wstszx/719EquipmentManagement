@@ -3,11 +3,13 @@ package com.example.a719equipmentmanagement.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ApplyHistoryAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -30,13 +32,14 @@ public class ApplyHistoryActivity extends BaseActivity {
     private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
     private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
     private ApplyHistoryAdapter adapter;
-
+    private int roleId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
-        initAdapter();
+        initAdapter() ;
         initData();
+
     }
 
     private void initData() {
@@ -47,6 +50,13 @@ public class ApplyHistoryActivity extends BaseActivity {
                     public void onSuccess(List<ApplyHistory> applyHistory) {
                         if (applyHistory != null && applyHistory.size() > 0) {
                             adapter.setNewData(applyHistory);
+                        }
+                        else {
+//                            TextView textView = new TextView(InventoryHistoryActivity.this);
+//                            textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//                            textView.setGravity(Gravity.CENTER);
+//                            textView.setText("无数据");
+                            adapter.setEmptyView(R.layout.empty);
                         }
                     }
                 });

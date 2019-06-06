@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.BorrowHistoryAdapter;
 import com.example.a719equipmentmanagement.adapter.ReviewHistoryAdapter;
@@ -33,12 +35,13 @@ public class ReviewHistoryActivity extends BaseActivity {
     private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
     private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
     private ReviewHistoryAdapter adapter;
+    private int roleId;
 
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
-        initAdapter();
+        initAdapter() ;
         initData();
     }
 

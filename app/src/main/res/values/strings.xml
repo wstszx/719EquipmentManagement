@@ -90,4 +90,5 @@
     <string name="more">更多</string>
     <string name="Identity">身份：</string>
     <string name="Contact_information">联系方式：</string>
+    <string name="without_data">无数据</string>
 </resources>

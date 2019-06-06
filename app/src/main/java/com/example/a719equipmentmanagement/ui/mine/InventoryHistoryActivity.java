@@ -3,11 +3,16 @@ package com.example.a719equipmentmanagement.ui.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.InventoryAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -28,13 +33,17 @@ public class InventoryHistoryActivity extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
+    @BindView(R.id.linearlayout)
+    LinearLayout linearlayout;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
     private List<InventoryData> body;
     private InventoryAdapter adapter;
+    private int roleId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+//        roleId = SPUtils.getInstance().getInt("roleId", 0);
         initView();
         initAdapter();
         initData();
@@ -42,6 +51,7 @@ public class InventoryHistoryActivity extends BaseActivity {
 
     private void initAdapter() {
         adapter = new InventoryAdapter(R.layout.return_item);
+        adapter.bindToRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -56,6 +66,12 @@ public class InventoryHistoryActivity extends BaseActivity {
                         List<InventoryHistory.RowsBean> rows = inventoryHistory.getRows();
                         if (rows != null && rows.size() > 0) {
                             adapter.setNewData(rows);
+                        } else {
+//                            TextView textView = new TextView(InventoryHistoryActivity.this);
+//                            textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//                            textView.setGravity(Gravity.CENTER);
+//                            textView.setText("无数据");
+                            adapter.setEmptyView(R.layout.empty);
                         }
                     }
                 });

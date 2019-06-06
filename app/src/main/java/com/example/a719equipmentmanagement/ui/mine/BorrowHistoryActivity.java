@@ -57,6 +57,13 @@ public class BorrowHistoryActivity extends BaseActivity {
                             List<BorrowHistory.RowsBean> rows = borrowHistory.getRows();
                             adapter.setNewData(rows);
                         }
+                        else {
+//                            TextView textView = new TextView(InventoryHistoryActivity.this);
+//                            textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+//                            textView.setGravity(Gravity.CENTER);
+//                            textView.setText("无数据");
+                            adapter.setEmptyView(R.layout.empty);
+                        }
                     }
                 });
     }
