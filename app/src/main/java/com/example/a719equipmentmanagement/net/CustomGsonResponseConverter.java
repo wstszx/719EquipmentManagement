@@ -5,6 +5,7 @@ import com.example.a719equipmentmanagement.utils.JsonUtils;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,8 +31,8 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
         try {
             switch (jsonType) {
                 case JSON_TYPE_ARRAY:
-//                    JSONArray jsonArray = new JSONArray(body);
-//                    body = jsonArray.toString();
+                    JSONArray jsonArray = new JSONArray(body);
+                    body = jsonArray.toString();
                     break;
                 case JSON_TYPE_OBJECT:
                     JSONObject json = new JSONObject(body);
@@ -46,6 +47,7 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
                             value.close();
                             throw new ServerException(code, msg);
                         } else if (code == 500) {
+                            value.close();
                             throw new ServerException(code, msg);
                         }
                     }

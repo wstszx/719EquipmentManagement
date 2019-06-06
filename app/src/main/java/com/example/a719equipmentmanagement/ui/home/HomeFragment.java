@@ -2,7 +2,11 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.SPUtils;
@@ -108,7 +112,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData() {
-//        1,超级系统管理员2，普通用户3，实验室管理员
+//        1,超级系统管理员2，实验室管理员3，普通用户
         RetrofitClient.getInstance().getService().getMe()
                 .subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                 .observeOn(AndroidSchedulers.mainThread())
@@ -127,7 +131,7 @@ public class HomeFragment extends BaseFragment {
     private Single<Object> convertRequest(int roleId) {
         switch (roleId) {
             case 1:
-            case 3:
+            case 2:
                 Single<InvalidEquip> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
@@ -154,7 +158,7 @@ public class HomeFragment extends BaseFragment {
                             return new Object();
                         }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
                         .observeOn(AndroidSchedulers.mainThread());
-            case 2:
+            case 3:
                 Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn()
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread());
@@ -186,8 +190,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initView() {
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recyclerview.setLayoutManager(new GridLayoutManager(getContext(),5));
+        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 5));
         adapter = new HomeAdapter(R.layout.square_match_item);
         recyclerview.setAdapter(adapter);
         int roleId = SPUtils.getInstance().getInt("roleId", 0);
@@ -195,14 +198,19 @@ public class HomeFragment extends BaseFragment {
 //        topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
 //            MsgActivity.start(getActivity());
 //        });
-        topbar.addRightImageButton(R.mipmap.qr, R.id.scan).setOnClickListener(v -> GenarateQRActivity.start(getContext(), null));
 
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.borrow_return, null);
+        view.setOnClickListener(v -> ScanActivity.start(getContext()));
+        RelativeLayout.LayoutParams layoutParams = topbar.generateTopBarImageButtonLayoutParams();
+        layoutParams.addRule(Gravity.CENTER | Gravity.RIGHT);
+        view.setLayoutParams(layoutParams);
+        topbar.addRightView(view, R.id.view);
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview3.setLayoutManager(new LinearLayoutManager(getContext()));
         switch (roleId) {
             case 1:
-            case 3:        //管理员
+            case 2:        //管理员
                 tv1.setText("即将过期的设备:");
                 tv2.setText("我的待审任务:");
                 tv3.setText("我的待办事项:");
@@ -218,7 +226,7 @@ public class HomeFragment extends BaseFragment {
 
                 });
                 break;
-            case 2:         //普通用户
+            case 3:         //普通用户
                 tv1.setText("我的待还设备:");
                 tv2.setText("我的申请进度:");
                 tv3.setText("我的待办事项:");
@@ -261,14 +269,8 @@ public class HomeFragment extends BaseFragment {
                     AccountingListActivity.start(getContext());
                     break;
                 case 4:
-//                    ScanActivity.start(getContext());
                     InventoryRangeActivity.start(getContext());
                     break;
-//                case 5:
-//                    ScanActivity.start(getContext());
-//                    break;
-//                case 5:
-//                    break;
             }
         });
 
