@@ -27,8 +27,8 @@ public class ApplyHistoryActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
+//    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
+//    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
     private ApplyHistoryAdapter adapter;
 
 
@@ -42,11 +42,14 @@ public class ApplyHistoryActivity extends BaseActivity {
     private void initData() {
         RetrofitClient.getInstance().getService().findUserApplyHistory()
                 .compose(CommonCompose.io2main(ApplyHistoryActivity.this))
-                .subscribe(new BaseSubscriber<List<ApplyHistory>>(ApplyHistoryActivity.this) {
+                .subscribe(new BaseSubscriber<ApplyHistory>(ApplyHistoryActivity.this) {
                     @Override
-                    public void onSuccess(List<ApplyHistory> applyHistory) {
-                        if (applyHistory != null && applyHistory.size() > 0) {
-                            adapter.setNewData(applyHistory);
+                    public void onSuccess(ApplyHistory applyHistory) {
+                        if (applyHistory != null) {
+                            List<ApplyHistory.RowsBean> rows = applyHistory.getRows();
+                            if (rows != null && rows.size() > 0) {
+                                adapter.setNewData(rows);
+                            }
                         }
                     }
                 });

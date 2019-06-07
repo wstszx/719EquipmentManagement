@@ -38,7 +38,7 @@ public class PersonInfoActivity extends BaseActivity {
     TextView tvResult2;
     @BindView(R.id.edittext3)
     EditText edittext3;
-    private Me baseResponse;
+    private Me me;
     private int id;
     private String[] sexArray = {"男", "女", "未知"};
     private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
@@ -62,14 +62,15 @@ public class PersonInfoActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
 
                     @Override
-                    public void onSuccess(Me baseResponse) {
-                        if (baseResponse != null) {
-                            PersonInfoActivity.this.baseResponse = baseResponse;
-                            id = baseResponse.getUser().getId();
-                            String userName = baseResponse.getUser().getUserName();
-                            String sex = baseResponse.getUser().getSex();
-                            int roleId = baseResponse.getUser().getRoles().get(0).getRoleId();
-                            String phonenumber = baseResponse.getUser().getPhonenumber();
+                    public void onSuccess(Me me) {
+                        if (me != null) {
+                            PersonInfoActivity.this.me = me;
+                            id = me.getUser().getId();
+                            Me.UserBean user = me.getUser();
+                            String userName = user.getUserName();
+                            String sex = user.getSex();
+                            int roleId = user.getRoles().get(0).getRoleId();
+                            String phonenumber = user.getPhonenumber();
                             edittext.setText(userName);
                             tvResult1.setText(sex);
                             switch (roleId) {
@@ -119,6 +120,7 @@ public class PersonInfoActivity extends BaseActivity {
 
                     }
                 });
+        finish();
     }
 
     @Override

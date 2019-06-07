@@ -21,6 +21,8 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -30,8 +32,6 @@ public class ReviewHistoryActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
     private ReviewHistoryAdapter adapter;
 
 
@@ -48,7 +48,10 @@ public class ReviewHistoryActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<ReviewHistory>(ReviewHistoryActivity.this) {
                     @Override
                     public void onSuccess(ReviewHistory reviewHistory) {
-
+                        List<ReviewHistory.RowsBean> rows = reviewHistory.getRows();
+                        if (rows != null && rows.size() > 0) {
+                            adapter.setNewData(rows);
+                        }
                     }
                 });
     }

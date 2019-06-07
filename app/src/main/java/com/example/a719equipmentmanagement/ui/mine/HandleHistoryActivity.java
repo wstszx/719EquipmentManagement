@@ -28,9 +28,6 @@ public class HandleHistoryActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
-    private String[] result = new String[]{"，点检合格", "，点检不合格，请用户申请报废", "，点检合格"};
     private HandleAdapter adapter;
 
     @Override
@@ -53,9 +50,9 @@ public class HandleHistoryActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<HandleHistory>(HandleHistoryActivity.this) {
                     @Override
                     public void onSuccess(HandleHistory histories) {
-                        List<?> rows = histories.getRows();
+                        List<HandleHistory.RowsBean> rows = histories.getRows();
                         if (rows != null && rows.size() > 0) {
-//                            adapter.setNewData(histories);
+                            adapter.setNewData(rows);
                         }
                     }
                 });

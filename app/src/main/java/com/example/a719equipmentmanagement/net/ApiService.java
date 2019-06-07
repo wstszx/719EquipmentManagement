@@ -267,7 +267,7 @@ public interface ApiService {
 
     //查找当前用户的申请历史
     @GET("system/user/profile/listMyAllApply")
-    Single<List<ApplyHistory>> findUserApplyHistory();
+    Single<ApplyHistory> findUserApplyHistory();
 
     //查找建账入库数据
     @GET("system/setup/nextId")
