@@ -66,7 +66,6 @@ public class DeviceFragment extends BaseFragment {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    private List<View> popupViews = new ArrayList<>();
     private List<BaseSingleFilter> filters = new ArrayList<>();
 
     private DeviceAdapter adapter;
@@ -155,6 +154,8 @@ public class DeviceFragment extends BaseFragment {
     }
 
     private void initView() {
+        List<View> popupViews = new ArrayList<>();
+
 //        三列表
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
