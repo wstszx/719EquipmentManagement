@@ -5,8 +5,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 
-public class AdminToAuditAdapter extends BaseQuickAdapter<ToAudit, BaseViewHolder> {
-    public AdminToAuditAdapter(int layoutResId) {
+public class ToAuditAdapter extends BaseQuickAdapter<ToAudit, BaseViewHolder> {
+    public ToAuditAdapter(int layoutResId) {
         super(layoutResId);
     }
 

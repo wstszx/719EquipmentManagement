@@ -31,8 +31,8 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
         try {
             switch (jsonType) {
                 case JSON_TYPE_ARRAY:
-                    JSONArray jsonArray = new JSONArray(body);
-                    body = jsonArray.toString();
+//                    JSONArray jsonArray = new JSONArray(body);
+//                    body = jsonArray.toString();
                     break;
                 case JSON_TYPE_OBJECT:
                     JSONObject json = new JSONObject(body);

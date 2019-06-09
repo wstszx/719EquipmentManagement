@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
+    android:layout_marginStart="10dp"
     android:layout_marginTop="6dp">
 
     <TextView
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/number"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginStart="16dp"/>
 
     <TextView
         android:id="@+id/invalidDate"
@@ -38,7 +38,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/deviceName"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp"/>
+        android:layout_marginStart="16dp"/>
     <TextView
         android:id="@+id/days"
         android:layout_width="wrap_content"

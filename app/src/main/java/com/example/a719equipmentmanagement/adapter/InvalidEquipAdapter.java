@@ -5,8 +5,8 @@ package com.example.a719equipmentmanagement.adapter;
         import com.example.a719equipmentmanagement.R;
         import com.example.a719equipmentmanagement.entity.InvalidEquip;
 
-public class AdminInvalidEquipAdapter extends BaseQuickAdapter<InvalidEquip, BaseViewHolder> {
-    public AdminInvalidEquipAdapter(int layoutResId) {
+public class InvalidEquipAdapter extends BaseQuickAdapter<InvalidEquip, BaseViewHolder> {
+    public InvalidEquipAdapter(int layoutResId) {
         super(layoutResId);
     }
 

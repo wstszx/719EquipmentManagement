@@ -1,20 +1,15 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.adapter.AdminInvalidEquipAdapter;
-import com.example.a719equipmentmanagement.adapter.AdminToAuditAdapter;
+import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
@@ -45,12 +40,12 @@ public class AdminToAuditActivity extends BaseActivity {
 
     private void initData() {
         recyclerView.setLayoutManager(new LinearLayoutManager(AdminToAuditActivity.this));
-        AdminToAuditAdapter adminToAuditAdapter = new AdminToAuditAdapter(R.layout.admin_to_audit_item);
-        recyclerView.setAdapter(adminToAuditAdapter);
+        ToAuditAdapter toAuditAdapter = new ToAuditAdapter(R.layout.admin_to_audit_item);
+        recyclerView.setAdapter(toAuditAdapter);
         Intent intent = this.getIntent();
 
         List<ToAudit> toAuditList= (List<ToAudit>) intent.getSerializableExtra("serializable");
-        adminToAuditAdapter.setNewData(toAuditList);
+        toAuditAdapter.setNewData(toAuditList);
 
     }
 
