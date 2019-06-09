@@ -12,9 +12,9 @@ public class InvalidEquipAdapter extends BaseQuickAdapter<InvalidEquip, BaseView
 
     @Override
     protected void convert(BaseViewHolder helper, InvalidEquip item) {
-        helper.setText(R.id.deviceName,item.getDeviceName())
-                .setText(R.id.invalidDate,item.getReturnDate()+"到期")
-                .setText(R.id.number,item.getNumber()+"")
-                .setText(R.id.days,"剩余"+item.getDays()+"天");
+//        helper.setText(R.id.deviceName,item.getDeviceName())
+//                .setText(R.id.invalidDate,item.getReturnDate()+"到期")
+//                .setText(R.id.number,item.getNumber()+"")
+//                .setText(R.id.days,"剩余"+item.getDays()+"天");
     }
 }

@@ -121,33 +121,34 @@ public class HomeFragment extends BaseFragment {
         Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, new Function5<InvalidEquip, ToAudit, ToDo, ToReturn, UserToAudit, Object>() {
+        Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, (invalidEquip, toAudit, toDo, toReturn, userToAudit) -> {
+            boolean mainThread = ThreadUtils.isMainThread();
+            if (mainThread) {
+                if (invalidEquip != null) {
 
-            @Override
-            public Object apply(InvalidEquip invalidEquip, ToAudit toAudit, ToDo toDo, ToReturn toReturn, UserToAudit userToAudit) throws Exception {
-                boolean mainThread = ThreadUtils.isMainThread();
-                if (mainThread) {
-                    if (invalidEquip != null) {
-
-                    }
-                    if (toAudit != null) {
-
-                    }
-                    if (toDo != null) {
-
-                    }
-                    if (toReturn != null) {
-                        List<ToReturn.RowsBean> rows = toReturn.getRows();
-                        toReturnAdapter.setNewData(rows);
-                    }
-                    if (userToAudit != null) {
-
-                    }
                 }
-                return null;
+                if (toAudit != null) {
+
+                }
+                if (toDo != null) {
+
+                }
+                if (toReturn != null) {
+                    List<ToReturn.RowsBean> rows = toReturn.getRows();
+                    toReturnAdapter.setNewData(rows);
+                }
+                if (userToAudit != null) {
+
+                }
             }
+            return new Object();
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe();
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new BaseSubscriber<Object>(getContext()) {
+            @Override
+            public void onSuccess(Object o) {
+
+            }
+        });
 ////        1,超级系统管理员2，实验室管理员3，普通用户
 //        RetrofitClient.getInstance().getService().getMe()
 //                .subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1

@@ -12,10 +12,10 @@ public class ToAuditAdapter extends BaseQuickAdapter<ToAudit, BaseViewHolder> {
 
     @Override
     protected void convert(BaseViewHolder helper, ToAudit item) {
-        helper.setText(R.id.deviceName, item.getDeviceName())
-                .setText(R.id.number, item.getNumber() + "")
-                .setText(R.id.auditName, item.getAuditName())
-                .setText(R.id.person, item.getPerson());
+//        helper.setText(R.id.deviceName, item.getDeviceName())
+//                .setText(R.id.number, item.getNumber() + "")
+//                .setText(R.id.auditName, item.getAuditName())
+//                .setText(R.id.person, item.getPerson());
     }
 
 }

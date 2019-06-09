@@ -1,48 +1,41 @@
 package com.example.a719equipmentmanagement.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class InvalidEquip implements Serializable{
-    private int number;
-    private  String deviceName;
-    private String returnDate;
-    private int days;
-    public InvalidEquip(int number,String deviceName,String returnDate,int days) {
-        this.number=number;
-        this.deviceName=deviceName;
-        this.returnDate=returnDate;
-        this.days=days;
+
+    /**
+     * total : 0
+     * rows : []
+     * code : 0
+     */
+
+    private int total;
+    private int code;
+    private List<?> rows;
+
+    public int getTotal() {
+        return total;
     }
 
-    public int getNumber() {
-        return number;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public int getCode() {
+        return code;
     }
 
-    public String getDeviceName() {
-        return deviceName == null ? "" : deviceName;
+    public void setCode(int code) {
+        this.code = code;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
+    public List<?> getRows() {
+        return rows;
     }
 
-    public String getReturnDate() {
-        return returnDate == null ? "" : returnDate;
-    }
-
-    public void setReturnDate(String returnDate) {
-        this.returnDate = returnDate;
-    }
-
-    public int getDays() {
-        return days;
-    }
-
-    public void setDays(int days) {
-        this.days = days;
+    public void setRows(List<?> rows) {
+        this.rows = rows;
     }
 }

@@ -61,14 +61,14 @@ public class AdminInvalidItemActivity extends BaseActivity {
     private void initData() {
         Intent intent = this.getIntent();
         InvalidEquip invalidEquip = (InvalidEquip) intent.getSerializableExtra("serializable");
-        String deviceName = invalidEquip.getDeviceName();
-        String returnDate = invalidEquip.getReturnDate();
-        int days = invalidEquip.getDays();
+//        String deviceName = invalidEquip.getDeviceName();
+//        String returnDate = invalidEquip.getReturnDate();
+//        int days = invalidEquip.getDays();
 
 
-        textView_deviceName.setText(deviceName);
-        textView_invalidDate.setText(returnDate);
-        textView_days.setText(days+"");
+//        textView_deviceName.setText(deviceName);
+//        textView_invalidDate.setText(returnDate);
+//        textView_days.setText(days+"");
     }
 
 
