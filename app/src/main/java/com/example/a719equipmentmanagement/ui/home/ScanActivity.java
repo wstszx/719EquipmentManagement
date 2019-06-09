@@ -68,6 +68,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 //        zxingview.startSpot(); // 开始识别
         if (!StringUtils.isEmpty(result)) {
             DeviceDetailActivity.start(this, result);
+            finish();
         }
     }
 
