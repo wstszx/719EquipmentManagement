@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.home.DeviceClassifiyActivity">
 
     <com.qmuiteam.qmui.widget.QMUITopBar
@@ -12,8 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height" />
 
-    <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
-        android:id="@+id/sticky_section_layout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:background="@color/qmui_config_color_white" />
 </LinearLayout>

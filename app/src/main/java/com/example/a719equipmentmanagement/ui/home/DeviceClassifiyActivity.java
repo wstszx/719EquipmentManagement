@@ -7,17 +7,25 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.adapter.DeviceClassifiyAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ContainerData;
+import com.example.a719equipmentmanagement.entity.ContainerOne;
+import com.example.a719equipmentmanagement.entity.ContainerTwo;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
+import com.example.a719equipmentmanagement.entity.DeviceTypeData;
+import com.example.a719equipmentmanagement.entity.DeviceTypeOne;
+import com.example.a719equipmentmanagement.entity.DeviceTypeTwo;
 import com.example.a719equipmentmanagement.entity.SectionHeader;
 import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
@@ -40,6 +48,7 @@ import java.util.Objects;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,10 +66,11 @@ import retrofit2.Response;
 public class DeviceClassifiyActivity extends BaseActivity {
 
     private static final int EDIT_DEVICE_CLASSIFIY = 1;
+    private static final int ADD_DEVICE_CLASSIFY = 2;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    @BindView(R.id.sticky_section_layout)
-    QMUIStickySectionLayout stickySectionLayout;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
     private QMUIListPopup mListPopup;
     private ArrayAdapter<String> adapter;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
@@ -73,11 +83,14 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private String parentClassifiy;
     private String name;
     private int pid;
+    private DeviceTypeOne deviceTypeOne;
+    private DeviceClassifiy deviceTypeData;
+    private int itemViewType;
+    private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
-        initStickySectionLayout();
         initData();
     }
 
@@ -95,84 +108,69 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void bindUi(List<DeviceClassifiy> body) {
-        ArrayList<QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>>> list = new ArrayList<>();
+        List<MultiItemEntity> list = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy : body) {
-            list.add(createSection(deviceClassifiy));
+            DeviceTypeOne deviceTypeOne = new DeviceTypeOne(deviceClassifiy);
+            List<DeviceClassifiy.CategorysBean> categorys = deviceClassifiy.getCategorys();
+            if (categorys != null && categorys.size() > 0) {
+                for (DeviceClassifiy.CategorysBean category : categorys) {
+                    DeviceTypeTwo deviceTypeTwo = new DeviceTypeTwo(category);
+                    deviceTypeOne.addSubItem(deviceTypeTwo);
+                }
+            }
+            list.add(deviceTypeOne);
         }
-        adapter1.setData(list);
-    }
-
-    private void initStickySectionLayout() {
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        stickySectionLayout.setBackgroundColor(getResources().getColor(R.color.qmui_config_color_white));
-        stickySectionLayout.setLayoutManager(manager);
-        adapter1 = new DeviceClassifiyAdapter();
-        stickySectionLayout.setAdapter(adapter1, true);
-        adapter1.setCallback(new QMUIStickySectionAdapter.Callback<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>>() {
-            @Override
-            public void loadMore(QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> section, boolean loadMoreBefore) {
-
-            }
-
-            @Override
-            public void onItemClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                int itemViewType = holder.getItemViewType();
-                if (itemViewType == 0) {
-                    adapter1.toggleFold(position, false);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter1 = new DeviceClassifiyAdapter(list);
+        adapter1.bindToRecyclerView(recyclerView);
+        adapter1.setEmptyView(R.layout.empty);
+        recyclerView.setAdapter(adapter1);
+        adapter1.setOnItemClickListener((adapter, view, position) -> {
+            int itemViewType = adapter.getItemViewType(position);
+            if (itemViewType == 0) {
+                deviceTypeOne = (DeviceTypeOne) adapter.getData().get(position);
+                ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
+                if (deviceTypeOne.isExpanded()) {
+                    adapter1.collapse(position, true);
+                    Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
+                } else {
+                    adapter1.expand(position, true);
+                    Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                 }
+                deviceTypeData = deviceTypeOne.getData();
             }
+        });
 
-            @Override
-            public boolean onItemLongClick(QMUIStickySectionAdapter.ViewHolder holder, int position) {
-                int itemViewType = holder.getItemViewType();
-                switch (itemViewType) {
-                    case 0:
-                        pid = -1;
-                        parentClassifiy = "无";
-                        QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> headerSection = Objects.requireNonNull(adapter1.getSection(position));
-                        SectionHeader<DeviceClassifiy> header = headerSection.getHeader();
-                        id = header.getText().getId();
-                        name = header.getText().getName();
-                        break;
-                    case 1:
-                        SectionItem<DeviceClassifiy.ListBean> sectionItem = adapter1.getSectionItem(position);
-                        SectionHeader<DeviceClassifiy> header1 = adapter1.getSection(position).getHeader();
-                        parentClassifiy = header1.getText().getName();
-                        if (sectionItem != null) {
-                            pid = sectionItem.getListBean().getPid();
-                            id = sectionItem.getListBean() != null ? sectionItem.getListBean().getId() : id;
-                            name = sectionItem.getListBean() != null ? sectionItem.getListBean().getName() : "";
-                        }
-                        break;
-                }
-                initListPopupIfNeed(deletes);
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(holder.itemView);
-                return true;
+        adapter1.setOnItemLongClickListener((adapter, view, position) -> {
+            itemViewType = adapter.getItemViewType(position);
+            switch (itemViewType) {
+                case 0:
+                    DeviceTypeOne deviceTypeOne = (DeviceTypeOne) adapter.getData().get(position);
+                    DeviceClassifiy data = deviceTypeOne.getData();
+                    id = data.getId();
+                    name = data.getName();
+//                    deptId = data.getDeptId();
+                    break;
+                case 1:
+                    DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) adapter.getData().get(position);
+                    DeviceClassifiy.CategorysBean deviceTypeTwoData = deviceTypeTwo.getData();
+                    name = deviceTypeTwoData.getName();
+                    id = deviceTypeTwoData.getId();
+                    break;
             }
+            initListPopupIfNeed(deletes);
+            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+            mListPopup.show(view);
+            return false;
         });
     }
 
-    private QMUISection<SectionHeader<DeviceClassifiy>, SectionItem<DeviceClassifiy.ListBean>> createSection(DeviceClassifiy deviceClassifiy) {
-        ArrayList<SectionItem<DeviceClassifiy.ListBean>> contents = new ArrayList<>();
-        SectionHeader<DeviceClassifiy> header = new SectionHeader<>(deviceClassifiy);
-        List<DeviceClassifiy.ListBean> list = deviceClassifiy.getList();
-        if (list != null && list.size() > 0) {
-            for (DeviceClassifiy.ListBean listBean : list) {
-                contents.add(new SectionItem<>(listBean));
-            }
-        }
-        // if test load more, you can open the code
-//        section.setExistAfterDataToLoad(true);
-//        section.setExistBeforeDataToLoad(true);
-        return new QMUISection<>(header, contents, true);
-    }
 
     private void initTopbar() {
         topbar.setTitle("设备分类");
         topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            AddDeviceClassifyActivity.start(DeviceClassifiyActivity.this);
+            startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY);
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
@@ -221,12 +219,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
                     String s = textView.getText().toString();
                     switch (s) {
                         case "编辑":
-                            Intent intent = new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class);
-                            intent.putExtra("id", id);
-                            intent.putExtra("name", name);
-                            intent.putExtra("parentClassifiy", parentClassifiy);
-                            intent.putExtra("pid", pid);
-                            startActivityForResult(intent, EDIT_DEVICE_CLASSIFIY);
+                            edit();
                             break;
                         case "删除":
                             delete();
@@ -239,9 +232,20 @@ public class DeviceClassifiyActivity extends BaseActivity {
         }
     }
 
+    private void edit() {
+        Intent intent = new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("parentClassifiy", parentClassifiy);
+        intent.putExtra("pid", pid);
+        startActivityForResult(intent, EDIT_DEVICE_CLASSIFIY);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        initData();
+        if (resultCode == RESULT_OK) {
+            initData();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

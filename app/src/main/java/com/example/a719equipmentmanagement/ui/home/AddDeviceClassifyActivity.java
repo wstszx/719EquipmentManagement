@@ -72,10 +72,11 @@ public class AddDeviceClassifyActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceClassifyActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK);
-                        finish();
+
                     }
                 });
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override

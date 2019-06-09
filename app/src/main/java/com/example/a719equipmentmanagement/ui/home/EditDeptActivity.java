@@ -104,12 +104,7 @@ public class EditDeptActivity extends BaseActivity {
         TextView textView2 = include_2.findViewById(R.id.tv_title);
         tv_result = include_2.findViewById(R.id.tv_result);
         textView2.setText(containerAttrs[1]);
-        include_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(EditDeptActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
-            }
-        });
+        include_2.setOnClickListener(v -> startActivityForResult(new Intent(EditDeptActivity.this, ChoiceDeptActivity.class), EDIT_DEPT));
         includedLayout3.tv_title.setText(containerAttrs[3]);
         includedLayout4.tv_title.setText(containerAttrs[4]);
         includedLayout5.tv_title.setText(containerAttrs[5]);
@@ -199,10 +194,11 @@ public class EditDeptActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditDeptActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK, new Intent());
-                        finish();
+
                     }
                 });
+        setResult(RESULT_OK, new Intent());
+        finish();
     }
 
     public static void start(Context context) {

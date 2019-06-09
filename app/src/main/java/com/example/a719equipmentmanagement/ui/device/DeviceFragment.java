@@ -407,9 +407,9 @@ public class DeviceFragment extends BaseFragment {
             BaseSingleFilter filterKey = new BaseSingleFilter();
             filterKey.setName(name);
             filterKey.setId(id);
-            List<DeviceClassifiy.ListBean> deviceClassifiyListBeanList = deviceClassifiy.getList();
+            List<DeviceClassifiy.CategorysBean> deviceClassifiyListBeanList = deviceClassifiy.getCategorys();
             List<BaseSingleFilter> filterValueList = new ArrayList<>();
-            for (DeviceClassifiy.ListBean listBean : deviceClassifiyListBeanList) {
+            for (DeviceClassifiy.CategorysBean listBean : deviceClassifiyListBeanList) {
                 BaseSingleFilter filterValue = new BaseSingleFilter();
                 int id1 = listBean.getId();
                 String name1 = listBean.getName();

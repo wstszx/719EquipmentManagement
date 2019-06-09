@@ -30,7 +30,7 @@ public class ContainerManageAdapter extends BaseMultiItemQuickAdapter<MultiItemE
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    private static final int LEVEL_ONE = 0;
+    public static final int LEVEL_ONE = 0;
     private static final int LEVEL_TWO = 1;
     public ContainerManageAdapter(List<MultiItemEntity> data) {
         super(data);

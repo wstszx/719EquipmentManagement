@@ -101,8 +101,9 @@ public interface ApiService {
     Single<List<ContainerData>> findContainerData();
 
     //删除货柜
+    @FormUrlEncoded
     @POST("system/container/del")
-    Single<BaseResponse> deleteContainer(@Body RequestBody requestBody);
+    Single<BaseResponse> deleteContainer(@Field("id") int id);
 
 
     /*------  dept-controller -------*/

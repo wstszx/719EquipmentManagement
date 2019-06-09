@@ -97,9 +97,9 @@ public class ChoiceDeptActivity extends BaseActivity {
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
 
-        for (int i = 0; i < adapter.getData().size(); i++) {
-            adapter.expand(i, true);
-        }
+//        for (int i = 0; i < adapter.getData().size(); i++) {
+//            adapter.expand(i, true);
+//        }
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             MultiItemEntity multiItemEntity = (MultiItemEntity) adapter1.getData().get(position);
             int itemType = multiItemEntity.getItemType();

@@ -74,6 +74,7 @@ public class ContainerManageActivity extends BaseActivity {
 
     private static final int EDIT_CONTAINER = 1;
     private static final int ADD_CONTAINER = 2;
+    private static final int EDIT_CONTAINER_LEVEL = 3;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
@@ -88,6 +89,8 @@ public class ContainerManageActivity extends BaseActivity {
     private int id;
     private ContainerData containerData;
     private int itemViewType;
+    private int deptId;
+    private String name;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -113,9 +116,11 @@ public class ContainerManageActivity extends BaseActivity {
         for (ContainerData containerData : body) {
             ContainerOne containerOne = new ContainerOne(containerData);
             List<ContainerData.ContainersBean> containers = containerData.getContainers();
-            for (ContainerData.ContainersBean container : containers) {
-                ContainerTwo containerTwo = new ContainerTwo(container);
-                containerOne.addSubItem(containerTwo);
+            if (containers != null && containers.size() > 0) {
+                for (ContainerData.ContainersBean container : containers) {
+                    ContainerTwo containerTwo = new ContainerTwo(container);
+                    containerOne.addSubItem(containerTwo);
+                }
             }
             list.add(containerOne);
         }
@@ -146,14 +151,15 @@ public class ContainerManageActivity extends BaseActivity {
                 case 0:
                     ContainerOne containerOne = (ContainerOne) adapter.getData().get(position);
                     ContainerData data = containerOne.getData();
-                    String name = data.getName();
-                    int deptId = data.getDeptId();
+                    id = data.getId();
+                    name = data.getName();
+                    deptId = data.getDeptId();
                     break;
                 case 1:
                     ContainerTwo containerTwo = (ContainerTwo) adapter.getData().get(position);
                     ContainerData.ContainersBean containerTwoData = containerTwo.getData();
-                    String name1 = containerTwoData.getName();
-                    int id = containerTwoData.getId();
+                    name = containerTwoData.getName();
+                    id = containerTwoData.getId();
                     break;
             }
             initListPopupIfNeed(itemDeletes);
@@ -205,31 +211,38 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void edit() {
+        Intent intent = new Intent();
+        intent.putExtra("name", name);
+        intent.putExtra("deptId", deptId);
+        intent.putExtra("id", id);
         switch (itemViewType) {
             case 0:
-                startActivityForResult(new Intent(ContainerManageActivity.this, EditContainerActivity.class), EDIT_CONTAINER);
+                intent.setClass(ContainerManageActivity.this, EditContainerActivity.class);
+                startActivityForResult(intent, EDIT_CONTAINER);
                 break;
             case 1:
-
+                intent.setClass(ContainerManageActivity.this, EditContainerLevelActivity.class);
+                startActivityForResult(intent, EDIT_CONTAINER_LEVEL);
                 break;
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (data != null && resultCode == RESULT_OK) {
-            if (requestCode == EDIT_CONTAINER) {
-                initData();
-            } else if (requestCode == ADD_CONTAINER) {
-                initData();
-            }
+        if (resultCode == RESULT_OK) {
+            initData();
+//            if (requestCode == EDIT_CONTAINER) {
+//                initData();
+//            } else if (requestCode == ADD_CONTAINER) {
+//                initData();
+//            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void delete() {
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), id + "");
-        RetrofitClient.getInstance().getService().deleteContainer(requestBody)
+//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), id + "");
+        RetrofitClient.getInstance().getService().deleteContainer(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {

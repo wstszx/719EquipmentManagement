@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ChoiceContainerAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder> {
     public static final int LEVEL_ONE = 0;
-    public static final int LEVEL_TWO = 1;
+    private static final int LEVEL_TWO = 1;
 
     /**
      * Same as QuickAdapter#QuickAdapter(Context,int) but with

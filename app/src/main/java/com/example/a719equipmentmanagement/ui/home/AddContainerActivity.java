@@ -51,6 +51,7 @@ public class AddContainerActivity extends BaseActivity {
     private int deptId;
     private String containerId;
     private String containerNum;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -133,8 +134,9 @@ public class AddContainerActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ADD_DEPT) {
             if (data != null) {
+                pid = data.getIntExtra("pid",0);
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("id", 0);
+                deptId = data.getIntExtra("deptId", 0);
                 tvResult1.setText(name);
             }
         }
