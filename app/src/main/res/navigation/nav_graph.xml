@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/inventoryTaskActivity">
+    app:startDestination="@id/inventoryTaskFragment">
     <fragment
         android:id="@+id/scanFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.ScanFragment"
@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_scanFragment_to_confirmScanFragment"
             app:destination="@id/confirmScanFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_inventoryTaskFragment"
+            app:destination="@id/inventoryTaskFragment" />
     </fragment>
     <fragment
         android:id="@+id/confirmScanFragment"
@@ -22,8 +25,24 @@
             android:id="@+id/action_confirmScanFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
     </fragment>
-    <activity
-        android:id="@+id/inventoryTaskActivity"
+    <fragment
+        android:id="@+id/inventoryTaskFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.InventoryTaskFragment"
-        android:label="InventoryTaskActivity" />
+        android:label="InventoryTaskFragment" >
+        <action
+            android:id="@+id/action_inventoryTaskFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_inventoryTaskFragment_to_newInventoryTaskFragment"
+            app:destination="@id/newInventoryTaskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newInventoryTaskFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.NewInventoryTaskFragment"
+        android:label="fragment_new_inventory_task"
+        tools:layout="@layout/fragment_new_inventory_task" >
+        <action
+            android:id="@+id/action_newInventoryTaskFragment_to_inventoryTaskFragment"
+            app:destination="@id/inventoryTaskFragment" />
+    </fragment>
 </navigation>

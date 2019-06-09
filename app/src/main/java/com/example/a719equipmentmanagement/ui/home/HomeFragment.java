@@ -231,7 +231,7 @@ public class HomeFragment extends BaseFragment {
                     AccountingListActivity.start(getContext());
                     break;
                 case 4:
-                    InventoryRangeActivity.start(getContext());
+                    InventoryActivity.start(getContext());
                     break;
             }
         });
