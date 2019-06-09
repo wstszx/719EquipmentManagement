@@ -9,6 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.AccountingListAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -24,7 +25,9 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -84,8 +87,16 @@ public class AccountingListActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AccountingListActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        // TODO: 2019/5/29 修改生成二维码
+                        String msg = baseResponse.getMsg();
+                        String regEx = "[^0-9]+";
+                        Pattern pattern = Pattern.compile(regEx);
+                        //用定义好的正则表达式拆分字符串，把字符串中的数字留出来
+                        String[] cs = pattern.split(msg);
+                        for (String c : cs) {
+                            setups.add(Integer.parseInt(c));
+                        }
                         GenarateQRActivity.start(AccountingListActivity.this, setups);
+                        finish();
                     }
                 });
     }
@@ -107,9 +118,7 @@ public class AccountingListActivity extends BaseActivity {
                             JSONObject jsonObject;
                             try {
                                 jsonObject = new JSONObject(accounting);
-//                                jsonObjects.add(jsonObject);
                                 adapter.addData(jsonObject);
-//                                adapter.addData(jsonObjects);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -122,7 +131,6 @@ public class AccountingListActivity extends BaseActivity {
 
     @OnClick(R.id.constraint)
     public void onViewClicked() {
-//        AccountingActivity.start(this);
         startActivityForResult(new Intent(AccountingListActivity.this, AccountingActivity.class), ACCOUNTING);
     }
 
