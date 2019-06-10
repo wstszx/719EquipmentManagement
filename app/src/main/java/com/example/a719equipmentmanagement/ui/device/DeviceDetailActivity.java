@@ -13,10 +13,12 @@ import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -149,31 +151,42 @@ public class DeviceDetailActivity extends BaseActivity {
     private void getDeviceDetail(String id) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("equipNo", id);
-        Single<BaseResponse> baseResponseSingle = RetrofitClient.getInstance().getService().updataDeviceType(id)
+        Single<DeviceScanData> baseResponseSingle = RetrofitClient.getInstance().getService().getScanData(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single.zip(baseResponseSingle, deviceData2Single, new BiFunction<BaseResponse, DeviceData2, Object>() {
-
-            @Override
-            public Object apply(BaseResponse response, DeviceData2 deviceData2) throws Exception {
-                if (deviceData2 != null) {
-                    List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-                    if (rows != null && rows.size() > 0) {
-                        DeviceData2.RowsBean rowsBean = rows.get(0);
-                        setData(rowsBean);
+        Single.zip(baseResponseSingle, deviceData2Single, (response, deviceData2) -> {
+            if (deviceData2 != null) {
+                List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+                if (rows != null && rows.size() > 0) {
+                    DeviceData2.RowsBean rowsBean = rows.get(0);
+                    setData(rowsBean);
+                }
+            }
+            if (response != null) {
+                DeviceScanData.DataBean data = response.getData();
+                if (data != null) {
+                    opers = data.getOpers();
+                    if (opers != null && opers.size() > 0) {
+                        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+                            initListPopupIfNeed(opers);
+                            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                            mListPopup.show(v);
+                        });
+                    } else {
+                        topbar.removeAllRightViews();
                     }
                 }
-                if (response != null) {
-
-                }
-                return null;
             }
+            return null;
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new BaseSubscriber<Object>(this) {
+
+                });
 //        RetrofitClient.getInstance().getService().findDeviceData(map)
 //                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
 //                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
@@ -192,17 +205,7 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void setData(DeviceData2.RowsBean rowsBean) {
         DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
-        opers = rowsBean.getOpers();
-        if (opers != null && opers.size() > 0) {
-            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-                initListPopupIfNeed(opers);
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(v);
-            });
-        } else {
-            topbar.removeAllRightViews();
-        }
+
         DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
         equipNo = rowsBean.getEquipNo();
         name = rowsBean.getName();
@@ -295,7 +298,51 @@ public class DeviceDetailActivity extends BaseActivity {
                     TextView textView = (TextView) view;
                     String s = textView.getText().toString();
                     switch (s) {
-
+                        case "借用":
+                            operatingEquip(1, status, s);
+                            break;
+                        case "归还":
+                            operatingEquip(2, status, s);
+                            break;
+                        case "送检申请":
+                            operatingEquip(3, status, s);
+                            break;
+                        case "审核送检":
+                            operatingEquip(4, status, s);
+                            break;
+                        case "送检借出":
+                            operatingEquip(5, status, s);
+                            break;
+                        case "送检归还":
+                            operatingEquip(6, status, s);
+                            break;
+                        case "报废申请":
+                            operatingEquip(7, status, s);
+                            break;
+                        case "审核报废":
+                            operatingEquip(8, status, s);
+                            break;
+                        case "报废处理":
+                            operatingEquip(9, status, s);
+                            break;
+                        case "封存":
+                            operatingEquip(10, status, s);
+                            break;
+                        case "解封申请":
+                            operatingEquip(11, status, s);
+                            break;
+                        case "审核解封":
+                            operatingEquip(12, status, s);
+                            break;
+                        case "解封":
+                            operatingEquip(13, status, s);
+                            break;
+                        case "编辑":
+                            operatingEquip(14, status, s);
+                            break;
+                        case "删除":
+                            operatingEquip(15, status, s);
+                            break;
                     }
                     mListPopup.dismiss();
                 }
@@ -450,7 +497,14 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
 
-    private void operatingEquip(int operType, int operState) {
+    /**
+     * 操作设备
+     *
+     * @param operType
+     * @param operState
+     * @param text
+     */
+    private void operatingEquip(int operType, int operState, String text) {
         String nowString = TimeUtils.getNowString();
         HashMap<String, Object> map = new HashMap<>();
         map.put("equipId", equipNo);
@@ -466,7 +520,10 @@ public class DeviceDetailActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        int code = baseResponse.getCode();
+                        if (code == 0) {
+                            ToastUtils.showShort(text + "成功");
+                        }
                     }
                 });
         finish();

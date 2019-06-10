@@ -8,6 +8,7 @@ import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
@@ -87,7 +88,7 @@ public interface ApiService {
     //更新设备分类数据
     @FormUrlEncoded
     @POST("system/equip/scan")
-    Single<BaseResponse> updataDeviceType(@Field("id") String id);
+    Single<DeviceScanData> getScanData(@Field("id") String id);
 
 
     /*------  container-controller -------*/

@@ -44,8 +44,8 @@ public class AdminToAuditActivity extends BaseActivity {
         recyclerView.setAdapter(toAuditAdapter);
         Intent intent = this.getIntent();
 
-        List<ToAudit> toAuditList= (List<ToAudit>) intent.getSerializableExtra("serializable");
-        toAuditAdapter.setNewData(toAuditList);
+//        List<ToAudit> toAuditList= (List<ToAudit>) intent.getSerializableExtra("serializable");
+//        toAuditAdapter.setNewData(toAuditList);
 
     }
 

@@ -124,24 +124,41 @@ public class HomeFragment extends BaseFragment {
         Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, (invalidEquip, toAudit, toDo, toReturn, userToAudit) -> {
             boolean mainThread = ThreadUtils.isMainThread();
             if (mainThread) {
-                if (invalidEquip != null) {
-
+                if (invalidEquip != null && invalidEquip.size() > 0) {
+                    if (invalidEquip.size() > 3) {
+                        invalidEquip = invalidEquip.subList(0, 3);
+                    }
+                    invalidEquipAdapter.setNewData(invalidEquip);
                 }
                 if (toAudit != null) {
-
+                    List<ToAudit.RowsBean> rows = toAudit.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    toAuditAdapter.setNewData(rows);
                 }
                 if (toDo != null) {
 
                 }
                 if (toReturn != null) {
                     List<ToReturn.RowsBean> rows = toReturn.getRows();
-                    if (rows.size() > 3) {
-                        rows.subList(0, 3);
+                    if (rows != null && rows.size() > 0) {
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
                     }
                     toReturnAdapter.setNewData(rows);
                 }
                 if (userToAudit != null) {
-
+                    List<UserToAudit.RowsBean> rows = userToAudit.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    applyProgressAdapter.setNewData(rows);
                 }
             }
             return new Object();
