@@ -10,28 +10,16 @@
         android:label="fragment_scan"
         tools:layout="@layout/fragment_scan" >
         <action
-            android:id="@+id/action_scanFragment_to_confirmScanFragment"
-            app:destination="@id/confirmScanFragment" />
-        <action
             android:id="@+id/action_scanFragment_to_inventoryTaskFragment"
             app:destination="@id/inventoryTaskFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/confirmScanFragment"
-        android:name="com.example.a719equipmentmanagement.ui.home.ConfirmScanFragment"
-        android:label="fragment_confirm_scan"
-        tools:layout="@layout/fragment_confirm_scan" >
         <action
-            android:id="@+id/action_confirmScanFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
+            android:id="@+id/action_scanFragment_to_deviceDetailFragment"
+            app:destination="@id/deviceDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/inventoryTaskFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.InventoryTaskFragment"
         android:label="InventoryTaskFragment" >
-        <action
-            android:id="@+id/action_inventoryTaskFragment_to_scanFragment"
-            app:destination="@id/scanFragment" />
         <action
             android:id="@+id/action_inventoryTaskFragment_to_newInventoryTaskFragment"
             app:destination="@id/newInventoryTaskFragment" />
@@ -44,5 +32,16 @@
         <action
             android:id="@+id/action_newInventoryTaskFragment_to_inventoryTaskFragment"
             app:destination="@id/inventoryTaskFragment" />
+        <action
+            android:id="@+id/action_newInventoryTaskFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/deviceDetailFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.DeviceDetailFragment"
+        android:label="DeviceDetailFragment" >
+        <action
+            android:id="@+id/action_deviceDetailFragment_to_scanFragment"
+            app:destination="@id/scanFragment" />
     </fragment>
 </navigation>

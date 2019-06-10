@@ -13,6 +13,6 @@ public class InvalidEquipAdapter extends BaseQuickAdapter<InvalidEquip, BaseView
     @Override
     protected void convert(BaseViewHolder helper, InvalidEquip item) {
         helper.setText(R.id.deviceName, item.getName())
-                .setText(R.id.number, item.getDept().getDeptName());
+                .setText(R.id.number, item.getEquipNo());
     }
 }

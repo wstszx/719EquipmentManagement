@@ -8,21 +8,22 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.SPUtils;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.blankj.utilcode.util.ThreadUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ApplyProgressAdapter;
+import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.InvalidEquipAdapter;
 import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
 import com.example.a719equipmentmanagement.adapter.ToDoAdapter;
-import com.example.a719equipmentmanagement.adapter.HomeAdapter;
 import com.example.a719equipmentmanagement.adapter.ToReturnAdapter;
-import com.example.a719equipmentmanagement.adapter.UserToAuditAdapter;
-import com.example.a719equipmentmanagement.adapter.UserToDoAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
-import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
@@ -31,20 +32,14 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Single;
-import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
-import io.reactivex.functions.Function5;
 import io.reactivex.schedulers.Schedulers;
 
 public class HomeFragment extends BaseFragment {
@@ -69,12 +64,20 @@ public class HomeFragment extends BaseFragment {
     TextView tv3;
     @BindView(R.id.tv_more3)
     TextView tvMore3;
+    @BindView(R.id.tv_more4)
+    TextView tvMore4;
+    @BindView(R.id.tv_more5)
+    TextView tvMore5;
     @BindView(R.id.recyclerview3)
     RecyclerView recyclerview3;
     @BindView(R.id.recyclerview4)
     RecyclerView recyclerview4;
     @BindView(R.id.recyclerview5)
     RecyclerView recyclerview5;
+    @BindView(R.id.tv_4)
+    TextView tv4;
+    @BindView(R.id.tv_5)
+    TextView tv5;
     private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "盘点"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage,
             R.mipmap.inventory};
@@ -99,11 +102,11 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initAdapter() {
-        invalidEquipAdapter = new InvalidEquipAdapter(R.layout.admin_invalid_equip_item);
-        toAuditAdapter = new ToAuditAdapter(R.layout.admin_invalid_equip_item);
-        toDoAdapter = new ToDoAdapter(R.layout.admin_invalid_equip_item);
-        toReturnAdapter = new ToReturnAdapter(R.layout.admin_invalid_equip_item);
-        applyProgressAdapter = new ApplyProgressAdapter(R.layout.admin_invalid_equip_item);
+        invalidEquipAdapter = new InvalidEquipAdapter(R.layout.invalid_equip_item);
+        toAuditAdapter = new ToAuditAdapter(R.layout.invalid_equip_item);
+        toDoAdapter = new ToDoAdapter(R.layout.invalid_equip_item);
+        toReturnAdapter = new ToReturnAdapter(R.layout.invalid_equip_item);
+        applyProgressAdapter = new ApplyProgressAdapter(R.layout.invalid_equip_item);
     }
 
     private void initData() {
@@ -126,6 +129,7 @@ public class HomeFragment extends BaseFragment {
             if (mainThread) {
                 if (invalidEquip != null && invalidEquip.size() > 0) {
                     if (invalidEquip.size() > 3) {
+                        tvMore1.setVisibility(View.VISIBLE);
                         invalidEquip = invalidEquip.subList(0, 3);
                     }
                     invalidEquipAdapter.setNewData(invalidEquip);
@@ -134,6 +138,7 @@ public class HomeFragment extends BaseFragment {
                     List<ToAudit.RowsBean> rows = toAudit.getRows();
                     if (rows != null && rows.size() > 0) {
                         if (rows.size() > 3) {
+                            tvMore2.setVisibility(View.VISIBLE);
                             rows = rows.subList(0, 3);
                         }
                     }
@@ -146,6 +151,7 @@ public class HomeFragment extends BaseFragment {
                     List<ToReturn.RowsBean> rows = toReturn.getRows();
                     if (rows != null && rows.size() > 0) {
                         if (rows.size() > 3) {
+                            tvMore4.setVisibility(View.VISIBLE);
                             rows = rows.subList(0, 3);
                         }
                     }
@@ -155,6 +161,7 @@ public class HomeFragment extends BaseFragment {
                     List<UserToAudit.RowsBean> rows = userToAudit.getRows();
                     if (rows != null && rows.size() > 0) {
                         if (rows.size() > 3) {
+                            tvMore5.setVisibility(View.VISIBLE);
                             rows = rows.subList(0, 3);
                         }
                     }
@@ -209,24 +216,18 @@ public class HomeFragment extends BaseFragment {
         recyclerview3.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview4.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerview1.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview2.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview3.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview4.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview5.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+
         recyclerview1.setAdapter(invalidEquipAdapter);
         recyclerview2.setAdapter(toAuditAdapter);
         recyclerview3.setAdapter(toDoAdapter);
         recyclerview4.setAdapter(toReturnAdapter);
         recyclerview5.setAdapter(applyProgressAdapter);
 
-//        tvMore1.setOnClickListener(v -> AdminInvalidEquipActivity.start(getContext(), (Serializable) invalidEquipList));
-//        tvMore2.setOnClickListener(v -> AdminToAuditActivity.start(getContext(), (Serializable) toAuditList));
-//        tvMore3.setOnClickListener(v -> {
-//
-//        });
-
-        //                invalidEquipAdapter.setNewData();
-//                toAuditAdapter.setNewData();
-//                toDoAdapter.setNewData();
-//                toReturnAdapter.setNewData();
-//                userToAuditAdapter.setNewData();
-//                userToDoAdapter.setNewData();
     }
 
     private void initMenu() {
@@ -267,5 +268,26 @@ public class HomeFragment extends BaseFragment {
             fragment = new HomeFragment();
         }
         return fragment;
+    }
+
+    @OnClick({R.id.tv_more1, R.id.tv_more2, R.id.tv_more3, R.id.tv_more4, R.id.tv_more5})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_more1:
+                InvalidEquipActivity.start(getContext());
+                break;
+            case R.id.tv_more2:
+                ToAuditActivity.start(getContext());
+                break;
+            case R.id.tv_more3:
+                ToDoListActivity.start(getContext());
+                break;
+            case R.id.tv_more4:
+                ToReturnDeviceActivity.start(getContext());
+                break;
+            case R.id.tv_more5:
+                ApplyProgressActivity.start(getContext());
+                break;
+        }
     }
 }

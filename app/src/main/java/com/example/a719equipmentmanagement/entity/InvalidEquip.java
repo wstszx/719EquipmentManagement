@@ -1,6 +1,7 @@
 package com.example.a719equipmentmanagement.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InvalidEquip implements Serializable {
@@ -81,7 +82,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getCreateBy() {
-        return createBy;
+        return createBy == null ? "" : createBy;
     }
 
     public void setCreateBy(String createBy) {
@@ -89,7 +90,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return createTime == null ? "" : createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -97,7 +98,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getUpdateBy() {
-        return updateBy;
+        return updateBy == null ? "" : updateBy;
     }
 
     public void setUpdateBy(String updateBy) {
@@ -105,7 +106,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getUpdateTime() {
-        return updateTime;
+        return updateTime == null ? "" : updateTime;
     }
 
     public void setUpdateTime(String updateTime) {
@@ -113,7 +114,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getRemark() {
-        return remark;
+        return remark == null ? "" : remark;
     }
 
     public void setRemark(String remark) {
@@ -121,7 +122,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getEquipNo() {
-        return equipNo;
+        return equipNo == null ? "" : equipNo;
     }
 
     public void setEquipNo(String equipNo) {
@@ -129,7 +130,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getSn() {
-        return sn;
+        return sn == null ? "" : sn;
     }
 
     public void setSn(String sn) {
@@ -169,7 +170,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
@@ -177,7 +178,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getSource() {
-        return source;
+        return source == null ? "" : source;
     }
 
     public void setSource(String source) {
@@ -185,7 +186,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getParameter() {
-        return parameter;
+        return parameter == null ? "" : parameter;
     }
 
     public void setParameter(String parameter) {
@@ -193,7 +194,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getManufactuer() {
-        return manufactuer;
+        return manufactuer == null ? "" : manufactuer;
     }
 
     public void setManufactuer(String manufactuer) {
@@ -209,7 +210,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getResponsor() {
-        return responsor;
+        return responsor == null ? "" : responsor;
     }
 
     public void setResponsor(String responsor) {
@@ -233,7 +234,7 @@ public class InvalidEquip implements Serializable {
     }
 
     public String getValidDate() {
-        return validDate;
+        return validDate == null ? "" : validDate;
     }
 
     public void setValidDate(String validDate) {
@@ -273,6 +274,9 @@ public class InvalidEquip implements Serializable {
     }
 
     public List<?> getOpers() {
+        if (opers == null) {
+            return new ArrayList<>();
+        }
         return opers;
     }
 

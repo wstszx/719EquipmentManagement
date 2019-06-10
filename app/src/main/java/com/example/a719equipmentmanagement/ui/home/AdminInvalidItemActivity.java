@@ -32,7 +32,7 @@ public class AdminInvalidItemActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_admin_invalid_item;
+        return R.layout.activity_invalid_item;
     }
 
     @Override

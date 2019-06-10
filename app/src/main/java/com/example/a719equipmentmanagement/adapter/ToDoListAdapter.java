@@ -5,8 +5,8 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 
-public class UserToDoAdapter extends BaseQuickAdapter<UserToDo,BaseViewHolder> {
-    public UserToDoAdapter(int layoutResId) {
+public class ToDoListAdapter extends BaseQuickAdapter<UserToDo,BaseViewHolder> {
+    public ToDoListAdapter(int layoutResId) {
         super(layoutResId);
     }
     @Override

@@ -16,9 +16,9 @@ public class RetrofitClient {
 
     private RetrofitClient() {
         OkHttpClient okHttpClient = OkHttpProvider.createOkHttpClient();
-        String BASE_URL = "http://222.20.72.248/";
+//        String BASE_URL = "http://222.20.72.248/";
 //        String BASE_URL = "http://10.11.48.142/";
-//        String BASE_URL = "http://127.0.0.1/";
+        String BASE_URL = "http://127.0.0.1/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)

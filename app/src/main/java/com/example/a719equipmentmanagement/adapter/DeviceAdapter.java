@@ -28,9 +28,9 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
                 .setText(R.id.textView3, item.getEquipNo());
 
         DeviceData2.RowsBean.DeptBean dept = item.getDept();
-        helper.setText(R.id.textView4,dept==null?"无部门信息":dept.getDeptName());
+        helper.setText(R.id.textView4, dept == null ? "无部门信息" : dept.getDeptName());
         DeviceData2.RowsBean.LocationBean location = item.getLocation();
-        helper.setText(R.id.textView6,location==null?"无位置信息":location.getName());
+        helper.setText(R.id.textView6, location == null ? "无位置信息" : location.getName());
 //        //暂时添加货架
 //        switch (item.getLocationId()) {
 //            case 0:
@@ -89,7 +89,7 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
                 helper.setText(R.id.textView5, "外借");
                 break;
             default:
-                helper.setBackgroundColor(R.id.textView5,Color.parseColor("#ffffff"));
+                helper.setBackgroundColor(R.id.textView5, Color.parseColor("#ffffff"));
                 break;
 
         }

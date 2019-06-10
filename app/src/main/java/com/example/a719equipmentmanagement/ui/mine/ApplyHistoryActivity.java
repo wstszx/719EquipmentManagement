@@ -27,8 +27,6 @@ public class ApplyHistoryActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-//    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-//    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
     private ApplyHistoryAdapter adapter;
 
 

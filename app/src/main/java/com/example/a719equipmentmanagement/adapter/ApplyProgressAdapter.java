@@ -20,5 +20,4 @@ public class ApplyProgressAdapter extends BaseQuickAdapter<UserToAudit.RowsBean,
                     .setText(R.id.number, equip.getEquipNo());
         }
     }
-
 }

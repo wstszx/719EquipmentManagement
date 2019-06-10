@@ -2,6 +2,7 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 
 import androidx.navigation.Navigation;
@@ -37,12 +38,12 @@ public class NewInventoryTaskFragment extends BaseFragment {
     private void initTopbar() {
         topbar.setTitle("新建盘点任务");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            newInventoryTask();
+            newInventoryTask(v);
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
     }
 
-    private void newInventoryTask() {
+    private void newInventoryTask(View v) {
         String name = edittext.getText().toString();
         HashMap<String, Object> map = new HashMap<>();
         map.put("name", name);
@@ -54,7 +55,7 @@ public class NewInventoryTaskFragment extends BaseFragment {
                     public void onSuccess(BaseResponse response) {
                         if (response != null && response.getCode() == 0) {
                             getActivity().finish();
-                            ScanActivity.start(getContext());
+                            Navigation.findNavController(v).navigate(R.id.scanFragment);
                         }
                     }
                 });
