@@ -43,7 +43,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 
 public class DeviceDetailActivity extends BaseActivity {
@@ -147,20 +149,45 @@ public class DeviceDetailActivity extends BaseActivity {
     private void getDeviceDetail(String id) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("equipNo", id);
-        RetrofitClient.getInstance().getService().findDeviceData(map)
-                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
-                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
-                    @Override
-                    public void onSuccess(DeviceData2 deviceData2) {
-                        if (deviceData2 != null) {
-                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-                            if (rows != null && rows.size() > 0) {
-                                DeviceData2.RowsBean rowsBean = rows.get(0);
-                                setData(rowsBean);
-                            }
-                        }
+        Single<BaseResponse> baseResponseSingle = RetrofitClient.getInstance().getService().updataDeviceType(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single.zip(baseResponseSingle, deviceData2Single, new BiFunction<BaseResponse, DeviceData2, Object>() {
+
+            @Override
+            public Object apply(BaseResponse response, DeviceData2 deviceData2) throws Exception {
+                if (deviceData2 != null) {
+                    List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        DeviceData2.RowsBean rowsBean = rows.get(0);
+                        setData(rowsBean);
                     }
-                });
+                }
+                if (response != null) {
+
+                }
+                return null;
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+//        RetrofitClient.getInstance().getService().findDeviceData(map)
+//                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
+//                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
+//                    @Override
+//                    public void onSuccess(DeviceData2 deviceData2) {
+//                        if (deviceData2 != null) {
+//                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
+//                            if (rows != null && rows.size() > 0) {
+//                                DeviceData2.RowsBean rowsBean = rows.get(0);
+//                                setData(rowsBean);
+//                            }
+//                        }
+//                    }
+//                });
     }
 
     private void setData(DeviceData2.RowsBean rowsBean) {

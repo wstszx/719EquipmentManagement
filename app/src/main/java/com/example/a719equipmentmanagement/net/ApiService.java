@@ -84,6 +84,11 @@ public interface ApiService {
     @POST("system/category/update")
     Single<BaseResponse> updataDeviceType(@Body RequestBody requestBody);
 
+    //更新设备分类数据
+    @FormUrlEncoded
+    @POST("system/equip/scan")
+    Single<BaseResponse> updataDeviceType(@Field("id") String id);
+
 
     /*------  container-controller -------*/
     //添加货柜
@@ -292,7 +297,7 @@ public interface ApiService {
     //查询货柜
     @FormUrlEncoded
     @POST("system/container/get")
-    Single<UserData> queryContainer(@Field("userId") String userId);
+    Single<UserData> queryContainer(@Field("id") String userId);
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户

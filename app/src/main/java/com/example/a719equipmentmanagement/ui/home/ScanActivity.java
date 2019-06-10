@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
@@ -69,13 +70,17 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         if (!StringUtils.isEmpty(result)) {
             String[] split = result.split("\\|");
             String no = split[0];
-            String userId = split[1];
+            String id = split[1];
             if (StringUtils.equals("E", no)) {
-                DeviceDetailActivity.start(this, userId);
-            } else if (StringUtils.equals("C", no)) {
-                ContainerDetailActivity.start(this, userId);
+                DeviceDetailActivity.start(this, id);
+                finish();
+            } else {
+                ToastUtils.showShort("请扫描设备二维码");
             }
-            finish();
+//            else if (StringUtils.equals("C", no)) {
+//                ContainerDetailActivity.start(this, userId);
+//            }
+
         }
     }
 
