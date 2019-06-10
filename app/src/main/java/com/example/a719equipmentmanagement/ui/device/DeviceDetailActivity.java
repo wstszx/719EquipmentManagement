@@ -381,14 +381,14 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     //提示对话框
-    private void showChoiceDialog() {
-        new QMUIDialog.MessageDialogBuilder(this).setTitle("提示").setMessage("重新选择设备所在位置？？？")
-                .addAction("取消", (dialog, index) -> dialog.dismiss())
-                .addAction("确定", ((dialog, index) -> {
-                    dialog.dismiss();
-                    ScanActivity.start(this);
-                })).create(mStyle).show();
-    }
+//    private void showChoiceDialog() {
+//        new QMUIDialog.MessageDialogBuilder(this).setTitle("提示").setMessage("重新选择设备所在位置？？？")
+//                .addAction("取消", (dialog, index) -> dialog.dismiss())
+//                .addAction("确定", ((dialog, index) -> {
+//                    dialog.dismiss();
+//                    ScanActivity.start(this);
+//                })).create(mStyle).show();
+//    }
 
     public static void start(Context context, Serializable serializable) {
         Intent starter = new Intent(context, DeviceDetailActivity.class);

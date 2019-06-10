@@ -194,7 +194,7 @@ public class EditDeptActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditDeptActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-
+                        int code = baseResponse.getCode();
                     }
                 });
         setResult(RESULT_OK, new Intent());

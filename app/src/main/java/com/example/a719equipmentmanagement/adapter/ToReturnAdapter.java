@@ -13,9 +13,13 @@ public class ToReturnAdapter extends BaseQuickAdapter<ToReturn.RowsBean, BaseVie
 
     @Override
     protected void convert(BaseViewHolder helper, ToReturn.RowsBean item) {
-        helper.setText(R.id.deviceName, item.getEquip().getName())
-                .setText(R.id.number, item.getEquip().getEquipNo())
-                .setText(R.id.auditName, item.getEquip().getDept().getDeptName())
-                .setText(R.id.person, item.getEquip().getDept().getAncestors());
+        ToReturn.RowsBean.EquipBean equip = item.getEquip();
+        ToReturn.RowsBean.EquipBean.DeptBean dept = equip.getDept();
+        helper.setText(R.id.deviceName, equip.getName())
+                .setText(R.id.number, equip.getEquipNo());
+//        if (dept != null) {
+//            helper.setText(R.id.invalidDate, dept.getDeptName());
+//                    .setText(R.id.days, dept.getAncestors());
+//        }
     }
 }

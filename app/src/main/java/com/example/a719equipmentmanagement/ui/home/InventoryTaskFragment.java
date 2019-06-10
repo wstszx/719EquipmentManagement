@@ -50,6 +50,5 @@ public class InventoryTaskFragment extends BaseFragment {
     @OnClick(R.id.constraint)
     public void onViewClicked(View view) {
         Navigation.findNavController(view).navigate(R.id.newInventoryTaskFragment);
-//        startActivityForResult(new Intent(AccountingListActivity.this, AccountingActivity.class), ACCOUNTING);
     }
 }

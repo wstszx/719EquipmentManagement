@@ -25,6 +25,7 @@ import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
+import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 
@@ -43,6 +44,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -165,6 +167,11 @@ public interface ApiService {
 
 
     /*----------------- inventory-controller ----------------*/
+    //新建盘点任务
+    @FormUrlEncoded
+    @POST("system/inventory/add")
+    Single<BaseResponse> newInventoryTask(@FieldMap Map<String, Object> map);
+
     //设置盘点货柜范围
     @POST("system/inventory/addContainer")
     Single<BaseResponse> setInventoryContainer(@Body RequestBody requestBody);
@@ -198,7 +205,7 @@ public interface ApiService {
 
     //管理员：即将过期的设备
     @GET("invalidEquip")
-    Single<InvalidEquip> invalidEquip();
+    Single<List<InvalidEquip>> invalidEquip();
 
     //管理员：我的待审任务
     @GET("toAudit")
@@ -277,6 +284,15 @@ public interface ApiService {
     //查找建账入库数据
     @GET("system/user/profile/listMyAllBorrow")
     Single<BorrowHistory> getBorrowHistory();
+
+    //查找用户数据
+    @GET("system/user/get")
+    Single<UserData> getRole(@Query("userId") int userId);
+
+    //查询货柜
+    @FormUrlEncoded
+    @POST("system/container/get")
+    Single<UserData> queryContainer(@Field("userId") String userId);
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户

@@ -12,10 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height" />
 
-    <include layout="@layout/person_manage_header" />
+    <!--<include layout="@layout/person_manage_header" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
+        android:layout_marginTop="@dimen/dp_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/qmui_config_color_white" />

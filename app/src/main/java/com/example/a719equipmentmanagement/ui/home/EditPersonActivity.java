@@ -17,8 +17,10 @@ import com.clj.fastble.data.BleDevice;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -34,6 +36,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditPersonActivity extends BaseActivity {
 
@@ -91,7 +95,7 @@ public class EditPersonActivity extends BaseActivity {
     private String[] roleArray = {"超级系统管理员", "实验室管理员", "普通用户"};
     private int id;
     private String name;
-    private int[] roleId = {3};
+    private int roleId = 3;
     private int sexTag;
 
 
@@ -179,7 +183,7 @@ public class EditPersonActivity extends BaseActivity {
         }
 
         bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-            roleId[0] = position;
+//            roleId[0] = position;
             switch (flag) {
                 case 1:
                     sexTag = position;
@@ -199,8 +203,9 @@ public class EditPersonActivity extends BaseActivity {
         Intent intent = getIntent();
         User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("data");
         userId = listBean.getUserId();
+        getRole();
         deptId = listBean.getDeptId();
-        roleId = listBean.getRoleIds();
+//        roleId = listBean.getRoleIds();
         userName = listBean.getUserName();
         sex = listBean.getSex();
         deptName = listBean.getDept().getDeptName();
@@ -209,6 +214,20 @@ public class EditPersonActivity extends BaseActivity {
         loginName = listBean.getLoginName();
         status = listBean.getStatus();
         remark = listBean.getRemark();
+    }
+
+    private void getRole() {
+        RetrofitClient.getInstance().getService().getRole(userId)
+                .compose(CommonCompose.io2main(this))
+                .subscribe(new BaseSubscriber<UserData>(this) {
+                    @Override
+                    public void onSuccess(UserData response) {
+                        UserData.DataBean data = response.getData();
+                        if (data != null) {
+
+                        }
+                    }
+                });
     }
 
     static class IncludedLayout {
@@ -265,7 +284,6 @@ public class EditPersonActivity extends BaseActivity {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }
-
         try {
             map.put("userId", userId);
             map.put("userName", username);
@@ -282,15 +300,22 @@ public class EditPersonActivity extends BaseActivity {
             e.printStackTrace();
         }
         RetrofitClient.getInstance().getService().editUser(map)
-                .compose(CommonCompose.io2main(EditPersonActivity.this))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(EditPersonActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
+                        int code = baseResponse.getCode();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        String message = e.getMessage();
                     }
                 });
-        setResult(RESULT_OK);
-        finish();
+
     }
 
     public static void start(Context context) {

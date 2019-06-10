@@ -92,8 +92,8 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initView();
         initAdapter();
+        initView();
         initMenu();
         initData();
     }
@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData() {
-        Single<InvalidEquip> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
+        Single<List<InvalidEquip>> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit()
@@ -135,6 +135,9 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (toReturn != null) {
                     List<ToReturn.RowsBean> rows = toReturn.getRows();
+                    if (rows.size() > 3) {
+                        rows.subList(0, 3);
+                    }
                     toReturnAdapter.setNewData(rows);
                 }
                 if (userToAudit != null) {
