@@ -136,7 +136,6 @@ public class DeviceFragment extends BaseFragment {
                             }
                         }
                         if (treeData != null && treeData.size() > 0) {
-//                            createSeaction(treeData);
                             createSection_deptClassify(treeData);
                         }
                         if (deviceClassifiys != null && deviceClassifiys.size() > 0) {
@@ -279,7 +278,8 @@ public class DeviceFragment extends BaseFragment {
         recyclerview5.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = rows.get(position);
-            DeviceDetailActivity.start(Objects.requireNonNull(getContext()), currentItemData);
+            int deviceId = currentItemData.getId();
+            DeviceDetailActivity.start(Objects.requireNonNull(getContext()), deviceId);
         });
 
 
@@ -304,44 +304,6 @@ public class DeviceFragment extends BaseFragment {
                 });
     }
 
-//    private void createSeaction(List<TreeData> treeData) {
-//        deptOnes = new ArrayList<>();
-//        deptTwos = new ArrayList<>();
-//        deptThrees = new ArrayList<>();
-//        for (TreeData treeData1 : treeData) {
-//            int id1 = treeData1.getId();
-//            String name1 = treeData1.getName();
-//            if (id1 == 100) {
-//                BaseSingleFilter filter1 = new BaseSingleFilter();
-//                filter1.setId(id1);
-//                filter1.setName(name1);
-//                deptOnes.add(filter1);
-//                for (TreeData treeData2 : treeData) {
-//                    int pId2 = treeData2.getPId();
-//                    if (id1 == pId2) {
-//                        String name2 = treeData2.getName();
-//                        int id2 = treeData2.getId();
-//                        BaseSingleFilter filter2 = new BaseSingleFilter();
-//                        filter2.setId(id2);
-//                        filter2.setName(name2);
-//                        deptTwos.add(filter2);
-//                        for (TreeData treeData3 : treeData) {
-//                            int pId3 = treeData3.getPId();
-//                            if (id2 == pId3) {
-//                                String name3 = treeData3.getName();
-//                                int id3 = treeData3.getId();
-//                                BaseSingleFilter filter3 = new BaseSingleFilter();
-//                                filter3.setId(id3);
-//                                filter3.setName(name3);
-//                                deptThrees.add(filter3);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            adapter11.setNewData(deptOnes);
-//        }
-//    }
 
     private Map<BaseSingleFilter, List<BaseSingleFilter>> deptMap1_2 = new HashMap<>();
     private Map<BaseSingleFilter, List<BaseSingleFilter>> deptMap2_3 = new HashMap<>();
@@ -383,7 +345,6 @@ public class DeviceFragment extends BaseFragment {
                         deptMap2_3.put(filterKey2, filterValueList2);
                     }
                 }
-
                 deptMap1_2.put(filterKey1, filterValueList1);
             }
         }

@@ -63,7 +63,7 @@ public class HandleHistory {
         private String createBy;
         private String createTime;
         private Object updateBy;
-        private Object updateTime;
+        private String updateTime;
         private Object remark;
         private int type;
         private int equipId;
@@ -113,11 +113,11 @@ public class HandleHistory {
             this.updateBy = updateBy;
         }
 
-        public Object getUpdateTime() {
-            return updateTime;
+        public String getUpdateTime() {
+            return updateTime == null ? "" : updateTime;
         }
 
-        public void setUpdateTime(Object updateTime) {
+        public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
         }
 

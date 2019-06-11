@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.adapter;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.InventoryHistory;
 
 import java.util.List;
@@ -15,10 +16,11 @@ public class InventoryAdapter extends BaseQuickAdapter<InventoryHistory.RowsBean
 
     @Override
     protected void convert(BaseViewHolder helper, InventoryHistory.RowsBean item) {
-
-        helper.setText(R.id.tv_1, item.getName())
-                .setText(R.id.tv_2, item.getCreateBy())
-                .setText(R.id.tv_3, item.getUpdateBy())
-                .setText(R.id.tv_4, item.getCreateTime());
+        if (item != null) {
+            helper.setText(R.id.tv_1, item.getName())
+                    .setText(R.id.tv_2, item.getUpdateBy())
+                    .setText(R.id.tv_3, item.getCreateBy() != null ? item.getCreateBy() + "的盘点" : "")
+                    .setText(R.id.tv_4, item.getCreateTime());
+        }
     }
 }

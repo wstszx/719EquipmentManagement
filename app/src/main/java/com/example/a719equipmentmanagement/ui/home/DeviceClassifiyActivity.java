@@ -86,7 +86,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
     private DeviceTypeOne deviceTypeOne;
     private DeviceClassifiy deviceTypeData;
     private int itemViewType;
-    private int deptId;
+    private boolean isManager;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -95,6 +95,8 @@ public class DeviceClassifiyActivity extends BaseActivity {
     }
 
     private void initData() {
+        Intent intent = getIntent();
+        isManager = intent.getBooleanExtra("isManager", false);
         RetrofitClient.getInstance().getService().findDeviceTypeData()
                 .compose(CommonCompose.io2main(DeviceClassifiyActivity.this))
                 .subscribe(new BaseSubscriber<List<DeviceClassifiy>>(DeviceClassifiyActivity.this) {
@@ -140,38 +142,40 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 deviceTypeData = deviceTypeOne.getData();
             }
         });
+        if (isManager) {
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY));
 
-        adapter1.setOnItemLongClickListener((adapter, view, position) -> {
-            itemViewType = adapter.getItemViewType(position);
-            switch (itemViewType) {
-                case 0:
-                    DeviceTypeOne deviceTypeOne = (DeviceTypeOne) adapter.getData().get(position);
-                    DeviceClassifiy data = deviceTypeOne.getData();
-                    id = data.getId();
-                    name = data.getName();
+
+
+            adapter1.setOnItemLongClickListener((adapter, view, position) -> {
+                itemViewType = adapter.getItemViewType(position);
+                switch (itemViewType) {
+                    case 0:
+                        DeviceTypeOne deviceTypeOne = (DeviceTypeOne) adapter.getData().get(position);
+                        DeviceClassifiy data = deviceTypeOne.getData();
+                        id = data.getId();
+                        name = data.getName();
 //                    deptId = data.getDeptId();
-                    break;
-                case 1:
-                    DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) adapter.getData().get(position);
-                    DeviceClassifiy.CategorysBean deviceTypeTwoData = deviceTypeTwo.getData();
-                    name = deviceTypeTwoData.getName();
-                    id = deviceTypeTwoData.getId();
-                    break;
-            }
-            initListPopupIfNeed(deletes);
-            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-            mListPopup.show(view);
-            return false;
-        });
+                        break;
+                    case 1:
+                        DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) adapter.getData().get(position);
+                        DeviceClassifiy.CategorysBean deviceTypeTwoData = deviceTypeTwo.getData();
+                        name = deviceTypeTwoData.getName();
+                        id = deviceTypeTwoData.getId();
+                        break;
+                }
+                initListPopupIfNeed(deletes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(view);
+                return false;
+            });
+        }
     }
 
 
     private void initTopbar() {
         topbar.setTitle("设备分类");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY);
-        });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -236,7 +240,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
         Intent intent = new Intent(DeviceClassifiyActivity.this, EditDeviceClassifiyActivity.class);
         intent.putExtra("id", id);
         intent.putExtra("name", name);
-        intent.putExtra("parentClassifiy", parentClassifiy);
+//        intent.putExtra("parentClassifiy", parentClassifiy);
         intent.putExtra("pid", pid);
         startActivityForResult(intent, EDIT_DEVICE_CLASSIFIY);
     }
@@ -291,8 +295,9 @@ public class DeviceClassifiyActivity extends BaseActivity {
         return R.layout.activity_device_classifiy;
     }
 
-    public static void start(Context context) {
+    public static void start(Context context,boolean isManager) {
         Intent starter = new Intent(context, DeviceClassifiyActivity.class);
+        starter.putExtra("isManager", isManager);
         context.startActivity(starter);
     }
 

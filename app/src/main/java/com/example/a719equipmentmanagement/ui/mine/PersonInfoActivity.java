@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -110,11 +113,18 @@ public class PersonInfoActivity extends BaseActivity {
     private void savePersonInfo() {
         String userName = edittext.getText().toString();
         String phonenumber = edittext3.getText().toString();
+        if (!RegexUtils.isMobileExact(phonenumber)) {
+            ToastUtils.showShort("请填写正确的手机号");
+            return;
+        }
+
+        if (!StringUtils.isEmpty(userName)) {
+            ToastUtils.showShort("请填写用户名称");
+            return;
+        }
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
         map.put("userName", userName);
         map.put("sex", sexId);
-        map.put("roleId", roleId);
         map.put("phonenumber", phonenumber);
         RetrofitClient.getInstance().getService().updataUserData(map)
                 .subscribeOn(Schedulers.io())

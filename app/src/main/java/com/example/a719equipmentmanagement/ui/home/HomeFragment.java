@@ -286,13 +286,13 @@ public class HomeFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             switch (position) {
                 case 0:
-                    DeptManageActivity.start(getContext());
+                    DeptManageActivity.start(getContext(),isManager);
                     break;
                 case 1:
-                    ContainerManageActivity.start(getContext());
+                    ContainerManageActivity.start(getContext(),isManager);
                     break;
                 case 2:
-                    DeviceClassifiyActivity.start(getContext());
+                    DeviceClassifiyActivity.start(getContext(),isManager);
                     break;
                 case 3:
                     AccountingListActivity.start(getContext());

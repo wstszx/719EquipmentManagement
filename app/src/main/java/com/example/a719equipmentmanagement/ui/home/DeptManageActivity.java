@@ -62,9 +62,6 @@ public class DeptManageActivity extends BaseActivity {
             "编辑",
             "删除"
     };
-    String[] deletes = new String[]{
-            "删除"
-    };
     private List<User> users;
     private ArrayAdapter<String> adapter;
     private int itemViewType = -1;
@@ -76,6 +73,7 @@ public class DeptManageActivity extends BaseActivity {
     private int deptId;
     private User.UsersBean usersBean;
     private int userId;
+    private boolean isManager;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -88,6 +86,8 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void initData() {
+        Intent intent = getIntent();
+        isManager = intent.getBooleanExtra("isManager", false);
         RetrofitClient.getInstance().getService().getUser()
                 .compose(CommonCompose.io2main(DeptManageActivity.this))
                 .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
@@ -118,7 +118,6 @@ public class DeptManageActivity extends BaseActivity {
         adapter1.bindToRecyclerView(recyclerview);
         adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);
-
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             itemViewType = adapter.getItemViewType(position);
             ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
@@ -134,40 +133,44 @@ public class DeptManageActivity extends BaseActivity {
                 user = personOne.getUser();
             }
         });
-        adapter1.setOnItemLongClickListener((adapter, v, position) -> {
-            itemViewType = adapter.getItemViewType(position);
-            switch (itemViewType) {
-                case 0:
-                    personOne = (PersonOne) adapter.getData().get(position);
-                    parentTitle = personOne.getParentTitle();
-                    user = personOne.getUser();
-                    deptId = user.getDeptId();
-                    break;
-                case 1:
-                    personTwo = (PersonTwo) adapter.getData().get(position);
-                    parentTitle = personTwo.getParentTitle();
-                    usersBean = personTwo.getUser();
-                    userId = personTwo.getUser().getUserId();
-                    deptId = usersBean.getDeptId();
-                    break;
-            }
-            initListPopupIfNeed(parentdeletes);
-            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-            mListPopup.show(v);
-            return false;
-        });
+        if (isManager) {
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+                initListPopupIfNeed(addTypes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
+
+            });
+
+            adapter1.setOnItemLongClickListener((adapter, v, position) -> {
+                itemViewType = adapter.getItemViewType(position);
+                switch (itemViewType) {
+                    case 0:
+                        personOne = (PersonOne) adapter.getData().get(position);
+                        parentTitle = personOne.getParentTitle();
+                        user = personOne.getUser();
+                        deptId = user.getDeptId();
+                        break;
+                    case 1:
+                        personTwo = (PersonTwo) adapter.getData().get(position);
+                        parentTitle = personTwo.getParentTitle();
+                        usersBean = personTwo.getUser();
+                        userId = personTwo.getUser().getUserId();
+                        deptId = usersBean.getDeptId();
+                        break;
+                }
+                initListPopupIfNeed(parentdeletes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
+                return false;
+            });
+        }
     }
 
     private void initTopbar() {
         topbar.setTitle("组织管理");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-            initListPopupIfNeed(addTypes);
-            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-            mListPopup.show(v);
 
-        });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -179,8 +182,9 @@ public class DeptManageActivity extends BaseActivity {
         return R.layout.activity_dept_manage;
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, boolean isManager) {
         Intent starter = new Intent(context, DeptManageActivity.class);
+        starter.putExtra("isManager", isManager);
         context.startActivity(starter);
     }
 

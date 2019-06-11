@@ -91,6 +91,7 @@ public class ContainerManageActivity extends BaseActivity {
     private int itemViewType;
     private int deptId;
     private String name;
+    private boolean isManager;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -99,6 +100,8 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void initData() {
+        Intent intent = getIntent();
+        isManager = intent.getBooleanExtra("isManager", false);
         RetrofitClient.getInstance().getService().findContainerData()
                 .compose(CommonCompose.io2main(ContainerManageActivity.this))
                 .subscribe(new BaseSubscriber<List<ContainerData>>(ContainerManageActivity.this) {
@@ -144,36 +147,39 @@ public class ContainerManageActivity extends BaseActivity {
                 containerData = containerOne.getData();
             }
         });
+        if (isManager) {
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
+                    startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
 
-        adapter1.setOnItemLongClickListener((adapter, view, position) -> {
-            itemViewType = adapter.getItemViewType(position);
-            switch (itemViewType) {
-                case 0:
-                    ContainerOne containerOne = (ContainerOne) adapter.getData().get(position);
-                    ContainerData data = containerOne.getData();
-                    id = data.getId();
-                    name = data.getName();
-                    deptId = data.getDeptId();
-                    break;
-                case 1:
-                    ContainerTwo containerTwo = (ContainerTwo) adapter.getData().get(position);
-                    ContainerData.ContainersBean containerTwoData = containerTwo.getData();
-                    name = containerTwoData.getName();
-                    id = containerTwoData.getId();
-                    break;
-            }
-            initListPopupIfNeed(itemDeletes);
-            mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-            mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-            mListPopup.show(view);
-            return false;
-        });
+            adapter1.setOnItemLongClickListener((adapter, view, position) -> {
+                itemViewType = adapter.getItemViewType(position);
+                switch (itemViewType) {
+                    case 0:
+                        ContainerOne containerOne = (ContainerOne) adapter.getData().get(position);
+                        ContainerData data = containerOne.getData();
+                        id = data.getId();
+                        name = data.getName();
+                        deptId = data.getDeptId();
+                        break;
+                    case 1:
+                        ContainerTwo containerTwo = (ContainerTwo) adapter.getData().get(position);
+                        ContainerData.ContainersBean containerTwoData = containerTwo.getData();
+                        name = containerTwoData.getName();
+                        id = containerTwoData.getId();
+                        break;
+                }
+                initListPopupIfNeed(itemDeletes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(view);
+                return false;
+            });
+        }
     }
 
     private void initTopbar() {
         topbar.setTitle("货柜管理");
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
-                startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
+
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -258,8 +264,9 @@ public class ContainerManageActivity extends BaseActivity {
         return R.layout.activity_container_manage;
     }
 
-    public static void start(Context context) {
+    public static void start(Context context, boolean isManager) {
         Intent starter = new Intent(context, ContainerManageActivity.class);
+        starter.putExtra("isManager", isManager);
         context.startActivity(starter);
     }
 
