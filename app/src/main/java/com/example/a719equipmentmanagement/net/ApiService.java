@@ -12,6 +12,7 @@ import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
+import com.example.a719equipmentmanagement.entity.Inventories;
 import com.example.a719equipmentmanagement.entity.InventoryHistory;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
@@ -189,6 +190,10 @@ public interface ApiService {
     //设置盘点结束
     @POST("system/inventory/endInventory")
     Single<BaseResponse> setEndInventory(@Body RequestBody requestBody);
+
+    //查找当前用户进行中的盘点
+    @GET("system/inventory/listMy")
+    Single<Inventories> getInventories();
 
     //查找盘点数据
     @GET("system/user/profile/listMyAllInventory")
