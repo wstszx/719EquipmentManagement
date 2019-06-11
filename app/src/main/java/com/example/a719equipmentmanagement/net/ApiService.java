@@ -174,9 +174,8 @@ public interface ApiService {
 
     /*----------------- inventory-controller ----------------*/
     //新建盘点任务
-    @FormUrlEncoded
     @POST("system/inventory/add")
-    Single<BaseResponse> newInventoryTask(@FieldMap Map<String, Object> map);
+    Single<BaseResponse> newInventoryTask(@Body RequestBody requestBody);
 
     //设置盘点货柜范围
     @POST("system/inventory/addContainer")
@@ -219,7 +218,7 @@ public interface ApiService {
 
     //管理员: 我的待办事项（送检、解封、报废）
     @GET("toHandle")
-    Single<ToDo> toDo();
+    Single<ToDo> toHandle();
 
     //普通用户: 我的待还设备
     @GET("toReturn")
@@ -231,7 +230,7 @@ public interface ApiService {
 
     //普通用户: 我的待办事项
     @GET("userToDo")
-    Single<UserToDo> userToDo();
+    Single<ToDo> userToDo();
 
 
     /*----------------- profile-controller  ----------------*/

@@ -47,4 +47,5 @@
     <item name="filter" type="id"/>
     <item name="connect" type="id"/>
     <item name="view" type="id"/>
+    <item name="continues" type="id"/>
 </resources>

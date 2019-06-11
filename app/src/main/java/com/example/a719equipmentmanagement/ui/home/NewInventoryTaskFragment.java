@@ -14,11 +14,16 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 /**
  * 新建盘点任务
@@ -37,17 +42,22 @@ public class NewInventoryTaskFragment extends BaseFragment {
 
     private void initTopbar() {
         topbar.setTitle("新建盘点任务");
-        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            newInventoryTask(v);
-        });
+        topbar.addRightTextButton(R.string.continues, R.id.continues).setOnClickListener(this::newInventoryTask);
         topbar.addLeftBackImageButton().setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
     }
 
     private void newInventoryTask(View v) {
         String name = edittext.getText().toString();
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("name", name);
-        RetrofitClient.getInstance().getService().newInventoryTask(map)
+//        HashMap<String, Object> map = new HashMap<>();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+//        map.put("name", name);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().newInventoryTask(requestBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {

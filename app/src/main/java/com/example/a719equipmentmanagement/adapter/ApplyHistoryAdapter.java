@@ -12,9 +12,13 @@ public class ApplyHistoryAdapter extends BaseQuickAdapter<ApplyHistory.RowsBean,
 
     @Override
     protected void convert(BaseViewHolder helper, ApplyHistory.RowsBean item) {
-        helper.setText(R.id.tv_1, item.getEquip().getName())
-                .setText(R.id.tv_2, item.getEquip().getDept().getDeptName())
-                .setText(R.id.tv_3, item.getEquip().getLocation().getName())
-                .setText(R.id.tv_4, item.getCreateTime());
+        ApplyHistory.RowsBean.EquipBean equip = item.getEquip();
+        if (equip != null) {
+
+            helper.setText(R.id.tv_1, equip.getName())
+                    .setText(R.id.tv_2, equip.getDept() != null ? equip.getDept().getDeptName() : "")
+                    .setText(R.id.tv_3, equip.getLocation() != null ? equip.getLocation().getName() : "")
+                    .setText(R.id.tv_4, item.getCreateTime());
+        }
     }
 }

@@ -88,31 +88,30 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
     private void setLevelData(User user, BaseViewHolder helper) {
         String deptName = user.getDeptName();
         String leader = user.getLeader();
-        String status = user.getStatus();
-        switch (status) {
-            case "0":
-                helper.setText(R.id.tv_status, "正常");
-                break;
-            case "1":
-                helper.setText(R.id.tv_status, "停用");
-                break;
-        }
-        helper.setText(R.id.tv_parent, deptName)
-                .setText(R.id.tv_leader, leader);
+//        String status = user.getStatus();
+//        switch (status) {
+//            case "0":
+//                helper.setText(R.id.tv_status, "正常");
+//                break;
+//            case "1":
+//                helper.setText(R.id.tv_status, "停用");
+//                break;
+//        }
+        helper.setText(R.id.tv_parent, deptName);
     }
 
     private void setLevel1Data(User.UsersBean user, BaseViewHolder helper) {
-        String deptName = user.getUserName();
-        String status = user.getStatus();
-        switch (status) {
-            case "0":
-                helper.setText(R.id.tv_status, "正常");
-                break;
-            case "1":
-                helper.setText(R.id.tv_status, "停用");
-                break;
-        }
-        helper.setText(R.id.tv_parent, deptName);
+        String userName = user.getUserName();
+//        String status = user.getStatus();
+//        switch (status) {
+//            case "0":
+//                helper.setText(R.id.tv_status, "正常");
+//                break;
+//            case "1":
+//                helper.setText(R.id.tv_status, "停用");
+//                break;
+//        }
+        helper.setText(R.id.tv_parent, userName);
 
     }
 }

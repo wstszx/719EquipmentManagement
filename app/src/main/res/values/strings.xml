@@ -94,4 +94,5 @@
     <string name="new_inventory_task">新建盘点任务</string>
     <string name="inventory_task_name">盘点任务名称：</string>
     <string name="continues">继续</string>
+    <string name="save">保存</string>
 </resources>
