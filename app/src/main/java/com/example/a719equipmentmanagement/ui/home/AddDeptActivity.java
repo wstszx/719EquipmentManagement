@@ -31,19 +31,14 @@ import butterknife.OnClick;
 
 public class AddDeptActivity extends BaseActivity {
 
-    private static final int ADD_DEPT = 1;
-    private String[] containerAttrs = {"部门名称:", "所属部门:", "显示排序:",
+    private String[] containerAttrs = {"部门名称:", "显示排序:",
             "负责人:", "联系电话:", "邮箱:", "部门状态:"};
     @BindView(R.id.switchs)
     Switch switchs;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.tv_result)
-    TextView tvResult;
     @BindView(R.id.include_1)
     View include_1;
-    @BindView(R.id.include_2)
-    View include_2;
     @BindView(R.id.include_4)
     View include_4;
     @BindView(R.id.include_5)
@@ -52,13 +47,10 @@ public class AddDeptActivity extends BaseActivity {
     View include_6;
     @BindView(R.id.include_7)
     View include_7;
-    private String name;
-    private int pid;
     private IncludedLayout includedLayout1;
     private IncludedLayout includedLayout3;
     private IncludedLayout includedLayout4;
     private IncludedLayout includedLayout5;
-    private TextView tv_result;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -84,22 +76,13 @@ public class AddDeptActivity extends BaseActivity {
         ButterKnife.bind(includedLayout4, include_5);
         ButterKnife.bind(includedLayout5, include_6);
         includedLayout1.tv_title.setText(containerAttrs[0]);
-        TextView textView2 = include_2.findViewById(R.id.tv_title);
-        tv_result = include_2.findViewById(R.id.tv_result);
-        textView2.setText(containerAttrs[1]);
-        include_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(AddDeptActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
-            }
-        });
-        includedLayout3.tv_title.setText(containerAttrs[3]);
-        includedLayout4.tv_title.setText(containerAttrs[4]);
-        includedLayout5.tv_title.setText(containerAttrs[5]);
+        includedLayout3.tv_title.setText(containerAttrs[2]);
+        includedLayout4.tv_title.setText(containerAttrs[3]);
+        includedLayout5.tv_title.setText(containerAttrs[4]);
         includedLayout4.editText.setInputType(InputType.TYPE_CLASS_PHONE);
         includedLayout5.editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
         TextView textView7 = include_7.findViewById(R.id.tv_title);
-        textView7.setText(containerAttrs[6]);
+        textView7.setText(containerAttrs[5]);
     }
 
 
@@ -133,6 +116,7 @@ public class AddDeptActivity extends BaseActivity {
 
         try {
             map.put("deptName", deptName);
+            int pid = 100;
             map.put("parentId", pid);
             map.put("leader", leader);
             map.put("phone", phone);
@@ -150,21 +134,6 @@ public class AddDeptActivity extends BaseActivity {
                         finish();
                     }
                 });
-    }
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        switch (requestCode) {
-            case ADD_DEPT:
-                if (data != null) {
-                    name = data.getStringExtra("name");
-                    pid = data.getIntExtra("pid", 0);
-                    tv_result.setText(name);
-                }
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

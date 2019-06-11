@@ -6,11 +6,11 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class DeviceTypeTwo implements MultiItemEntity {
 
-    private DeviceClassifiy.ListBean dept;
+    private DeviceClassifiy.CategorysBean data;
     private boolean isSelect;
 
-    public void setDept(DeviceClassifiy.ListBean dept) {
-        this.dept = dept;
+    public void setData(DeviceClassifiy.CategorysBean data) {
+        this.data = data;
     }
 
     public boolean isSelect() {
@@ -21,12 +21,12 @@ public class DeviceTypeTwo implements MultiItemEntity {
         isSelect = select;
     }
 
-    public DeviceClassifiy.ListBean getDept() {
-        return dept;
+    public DeviceClassifiy.CategorysBean getData() {
+        return data;
     }
 
-    public DeviceTypeTwo(DeviceClassifiy.ListBean dept) {
-        this.dept = dept;
+    public DeviceTypeTwo(DeviceClassifiy.CategorysBean data) {
+        this.data = data;
     }
 
     @Override

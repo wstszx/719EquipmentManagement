@@ -13,8 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
 
 import java.util.Objects;
 
@@ -85,10 +88,25 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     public void onScanQRCodeSuccess(String result) {
         Objects.requireNonNull(getActivity()).setTitle("扫描结果为：" + result);
         vibrate();
-        zxingview.startSpot(); // 开始识别
-        Bundle bundle = new Bundle();
-        bundle.putString("result", "当前货柜：" + result);
-        Navigation.findNavController(zxingview).navigate(R.id.action_scanFragment_to_confirmScanFragment, bundle);
+//        zxingview.startSpot(); // 开始识别
+        if (!StringUtils.isEmpty(result)) {
+            String[] split = result.split("\\|");
+            String no = split[0];
+            String id = split[1];
+            if (StringUtils.equals("E", no)) {
+                Bundle bundle = new Bundle();
+                bundle.putString("id", id);
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.deviceDetailFragment, bundle);
+            } else if (StringUtils.equals("C", no)) {
+                ToastUtils.showShort("这是货柜码");
+            }
+//            else if (StringUtils.equals("C", no)) {
+//                ContainerDetailActivity.start(this, userId);
+//            }
+
+        }
+//        Bundle bundle = new Bundle();
+//        bundle.putString("result", "当前货柜：" + result);
     }
 
     @Override

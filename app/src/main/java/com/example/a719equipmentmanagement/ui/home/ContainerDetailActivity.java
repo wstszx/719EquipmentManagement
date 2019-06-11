@@ -11,6 +11,10 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.ContainerData;
+import com.example.a719equipmentmanagement.entity.UserData;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
@@ -41,14 +45,27 @@ public class ContainerDetailActivity extends BaseActivity {
     }
 
     private void initData() {
-        ContainerData.ListBean listBean = (ContainerData.ListBean) getIntent().getSerializableExtra("serializable");
-        String name = listBean.getName();
-        id = listBean.getId();
+        Intent intent = getIntent();
+        String userId = intent.getStringExtra("userId");
+        getContainerData(userId);
+//        String name = listBean.getName();
+//        id = listBean.getId();
 //        String dept = listBean.getDept();
-        String createTime = listBean.getCreateTime();
-        containerAttrValue[0] = name;
+//        String createTime = listBean.getCreateTime();
+//        containerAttrValue[0] = name;
 //        containerAttrValue[1] = dept;
-        containerAttrValue[1] = createTime;
+//        containerAttrValue[1] = createTime;
+    }
+
+    private void getContainerData(String userId) {
+        RetrofitClient.getInstance().getService().queryContainer(userId)
+                .compose(CommonCompose.io2main(this))
+                .subscribe(new BaseSubscriber<UserData>(this){
+                    @Override
+                    public void onSuccess(UserData userData) {
+
+                    }
+                });
     }
 
     private void initGroupListView() {
@@ -106,9 +123,9 @@ public class ContainerDetailActivity extends BaseActivity {
         return R.layout.activity_container_detail;
     }
 
-    public static void start(Context context, Serializable serializable) {
+    public static void start(Context context, String userId) {
         Intent starter = new Intent(context, ContainerDetailActivity.class);
-        starter.putExtra("serializable", serializable);
+        starter.putExtra("userId", userId);
         context.startActivity(starter);
     }
 

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -19,12 +20,16 @@ import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.functions.Function;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -44,6 +49,9 @@ public class AddContainerActivity extends BaseActivity {
     private String name;
     private int id;
     private int deptId;
+    private String containerId;
+    private String containerNum;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -64,27 +72,58 @@ public class AddContainerActivity extends BaseActivity {
 
     private void addContainer() {
         String containerName = edittext.getText().toString();
-        String containerNum = edittext2.getText().toString();
+        containerNum = edittext2.getText().toString();
+        String ownerDept = tvResult1.getText().toString();
+        if (StringUtils.isEmpty(containerName)) {
+            ToastUtils.showShort("货柜名称不能为空");
+            return;
+        } else if (StringUtils.isEmpty(containerNum)) {
+            ToastUtils.showShort("货柜层数不能为空");
+            return;
+        } else if (StringUtils.isEmpty(ownerDept)) {
+            ToastUtils.showShort("归属部门不能为空");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("deptId", deptId);
             jsonObject.put("name", containerName);
-            jsonObject.put("num", containerNum);
+            jsonObject.put("pid", 0);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
         RetrofitClient.getInstance().getService().addContainer(requestBody)
+                .flatMap((Function<BaseResponse, SingleSource<BaseResponse>>) response -> {
+                    String msg = response.getMsg();
+                    int containNum = Integer.parseInt(containerNum);
+                    JSONArray jsonArray = new JSONArray();
+                    for (int i = 0; i < containNum; i++) {
+                        JSONObject jsonObject1 = new JSONObject();
+                        try {
+                            jsonObject1.put("deptId", deptId);
+                            jsonObject1.put("name", containerName + "--" + i);
+                            jsonObject1.put("pid", msg);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject1);
+                    }
+                    RequestBody requestBody1 = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
+                    return RetrofitClient.getInstance().getService().addBatchContainer(requestBody1);
+                })
                 .compose(CommonCompose.io2main(AddContainerActivity.this))
                 .subscribe(new BaseSubscriber<BaseResponse>(AddContainerActivity.this) {
                     @Override
-                    public void onSuccess(BaseResponse baseResponse) {
-                        ToastUtils.showShort("添加货柜成功");
-                        roundButton.setVisibility(View.VISIBLE);
+                    public void onSuccess(BaseResponse response) {
+                        setResult(RESULT_OK);
+                        finish();
                     }
                 });
 
     }
+//     ToastUtils.showShort("添加货柜成功");
+//                        roundButton.setVisibility(View.VISIBLE);
 
     @Override
     protected int getLayoutId() {
@@ -95,8 +134,9 @@ public class AddContainerActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ADD_DEPT) {
             if (data != null) {
+                pid = data.getIntExtra("pid",0);
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("id", 0);
+                deptId = data.getIntExtra("deptId", 0);
                 tvResult1.setText(name);
             }
         }
@@ -110,8 +150,7 @@ public class AddContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(AddContainerActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
                 break;
             case R.id.round_button:
-                int id = 1;
-                GenerateContainerCodeActivity.start(this, id);
+                GenerateContainerCodeActivity.start(this, containerId);
                 finish();
                 break;
         }

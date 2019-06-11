@@ -1,23 +1,23 @@
 package com.example.a719equipmentmanagement.entity;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ContainerData {
 
+
     /**
-     * id : 1
+     * id : 24
      * searchValue : null
      * createBy : admin
-     * createTime : 2019-05-14 15:56:30
+     * createTime : 2019-06-06 10:34:57
      * updateBy : admin
-     * updateTime : 2019-05-14 15:56:39
-     * remark : remark
-     * params : {}
+     * updateTime : 2019-06-06 10:35:04
+     * remark :
      * pid : 0
-     * deptId : 1
-     * name : #1货柜
-     * list : [{"id":2,"searchValue":null,"createBy":"admin","createTime":"2019-05-14 15:57:00","updateBy":"admin","updateTime":"2019-05-14 15:57:24","remark":"remark","params":{},"pid":1,"deptId":2,"name":"#1货柜第一层","list":null},{"id":3,"searchValue":null,"createBy":"admin","createTime":"2019-05-14 15:57:03","updateBy":"admin","updateTime":"2019-05-14 15:57:27","remark":"remark","params":{},"pid":1,"deptId":3,"name":"#1货柜第二层","list":null}]
+     * deptId : 154
+     * name : 1#
+     * containers : [{"id":25,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 14:00:12","updateBy":"admin","updateTime":"2019-06-05 14:00:12","remark":null,"pid":24,"deptId":154,"name":"1#第1层","containers":null},{"id":26,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 14:00:12","updateBy":"admin","updateTime":"2019-06-05 14:00:12","remark":null,"pid":24,"deptId":154,"name":"1#第2层","containers":null},{"id":27,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 14:00:12","updateBy":"admin","updateTime":"2019-06-05 14:00:12","remark":null,"pid":24,"deptId":154,"name":"1#第3层","containers":null}]
      */
 
     private int id;
@@ -27,11 +27,10 @@ public class ContainerData {
     private String updateBy;
     private String updateTime;
     private String remark;
-    private ParamsBean params;
     private int pid;
     private int deptId;
     private String name;
-    private List<ListBean> list;
+    private List<ContainersBean> containers;
 
     public int getId() {
         return id;
@@ -50,7 +49,7 @@ public class ContainerData {
     }
 
     public String getCreateBy() {
-        return createBy;
+        return createBy == null ? "" : createBy;
     }
 
     public void setCreateBy(String createBy) {
@@ -58,7 +57,7 @@ public class ContainerData {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return createTime == null ? "" : createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -66,7 +65,7 @@ public class ContainerData {
     }
 
     public String getUpdateBy() {
-        return updateBy;
+        return updateBy == null ? "" : updateBy;
     }
 
     public void setUpdateBy(String updateBy) {
@@ -74,7 +73,7 @@ public class ContainerData {
     }
 
     public String getUpdateTime() {
-        return updateTime;
+        return updateTime == null ? "" : updateTime;
     }
 
     public void setUpdateTime(String updateTime) {
@@ -82,19 +81,11 @@ public class ContainerData {
     }
 
     public String getRemark() {
-        return remark;
+        return remark == null ? "" : remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public ParamsBean getParams() {
-        return params;
-    }
-
-    public void setParams(ParamsBean params) {
-        this.params = params;
     }
 
     public int getPid() {
@@ -114,38 +105,37 @@ public class ContainerData {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public List<ListBean> getList() {
-        return list;
+    public List<ContainersBean> getContainers() {
+        if (containers == null) {
+            return new ArrayList<>();
+        }
+        return containers;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setContainers(List<ContainersBean> containers) {
+        this.containers = containers;
     }
 
-    public static class ParamsBean {
-    }
-
-    public static class ListBean implements Serializable {
+    public static class ContainersBean {
         /**
-         * id : 2
+         * id : 25
          * searchValue : null
          * createBy : admin
-         * createTime : 2019-05-14 15:57:00
+         * createTime : 2019-06-05 14:00:12
          * updateBy : admin
-         * updateTime : 2019-05-14 15:57:24
-         * remark : remark
-         * params : {}
-         * pid : 1
-         * deptId : 2
-         * name : #1货柜第一层
-         * list : null
+         * updateTime : 2019-06-05 14:00:12
+         * remark : null
+         * pid : 24
+         * deptId : 154
+         * name : 1#第1层
+         * containers : null
          */
 
         private int id;
@@ -154,12 +144,11 @@ public class ContainerData {
         private String createTime;
         private String updateBy;
         private String updateTime;
-        private String remark;
-        private ParamsBeanX params;
+        private Object remark;
         private int pid;
         private int deptId;
         private String name;
-        private Object list;
+        private Object containers;
 
         public int getId() {
             return id;
@@ -178,7 +167,7 @@ public class ContainerData {
         }
 
         public String getCreateBy() {
-            return createBy;
+            return createBy == null ? "" : createBy;
         }
 
         public void setCreateBy(String createBy) {
@@ -186,7 +175,7 @@ public class ContainerData {
         }
 
         public String getCreateTime() {
-            return createTime;
+            return createTime == null ? "" : createTime;
         }
 
         public void setCreateTime(String createTime) {
@@ -194,7 +183,7 @@ public class ContainerData {
         }
 
         public String getUpdateBy() {
-            return updateBy;
+            return updateBy == null ? "" : updateBy;
         }
 
         public void setUpdateBy(String updateBy) {
@@ -202,27 +191,19 @@ public class ContainerData {
         }
 
         public String getUpdateTime() {
-            return updateTime;
+            return updateTime == null ? "" : updateTime;
         }
 
         public void setUpdateTime(String updateTime) {
             this.updateTime = updateTime;
         }
 
-        public String getRemark() {
+        public Object getRemark() {
             return remark;
         }
 
-        public void setRemark(String remark) {
+        public void setRemark(Object remark) {
             this.remark = remark;
-        }
-
-        public ParamsBeanX getParams() {
-            return params;
-        }
-
-        public void setParams(ParamsBeanX params) {
-            this.params = params;
         }
 
         public int getPid() {
@@ -242,22 +223,19 @@ public class ContainerData {
         }
 
         public String getName() {
-            return name;
+            return name == null ? "" : name;
         }
 
         public void setName(String name) {
             this.name = name;
         }
 
-        public Object getList() {
-            return list;
+        public Object getContainers() {
+            return containers;
         }
 
-        public void setList(Object list) {
-            this.list = list;
-        }
-
-        public static class ParamsBeanX implements Serializable{
+        public void setContainers(Object containers) {
+            this.containers = containers;
         }
     }
 }

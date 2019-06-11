@@ -1,6 +1,7 @@
 package com.example.a719equipmentmanagement.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User implements Serializable {
@@ -67,7 +68,7 @@ public class User implements Serializable {
     }
 
     public String getCreateBy() {
-        return createBy;
+        return createBy == null ? "" : createBy;
     }
 
     public void setCreateBy(String createBy) {
@@ -75,7 +76,7 @@ public class User implements Serializable {
     }
 
     public String getCreateTime() {
-        return createTime;
+        return createTime == null ? "" : createTime;
     }
 
     public void setCreateTime(String createTime) {
@@ -131,7 +132,7 @@ public class User implements Serializable {
     }
 
     public String getAncestors() {
-        return ancestors;
+        return ancestors == null ? "" : ancestors;
     }
 
     public void setAncestors(String ancestors) {
@@ -139,7 +140,7 @@ public class User implements Serializable {
     }
 
     public String getDeptName() {
-        return deptName;
+        return deptName == null ? "" : deptName;
     }
 
     public void setDeptName(String deptName) {
@@ -147,7 +148,7 @@ public class User implements Serializable {
     }
 
     public String getOrderNum() {
-        return orderNum;
+        return orderNum == null ? "" : orderNum;
     }
 
     public void setOrderNum(String orderNum) {
@@ -155,7 +156,7 @@ public class User implements Serializable {
     }
 
     public String getLeader() {
-        return leader;
+        return leader == null ? "" : leader;
     }
 
     public void setLeader(String leader) {
@@ -163,7 +164,7 @@ public class User implements Serializable {
     }
 
     public String getPhone() {
-        return phone;
+        return phone == null ? "" : phone;
     }
 
     public void setPhone(String phone) {
@@ -171,7 +172,7 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return email == null ? "" : email;
     }
 
     public void setEmail(String email) {
@@ -179,7 +180,7 @@ public class User implements Serializable {
     }
 
     public String getStatus() {
-        return status;
+        return status == null ? "" : status;
     }
 
     public void setStatus(String status) {
@@ -187,7 +188,7 @@ public class User implements Serializable {
     }
 
     public String getDelFlag() {
-        return delFlag;
+        return delFlag == null ? "" : delFlag;
     }
 
     public void setDelFlag(String delFlag) {
@@ -203,6 +204,9 @@ public class User implements Serializable {
     }
 
     public List<UsersBean> getUsers() {
+        if (users == null) {
+            return new ArrayList<>();
+        }
         return users;
     }
 
@@ -270,7 +274,7 @@ public class User implements Serializable {
         private String loginIp;
         private Object loginDate;
         private DeptBean dept;
-        private Object roleIds;
+        private int[] roleIds;
         private Object postIds;
         private Object list;
         private boolean admin;
@@ -293,7 +297,7 @@ public class User implements Serializable {
         }
 
         public String getCreateBy() {
-            return createBy;
+            return createBy == null ? "" : createBy;
         }
 
         public void setCreateBy(String createBy) {
@@ -301,7 +305,7 @@ public class User implements Serializable {
         }
 
         public String getCreateTime() {
-            return createTime;
+            return createTime == null ? "" : createTime;
         }
 
         public void setCreateTime(String createTime) {
@@ -325,7 +329,7 @@ public class User implements Serializable {
         }
 
         public String getRemark() {
-            return remark;
+            return remark == null ? "" : remark;
         }
 
         public void setRemark(String remark) {
@@ -365,7 +369,7 @@ public class User implements Serializable {
         }
 
         public String getLoginName() {
-            return loginName;
+            return loginName == null ? "" : loginName;
         }
 
         public void setLoginName(String loginName) {
@@ -373,7 +377,7 @@ public class User implements Serializable {
         }
 
         public String getUserName() {
-            return userName;
+            return userName == null ? "" : userName;
         }
 
         public void setUserName(String userName) {
@@ -381,7 +385,7 @@ public class User implements Serializable {
         }
 
         public String getEmail() {
-            return email;
+            return email == null ? "" : email;
         }
 
         public void setEmail(String email) {
@@ -389,7 +393,7 @@ public class User implements Serializable {
         }
 
         public String getPhonenumber() {
-            return phonenumber;
+            return phonenumber == null ? "" : phonenumber;
         }
 
         public void setPhonenumber(String phonenumber) {
@@ -397,7 +401,7 @@ public class User implements Serializable {
         }
 
         public String getSex() {
-            return sex;
+            return sex == null ? "" : sex;
         }
 
         public void setSex(String sex) {
@@ -405,7 +409,7 @@ public class User implements Serializable {
         }
 
         public String getAvatar() {
-            return avatar;
+            return avatar == null ? "" : avatar;
         }
 
         public void setAvatar(String avatar) {
@@ -413,7 +417,7 @@ public class User implements Serializable {
         }
 
         public String getPassword() {
-            return password;
+            return password == null ? "" : password;
         }
 
         public void setPassword(String password) {
@@ -421,7 +425,7 @@ public class User implements Serializable {
         }
 
         public String getSalt() {
-            return salt;
+            return salt == null ? "" : salt;
         }
 
         public void setSalt(String salt) {
@@ -429,7 +433,7 @@ public class User implements Serializable {
         }
 
         public String getStatus() {
-            return status;
+            return status == null ? "" : status;
         }
 
         public void setStatus(String status) {
@@ -437,7 +441,7 @@ public class User implements Serializable {
         }
 
         public String getDelFlag() {
-            return delFlag;
+            return delFlag == null ? "" : delFlag;
         }
 
         public void setDelFlag(String delFlag) {
@@ -445,7 +449,7 @@ public class User implements Serializable {
         }
 
         public String getLoginIp() {
-            return loginIp;
+            return loginIp == null ? "" : loginIp;
         }
 
         public void setLoginIp(String loginIp) {
@@ -468,11 +472,11 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public Object getRoleIds() {
+        public int[] getRoleIds() {
             return roleIds;
         }
 
-        public void setRoleIds(Object roleIds) {
+        public void setRoleIds(int[] roleIds) {
             this.roleIds = roleIds;
         }
 
@@ -501,6 +505,9 @@ public class User implements Serializable {
         }
 
         public List<?> getRoles() {
+            if (roles == null) {
+                return new ArrayList<>();
+            }
             return roles;
         }
 
@@ -645,7 +652,7 @@ public class User implements Serializable {
             }
 
             public String getDeptName() {
-                return deptName;
+                return deptName == null ? "" : deptName;
             }
 
             public void setDeptName(String deptName) {

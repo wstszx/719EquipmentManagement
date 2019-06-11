@@ -2,19 +2,25 @@ package com.example.a719equipmentmanagement.ui.home;
 
 
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.SPUtils;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.blankj.utilcode.util.ThreadUtils;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.adapter.AdminInvalidEquipAdapter;
-import com.example.a719equipmentmanagement.adapter.AdminToAuditAdapter;
-import com.example.a719equipmentmanagement.adapter.AdminToDoAdapter;
+import com.example.a719equipmentmanagement.adapter.ApplyProgressAdapter;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
-import com.example.a719equipmentmanagement.adapter.UserToAuditAdapter;
-import com.example.a719equipmentmanagement.adapter.UserToDoAdapter;
-import com.example.a719equipmentmanagement.adapter.UserToReturnAdapter;
+import com.example.a719equipmentmanagement.adapter.InvalidEquipAdapter;
+import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
+import com.example.a719equipmentmanagement.adapter.ToDoAdapter;
+import com.example.a719equipmentmanagement.adapter.ToReturnAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
@@ -23,21 +29,15 @@ import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
-import com.example.a719equipmentmanagement.entity.UserToDo;
-import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import java.util.Objects;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Single;
 import io.reactivex.SingleSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -50,211 +50,237 @@ public class HomeFragment extends BaseFragment {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.tv_1)
-    TextView tv1;
     @BindView(R.id.tv_more1)
     TextView tvMore1;
     @BindView(R.id.recyclerview1)
     RecyclerView recyclerview1;
-    @BindView(R.id.tv_2)
-    TextView tv2;
     @BindView(R.id.tv_more2)
     TextView tvMore2;
     @BindView(R.id.recyclerview2)
     RecyclerView recyclerview2;
-    @BindView(R.id.tv_3)
-    TextView tv3;
     @BindView(R.id.tv_more3)
     TextView tvMore3;
+    @BindView(R.id.tv_more4)
+    TextView tvMore4;
+    @BindView(R.id.tv_more5)
+    TextView tvMore5;
     @BindView(R.id.recyclerview3)
     RecyclerView recyclerview3;
-    private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "借还", "盘点"};
-    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.team, R.mipmap.container, R.mipmap.device, R.mipmap.storage, R.mipmap.borrow,
-            R.mipmap.inventory, R.mipmap.check, R.mipmap.scrapped};
+    @BindView(R.id.recyclerview4)
+    RecyclerView recyclerview4;
+    @BindView(R.id.recyclerview5)
+    RecyclerView recyclerview5;
+    @BindView(R.id.tv_1)
+    TextView tv1;
+    @BindView(R.id.tv_2)
+    TextView tv2;
+    @BindView(R.id.tv_3)
+    TextView tv3;
+    @BindView(R.id.tv_4)
+    TextView tv4;
+    @BindView(R.id.tv_5)
+    TextView tv5;
+    private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "盘点"};
+    private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage,
+            R.mipmap.inventory};
+    private String[] features1 = {"组织管理", "货柜管理", "设备分类"};
+    private int[] featuresImg1 = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device};
 
     private static HomeFragment fragment;
     private HomeAdapter adapter;
     //管理员登录后所用adapter
-    private AdminInvalidEquipAdapter adminInvalidEquipAdapter;
-    private AdminToAuditAdapter adminToAuditAdapter;
-    private AdminToDoAdapter adminToDoAdapter;
+    private InvalidEquipAdapter invalidEquipAdapter;
+    private ToAuditAdapter toAuditAdapter;
+    private ApplyProgressAdapter applyProgressAdapter;
+    private ToDoAdapter toDoAdapter;
     //普通用户登录后所用adapter
-    private UserToReturnAdapter userToReturnAdapter;
-    private UserToAuditAdapter userToAuditAdapter;
-    private UserToDoAdapter userToDoAdapter;
+    private ToReturnAdapter toReturnAdapter;
+    private boolean isManager;
 
-    //展示用adapter，待后台有数据后删除
-    private AdminToAuditAdapter adapter2;
-    private AdminInvalidEquipAdapter adapter1;
-
-    private List<InvalidEquip> invalidEquipList;
-    private List<ToAudit> toAuditList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initView();
         initAdapter();
-        initMenu();
+        initView();
         initData();
     }
 
     private void initAdapter() {
-        adminInvalidEquipAdapter = new AdminInvalidEquipAdapter(R.layout.admin_invalid_equip_item);
-        adminToAuditAdapter = new AdminToAuditAdapter(R.layout.square_match_item);
-        adminToDoAdapter = new AdminToDoAdapter(R.layout.square_match_item);
-        userToReturnAdapter = new UserToReturnAdapter(R.layout.square_match_item);
-        userToAuditAdapter = new UserToAuditAdapter(R.layout.square_match_item);
-        userToDoAdapter = new UserToDoAdapter(R.layout.square_match_item);
+        invalidEquipAdapter = new InvalidEquipAdapter(R.layout.invalid_equip_item);
+        toAuditAdapter = new ToAuditAdapter(R.layout.invalid_equip_item);
+        toDoAdapter = new ToDoAdapter(R.layout.invalid_equip_item);
+        toReturnAdapter = new ToReturnAdapter(R.layout.invalid_equip_item);
+        applyProgressAdapter = new ApplyProgressAdapter(R.layout.invalid_equip_item);
     }
 
     private void initData() {
-//        1,超级系统管理员2，普通用户3，实验室管理员
-        RetrofitClient.getInstance().getService().getMe()
-                .subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
-                .observeOn(AndroidSchedulers.mainThread())
-                .flatMap((Function<Me, SingleSource<Object>>) me -> {
-                    int roleId = me.getUser().getRoles().get(0).getRoleId();
-                    SPUtils.getInstance().put("roleId", roleId);
-                    return convertRequest(roleId);
-                }).subscribe(new BaseSubscriber<Object>(getContext()) {
-            @Override
-            public void onSuccess(Object o) {
-
+        Single<Me> meSingle = RetrofitClient.getInstance().getService().getMe()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        meSingle.flatMap((Function<Me, SingleSource<?>>) me -> {
+            if (me != null) {
+                Me.UserBean user = me.getUser();
+                if (user != null) {
+                    boolean manager = user.isManager();
+                    boolean comUser = user.isComUser();
+                    boolean admin = user.isAdmin();
+                    if (manager) {
+                        isManager = true;
+                    }
+                    if (admin) {
+                        isManager = true;
+                    }
+                    if (comUser) {
+                        isManager = false;
+                    }
+                }
             }
+            return zip();
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe();
+
+    }
+
+    private SingleSource<?> zip() {
+        Single<List<InvalidEquip>> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<ToDo> toDoSingle;
+        if (isManager) {
+            toDoSingle = RetrofitClient.getInstance().getService().toHandle()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+        } else {
+            toDoSingle = RetrofitClient.getInstance().getService().userToDo()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+        }
+
+        Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        return Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, (invalidEquip, toAudit, toDo, toReturn, userToAudit) -> {
+            boolean mainThread = ThreadUtils.isMainThread();
+            if (mainThread) {
+                if (invalidEquip != null && invalidEquip.size() > 0) {
+                    tv1.setText("即将过期的设备：" + "(" + invalidEquip.size() + ")");
+                    if (invalidEquip.size() > 3) {
+                        invalidEquip = invalidEquip.subList(0, 3);
+                    }
+                    invalidEquipAdapter.setNewData(invalidEquip);
+                }
+                if (toAudit != null) {
+                    List<ToAudit.RowsBean> rows = toAudit.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        tv2.setText("我的待审任务：" + "(" + rows.size() + ")");
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    toAuditAdapter.setNewData(rows);
+                }
+                if (toDo != null) {
+                    List<ToDo.RowsBean> rows = toDo.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        tv3.setText("我的待办事项：" + "(" + rows.size() + ")");
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    toDoAdapter.setNewData(rows);
+                }
+                if (toReturn != null) {
+                    List<ToReturn.RowsBean> rows = toReturn.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        tv4.setText("我的待还设备：" + "(" + rows.size() + ")");
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    toReturnAdapter.setNewData(rows);
+                }
+                if (userToAudit != null) {
+                    List<UserToAudit.RowsBean> rows = userToAudit.getRows();
+                    if (rows != null && rows.size() > 0) {
+                        tv5.setText("我的申请进度：" + "(" + rows.size() + ")");
+                        if (rows.size() > 3) {
+                            rows = rows.subList(0, 3);
+                        }
+                    }
+                    applyProgressAdapter.setNewData(rows);
+                }
+
+                if (isManager) {
+                    recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 5));
+                } else {
+                    recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
+                }
+                adapter = new HomeAdapter(R.layout.square_match_item);
+                recyclerview.setAdapter(adapter);
+                initMenu();
+            }
+            return new Object();
         });
     }
 
-    private Single<Object> convertRequest(int roleId) {
-        switch (roleId) {
-            case 1:
-            case 3:
-                Single<InvalidEquip> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                Single<ToDo> toDoSingle = RetrofitClient.getInstance().getService().toDo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                return Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle,
-                        (invalidEquip, toAudit, toDo) -> {
-                            boolean mainThread = ThreadUtils.isMainThread();
-                            if (mainThread) {
-                                if (invalidEquip != null) {
+//    private void setMenu() {
+//        if (isManager) {
+//
+//        }
+//    }
 
-                                }
-                                if (toAudit != null) {
-
-                                }
-                                if (toDo != null) {
-
-                                }
-                            }
-                            return new Object();
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
-                        .observeOn(AndroidSchedulers.mainThread());
-            case 2:
-                Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                Single<UserToDo> userToDoSingle = RetrofitClient.getInstance().getService().userToDo()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread());
-                return Single.zip(toReturnSingle, userToAuditSingle, userToDoSingle,
-                        (toReturn, UserToAudit, userToDo) -> {
-                            boolean mainThread = ThreadUtils.isMainThread();
-                            if (mainThread) {
-                                if (toReturn != null) {
-
-                                }
-                                if (UserToAudit != null) {
-
-                                }
-                                if (userToDo != null) {
-
-                                }
-                            }
-                            return new Object();
-                        }).subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
-                        .observeOn(AndroidSchedulers.mainThread());
-        }
-        return null;
-    }
+//    private Single<Object> convertRequest() {
+//
+//    }
 
     private void initView() {
-        recyclerview.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        adapter = new HomeAdapter(R.layout.square_match_item);
-        recyclerview.setAdapter(adapter);
-        int roleId = SPUtils.getInstance().getInt("roleId", 0);
         topbar.setTitle("首页");
-        topbar.addLeftTextButton("消息", R.id.message).setOnClickListener(v -> {
-            MsgActivity.start(getActivity());
-        });
 
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.borrow_return, null);
+        view.setOnClickListener(v -> ScanActivity.start(getContext()));
+        RelativeLayout.LayoutParams layoutParams = topbar.generateTopBarImageButtonLayoutParams();
+        layoutParams.addRule(Gravity.CENTER | Gravity.RIGHT);
+        view.setLayoutParams(layoutParams);
+        topbar.addRightView(view, R.id.view);
+//        初始化主页下方列表
         recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerview3.setLayoutManager(new LinearLayoutManager(getContext()));
-        switch (roleId) {
-            case 1:
-            case 3:        //管理员
-                tv1.setText("即将过期的设备:");
-                tv2.setText("我的待审任务:");
-                tv3.setText("我的待办事项:");
-                recyclerview1.setAdapter(adminInvalidEquipAdapter);
-                recyclerview2.setAdapter(adminToAuditAdapter);
-                recyclerview3.setAdapter(adminToDoAdapter);
-//                adminInvalidEquipAdapter.setNewData();
-//                adminToAuditAdapter.setNewData();
-//                adminToDoAdapter.setNewData();
-                tvMore1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AdminInvalidEquipActivity.start(getContext(), (Serializable) invalidEquipList);
-                    }
-                });
-                tvMore2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AdminToAuditActivity.start(getContext(), (Serializable) toAuditList);
-                    }
-                });
-                tvMore3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+        recyclerview4.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerview1.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview2.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview3.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview4.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        recyclerview5.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
 
-                    }
-                });
-                break;
-            case 2:         //普通用户
-                tv1.setText("我的待还设备:");
-                tv2.setText("我的申请进度:");
-                tv3.setText("我的待办事项:");
-                recyclerview1.setAdapter(userToReturnAdapter);
-                recyclerview2.setAdapter(userToAuditAdapter);
-                recyclerview3.setAdapter(userToDoAdapter);
-//                userToReturnAdapter.setNewData();
-//                userToAuditAdapter.setNewData();
-//                userToDoAdapter.setNewData();
-                break;
-        }
+        recyclerview1.setAdapter(invalidEquipAdapter);
+        recyclerview2.setAdapter(toAuditAdapter);
+        recyclerview3.setAdapter(toDoAdapter);
+        recyclerview4.setAdapter(toReturnAdapter);
+        recyclerview5.setAdapter(applyProgressAdapter);
 
-
-        //展示用，待后台数据后删
-        adapter1 = new AdminInvalidEquipAdapter(R.layout.admin_invalid_equip_item);
-        adapter2 = new AdminToAuditAdapter(R.layout.admin_to_audit_item);
-        recyclerview1.setAdapter(adapter1);
-        recyclerview2.setAdapter(adapter2);
     }
 
     private void initMenu() {
         List<HomeBean> homeBeanList = new ArrayList<>();
-        for (int i = 0; i < features.length; i++) {
-            HomeBean bean = new HomeBean(featuresImg[i], features[i]);
-            homeBeanList.add(bean);
+        if (isManager) {
+            for (int i = 0; i < features.length; i++) {
+                HomeBean bean = new HomeBean(featuresImg[i], features[i]);
+                homeBeanList.add(bean);
+            }
+        } else {
+            for (int i = 0; i < features1.length; i++) {
+                HomeBean bean = new HomeBean(featuresImg1[i], features1[i]);
+                homeBeanList.add(bean);
+            }
         }
         adapter.setNewData(homeBeanList);
         adapter.setOnItemClickListener((adapter, view, position) -> {
@@ -272,36 +298,10 @@ public class HomeFragment extends BaseFragment {
                     AccountingListActivity.start(getContext());
                     break;
                 case 4:
-                    ScanActivity.start(getContext());
-                    break;
-//                case 5:
-//                    ScanActivity.start(getContext());
-//                    break;
-                case 5:
-                    InventoryRangeActivity.start(getContext());
+                    InventoryActivity.start(getContext());
                     break;
             }
         });
-
-
-        //展示用数据和点击，待后台数据后删
-        List<InvalidEquip> test1 = new ArrayList<>();
-        for(int i = 0; i < 25; i++){
-            InvalidEquip t1;
-            t1 = new InvalidEquip(i+1, "热感温度计", "2019.7.1", 20);
-            test1.add(t1);
-        }
-        adapter1.setNewData(test1);
-        invalidEquipList=test1;
-
-        List<ToAudit> test2 = new ArrayList<>();
-        for (int i = 0; i < 25; i++) {
-            ToAudit t2;
-            t2 = new ToAudit(i+1,"差压变送器", "申请报废", "李四");
-            test2.add(t2);
-        }
-        adapter2.setNewData(test2);
-        toAuditList=test2;
     }
 
     @Override
@@ -314,5 +314,26 @@ public class HomeFragment extends BaseFragment {
             fragment = new HomeFragment();
         }
         return fragment;
+    }
+
+    @OnClick({R.id.tv_more1, R.id.tv_more2, R.id.tv_more3, R.id.tv_more4, R.id.tv_more5})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_more1:
+                InvalidEquipActivity.start(getContext());
+                break;
+            case R.id.tv_more2:
+                ToAuditActivity.start(getContext());
+                break;
+            case R.id.tv_more3:
+                ToDoListActivity.start(getContext(), isManager);
+                break;
+            case R.id.tv_more4:
+                ToReturnDeviceActivity.start(getContext());
+                break;
+            case R.id.tv_more5:
+                ApplyProgressActivity.start(getContext());
+                break;
+        }
     }
 }

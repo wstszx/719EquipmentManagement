@@ -4,9 +4,10 @@ import java.util.List;
 
 public class InventoryHistory {
 
+
     /**
-     * total : 4
-     * rows : [{"id":4,"searchValue":null,"createBy":"admin","createTime":"2019-05-16 08:56:43","updateBy":"admin","updateTime":"2019-05-16 08:56:48","remark":"444","params":{},"name":"44","state":0,"containerIds":"2","list":null},{"id":1,"searchValue":null,"createBy":"admin","createTime":"2019-05-16 08:54:27","updateBy":"admin","updateTime":"2019-05-16 08:54:41","remark":"111","params":{},"name":"11","state":1,"containerIds":"1","list":null},{"id":2,"searchValue":null,"createBy":"admin","createTime":"2019-05-16 08:55:35","updateBy":"admin","updateTime":"2019-05-16 08:55:40","remark":"222","params":{},"name":"22","state":2,"containerIds":"1","list":null},{"id":3,"searchValue":null,"createBy":"admin","createTime":"2019-05-16 08:56:02","updateBy":"admin","updateTime":"2019-05-16 08:56:09","remark":"333","params":{},"name":"33","state":3,"containerIds":"2","list":null}]
+     * total : 9
+     * rows : [{"id":15,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 19:42:19","updateBy":"admin","updateTime":"2019-06-06 19:42:19","remark":null,"name":"string","state":1,"containerIds":"","details":null},{"id":13,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:40:41","updateBy":"admin","updateTime":"2019-06-06 16:40:41","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":12,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:20:44","updateBy":"admin","updateTime":"2019-06-06 16:20:44","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":11,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:07:26","updateBy":"admin","updateTime":"2019-06-06 16:07:26","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":10,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:07:05","updateBy":"admin","updateTime":"2019-06-06 16:07:05","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":9,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:05:15","updateBy":"admin","updateTime":"2019-06-06 16:05:15","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":8,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 10:31:42","updateBy":"admin","updateTime":"2019-06-06 10:31:42","remark":null,"name":null,"state":1,"containerIds":"","details":null},{"id":7,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 16:33:34","updateBy":"admin","updateTime":"2019-06-06 16:48:20","remark":"该盘点已被取消","name":null,"state":2,"containerIds":"","details":null},{"id":14,"searchValue":null,"createBy":"admin","createTime":"2019-06-06 16:43:20","updateBy":"admin","updateTime":"2019-06-06 17:08:07","remark":"匹配0,盘亏1,盘盈1","name":"我的盘点","state":3,"containerIds":",25,26","details":null}]
      * code : 0
      */
 
@@ -40,18 +41,17 @@ public class InventoryHistory {
 
     public static class RowsBean {
         /**
-         * id : 4
+         * id : 15
          * searchValue : null
          * createBy : admin
-         * createTime : 2019-05-16 08:56:43
+         * createTime : 2019-06-06 19:42:19
          * updateBy : admin
-         * updateTime : 2019-05-16 08:56:48
-         * remark : 444
-         * params : {}
-         * name : 44
-         * state : 0
-         * containerIds : 2
-         * list : null
+         * updateTime : 2019-06-06 19:42:19
+         * remark : null
+         * name : string
+         * state : 1
+         * containerIds :
+         * details : null
          */
 
         private int id;
@@ -60,12 +60,11 @@ public class InventoryHistory {
         private String createTime;
         private String updateBy;
         private String updateTime;
-        private String remark;
-        private ParamsBean params;
+        private Object remark;
         private String name;
         private int state;
         private String containerIds;
-        private Object list;
+        private Object details;
 
         public int getId() {
             return id;
@@ -115,20 +114,12 @@ public class InventoryHistory {
             this.updateTime = updateTime;
         }
 
-        public String getRemark() {
-            return remark == null ? "" : remark;
+        public Object getRemark() {
+            return remark;
         }
 
-        public void setRemark(String remark) {
+        public void setRemark(Object remark) {
             this.remark = remark;
-        }
-
-        public ParamsBean getParams() {
-            return params;
-        }
-
-        public void setParams(ParamsBean params) {
-            this.params = params;
         }
 
         public String getName() {
@@ -155,15 +146,12 @@ public class InventoryHistory {
             this.containerIds = containerIds;
         }
 
-        public Object getList() {
-            return list;
+        public Object getDetails() {
+            return details;
         }
 
-        public void setList(Object list) {
-            this.list = list;
-        }
-
-        public static class ParamsBean {
+        public void setDetails(Object details) {
+            this.details = details;
         }
     }
 }

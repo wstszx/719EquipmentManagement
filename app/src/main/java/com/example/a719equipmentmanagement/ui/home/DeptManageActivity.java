@@ -37,8 +37,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import butterknife.BindView;
+import io.reactivex.Single;
 import io.reactivex.SingleSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 public class DeptManageActivity extends BaseActivity {
 
@@ -71,6 +74,8 @@ public class DeptManageActivity extends BaseActivity {
     private PersonOne personOne;
     private PersonTwo personTwo;
     private int deptId;
+    private User.UsersBean usersBean;
+    private int userId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -108,72 +113,25 @@ public class DeptManageActivity extends BaseActivity {
             }
             list.add(personOne);
         }
-//        for (User user : users) {
-//            int id = user.getId();
-//            if (100 == id) {
-//                int deptId = user.getDeptId();
-//                String deptName = user.getDeptName();
-//                PersonOne personOne = new PersonOne(user);
-//
-//                for (User user1 : users) {
-//                    int parentId1 = user1.getParentId();
-//
-//                    if (deptId == parentId1) {
-//                        int deptId1 = user1.getDeptId();
-//                        String deptName1 = user1.getDeptName();
-//                        PersonTwo personTwo = new PersonTwo(user1, deptName);
-//                        for (User user2 : users) {
-//                            int parentId2 = user2.getParentId();
-//                            if (deptId1 == parentId2) {
-//                                PersonThree personThree = new PersonThree(user2, deptName1);
-//                                personTwo.addSubItem(personThree);
-//                            }
-//                        }
-//                        personOne.addSubItem(personTwo);
-//                    }
-//                }
-//                list.add(personOne);
-//            }
-//        }
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         adapter1 = new DeptManageAdapter(this, list);
         adapter1.bindToRecyclerView(recyclerview);
         adapter1.setEmptyView(R.layout.empty);
         recyclerview.setAdapter(adapter1);
-        for (int i = 0; i < adapter1.getData().size(); i++) {
-            adapter1.expand(i, true);
-        }
 
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             itemViewType = adapter.getItemViewType(position);
             ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
-            switch (itemViewType) {
-                case 0:
-                    personOne = (PersonOne) adapter.getData().get(position);
-                    if (personOne.isExpanded()) {
-                        adapter1.collapse(position, true);
-                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
-                    } else {
-                        adapter1.expand(position, true);
-                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
-                    }
-                    user = personOne.getUser();
-                    break;
-                case 1:
-                    personTwo = (PersonTwo) adapter.getData().get(position);
-                    if (personTwo.isExpanded()) {
-                        adapter1.collapse(position, true);
-                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
-                    } else {
-                        adapter1.expand(position, true);
-                        Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
-                    }
-                    User.UsersBean user = personTwo.getUser();
-                    break;
-//                case 2:
-//                    PersonThree personThree = (PersonThree) adapter.getData().get(position);
-//                    user = personThree.getUser();
-//                    break;
+            if (itemViewType == 0) {
+                personOne = (PersonOne) adapter.getData().get(position);
+                if (personOne.isExpanded()) {
+                    adapter1.collapse(position, true);
+                    Objects.requireNonNull(imageView).setImageResource(R.mipmap.shangla);
+                } else {
+                    adapter1.expand(position, true);
+                    Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
+                }
+                user = personOne.getUser();
             }
         });
         adapter1.setOnItemLongClickListener((adapter, v, position) -> {
@@ -188,15 +146,10 @@ public class DeptManageActivity extends BaseActivity {
                 case 1:
                     personTwo = (PersonTwo) adapter.getData().get(position);
                     parentTitle = personTwo.getParentTitle();
-                    User.UsersBean user = personTwo.getUser();
-                    deptId = this.user.getDeptId();
+                    usersBean = personTwo.getUser();
+                    userId = personTwo.getUser().getUserId();
+                    deptId = usersBean.getDeptId();
                     break;
-//                case 2:
-//                    personThree = (PersonThree) adapter.getData().get(position);
-//                    parentTitle = personThree.getParentTitle();
-//                    user = personThree.getUser();
-//                    deptId = user.getDeptId();
-//                    break;
             }
             initListPopupIfNeed(parentdeletes);
             mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
@@ -275,11 +228,22 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void edit() {
-        Intent intent = new Intent();
-        intent.putExtra("parentTitle", parentTitle);
-        intent.putExtra("data", user);
-        intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
-        startActivityForResult(intent, EDIT_DEPT);
+        switch (itemViewType) {
+            case 0:
+                Intent intent = new Intent();
+                intent.putExtra("parentTitle", parentTitle);
+                intent.putExtra("data", user);
+                intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
+                startActivityForResult(intent, EDIT_DEPT);
+                break;
+            case 1:
+                Intent intent1 = new Intent();
+                intent1.putExtra("parentTitle", parentTitle);
+                intent1.putExtra("data", usersBean);
+                intent1.setClass(DeptManageActivity.this, EditPersonActivity.class);
+                startActivityForResult(intent1, EDIT_PERSON);
+                break;
+        }
     }
 
     @Override
@@ -289,17 +253,48 @@ public class DeptManageActivity extends BaseActivity {
     }
 
     private void delete() {
-        RetrofitClient.getInstance().getService().delete(deptId)
-                .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> RetrofitClient.getInstance().getService().getUser())
-                .compose(CommonCompose.io2main(DeptManageActivity.this))
-                .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
-                    @Override
-                    public void onSuccess(List<User> users) {
-                        if (users != null && users.size() > 0) {
-                            createSection(users);
-                        }
-                    }
-                });
+        Single<List<User>> user = RetrofitClient.getInstance().getService().getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+        switch (itemViewType) {
+            case 0:
+                RetrofitClient.getInstance().getService().delete(deptId)
+                        .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> user)
+                        .compose(CommonCompose.io2main(DeptManageActivity.this))
+                        .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                            @Override
+                            public void onSuccess(List<User> users) {
+                                if (users != null && users.size() > 0) {
+                                    createSection(users);
+                                }
+                            }
+                        });
+                break;
+            case 1:
+                RetrofitClient.getInstance().getService().deleteUser(userId)
+                        .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> user)
+                        .compose(CommonCompose.io2main(DeptManageActivity.this))
+                        .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                            @Override
+                            public void onSuccess(List<User> users) {
+                                if (users != null && users.size() > 0) {
+                                    createSection(users);
+                                }
+                            }
+                        });
+//                RetrofitClient.getInstance().getService().deleteUser(userId)
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new BaseSubscriber<BaseResponse>(DeptManageActivity.this) {
+//                            @Override
+//                            public void onSuccess(BaseResponse baseResponse) {
+//                                initData();
+//                            }
+//                        });
+                break;
+        }
+
+
     }
 
 

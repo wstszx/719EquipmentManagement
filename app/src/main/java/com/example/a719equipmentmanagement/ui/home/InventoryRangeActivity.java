@@ -132,10 +132,12 @@ public class InventoryRangeActivity extends BaseActivity {
         List<MultiItemEntity> list = new ArrayList<>();
         for (ContainerData containerData : baseResponse) {
             ContainerOne containerOne = new ContainerOne(containerData);
-            List<ContainerData.ListBean> list1 = containerData.getList();
-            for (ContainerData.ListBean listBean : list1) {
-                ContainerTwo containerTwo = new ContainerTwo(listBean);
-                containerOne.addSubItem(containerTwo);
+            List<ContainerData.ContainersBean> list1 = containerData.getContainers();
+            if (list1 != null && list1.size() > 0) {
+                for (ContainerData.ContainersBean listBean : list1) {
+                    ContainerTwo containerTwo = new ContainerTwo(listBean);
+                    containerOne.addSubItem(containerTwo);
+                }
             }
             list.add(containerOne);
         }
@@ -157,13 +159,13 @@ public class InventoryRangeActivity extends BaseActivity {
             switch (itemType) {
                 case 0:
                     ContainerOne containerOne = (ContainerOne) multiItemEntity;
-                    name = containerOne.getDept().getName();
-                    id = containerOne.getDept().getId();
+                    name = containerOne.getData().getName();
+                    id = containerOne.getData().getId();
                     break;
                 case 1:
                     ContainerTwo containerTwo = (ContainerTwo) multiItemEntity;
-                    name = containerTwo.getDept().getName();
-                    id = containerTwo.getDept().getId();
+                    name = containerTwo.getData().getName();
+                    id = containerTwo.getData().getId();
                     multipleChoice(position, view, containerTwo);
                     break;
             }
@@ -180,7 +182,7 @@ public class InventoryRangeActivity extends BaseActivity {
 
     private void multipleChoice(int position, View view, ContainerTwo containerTwo) {
         boolean select = ((ContainerTwo) adapter.getData().get(position)).isSelect();
-        int containerId = containerTwo.getDept().getId();
+        int containerId = containerTwo.getData().getId();
         if (select) {
             containerIds.remove(((Object) containerId));
             view.setBackgroundResource(R.color.white);

@@ -8,7 +8,7 @@ public class Me {
 
     /**
      * postGroup : 董事长
-     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","params":{},"userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg","password":"00a18b1542eb4a095bba6b91401b0df7","salt":"96d9e0","status":"0","delFlag":"0","loginIp":"10.11.61.56","loginDate":"2019-05-21 13:53:23","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"admin":true}
+     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/06/03/65f81e08ca118375d3e5005e1162db0c.jpg","password":"1033075292f90df5af9af9e4361677c2","salt":"c2c2d4","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-06-07 23:58:14","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"comUser":false,"admin":true,"manager":false}
      * roleGroup : 超级系统管理员
      */
 
@@ -49,7 +49,6 @@ public class Me {
          * updateBy : null
          * updateTime : null
          * remark : 管理员
-         * params : {}
          * userId : 1
          * deptId : 100
          * parentId : null
@@ -58,19 +57,21 @@ public class Me {
          * email : wg@163.com
          * phonenumber : 15888888888
          * sex : 男
-         * avatar : 2019/04/26/dce395967e9963c1aa1d6ba6297e4b9f.jpg
-         * password : 00a18b1542eb4a095bba6b91401b0df7
-         * salt : 96d9e0
+         * avatar : 2019/06/03/65f81e08ca118375d3e5005e1162db0c.jpg
+         * password : 1033075292f90df5af9af9e4361677c2
+         * salt : c2c2d4
          * status : 0
          * delFlag : 0
-         * loginIp : 10.11.61.56
-         * loginDate : 2019-05-21 13:53:23
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"list":null}
-         * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
+         * loginIp : 127.0.0.1
+         * loginDate : 2019-06-07 23:58:14
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null}
+         * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
          * roleIds : [1]
          * postIds : null
          * list : null
+         * comUser : false
          * admin : true
+         * manager : false
          */
 
         private int id;
@@ -80,7 +81,6 @@ public class Me {
         private Object updateBy;
         private Object updateTime;
         private String remark;
-        private ParamsBean params;
         private int userId;
         private int deptId;
         private Object parentId;
@@ -99,7 +99,9 @@ public class Me {
         private DeptBean dept;
         private Object postIds;
         private Object list;
+        private boolean comUser;
         private boolean admin;
+        private boolean manager;
         private List<RolesBean> roles;
         private List<Integer> roleIds;
 
@@ -157,14 +159,6 @@ public class Me {
 
         public void setRemark(String remark) {
             this.remark = remark;
-        }
-
-        public ParamsBean getParams() {
-            return params;
-        }
-
-        public void setParams(ParamsBean params) {
-            this.params = params;
         }
 
         public int getUserId() {
@@ -311,12 +305,28 @@ public class Me {
             this.list = list;
         }
 
+        public boolean isComUser() {
+            return comUser;
+        }
+
+        public void setComUser(boolean comUser) {
+            this.comUser = comUser;
+        }
+
         public boolean isAdmin() {
             return admin;
         }
 
         public void setAdmin(boolean admin) {
             this.admin = admin;
+        }
+
+        public boolean isManager() {
+            return manager;
+        }
+
+        public void setManager(boolean manager) {
+            this.manager = manager;
         }
 
         public List<RolesBean> getRoles() {
@@ -341,9 +351,6 @@ public class Me {
             this.roleIds = roleIds;
         }
 
-        public static class ParamsBean {
-        }
-
         public static class DeptBean {
             /**
              * id : null
@@ -353,7 +360,6 @@ public class Me {
              * updateBy : null
              * updateTime : null
              * remark : null
-             * params : {}
              * deptId : 100
              * parentId : 0
              * ancestors : null
@@ -365,7 +371,7 @@ public class Me {
              * status : 0
              * delFlag : null
              * parentName : null
-             * list : null
+             * users : null
              */
 
             private Object id;
@@ -375,7 +381,6 @@ public class Me {
             private Object updateBy;
             private Object updateTime;
             private Object remark;
-            private ParamsBeanX params;
             private int deptId;
             private int parentId;
             private Object ancestors;
@@ -387,7 +392,7 @@ public class Me {
             private String status;
             private Object delFlag;
             private Object parentName;
-            private Object list;
+            private Object users;
 
             public Object getId() {
                 return id;
@@ -443,14 +448,6 @@ public class Me {
 
             public void setRemark(Object remark) {
                 this.remark = remark;
-            }
-
-            public ParamsBeanX getParams() {
-                return params;
-            }
-
-            public void setParams(ParamsBeanX params) {
-                this.params = params;
             }
 
             public int getDeptId() {
@@ -541,15 +538,12 @@ public class Me {
                 this.parentName = parentName;
             }
 
-            public Object getList() {
-                return list;
+            public Object getUsers() {
+                return users;
             }
 
-            public void setList(Object list) {
-                this.list = list;
-            }
-
-            public static class ParamsBeanX {
+            public void setUsers(Object users) {
+                this.users = users;
             }
         }
 
@@ -562,7 +556,6 @@ public class Me {
              * updateBy : null
              * updateTime : null
              * remark : null
-             * params : {}
              * roleId : 1
              * roleName : 超级系统管理员
              * roleKey : admin
@@ -582,7 +575,6 @@ public class Me {
             private Object updateBy;
             private Object updateTime;
             private Object remark;
-            private ParamsBeanXX params;
             private int roleId;
             private String roleName;
             private String roleKey;
@@ -648,14 +640,6 @@ public class Me {
 
             public void setRemark(Object remark) {
                 this.remark = remark;
-            }
-
-            public ParamsBeanXX getParams() {
-                return params;
-            }
-
-            public void setParams(ParamsBeanXX params) {
-                this.params = params;
             }
 
             public int getRoleId() {
@@ -736,9 +720,6 @@ public class Me {
 
             public void setDeptIds(Object deptIds) {
                 this.deptIds = deptIds;
-            }
-
-            public static class ParamsBeanXX {
             }
         }
     }

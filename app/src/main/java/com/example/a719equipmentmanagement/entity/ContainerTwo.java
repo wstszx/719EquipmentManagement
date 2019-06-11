@@ -4,11 +4,15 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 
 public class ContainerTwo implements MultiItemEntity {
 
-    private ContainerData.ListBean dept;
+    private ContainerData.ContainersBean data;
     private boolean isSelect;
 
-    public void setDept(ContainerData.ListBean dept) {
-        this.dept = dept;
+    public ContainerData.ContainersBean getData() {
+        return data;
+    }
+
+    public void setData(ContainerData.ContainersBean data) {
+        this.data = data;
     }
 
     public boolean isSelect() {
@@ -19,12 +23,9 @@ public class ContainerTwo implements MultiItemEntity {
         isSelect = select;
     }
 
-    public ContainerData.ListBean getDept() {
-        return dept;
-    }
 
-    public ContainerTwo(ContainerData.ListBean dept) {
-        this.dept = dept;
+    public ContainerTwo(ContainerData.ContainersBean data) {
+        this.data = data;
     }
 
     @Override

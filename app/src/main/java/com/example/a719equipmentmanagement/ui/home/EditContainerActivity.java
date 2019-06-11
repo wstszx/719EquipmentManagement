@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -29,25 +30,35 @@ import okhttp3.RequestBody;
 
 public class EditContainerActivity extends BaseActivity {
 
-
     private static final int EDIT_DEPT = 1;
     @BindView(R.id.edittext)
     EditText edittext;
     @BindView(R.id.tv_result1)
     TextView tvResult1;
-    @BindView(R.id.edittext2)
-    EditText edittext2;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     @BindView(R.id.round_button)
     QMUIRoundButton roundButton;
     private String name;
     private int id;
+    private int pid;
     private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initData();
+    }
+
+    private void initData() {
+        Intent intent = getIntent();
+//        pid = intent.getIntExtra("pid", 0);
+        id = intent.getIntExtra("id", 0);
+        name = intent.getStringExtra("name");
+        deptId = intent.getIntExtra("deptId", 0);
+        if (!StringUtils.isEmpty(name)) {
+            edittext.setText(name);
+        }
     }
 
     private void initTopbar() {
@@ -64,13 +75,12 @@ public class EditContainerActivity extends BaseActivity {
 
     private void editContainer() {
         String containerName = edittext.getText().toString();
-        String containerNum = edittext2.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);
             jsonObject.put("deptId", deptId);
+//            jsonObject.put("pid", pid);
             jsonObject.put("name", containerName);
-            jsonObject.put("num", containerNum);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,8 +90,10 @@ public class EditContainerActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditContainerActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        ToastUtils.showShort("添加货柜成功");
-                        roundButton.setVisibility(View.VISIBLE);
+                        if (baseResponse.getCode() == 0) {
+                            ToastUtils.showShort("编辑货柜成功");
+                            roundButton.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
     }
@@ -105,8 +117,7 @@ public class EditContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(EditContainerActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
                 break;
             case R.id.round_button:
-                int id = 1;
-                GenerateContainerCodeActivity.start(this, id);
+                GenerateContainerCodeActivity.start(this, "");
                 finish();
                 break;
         }

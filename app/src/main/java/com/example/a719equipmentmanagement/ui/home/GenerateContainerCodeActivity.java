@@ -38,6 +38,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private List<ContainerItem> qrList = new ArrayList<>();
+    private String containerId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -55,19 +56,10 @@ public class GenerateContainerCodeActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", 0);
-        ContainerItem item1 = new ContainerItem();
-        ContainerItem item2 = new ContainerItem();
-        ContainerItem item3 = new ContainerItem();
-        item1.setId("1");
-        item2.setId("2");
-        item3.setId("3");
-        item1.setName("货柜第一层");
-        item2.setName("货柜第二层");
-        item3.setName("货柜第三层");
-        qrList.add(item1);
-        qrList.add(item2);
-        qrList.add(item3);
+        containerId = intent.getStringExtra("containerId");
+        ContainerItem item = new ContainerItem();
+        item.setId(containerId);
+        qrList.add(item);
     }
 
     @Override
@@ -77,9 +69,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("货柜码");
-        topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> {
-            initBle();
-        });
+        topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> initBle());
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -95,7 +85,6 @@ public class GenerateContainerCodeActivity extends BaseActivity {
                 BleManager.getInstance().enableBluetooth();
             }
             initScanRule();
-//            scanBlueDevice();
             connectBlueDevice();
         } else {
             ToastUtils.showShort("您的设备不支持蓝牙");
@@ -114,6 +103,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
                 .build();
         BleManager.getInstance().initScanRule(scanRuleConfig);
     }
+
     private void connectBlueDevice() {
         String mAddress = "DC:0D:30:3C:C1:93";
         BleManager.getInstance().connect(mAddress, new BleGattCallback() {
@@ -138,9 +128,9 @@ public class GenerateContainerCodeActivity extends BaseActivity {
         });
     }
 
-    public static void start(Context context, int id) {
+    public static void start(Context context, String containerId) {
         Intent starter = new Intent(context, GenerateContainerCodeActivity.class);
-        starter.putExtra("id", id);
+        starter.putExtra("containerId", containerId);
         context.startActivity(starter);
     }
 

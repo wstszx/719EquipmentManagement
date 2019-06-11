@@ -26,9 +26,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.device.DeviceDetailActivity2"></activity>
-        <activity android:name=".ui.home.AdminToAuditActivity" />
-        <activity android:name=".ui.home.AdminInvalidEquipActivity" />
+        <activity android:name=".ui.home.InventoryTaskFragment"></activity>
+        <activity android:name=".ui.home.EditContainerLevelActivity" />
+        <activity android:name=".ui.home.ToAuditActivity" />
+        <activity android:name=".ui.home.InvalidEquipActivity" />
         <activity android:name=".ui.mine.ChangePasswordActivity" />
         <activity android:name=".ui.home.InventoryRangeActivity" />
         <activity android:name=".ui.home.AccountingListActivity" />
@@ -89,6 +90,9 @@
             android:label="@string/app_name" />
         <activity android:name=".ui.mine.ApplyHistoryActivity" />
         <activity android:name=".ui.home.WaitReturnDeviceActivity" />
+        <activity android:name=".ui.home.ToDoListActivity" />
+        <activity android:name=".ui.home.ToReturnDeviceActivity" />
+        <activity android:name=".ui.home.ApplyProgressActivity" />
     </application>
 
 </manifest>

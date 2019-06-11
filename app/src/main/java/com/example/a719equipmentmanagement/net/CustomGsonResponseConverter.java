@@ -3,8 +3,10 @@ package com.example.a719equipmentmanagement.net;
 import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.utils.JsonUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,14 +48,15 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
                             value.close();
                             throw new ServerException(code, msg);
                         } else if (code == 500) {
+                            value.close();
                             throw new ServerException(code, msg);
                         }
                     }
                     body = json.toString();
                     break;
                 case JSON_TYPE_ERROR:
-                    LogUtils.i(jsonType);
-                    break;
+                    value.close();
+                    throw new JsonSyntaxException("json类型错误");
             }
             return adapter.fromJson(body);
         } catch (JSONException e) {

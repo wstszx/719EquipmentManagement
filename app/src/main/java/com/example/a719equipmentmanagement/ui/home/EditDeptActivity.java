@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -116,7 +117,7 @@ public class EditDeptActivity extends BaseActivity {
         includedLayout3.editText.setText(leader);
         includedLayout4.editText.setText(phone);
         includedLayout5.editText.setText(email);
-        switch (status) {
+        switch (StringUtils.isEmpty(status) ? "" : status) {
             case "0":
                 switchs.setChecked(true);
                 break;
@@ -130,13 +131,15 @@ public class EditDeptActivity extends BaseActivity {
         Intent intent = getIntent();
         parentTitle = intent.getStringExtra("parentTitle");
         User data = (User) intent.getSerializableExtra("data");
-        id1 = data.getId();
-        deptName = data.getDeptName();
-        orderNum = data.getOrderNum();
-        leader = data.getLeader();
-        phone = data.getPhone();
-        email = data.getEmail();
-        status = data.getStatus();
+        if (data != null) {
+            id1 = data.getId();
+            deptName = data.getDeptName();
+            orderNum = data.getOrderNum();
+            leader = data.getLeader();
+            phone = data.getPhone();
+            email = data.getEmail();
+            status = data.getStatus();
+        }
     }
 
 
@@ -191,10 +194,11 @@ public class EditDeptActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditDeptActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK, new Intent());
-                        finish();
+                        int code = baseResponse.getCode();
                     }
                 });
+        setResult(RESULT_OK, new Intent());
+        finish();
     }
 
     public static void start(Context context) {

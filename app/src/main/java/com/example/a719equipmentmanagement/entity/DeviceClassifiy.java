@@ -6,18 +6,17 @@ public class DeviceClassifiy {
 
 
     /**
-     * id : 1
+     * id : 18
      * searchValue : null
      * createBy : admin
-     * createTime : 2019-05-09 14:03:21
+     * createTime : 2019-06-05 14:02:08
      * updateBy : admin
-     * updateTime : 2019-05-14 09:50:33
-     * remark : remark
-     * params : {}
+     * updateTime : 2019-06-05 14:02:08
+     * remark : 油液
      * pid : 0
-     * name : 分类1
+     * name : 油液
      * delFlag : 0
-     * list : [{"id":3,"searchValue":null,"createBy":"admin","createTime":"2019-05-14 15:28:13","updateBy":"admin","updateTime":"2019-05-14 15:28:22","remark":"remark","params":{},"pid":1,"name":"分类2","delFlag":0,"list":null},{"id":4,"searchValue":null,"createBy":"admin","createTime":"2019-05-14 15:49:32","updateBy":"admin","updateTime":"2019-05-14 15:49:38","remark":"remark","params":{},"pid":1,"name":"温度计","delFlag":0,"list":null}]
+     * categorys : [{"id":19,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 14:02:44","updateBy":"admin","updateTime":"2019-06-05 14:02:44","remark":"油液子类1","pid":18,"name":"油液子类1","delFlag":0,"categorys":null},{"id":20,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 14:02:58","updateBy":"admin","updateTime":"2019-06-05 14:02:58","remark":"油液子类2","pid":18,"name":"油液子类2","delFlag":0,"categorys":null},{"id":33,"searchValue":null,"createBy":"admin","createTime":"2019-06-09 11:36:34","updateBy":"admin","updateTime":"2019-06-09 11:36:34","remark":null,"pid":18,"name":"大气","delFlag":0,"categorys":null}]
      */
 
     private int id;
@@ -27,11 +26,10 @@ public class DeviceClassifiy {
     private String updateBy;
     private String updateTime;
     private String remark;
-    private ParamsBean params;
     private int pid;
     private String name;
     private int delFlag;
-    private List<ListBean> list;
+    private List<CategorysBean> categorys;
 
     public int getId() {
         return id;
@@ -89,14 +87,6 @@ public class DeviceClassifiy {
         this.remark = remark;
     }
 
-    public ParamsBean getParams() {
-        return params;
-    }
-
-    public void setParams(ParamsBean params) {
-        this.params = params;
-    }
-
     public int getPid() {
         return pid;
     }
@@ -121,31 +111,27 @@ public class DeviceClassifiy {
         this.delFlag = delFlag;
     }
 
-    public List<ListBean> getList() {
-        return list;
+    public List<CategorysBean> getCategorys() {
+        return categorys;
     }
 
-    public void setList(List<ListBean> list) {
-        this.list = list;
+    public void setCategorys(List<CategorysBean> categorys) {
+        this.categorys = categorys;
     }
 
-    public static class ParamsBean {
-    }
-
-    public static class ListBean {
+    public static class CategorysBean {
         /**
-         * id : 3
+         * id : 19
          * searchValue : null
          * createBy : admin
-         * createTime : 2019-05-14 15:28:13
+         * createTime : 2019-06-05 14:02:44
          * updateBy : admin
-         * updateTime : 2019-05-14 15:28:22
-         * remark : remark
-         * params : {}
-         * pid : 1
-         * name : 分类2
+         * updateTime : 2019-06-05 14:02:44
+         * remark : 油液子类1
+         * pid : 18
+         * name : 油液子类1
          * delFlag : 0
-         * list : null
+         * categorys : null
          */
 
         private int id;
@@ -155,11 +141,10 @@ public class DeviceClassifiy {
         private String updateBy;
         private String updateTime;
         private String remark;
-        private ParamsBeanX params;
         private int pid;
         private String name;
         private int delFlag;
-        private Object list;
+        private Object categorys;
 
         public int getId() {
             return id;
@@ -217,14 +202,6 @@ public class DeviceClassifiy {
             this.remark = remark;
         }
 
-        public ParamsBeanX getParams() {
-            return params;
-        }
-
-        public void setParams(ParamsBeanX params) {
-            this.params = params;
-        }
-
         public int getPid() {
             return pid;
         }
@@ -249,15 +226,12 @@ public class DeviceClassifiy {
             this.delFlag = delFlag;
         }
 
-        public Object getList() {
-            return list;
+        public Object getCategorys() {
+            return categorys;
         }
 
-        public void setList(Object list) {
-            this.list = list;
-        }
-
-        public static class ParamsBeanX {
+        public void setCategorys(Object categorys) {
+            this.categorys = categorys;
         }
     }
 }

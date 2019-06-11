@@ -18,6 +18,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -38,10 +39,9 @@ public class PersonInfoActivity extends BaseActivity {
     TextView tvResult2;
     @BindView(R.id.edittext3)
     EditText edittext3;
-    private Me baseResponse;
-    private int id;
+    private Me me;
+    private int userId;
     private String[] sexArray = {"男", "女", "未知"};
-    private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
     private int sexId;
     private int roleId;
 
@@ -62,28 +62,34 @@ public class PersonInfoActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<Me>(PersonInfoActivity.this) {
 
                     @Override
-                    public void onSuccess(Me baseResponse) {
-                        if (baseResponse != null) {
-                            PersonInfoActivity.this.baseResponse = baseResponse;
-                            id = baseResponse.getUser().getId();
-                            String userName = baseResponse.getUser().getUserName();
-                            String sex = baseResponse.getUser().getSex();
-                            int roleId = baseResponse.getUser().getRoles().get(0).getRoleId();
-                            String phonenumber = baseResponse.getUser().getPhonenumber();
-                            edittext.setText(userName);
-                            tvResult1.setText(sex);
-                            switch (roleId) {
-                                case 1:
-                                    tvResult2.setText("超级系统管理员");
-                                    break;
-                                case 2:
-                                    tvResult2.setText("普通用户");
-                                    break;
-                                case 3:
-                                    tvResult2.setText("实验室管理员");
-                                    break;
+                    public void onSuccess(Me me) {
+                        if (me != null) {
+                            PersonInfoActivity.this.me = me;
+                            Me.UserBean user = me.getUser();
+                            if (user != null) {
+                                userId = user.getUserId();
+                                String userName = user.getUserName();
+                                String sex = user.getSex();
+                                List<Me.UserBean.RolesBean> roles = user.getRoles();
+                                if (roles != null && roles.size() > 0) {
+                                    roleId = user.getRoles().get(0).getRoleId();
+                                }
+                                String phonenumber = user.getPhonenumber();
+                                edittext.setText(userName);
+                                tvResult1.setText(sex);
+                                switch (roleId) {
+                                    case 1:
+                                        tvResult2.setText("超级系统管理员");
+                                        break;
+                                    case 2:
+                                        tvResult2.setText("实验室管理员");
+                                        break;
+                                    case 3:
+                                        tvResult2.setText("普通用户");
+                                        break;
+                                }
+                                edittext3.setText(phonenumber);
                             }
-                            edittext3.setText(phonenumber);
                         }
                     }
                 });
@@ -95,7 +101,7 @@ public class PersonInfoActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             savePersonInfo();
             finish();
         });
@@ -105,7 +111,7 @@ public class PersonInfoActivity extends BaseActivity {
         String userName = edittext.getText().toString();
         String phonenumber = edittext3.getText().toString();
         Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
+        map.put("userId", userId);
         map.put("userName", userName);
         map.put("sex", sexId);
         map.put("roleId", roleId);
@@ -119,6 +125,7 @@ public class PersonInfoActivity extends BaseActivity {
 
                     }
                 });
+        finish();
     }
 
     @Override
@@ -132,15 +139,10 @@ public class PersonInfoActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.constraint1, R.id.constraint2})
+    @OnClick({R.id.constraint1})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.constraint1:
-                showSimpleBottomSheetList(sexArray, 1);
-                break;
-            case R.id.constraint2:
-                showSimpleBottomSheetList(roleArray, 2);
-                break;
+        if (view.getId() == R.id.constraint1) {
+            showSimpleBottomSheetList(sexArray, 1);
         }
     }
 

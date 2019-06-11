@@ -56,15 +56,15 @@
         <!--app:layout_constraintTop_toTopOf="parent"-->
         <!--tools:text="18871462356" />-->
 
-    <ImageView
-        android:id="@+id/iv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dp_16"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/qmui_icon_chevron" />
+    <!--<ImageView-->
+        <!--android:id="@+id/iv_1"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="@dimen/dp_16"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--app:srcCompat="@drawable/qmui_icon_chevron" />-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

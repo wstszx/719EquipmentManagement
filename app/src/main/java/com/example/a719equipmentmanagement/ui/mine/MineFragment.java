@@ -32,8 +32,8 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"个人信息", "申请历史", "借用历史", "盘点历史"};
-    private String[] containerAttrs1 = {"个人信息", "借用历史", "处理历史", "审核历史"};
+    private String[] containerAttrs = {"个人信息", "申请历史", "借用历史", "盘点历史", "处理历史", "审核历史"};
+    //    private String[] containerAttrs1 = {"个人信息", "借用历史", "处理历史", "审核历史"};
     private int roleId;
 
     @Override
@@ -111,32 +111,15 @@ public class MineFragment extends BaseFragment {
         };
 
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
-        switch (roleId) {
-            case 2:
-                for (String containerAttr : containerAttrs) {
-                    QMUICommonListItemView item = groupListView.createItemView(
-                            null,
-                            containerAttr,
-                            null,
-                            QMUICommonListItemView.HORIZONTAL,
-                            QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-                    item.setTag(containerAttr);
-                    section.addItemView(item, onClickListener);
-                }
-                break;
-            case 1:
-            case 3:
-                for (String containerAttr1 : containerAttrs1) {
-                    QMUICommonListItemView item = groupListView.createItemView(
-                            null,
-                            containerAttr1,
-                            null,
-                            QMUICommonListItemView.HORIZONTAL,
-                            QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-                    item.setTag(containerAttr1);
-                    section.addItemView(item, onClickListener);
-                }
-                break;
+        for (String containerAttr : containerAttrs) {
+            QMUICommonListItemView item = groupListView.createItemView(
+                    null,
+                    containerAttr,
+                    null,
+                    QMUICommonListItemView.HORIZONTAL,
+                    QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
+            item.setTag(containerAttr);
+            section.addItemView(item, onClickListener);
         }
 
         section.addTo(groupListView);

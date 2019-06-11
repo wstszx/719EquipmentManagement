@@ -14,8 +14,6 @@ public class NetworkError {
             case RetrofitException.ERROR.UNKNOWN:
             case RetrofitException.ERROR.PARSE_ERROR:
             case RetrofitException.ERROR.NETWORD_ERROR:
-                Toast.makeText(context, responeThrowable.message, Toast.LENGTH_SHORT).show();
-                break;
             case RetrofitException.ERROR.HTTP_ERROR:
             case RetrofitException.ERROR.SSL_ERROR:
                 Toast.makeText(context, responeThrowable.message, Toast.LENGTH_SHORT).show();

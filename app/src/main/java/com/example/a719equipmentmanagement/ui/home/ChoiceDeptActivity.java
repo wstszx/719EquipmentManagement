@@ -49,6 +49,7 @@ public class ChoiceDeptActivity extends BaseActivity {
     RecyclerView recyclerview;
     private String name;
     private int pid;
+    private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -96,9 +97,9 @@ public class ChoiceDeptActivity extends BaseActivity {
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
 
-        for (int i = 0; i < adapter.getData().size(); i++) {
-            adapter.expand(i, true);
-        }
+//        for (int i = 0; i < adapter.getData().size(); i++) {
+//            adapter.expand(i, true);
+//        }
         adapter.setOnItemClickListener((adapter1, view, position) -> {
             MultiItemEntity multiItemEntity = (MultiItemEntity) adapter1.getData().get(position);
             int itemType = multiItemEntity.getItemType();
@@ -106,6 +107,7 @@ public class ChoiceDeptActivity extends BaseActivity {
                 PersonOne deptOne = (PersonOne) multiItemEntity;
                 name = deptOne.getUser().getDeptName();
                 pid = deptOne.getUser().getParentId();
+                deptId = deptOne.getUser().getDeptId();
             }
             setChoice(position, view);
         });
@@ -158,6 +160,7 @@ public class ChoiceDeptActivity extends BaseActivity {
             Intent intent = new Intent();
             intent.putExtra("pid", pid);
             intent.putExtra("name", name);
+            intent.putExtra("deptId", deptId);
             setResult(RESULT_OK, intent);
             finish();
         });

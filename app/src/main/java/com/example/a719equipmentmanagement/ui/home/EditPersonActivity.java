@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.RegexUtils;
@@ -16,8 +17,10 @@ import com.clj.fastble.data.BleDevice;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.entity.Person;
 import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -33,6 +36,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class EditPersonActivity extends BaseActivity {
 
@@ -87,10 +92,10 @@ public class EditPersonActivity extends BaseActivity {
     private int userId;
     private int deptId;
     private String[] sexArray = {"男", "女", "未知"};
-    private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
+    private String[] roleArray = {"超级系统管理员", "实验室管理员", "普通用户"};
     private int id;
     private String name;
-    private int roleId;
+    private int roleId = 3;
     private int sexTag;
 
 
@@ -128,24 +133,16 @@ public class EditPersonActivity extends BaseActivity {
                 tv_result1.setText("未知");
                 break;
         }
-        include_1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSimpleBottomSheetList(sexArray, 1);
-            }
-        });
+        include_1.setOnClickListener(v -> showSimpleBottomSheetList(sexArray, 1));
 //        2
         textView2 = include_2.findViewById(R.id.tv_title);
         tvResult2 = include_2.findViewById(R.id.tv_result);
         textView2.setText(containerAttrs[2]);
         tvResult2.setText(deptName);
-        include_2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(EditPersonActivity.this, ChoiceDeptActivity.class);
-                startActivityForResult(intent, OWNER_DEPT);
-            }
+        include_2.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setClass(EditPersonActivity.this, ChoiceDeptActivity.class);
+            startActivityForResult(intent, OWNER_DEPT);
         });
 //        3
         includedLayout3.tv_title.setText(containerAttrs[3]);
@@ -173,12 +170,7 @@ public class EditPersonActivity extends BaseActivity {
         tvResult8 = include_8.findViewById(R.id.tv_result);
         textView8.setText(containerAttrs[7]);
         tvResult8.setText("");
-        include_8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSimpleBottomSheetList(roleArray, 2);
-            }
-        });
+        include_8.setOnClickListener(v -> showSimpleBottomSheetList(roleArray, 2));
 //        9
         tv_title9.setText(containerAttrs[8]);
         edittext9.setText(remark);
@@ -190,22 +182,18 @@ public class EditPersonActivity extends BaseActivity {
             bottomListSheetBuilder.addItem(s != null ? s : "未知");
         }
 
-        bottomListSheetBuilder.setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                roleId = position;
-                switch (flag) {
-                    case 1:
-                        sexTag = position;
-                        tv_result1.setText(tag);
-                        break;
-                    case 2:
-                        tvResult8.setText(tag);
-                        break;
-                }
-                dialog.dismiss();
+        bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+//            roleId[0] = position;
+            switch (flag) {
+                case 1:
+                    sexTag = position;
+                    tv_result1.setText(tag);
+                    break;
+                case 2:
+                    tvResult8.setText(tag);
+                    break;
             }
+            dialog.dismiss();
         })
                 .build()
                 .show();
@@ -213,8 +201,9 @@ public class EditPersonActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("listBean");
+        User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("data");
         userId = listBean.getUserId();
+        getRole();
         deptId = listBean.getDeptId();
 //        roleId = listBean.getRoleIds();
         userName = listBean.getUserName();
@@ -227,6 +216,20 @@ public class EditPersonActivity extends BaseActivity {
         remark = listBean.getRemark();
     }
 
+    private void getRole() {
+        RetrofitClient.getInstance().getService().getRole(userId)
+                .compose(CommonCompose.io2main(this))
+                .subscribe(new BaseSubscriber<UserData>(this) {
+                    @Override
+                    public void onSuccess(UserData response) {
+                        UserData.DataBean data = response.getData();
+                        if (data != null) {
+
+                        }
+                    }
+                });
+    }
+
     static class IncludedLayout {
         @BindView(R.id.tv_title)
         TextView tv_title;
@@ -235,14 +238,18 @@ public class EditPersonActivity extends BaseActivity {
     }
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        if (data != null) {
-            id = data.getIntExtra("id", 0);
-            name = data.getStringExtra("name");
-            tvResult2.setText(name);
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null && resultCode == RESULT_OK) {
+            if (requestCode == OWNER_DEPT) {
+                id = data.getIntExtra("id", 0);
+                name = data.getStringExtra("name");
+                deptId = data.getIntExtra("deptId", 0);
+                tvResult2.setText(name);
+            }
         }
-        super.onActivityReenter(resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     protected int getLayoutId() {
@@ -277,7 +284,6 @@ public class EditPersonActivity extends BaseActivity {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }
-
         try {
             map.put("userId", userId);
             map.put("userName", username);
@@ -288,21 +294,28 @@ public class EditPersonActivity extends BaseActivity {
             map.put("email", email);
             map.put("loginName", loginName);
             map.put("status", switchs.isChecked() ? "0" : "1");
-            map.put("role", roleId);
+            map.put("roleIds", roleId);
             map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();
         }
         RetrofitClient.getInstance().getService().editUser(map)
-                .compose(CommonCompose.io2main(EditPersonActivity.this))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(EditPersonActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
+                        int code = baseResponse.getCode();
+                        setResult(RESULT_OK);
+                        finish();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        String message = e.getMessage();
                     }
                 });
-        setResult(RESULT_OK);
-        finish();
+
     }
 
     public static void start(Context context) {

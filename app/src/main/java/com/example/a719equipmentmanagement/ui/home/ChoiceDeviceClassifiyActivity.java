@@ -71,10 +71,12 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
         List<MultiItemEntity> list = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy1 : baseResponse) {
             DeviceTypeOne typeOne = new DeviceTypeOne(deviceClassifiy1);
-            List<DeviceClassifiy.ListBean> list1 = deviceClassifiy1.getList();
-            for (DeviceClassifiy.ListBean listBean : list1) {
-                DeviceTypeTwo typeTwo = new DeviceTypeTwo(listBean);
-                typeOne.addSubItem(typeTwo);
+            List<DeviceClassifiy.CategorysBean> list1 = deviceClassifiy1.getCategorys();
+            if (list1 != null && list1.size() > 0) {
+                for (DeviceClassifiy.CategorysBean listBean : list1) {
+                    DeviceTypeTwo typeTwo = new DeviceTypeTwo(listBean);
+                    typeOne.addSubItem(typeTwo);
+                }
             }
             list.add(typeOne);
         }
@@ -83,32 +85,20 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
 
     private void initAdapter(List<MultiItemEntity> list) {
         adapter = new ChoiceDeviceClassifiyAdapter(list);
+        adapter.bindToRecyclerView(recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(this), DividerItemDecoration.VERTICAL));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
 
-        for (int i = 0; i < adapter.getData().size(); i++) {
-            adapter.expand(i, true);
-        }
-        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
-                int itemType = multiItemEntity.getItemType();
-                switch (itemType) {
-                    case 0:
-                        DeviceTypeOne typeOne = (DeviceTypeOne) multiItemEntity;
-                        name = typeOne.getDept().getName();
-                        id = typeOne.getDept().getId();
-                        break;
-                    case 1:
-                        DeviceTypeTwo typeTwo = (DeviceTypeTwo) multiItemEntity;
-                        name = typeTwo.getDept().getName();
-                        id = typeTwo.getDept().getId();
-                        break;
-                }
-                setChoice(position, view);
+        adapter.setOnItemClickListener((adapter, view, position) -> {
+            MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
+            int itemType = multiItemEntity.getItemType();
+            if (itemType == 0) {
+                DeviceTypeOne typeOne = (DeviceTypeOne) multiItemEntity;
+                name = typeOne.getData().getName();
+                id = typeOne.getData().getId();
             }
+            setChoice(position, view);
         });
     }
 

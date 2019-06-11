@@ -108,7 +108,7 @@ public class GenarateQRActivity extends BaseActivity {
         checkPermission();
         requestPermission();
         initData();
-        createChineseQRCode();
+//        createChineseQRCode();
     }
 
     private void checkPermission() {
@@ -171,7 +171,6 @@ public class GenarateQRActivity extends BaseActivity {
                              */
                             break;
                         case CONN_STATE_FAILED:
-//                                Utils.toast(MainActivity.this, getString(R.string.str_conn_fail));
                             /* wificonn=false; */
                             tv_connect_status.setText(getString(R.string.str_conn_state_disconnect));
                             break;
@@ -388,9 +387,9 @@ public class GenarateQRActivity extends BaseActivity {
         }
     }
 
-    private void createChineseQRCode() {
-        new MyTask(GenarateQRActivity.this, imageView).execute();
-    }
+//    private void createChineseQRCode() {
+//        new MyTask(GenarateQRActivity.this, imageView).execute();
+//    }
 
     @OnClick({R.id.bt_connect, R.id.bt_print})
     public void onViewClicked(View view) {
@@ -526,38 +525,38 @@ public class GenarateQRActivity extends BaseActivity {
         }
     };
 
-    static class MyTask extends AsyncTask<Void, Void, Bitmap> {
-        // 弱引用允许Activity被垃圾收集器清理
-        private final WeakReference<GenarateQRActivity> weakActivity;
-        private final WeakReference<ImageView> weakimageview;
-
-        MyTask(GenarateQRActivity myActivity, ImageView imageView) {
-            this.weakActivity = new WeakReference<>(myActivity);
-            this.weakimageview = new WeakReference<>(imageView);
-        }
-
-        @Override
-        public Bitmap doInBackground(Void... params) {
-            return QRCodeEncoder.syncEncodeQRCode("生成的", BGAQRCodeUtil.dp2px(weakActivity.get().getApplicationContext(), 150));
-        }
-
-        @Override
-        public void onPostExecute(Bitmap bitmap) {
-            // 重新获取Actiity的强引用，并且判断是否存活
-            GenarateQRActivity activity = weakActivity.get();
-            if (activity == null
-                    || activity.isFinishing()
-                    || activity.isDestroyed()) {
-                // activity死亡了，不再做任何的事情
-                return;
-            }
-            if (bitmap != null) {
-                weakimageview.get().setImageBitmap(bitmap);
-            } else {
-                Toast.makeText(weakActivity.get().getApplicationContext(), "生成二维码失败", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    static class MyTask extends AsyncTask<Void, Void, Bitmap> {
+//        // 弱引用允许Activity被垃圾收集器清理
+//        private final WeakReference<GenarateQRActivity> weakActivity;
+//        private final WeakReference<ImageView> weakimageview;
+//
+//        MyTask(GenarateQRActivity myActivity, ImageView imageView) {
+//            this.weakActivity = new WeakReference<>(myActivity);
+//            this.weakimageview = new WeakReference<>(imageView);
+//        }
+//
+//        @Override
+//        public Bitmap doInBackground(Void... params) {
+//            return QRCodeEncoder.syncEncodeQRCode("生成的", BGAQRCodeUtil.dp2px(weakActivity.get().getApplicationContext(), 150));
+//        }
+//
+//        @Override
+//        public void onPostExecute(Bitmap bitmap) {
+//            // 重新获取Actiity的强引用，并且判断是否存活
+//            GenarateQRActivity activity = weakActivity.get();
+//            if (activity == null
+//                    || activity.isFinishing()
+//                    || activity.isDestroyed()) {
+//                // activity死亡了，不再做任何的事情
+//                return;
+//            }
+//            if (bitmap != null) {
+//                weakimageview.get().setImageBitmap(bitmap);
+//            } else {
+//                Toast.makeText(weakActivity.get().getApplicationContext(), "生成二维码失败", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     public static void start(Context context, ArrayList<Integer> ids) {
         Intent starter = new Intent(context, GenarateQRActivity.class);

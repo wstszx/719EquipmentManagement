@@ -7,11 +7,11 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class ContainerOne extends AbstractExpandableItem<ContainerTwo> implements MultiItemEntity {
 
-    private ContainerData dept;
+    private ContainerData data;
     private boolean isSelect;
 
-    public void setDept(ContainerData dept) {
-        this.dept = dept;
+    public void setData(ContainerData data) {
+        this.data = data;
     }
 
     public boolean isSelect() {
@@ -22,12 +22,12 @@ public class ContainerOne extends AbstractExpandableItem<ContainerTwo> implement
         isSelect = select;
     }
 
-    public ContainerData getDept() {
-        return dept;
+    public ContainerData getData() {
+        return data;
     }
 
-    public ContainerOne(ContainerData dept) {
-        this.dept = dept;
+    public ContainerOne(ContainerData data) {
+        this.data = data;
     }
 
     @Override

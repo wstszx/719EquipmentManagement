@@ -8,6 +8,7 @@ import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
@@ -22,6 +23,7 @@ import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
+import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.entity.UserToDo;
 
@@ -39,6 +41,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
@@ -78,14 +81,23 @@ public interface ApiService {
     @POST("system/category/update")
     Single<BaseResponse> updataDeviceType(@Body RequestBody requestBody);
 
+    //更新设备分类数据
+    @FormUrlEncoded
+    @POST("system/equip/scan")
+    Single<DeviceScanData> getScanData(@Field("id") String id);
+
 
     /*------  container-controller -------*/
     //添加货柜
     @POST("system/container/add")
     Single<BaseResponse> addContainer(@Body RequestBody requestBody);
 
+    //批量添加货柜
+    @POST("system/container/addBatch")
+    Single<BaseResponse> addBatchContainer(@Body RequestBody requestBody);
+
     //编辑货柜
-    @POST("system/container/add")
+    @POST("system/container/update")
     Single<BaseResponse> editContainer(@Body RequestBody requestBody);
 
     //查找货柜数据
@@ -162,6 +174,10 @@ public interface ApiService {
 
 
     /*----------------- inventory-controller ----------------*/
+    //新建盘点任务
+    @POST("system/inventory/add")
+    Single<BaseResponse> newInventoryTask(@Body RequestBody requestBody);
+
     //设置盘点货柜范围
     @POST("system/inventory/addContainer")
     Single<BaseResponse> setInventoryContainer(@Body RequestBody requestBody);
@@ -195,7 +211,7 @@ public interface ApiService {
 
     //管理员：即将过期的设备
     @GET("invalidEquip")
-    Single<InvalidEquip> invalidEquip();
+    Single<List<InvalidEquip>> invalidEquip();
 
     //管理员：我的待审任务
     @GET("toAudit")
@@ -203,7 +219,7 @@ public interface ApiService {
 
     //管理员: 我的待办事项（送检、解封、报废）
     @GET("toHandle")
-    Single<ToDo> toDo();
+    Single<ToDo> toHandle();
 
     //普通用户: 我的待还设备
     @GET("toReturn")
@@ -215,7 +231,7 @@ public interface ApiService {
 
     //普通用户: 我的待办事项
     @GET("userToDo")
-    Single<UserToDo> userToDo();
+    Single<ToDo> userToDo();
 
 
     /*----------------- profile-controller  ----------------*/
@@ -258,13 +274,14 @@ public interface ApiService {
     //查找建账入库数据
     @GET("system/setup/list")
     Single<InRecordData> findInRecordData();
+
     //查找当前用户的审核历史
     @GET("system/user/profile/listMyAllVerify")
     Single<ReviewHistory> findReviewHistory();
 
     //查找当前用户的申请历史
     @GET("system/user/profile/listMyAllApply")
-    Single<List<ApplyHistory>> findUserApplyHistory();
+    Single<ApplyHistory> findUserApplyHistory();
 
     //查找建账入库数据
     @GET("system/setup/nextId")
@@ -273,6 +290,15 @@ public interface ApiService {
     //查找建账入库数据
     @GET("system/user/profile/listMyAllBorrow")
     Single<BorrowHistory> getBorrowHistory();
+
+    //查找用户数据
+    @GET("system/user/get")
+    Single<UserData> getRole(@Query("userId") int userId);
+
+    //查询货柜
+    @FormUrlEncoded
+    @POST("system/container/get")
+    Single<UserData> queryContainer(@Field("id") String userId);
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户

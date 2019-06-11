@@ -69,6 +69,7 @@ public class AddPersonActivity extends BaseActivity {
     private int roleId;
     private QMUIBottomSheet build;
     private int sexTag;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -200,7 +201,8 @@ public class AddPersonActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null) {
             String name = data.getStringExtra("name");
-            deptId = data.getIntExtra("id", 0);
+            pid = data.getIntExtra("pid", 0);
+            deptId = data.getIntExtra("deptId", 0);
             tvResult2.setText(name);
         }
         super.onActivityResult(requestCode, resultCode, data);

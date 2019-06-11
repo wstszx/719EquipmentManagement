@@ -17,6 +17,7 @@ import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
+import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -41,9 +42,9 @@ public class WaitCheckFragment extends BaseFragment {
     private void initData() {
         RetrofitClient.getInstance().getService().invalidEquip()
                 .compose(CommonCompose.io2main(getContext()))
-                .subscribe(new BaseSubscriber<InvalidEquip>(getContext()){
+                .subscribe(new BaseSubscriber<List<InvalidEquip>>(getContext()){
                     @Override
-                    public void onSuccess(InvalidEquip invalidEquip) {
+                    public void onSuccess(List<InvalidEquip> invalidEquip) {
                         if (invalidEquip != null) {
                             bindUi(invalidEquip);
                         }
@@ -51,7 +52,7 @@ public class WaitCheckFragment extends BaseFragment {
                 });
     }
 
-    private void bindUi(InvalidEquip invalidEquip) {
+    private void bindUi(List<InvalidEquip> invalidEquip) {
         
     }
 

@@ -66,7 +66,6 @@ public class DeviceFragment extends BaseFragment {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    private List<View> popupViews = new ArrayList<>();
     private List<BaseSingleFilter> filters = new ArrayList<>();
 
     private DeviceAdapter adapter;
@@ -155,6 +154,8 @@ public class DeviceFragment extends BaseFragment {
     }
 
     private void initView() {
+        List<View> popupViews = new ArrayList<>();
+
 //        三列表
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
@@ -407,9 +408,9 @@ public class DeviceFragment extends BaseFragment {
             BaseSingleFilter filterKey = new BaseSingleFilter();
             filterKey.setName(name);
             filterKey.setId(id);
-            List<DeviceClassifiy.ListBean> deviceClassifiyListBeanList = deviceClassifiy.getList();
+            List<DeviceClassifiy.CategorysBean> deviceClassifiyListBeanList = deviceClassifiy.getCategorys();
             List<BaseSingleFilter> filterValueList = new ArrayList<>();
-            for (DeviceClassifiy.ListBean listBean : deviceClassifiyListBeanList) {
+            for (DeviceClassifiy.CategorysBean listBean : deviceClassifiyListBeanList) {
                 BaseSingleFilter filterValue = new BaseSingleFilter();
                 int id1 = listBean.getId();
                 String name1 = listBean.getName();
