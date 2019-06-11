@@ -25,7 +25,8 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
     protected void convert(BaseViewHolder helper, DeviceData2.RowsBean item) {
         helper.setText(R.id.textView1, item.getName())
                 .setText(R.id.textView2, item.getParameter())
-                .setText(R.id.textView3, item.getEquipNo());
+                .setText(R.id.textView3, item.getEquipNo())
+                .setText(R.id.textView7,item.getCreateTime());
 
         DeviceData2.RowsBean.DeptBean dept = item.getDept();
         helper.setText(R.id.textView4, dept == null ? "无部门信息" : dept.getDeptName());
