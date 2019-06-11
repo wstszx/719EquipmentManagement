@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -26,6 +27,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
+import java.security.interfaces.ECKey;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -162,12 +164,22 @@ public class AddPersonActivity extends BaseActivity {
         String loginName = edittext5.getText().toString();
         String password = edittext6.getText().toString();
         String remark = edittext9.getText().toString();
-        if (!RegexUtils.isEmail(email)) {
+        if (StringUtils.isEmpty(username)) {
+            ToastUtils.showShort("用户名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(dept)) {
+            ToastUtils.showShort("所属部门不能为空");
+            return;
+        }else if (StringUtils.isEmpty(loginName)) {
+            ToastUtils.showShort("登录账号不能为空");
+            return;
+        }else if (StringUtils.isEmpty(password)) {
+            ToastUtils.showShort("登录密码不能为空");
+            return;
+        }else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }
-
-        if (!RegexUtils.isMobileExact(phoneNum)) {
+        }else if (!RegexUtils.isMobileExact(phoneNum)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }

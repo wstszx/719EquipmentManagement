@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -103,13 +104,16 @@ public class AddDeptActivity extends BaseActivity {
         String leader = includedLayout3.editText.getText().toString();
         String email = includedLayout5.editText.getText().toString();
         String phone = includedLayout4.editText.getText().toString();
-
-        if (!RegexUtils.isEmail(email)) {
+        if (StringUtils.isEmpty(deptName)) {
+            ToastUtils.showShort("部门名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(leader)) {
+            ToastUtils.showShort("负责人不能为空");
+            return;
+        }else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }
-
-        if (!RegexUtils.isMobileExact(phone)) {
+        }else if (!RegexUtils.isMobileExact(phone)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }

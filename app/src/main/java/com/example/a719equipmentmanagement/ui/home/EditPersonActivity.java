@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.clj.fastble.data.BleDevice;
 import com.example.a719equipmentmanagement.R;
@@ -275,12 +276,19 @@ public class EditPersonActivity extends BaseActivity {
         String email = includedLayout4.editText.getText().toString();
         String loginName = includedLayout5.editText.getText().toString();
         String remark = edittext9.getText().toString();
-        if (!RegexUtils.isEmail(email)) {
+        if (StringUtils.isEmpty(username)) {
+            ToastUtils.showShort("用户名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(dept)) {
+            ToastUtils.showShort("所属部门不能为空");
+            return;
+        }else if (StringUtils.isEmpty(loginName)) {
+            ToastUtils.showShort("登录账号不能为空");
+            return;
+        }else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }
-
-        if (!RegexUtils.isMobileExact(phoneNum)) {
+        }else if (!RegexUtils.isMobileExact(phoneNum)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }

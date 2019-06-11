@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -64,6 +66,10 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
 //        String ownerDeviceClassify = edittext1.getText().toString();
+        if (StringUtils.isEmpty(deviceClassifyName)) {
+            ToastUtils.showShort("设备分类没有变化");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);

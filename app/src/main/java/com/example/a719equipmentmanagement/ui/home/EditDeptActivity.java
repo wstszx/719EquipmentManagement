@@ -167,12 +167,16 @@ public class EditDeptActivity extends BaseActivity {
         String email = includedLayout5.editText.getText().toString();
         String phone = includedLayout4.editText.getText().toString();
 
-        if (!RegexUtils.isEmail(email)) {
+        if (StringUtils.isEmpty(deptName)) {
+            ToastUtils.showShort("部门名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(leader)) {
+            ToastUtils.showShort("负责人不能为空");
+            return;
+        }else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }
-
-        if (!RegexUtils.isMobileExact(phone)) {
+        }else if (!RegexUtils.isMobileExact(phone)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }

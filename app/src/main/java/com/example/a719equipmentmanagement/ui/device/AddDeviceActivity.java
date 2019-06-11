@@ -10,6 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
@@ -95,6 +98,19 @@ public class AddDeviceActivity extends BaseActivity {
         String input1 = item1.getDetailText().toString();
         String input2 = item2.getDetailText().toString();
         String input3 = item3.getDetailText().toString();
+        if (StringUtils.isEmpty(input0)) {
+            ToastUtils.showShort("设备名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(input1)) {
+            ToastUtils.showShort("指标不能为空");
+            return;
+        }else if (StringUtils.isEmpty(input2)) {
+            ToastUtils.showShort("厂家不能为空");
+            return;
+        }else if (StringUtils.isEmpty(input3)) {
+            ToastUtils.showShort("责任人不能为空");
+            return;
+        }
 //        String input4 = item4.getDetailText().toString();
 
         JSONObject jsonObject = new JSONObject();

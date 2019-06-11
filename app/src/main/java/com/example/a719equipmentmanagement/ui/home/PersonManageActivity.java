@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
@@ -138,6 +140,13 @@ public class PersonManageActivity extends BaseActivity {
     private void resetUser() {
         String username = customDialogBuilder.getEditText().getText().toString();
         String password = customDialogBuilder.getEditText1().getText().toString();
+        if (StringUtils.isEmpty(username)) {
+            ToastUtils.showShort("用户名称不能为空");
+            return;
+        }else if (StringUtils.isEmpty(password)) {
+            ToastUtils.showShort("密码不能为空");
+            return;
+        }
         RetrofitClient.getInstance().getService().resetPwd(userId, username, password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

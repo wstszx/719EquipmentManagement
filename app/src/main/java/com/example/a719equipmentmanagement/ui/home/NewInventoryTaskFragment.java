@@ -7,6 +7,8 @@ import android.widget.EditText;
 
 import androidx.navigation.Navigation;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -48,6 +50,10 @@ public class NewInventoryTaskFragment extends BaseFragment {
 
     private void newInventoryTask(View v) {
         String name = edittext.getText().toString();
+        if (StringUtils.isEmpty(name)) {
+            ToastUtils.showShort("盘点任务名称不能为空");
+            return;
+        }
 //        HashMap<String, Object> map = new HashMap<>();
         JSONObject jsonObject = new JSONObject();
         try {

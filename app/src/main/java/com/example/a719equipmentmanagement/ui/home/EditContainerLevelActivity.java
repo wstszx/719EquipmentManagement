@@ -65,6 +65,10 @@ public class EditContainerLevelActivity extends BaseActivity {
 
     private void editContainer() {
         name = edittext.getText().toString();
+        if (StringUtils.isEmpty(name)) {
+            ToastUtils.showShort("货柜名不能为空");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);

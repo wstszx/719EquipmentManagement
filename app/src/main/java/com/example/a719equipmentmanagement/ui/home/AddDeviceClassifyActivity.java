@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -57,6 +59,10 @@ public class AddDeviceClassifyActivity extends BaseActivity {
 
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
+        if (StringUtils.isEmpty(deviceClassifyName)) {
+            ToastUtils.showShort("设备分类名称不能为空");
+            return;
+        }
         String ownerDeviceClassify = tv_result1.getText().toString();
         JSONObject jsonObject = new JSONObject();
         try {
