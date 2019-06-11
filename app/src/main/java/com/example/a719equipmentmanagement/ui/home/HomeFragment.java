@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ApplyProgressAdapter;
@@ -133,6 +134,7 @@ public class HomeFragment extends BaseFragment {
                     if (comUser) {
                         isManager = false;
                     }
+                    SPUtils.getInstance().put("isManager", isManager);
                 }
             }
             return zip();
@@ -286,13 +288,13 @@ public class HomeFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             switch (position) {
                 case 0:
-                    DeptManageActivity.start(getContext(),isManager);
+                    DeptManageActivity.start(getContext(), isManager);
                     break;
                 case 1:
-                    ContainerManageActivity.start(getContext(),isManager);
+                    ContainerManageActivity.start(getContext(), isManager);
                     break;
                 case 2:
-                    DeviceClassifiyActivity.start(getContext(),isManager);
+                    DeviceClassifiyActivity.start(getContext(), isManager);
                     break;
                 case 3:
                     AccountingListActivity.start(getContext());
