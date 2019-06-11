@@ -58,15 +58,16 @@ public class InventoryTaskFragment extends BaseFragment {
             Inventories.RowsBean rowsBean = (Inventories.RowsBean) adapter.getData().get(position);
             int id = rowsBean.getId();
             Bundle bundle = new Bundle();
-            Navigation.findNavController(view).navigate(R.id.scanFragment);
+            bundle.putInt("id", id);
+            Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
         });
     }
 
     private void initTopbar() {
         topbar.setTitle("盘点任务");
-        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            Navigation.findNavController(v).navigate(R.id.scanFragment);
-        });
+//        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
+//            Navigation.findNavController(v).navigate(R.id.scanFragment);
+//        });
         topbar.addLeftBackImageButton().setOnClickListener(v -> Objects.requireNonNull(getActivity()).finish());
     }
 

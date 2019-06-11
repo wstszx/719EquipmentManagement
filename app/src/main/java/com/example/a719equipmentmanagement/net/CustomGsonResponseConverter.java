@@ -41,21 +41,16 @@ public class CustomGsonResponseConverter<T> implements Converter<ResponseBody, T
                     String msg = json.optString("msg");
                     if (!aNull) {
                         int code = json.optInt("code");
-                        if (code == -1) {
-                            value.close();
-                            throw new ServerException(code, msg);
-                        } else if (code == 1) {
-                            value.close();
-                            throw new ServerException(code, msg);
-                        } else if (code == 500) {
-                            value.close();
-                            throw new ServerException(code, msg);
+                        switch (code) {
+                            case -1:
+                            case 1:
+                            case 500:
+                                throw new ServerException(code, msg);
                         }
                     }
                     body = json.toString();
                     break;
                 case JSON_TYPE_ERROR:
-                    value.close();
                     throw new JsonSyntaxException("json类型错误");
             }
             return adapter.fromJson(body);

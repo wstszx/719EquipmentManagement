@@ -108,20 +108,14 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
             String[] split = result.split("\\|");
             String no = split[0];
             String id = split[1];
+            Bundle bundle = new Bundle();
+            bundle.putString("id", id);
             if (StringUtils.equals("E", no)) {
-                Bundle bundle = new Bundle();
-                bundle.putString("id", id);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.deviceDetailFragment, bundle);
             } else if (StringUtils.equals("C", no)) {
-                ToastUtils.showShort("这是货柜码");
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.containerDetailFragment, bundle);
             }
-//            else if (StringUtils.equals("C", no)) {
-//                ContainerDetailActivity.start(this, userId);
-//            }
-
         }
-//        Bundle bundle = new Bundle();
-//        bundle.putString("result", "当前货柜：" + result);
     }
 
     @Override

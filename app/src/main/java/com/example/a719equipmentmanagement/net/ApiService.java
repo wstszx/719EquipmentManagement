@@ -4,6 +4,7 @@ package com.example.a719equipmentmanagement.net;
 import com.example.a719equipmentmanagement.entity.ApplyHistory;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.BorrowHistory;
+import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
@@ -303,7 +304,7 @@ public interface ApiService {
     //查询货柜
     @FormUrlEncoded
     @POST("system/container/get")
-    Single<UserData> queryContainer(@Field("id") String userId);
+    Single<Container> queryContainer(@Field("id") String userId);
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户
