@@ -11,7 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.blankj.utilcode.util.RegexUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
@@ -28,6 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.BreakIterator;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -216,12 +220,7 @@ public class AccountingActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("建账入库");
         topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
-            JSONObject jsonObject = accounting();
-            Intent intent = new Intent();
-            intent.putExtra("accounting", jsonObject.toString());
-            setResult(RESULT_OK, intent);
-            finish();
-//            accounting();
+            accounting();
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
@@ -229,7 +228,7 @@ public class AccountingActivity extends BaseActivity {
         });
     }
 
-    private JSONObject accounting() {
+    private void accounting() {
         String name = edittext.getText().toString();
         String equipNo = edittext2.getText().toString();
         String parameter = edittext4.getText().toString();
@@ -238,13 +237,45 @@ public class AccountingActivity extends BaseActivity {
         String verifyPeriod = edittext11.getText().toString();
         String latestVerifyDate = tvResult12.getText().toString();
         String validDate = tvResult13.getText().toString();
-//        JSONArray jsonArray = new JSONArray();
+        if (StringUtils.isEmpty(name)) {
+            ToastUtils.showShort("设备名称不能为空");
+            return;
+        }
+
+        if (StringUtils.isEmpty(equipNo)) {
+            ToastUtils.showShort("设备编号不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(parameter)) {
+            ToastUtils.showShort("设备指标不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(manufactuer)) {
+            ToastUtils.showShort("厂家不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(responsor)) {
+            ToastUtils.showShort("责任人不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(verifyPeriod)) {
+            ToastUtils.showShort("？？？？不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(latestVerifyDate)) {
+            ToastUtils.showShort("？？？？不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(validDate)) {
+            ToastUtils.showShort("有效期不能为空");
+            return;
+        }
+
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();
 //        jsonArray.put(jsonObject);
         try {
             jsonObject.put("equip", jsonObject1);
-//            jsonObject.put("setupId", id);
             jsonObject1.put("name", name);
             jsonObject1.put("categoryId", categoryId);
             jsonObject1.put("equipNo", equipNo);
@@ -261,17 +292,10 @@ public class AccountingActivity extends BaseActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
-//        RetrofitClient.getInstance().getService().addInRecord(requestBody)
-//                .compose(CommonCompose.io2main(AccountingActivity.this))
-//                .subscribe(new BaseSubscriber<BaseResponse>(AccountingActivity.this) {
-//                    @Override
-//                    public void onSuccess(BaseResponse baseResponse) {
-//                        // TODO: 2019/5/29 修改生成二维码
-//                        GenarateQRActivity.start(AccountingActivity.this, 0);
-//                    }
-//                });
-        return jsonObject;
+        Intent intent = new Intent();
+        intent.putExtra("accounting", jsonObject.toString());
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
