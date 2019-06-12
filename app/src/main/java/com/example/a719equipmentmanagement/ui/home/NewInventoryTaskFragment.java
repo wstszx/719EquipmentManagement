@@ -6,13 +6,18 @@ import android.view.View;
 import android.widget.EditText;
 
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
+import com.example.a719equipmentmanagement.adapter.InventoriesAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.Inventories;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
@@ -20,6 +25,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,9 +44,11 @@ public class NewInventoryTaskFragment extends BaseFragment {
     @BindView(R.id.edittext)
     EditText edittext;
 
+
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+
     }
 
     private void initTopbar() {
@@ -50,18 +59,12 @@ public class NewInventoryTaskFragment extends BaseFragment {
 
     private void newInventoryTask(View v) {
         String name = edittext.getText().toString();
-        if (StringUtils.isEmpty(name)) {
-            ToastUtils.showShort("盘点任务名称不能为空");
-            return;
-        }
-//        HashMap<String, Object> map = new HashMap<>();
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("name", name);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        map.put("name", name);
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
         RetrofitClient.getInstance().getService().newInventoryTask(requestBody)
                 .subscribeOn(Schedulers.io())
@@ -70,8 +73,14 @@ public class NewInventoryTaskFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         if (response != null && response.getCode() == 0) {
-                            getActivity().finish();
-                            Navigation.findNavController(v).navigate(R.id.scanFragment);
+                            String msg = response.getMsg();
+                            boolean empty = StringUtils.isEmpty(msg);
+                            if (!empty) {
+                                int inventoryId = Integer.parseInt(msg);
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("inventoryId", inventoryId);
+                                Navigation.findNavController(v).navigate(R.id.scanFragment, bundle);
+                            }
                         }
                     }
                 });

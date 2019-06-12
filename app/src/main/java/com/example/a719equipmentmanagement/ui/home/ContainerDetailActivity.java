@@ -47,7 +47,7 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         String userId = intent.getStringExtra("userId");
-        getContainerData(userId);
+//        getContainerData(userId);
 //        String name = listBean.getName();
 //        id = listBean.getId();
 //        String dept = listBean.getDept();
@@ -57,16 +57,16 @@ public class ContainerDetailActivity extends BaseActivity {
 //        containerAttrValue[1] = createTime;
     }
 
-    private void getContainerData(String userId) {
-        RetrofitClient.getInstance().getService().queryContainer(userId)
-                .compose(CommonCompose.io2main(this))
-                .subscribe(new BaseSubscriber<UserData>(this){
-                    @Override
-                    public void onSuccess(UserData userData) {
-
-                    }
-                });
-    }
+//    private void getContainerData(String userId) {
+//        RetrofitClient.getInstance().getService().queryContainer(userId)
+//                .compose(CommonCompose.io2main(this))
+//                .subscribe(new BaseSubscriber<UserData>(this){
+//                    @Override
+//                    public void onSuccess(UserData userData) {
+//
+//                    }
+//                });
+//    }
 
     private void initGroupListView() {
         View.OnClickListener onClickListener = v -> {

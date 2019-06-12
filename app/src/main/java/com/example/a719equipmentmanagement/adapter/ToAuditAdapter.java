@@ -16,7 +16,9 @@ public class ToAuditAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseViewH
         ToAudit.RowsBean.EquipBean equip = item.getEquip();
         if (equip != null) {
             helper.setText(R.id.deviceName, equip.getName())
-                    .setText(R.id.number, equip.getEquipNo());
+                    .setText(R.id.number, equip.getEquipNo())
+                    .addOnClickListener(R.id.tv_by)
+                    .addOnClickListener(R.id.tv_no_by);
         }
     }
 }

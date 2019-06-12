@@ -75,6 +75,7 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
                 DeviceDetailActivity.start(this, id);
                 finish();
             } else {
+                zxingview.startSpot();
                 ToastUtils.showShort("请扫描设备二维码");
             }
 //            else if (StringUtils.equals("C", no)) {

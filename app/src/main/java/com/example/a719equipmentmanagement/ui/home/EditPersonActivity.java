@@ -9,28 +9,21 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.clj.fastble.data.BleDevice;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.BorrowHistory;
-import com.example.a719equipmentmanagement.entity.Person;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.utils.NumUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -170,7 +163,6 @@ public class EditPersonActivity extends BaseActivity {
         textView8 = include_8.findViewById(R.id.tv_title);
         tvResult8 = include_8.findViewById(R.id.tv_result);
         textView8.setText(containerAttrs[7]);
-        tvResult8.setText("");
         include_8.setOnClickListener(v -> showSimpleBottomSheetList(roleArray, 2));
 //        9
         tv_title9.setText(containerAttrs[8]);
@@ -202,7 +194,7 @@ public class EditPersonActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        User.UsersBean listBean = (User.UsersBean) intent.getSerializableExtra("data");
+        DeptList.UsersBean listBean = (DeptList.UsersBean) intent.getSerializableExtra("data");
         userId = listBean.getUserId();
         getRole();
         deptId = listBean.getDeptId();
@@ -225,7 +217,21 @@ public class EditPersonActivity extends BaseActivity {
                     public void onSuccess(UserData response) {
                         UserData.DataBean data = response.getData();
                         if (data != null) {
-
+                            List<Integer> roleIds = data.getRoleIds();
+                            if (roleIds != null && roleIds.size() > 0) {
+                                roleId = roleIds.get(0);
+                                switch (roleId) {
+                                    case 1:
+                                        tvResult8.setText("超级系统管理员");
+                                        break;
+                                    case 2:
+                                        tvResult8.setText("实验室管理员");
+                                        break;
+                                    case 3:
+                                        tvResult8.setText("普通用户");
+                                        break;
+                                }
+                            }
                         }
                     }
                 });

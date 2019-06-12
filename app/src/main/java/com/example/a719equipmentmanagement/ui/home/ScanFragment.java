@@ -1,10 +1,13 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,16 +42,31 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     ZXingView zxingview;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    private int inventoryId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         zxingview.setDelegate(this);
         initView();
+        closeKeybord(Objects.requireNonNull(getActivity()));
+    }
+
+    /**
+     * 自动关闭软键盘
+     *
+     * @param activity
+     */
+    public static void closeKeybord(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
     }
 
     private void initView() {
         Bundle arguments = getArguments();
         if (arguments != null) {
+            inventoryId = arguments.getInt("inventoryId");
             String title = arguments.getString("title");
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
         }
@@ -95,18 +113,16 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
             String id = split[1];
             if (StringUtils.equals("E", no)) {
                 Bundle bundle = new Bundle();
-                bundle.putString("id", id);
+                bundle.putInt("equipId", StringUtils.isEmpty(id) ? 0 : Integer.parseInt(id));
+                bundle.putInt("inventoryId", inventoryId);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.deviceDetailFragment, bundle);
             } else if (StringUtils.equals("C", no)) {
-                ToastUtils.showShort("这是货柜码");
+                Bundle bundle = new Bundle();
+                bundle.putInt("containerId", StringUtils.isEmpty(id) ? 0 : Integer.parseInt(id));
+                bundle.putInt("inventoryId", inventoryId);
+                Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.containerDetailFragment, bundle);
             }
-//            else if (StringUtils.equals("C", no)) {
-//                ContainerDetailActivity.start(this, userId);
-//            }
-
         }
-//        Bundle bundle = new Bundle();
-//        bundle.putString("result", "当前货柜：" + result);
     }
 
     @Override

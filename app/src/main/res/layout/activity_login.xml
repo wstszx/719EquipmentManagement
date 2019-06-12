@@ -10,7 +10,8 @@
     android:orientation="vertical"
     tools:context=".ui.LoginActivity">
     <!--admin/admin123-->
-    <!--manager/manager-->
+    <!--manager/manager02-->
+    <!--deptList/user02-->
 
 
     <EditText
@@ -25,7 +26,7 @@
         android:hint="@string/input_account"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="user02"
+        android:text="manager02"
         android:textColor="@color/app_color_description"
         android:textSize="@dimen/sp_14"
         app:layout_constraintTop_toTopOf="parent" />

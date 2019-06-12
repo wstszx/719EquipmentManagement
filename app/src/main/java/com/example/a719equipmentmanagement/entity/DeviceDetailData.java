@@ -732,7 +732,7 @@ public class DeviceDetailData {
                 this.parentName = parentName;
             }
 
-            public Object getUsers() {
+            public Object getDeptLists() {
                 return users;
             }
 

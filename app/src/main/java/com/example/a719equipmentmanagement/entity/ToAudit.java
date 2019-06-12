@@ -70,7 +70,7 @@ public class ToAudit implements Serializable {
         private int equipId;
         private int deptId;
         private int state;
-        private Object dealer;
+        private String dealer;
         private Object auditOpinion;
         private EquipBean equip;
 
@@ -162,11 +162,11 @@ public class ToAudit implements Serializable {
             this.state = state;
         }
 
-        public Object getDealer() {
-            return dealer;
+        public String getDealer() {
+            return dealer == null ? "" : dealer;
         }
 
-        public void setDealer(Object dealer) {
+        public void setDealer(String dealer) {
             this.dealer = dealer;
         }
 

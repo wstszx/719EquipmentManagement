@@ -882,7 +882,7 @@ public class ReviewHistory {
                     this.parentName = parentName;
                 }
 
-                public Object getUsers() {
+                public Object getDeptLists() {
                     return users;
                 }
 

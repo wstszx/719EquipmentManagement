@@ -5,10 +5,10 @@ import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class PersonTwo extends AbstractExpandableItem<PersonThree> implements MultiItemEntity {
-    private User.UsersBean listBean;
+    private DeptList.UsersBean listBean;
     private String parentTitle;
 
-    public User.UsersBean getUser() {
+    public DeptList.UsersBean getDeptList() {
         return listBean;
     }
 
@@ -16,7 +16,7 @@ public class PersonTwo extends AbstractExpandableItem<PersonThree> implements Mu
         return parentTitle == null ? "" : parentTitle;
     }
 
-    public PersonTwo(User.UsersBean listBean) {
+    public PersonTwo(DeptList.UsersBean listBean) {
         this.listBean = listBean;
     }
 

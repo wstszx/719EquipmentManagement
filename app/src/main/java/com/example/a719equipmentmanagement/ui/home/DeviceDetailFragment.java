@@ -1,23 +1,27 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
-import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +30,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 /**
@@ -35,11 +41,9 @@ public class DeviceDetailFragment extends BaseFragment {
     private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
 
     @BindView(R.id.topbar)
-    QMUITopBar topbar;
+    QMUITopBarLayout topbar;
     @BindView(R.id.groupListView)
     QMUIGroupListView groupListView;
-    @BindView(R.id.textView16)
-    TextView textView16;
     private QMUICommonListItemView listItemView;
     private QMUICommonListItemView item0;
     private QMUICommonListItemView item1;
@@ -55,57 +59,50 @@ public class DeviceDetailFragment extends BaseFragment {
     private String manufactuer;
     private String parameter;
     private String name;
-    private String equipNo;
     private String deviceStatus;
+    private int equipId;
+    private int inventoryId;
+    private String equipNo;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
         initData();
-        initGroupListView();
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            String result = arguments.getString("result");
-//            tv1.setText(TextUtils.isEmpty(result) ? "" : result);
-        }
     }
 
     private void initData() {
         Bundle bundle = getArguments();
         if (bundle != null) {
-            String id = bundle.getString("id");
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("equipNo", id);
-            RetrofitClient.getInstance().getService().findDeviceData(map)
+            equipId = bundle.getInt("equipId");
+            inventoryId = bundle.getInt("inventoryId");
+            RetrofitClient.getInstance().getService().getDeviceDetail(equipId + "")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<DeviceData2>(getContext()) {
+                    .subscribe(new BaseSubscriber<DeviceDetailData>(getContext()) {
                         @Override
-                        public void onSuccess(DeviceData2 deviceData2) {
-                            if (deviceData2 != null) {
-                                List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-                                if (rows != null && rows.size() > 0) {
-                                    DeviceData2.RowsBean rowsBean = rows.get(0);
-                                    setData(rowsBean);
-                                }
+                        public void onSuccess(DeviceDetailData detailData) {
+                            if (detailData != null) {
+                                setData(detailData);
                             }
                         }
                     });
         }
     }
 
-    private void setData(DeviceData2.RowsBean rowsBean) {
-        DeviceData2.RowsBean.DeptBean deptBean = rowsBean.getDept();
+    private void setData(DeviceDetailData detailData) {
+        DeviceDetailData.DataBean data = detailData.getData();
 
-        DeviceData2.RowsBean.LocationBean locationBean = rowsBean.getLocation();
-        equipNo = rowsBean.getEquipNo();
-        name = rowsBean.getName();
-        parameter = rowsBean.getParameter();
-        manufactuer = rowsBean.getManufactuer();
-        responsor = rowsBean.getResponsor();
-        deptName = deptBean == null ? "无部门信息" : deptBean.getDeptName();
-        locationName = locationBean == null ? "无位置信息" : locationBean.getName();
-        status = rowsBean.getStatus();
+        DeviceDetailData.DataBean.DeptBean dept = data.getDept();
+
+        DeviceDetailData.DataBean.LocationBean location = data.getLocation();
+        equipNo = data.getEquipNo();
+        name = data.getName();
+        parameter = data.getParameter();
+        manufactuer = data.getManufactuer();
+        responsor = data.getResponsor();
+        deptName = dept == null ? "无部门信息" : dept.getDeptName();
+        locationName = location == null ? "无位置信息" : location.getName();
+        status = data.getStatus();
         switch (status) {
             case 0:
                 deviceStatus = "可用";
@@ -251,9 +248,83 @@ public class DeviceDetailFragment extends BaseFragment {
         return R.layout.fragment_device_detail;
     }
 
-    @OnClick(R.id.textView16)
+
+    @OnClick({R.id.tv_cancel, R.id.tv_complete, R.id.tv_continue})
     public void onViewClicked(View view) {
-        Navigation.findNavController(view).navigate(R.id.scanFragment);
+        switch (view.getId()) {
+            case R.id.tv_cancel:
+                cancelInventory();
+                break;
+            case R.id.tv_complete:
+                completeInventory();
+                break;
+            case R.id.tv_continue:
+                saveInventory(view);
+                break;
+        }
     }
 
+    /**
+     * 继续盘点
+     * @param view
+     */
+    private void saveInventory(View view) {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonArray.put(jsonObject);
+            jsonObject.put("inventoryId", inventoryId);
+            jsonObject.put("equipId", equipId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
+        RetrofitClient.getInstance().getService().saveInventoryDevice(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response.getCode() == 0) {
+                            Bundle bundle = new Bundle();
+                            bundle.putInt("inventoryId", inventoryId);
+                            Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 完成盘点
+     */
+    private void completeInventory() {
+        RetrofitClient.getInstance().getService().setEndInventory(inventoryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response.getCode() == 0) {
+                            ToastUtils.showShort("盘点完成");
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 取消盘点
+     */
+    private void cancelInventory() {
+        RetrofitClient.getInstance().getService().cancelInventoryTask(inventoryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response.getCode() == 0) {
+                            ToastUtils.showShort("取消盘点");
+                        }
+                    }
+                });
+    }
 }

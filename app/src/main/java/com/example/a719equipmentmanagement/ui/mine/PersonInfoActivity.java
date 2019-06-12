@@ -68,10 +68,10 @@ public class PersonInfoActivity extends BaseActivity {
                     public void onSuccess(Me me) {
                         if (me != null) {
                             PersonInfoActivity.this.me = me;
-                            Me.UserBean user = me.getUser();
+                            Me.UserBean user = me.getDeptList();
                             if (user != null) {
-                                userId = user.getUserId();
-                                String userName = user.getUserName();
+                                userId = user.getDeptListId();
+                                String userName = user.getDeptListName();
                                 String sex = user.getSex();
                                 List<Me.UserBean.RolesBean> roles = user.getRoles();
                                 if (roles != null && roles.size() > 0) {

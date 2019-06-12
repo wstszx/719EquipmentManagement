@@ -17,7 +17,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.PersonManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -71,7 +71,7 @@ public class PersonManageActivity extends BaseActivity {
 
 
         adapter.setOnItemChildClickListener((adapter, view, position) -> {
-            User.UsersBean listBean = (User.UsersBean) adapter.getData().get(position);
+            DeptList.UsersBean listBean = (DeptList.UsersBean) adapter.getData().get(position);
             userId = listBean.getUserId();
             loginName = listBean.getLoginName();
             userName = listBean.getUserName();
@@ -181,23 +181,23 @@ public class PersonManageActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getUser()
+        RetrofitClient.getInstance().getService().getDeptList()
                 .compose(CommonCompose.io2main(PersonManageActivity.this))
-                .subscribe(new BaseSubscriber<List<User>>(PersonManageActivity.this) {
+                .subscribe(new BaseSubscriber<List<DeptList>>(PersonManageActivity.this) {
                     @Override
-                    public void onSuccess(List<User> users) {
-                        if (users != null && users.size() > 0) {
-                            List<User.UsersBean> listBeans = transformData(users);
+                    public void onSuccess(List<DeptList> deptLists) {
+                        if (deptLists != null && deptLists.size() > 0) {
+                            List<DeptList.UsersBean> listBeans = transformData(deptLists);
                             adapter.setNewData(listBeans);
                         }
                     }
                 });
     }
 
-    private List<User.UsersBean> transformData(List<User> users) {
-        List<User.UsersBean> listBeans = new ArrayList<>();
-        for (User user : users) {
-            List<User.UsersBean> list = user.getUsers();
+    private List<DeptList.UsersBean> transformData(List<DeptList> deptLists) {
+        List<DeptList.UsersBean> listBeans = new ArrayList<>();
+        for (DeptList deptList : deptLists) {
+            List<DeptList.UsersBean> list = deptList.getUsers();
             listBeans.addAll(list);
         }
         return listBeans;

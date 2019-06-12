@@ -766,7 +766,7 @@ public class HandleHistory {
                     this.parentName = parentName;
                 }
 
-                public Object getUsers() {
+                public Object getDeptLists() {
                     return users;
                 }
 

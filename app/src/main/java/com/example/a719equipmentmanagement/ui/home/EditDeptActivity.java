@@ -1,7 +1,6 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,22 +16,14 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.utils.NumUtils;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
-import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -130,7 +121,7 @@ public class EditDeptActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         parentTitle = intent.getStringExtra("parentTitle");
-        User data = (User) intent.getSerializableExtra("data");
+        DeptList data = (DeptList) intent.getSerializableExtra("data");
         if (data != null) {
             id1 = data.getId();
             deptName = data.getDeptName();

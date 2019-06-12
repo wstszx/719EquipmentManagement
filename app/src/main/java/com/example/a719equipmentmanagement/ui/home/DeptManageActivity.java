@@ -14,10 +14,9 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.PersonOne;
-import com.example.a719equipmentmanagement.entity.PersonThree;
 import com.example.a719equipmentmanagement.entity.PersonTwo;
-import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -62,25 +61,21 @@ public class DeptManageActivity extends BaseActivity {
             "编辑",
             "删除"
     };
-    private List<User> users;
+    private List<DeptList> deptLists;
     private ArrayAdapter<String> adapter;
     private int itemViewType = -1;
     private String parentTitle;
-    private User user;
+    private DeptList deptList;
     private DeptManageAdapter adapter1;
     private PersonOne personOne;
     private PersonTwo personTwo;
     private int deptId;
-    private User.UsersBean usersBean;
+    private DeptList.UsersBean usersBean;
     private int userId;
     private boolean isManager;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        initView();
-    }
-
-    private void initView() {
         initTopbar();
         initData();
     }
@@ -88,26 +83,26 @@ public class DeptManageActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         isManager = intent.getBooleanExtra("isManager", false);
-        RetrofitClient.getInstance().getService().getUser()
+        RetrofitClient.getInstance().getService().getDeptList()
                 .compose(CommonCompose.io2main(DeptManageActivity.this))
-                .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                .subscribe(new BaseSubscriber<List<DeptList>>(DeptManageActivity.this) {
                     @Override
-                    public void onSuccess(List<User> users) {
-                        DeptManageActivity.this.users = users;
-                        if (users != null && users.size() > 0) {
-                            createSection(users);
+                    public void onSuccess(List<DeptList> deptLists) {
+                        DeptManageActivity.this.deptLists = deptLists;
+                        if (deptLists != null && deptLists.size() > 0) {
+                            createSection(deptLists);
                         }
                     }
                 });
     }
 
 
-    private void createSection(List<User> users) {
+    private void createSection(List<DeptList> deptLists) {
         List<MultiItemEntity> list = new ArrayList<>();
-        for (User user : users) {
-            PersonOne personOne = new PersonOne(user);
-            List<User.UsersBean> users1 = user.getUsers();
-            for (User.UsersBean listBean : users1) {
+        for (DeptList deptList : deptLists) {
+            PersonOne personOne = new PersonOne(deptList);
+            List<DeptList.UsersBean> users1 = deptList.getUsers();
+            for (DeptList.UsersBean listBean : users1) {
                 PersonTwo personTwo = new PersonTwo(listBean);
                 personOne.addSubItem(personTwo);
             }
@@ -130,7 +125,7 @@ public class DeptManageActivity extends BaseActivity {
                     adapter1.expand(position, true);
                     Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                 }
-                user = personOne.getUser();
+                deptList = personOne.getDeptList();
             }
         });
         if (isManager) {
@@ -148,14 +143,14 @@ public class DeptManageActivity extends BaseActivity {
                     case 0:
                         personOne = (PersonOne) adapter.getData().get(position);
                         parentTitle = personOne.getParentTitle();
-                        user = personOne.getUser();
-                        deptId = user.getDeptId();
+                        deptList = personOne.getDeptList();
+                        deptId = deptList.getDeptId();
                         break;
                     case 1:
                         personTwo = (PersonTwo) adapter.getData().get(position);
                         parentTitle = personTwo.getParentTitle();
-                        usersBean = personTwo.getUser();
-                        userId = personTwo.getUser().getUserId();
+                        usersBean = personTwo.getDeptList();
+                        userId = personTwo.getDeptList().getUserId();
                         deptId = usersBean.getDeptId();
                         break;
                 }
@@ -236,7 +231,7 @@ public class DeptManageActivity extends BaseActivity {
             case 0:
                 Intent intent = new Intent();
                 intent.putExtra("parentTitle", parentTitle);
-                intent.putExtra("data", user);
+                intent.putExtra("data", deptList);
                 intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
                 startActivityForResult(intent, EDIT_DEPT);
                 break;
@@ -252,37 +247,39 @@ public class DeptManageActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            initData();
+        }
         super.onActivityResult(requestCode, resultCode, data);
-        initData();
     }
 
     private void delete() {
-        Single<List<User>> user = RetrofitClient.getInstance().getService().getUser()
+        Single<List<DeptList>> user = RetrofitClient.getInstance().getService().getDeptList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         switch (itemViewType) {
             case 0:
                 RetrofitClient.getInstance().getService().delete(deptId)
-                        .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> user)
+                        .flatMap((Function<BaseResponse, SingleSource<List<DeptList>>>) baseResponse -> user)
                         .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                        .subscribe(new BaseSubscriber<List<DeptList>>(DeptManageActivity.this) {
                             @Override
-                            public void onSuccess(List<User> users) {
-                                if (users != null && users.size() > 0) {
-                                    createSection(users);
+                            public void onSuccess(List<DeptList> deptLists) {
+                                if (deptLists != null && deptLists.size() > 0) {
+                                    createSection(deptLists);
                                 }
                             }
                         });
                 break;
             case 1:
                 RetrofitClient.getInstance().getService().deleteUser(userId)
-                        .flatMap((Function<BaseResponse, SingleSource<List<User>>>) baseResponse -> user)
+                        .flatMap((Function<BaseResponse, SingleSource<List<DeptList>>>) baseResponse -> user)
                         .compose(CommonCompose.io2main(DeptManageActivity.this))
-                        .subscribe(new BaseSubscriber<List<User>>(DeptManageActivity.this) {
+                        .subscribe(new BaseSubscriber<List<DeptList>>(DeptManageActivity.this) {
                             @Override
-                            public void onSuccess(List<User> users) {
-                                if (users != null && users.size() > 0) {
-                                    createSection(users);
+                            public void onSuccess(List<DeptList> deptLists) {
+                                if (deptLists != null && deptLists.size() > 0) {
+                                    createSection(deptLists);
                                 }
                             }
                         });

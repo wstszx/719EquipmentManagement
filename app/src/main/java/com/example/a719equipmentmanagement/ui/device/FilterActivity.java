@@ -312,7 +312,7 @@ public class FilterActivity extends BaseActivity {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
                 DeviceData2.RowsBean currentItemData=rows.get(position);
-                DeviceDetailActivity.start(FilterActivity.this, currentItemData);
+//                DeviceDetailActivity.start(FilterActivity.this, currentItemData);
             }
         });
 

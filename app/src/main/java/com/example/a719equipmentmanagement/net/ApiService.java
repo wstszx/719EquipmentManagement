@@ -4,6 +4,7 @@ package com.example.a719equipmentmanagement.net;
 import com.example.a719equipmentmanagement.entity.ApplyHistory;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.BorrowHistory;
+import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
@@ -12,6 +13,7 @@ import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DictData;
 import com.example.a719equipmentmanagement.entity.HandleHistory;
 import com.example.a719equipmentmanagement.entity.InRecordData;
+import com.example.a719equipmentmanagement.entity.Inventories;
 import com.example.a719equipmentmanagement.entity.InventoryHistory;
 import com.example.a719equipmentmanagement.entity.Me;
 import com.example.a719equipmentmanagement.entity.MsgData;
@@ -21,11 +23,10 @@ import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.TreeData;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
-import com.example.a719equipmentmanagement.entity.UserToDo;
 
 import java.io.File;
 import java.util.IdentityHashMap;
@@ -124,7 +125,7 @@ public interface ApiService {
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Single<List<User>> getUser();
+    Single<List<DeptList>> getDeptList();
 
     //编辑科室
     @FormUrlEncoded
@@ -186,9 +187,19 @@ public interface ApiService {
     @POST("system/inventory/addDetails")
     Single<BaseResponse> saveInventoryDevice(@Body RequestBody requestBody);
 
-    //设置盘点结束
+    //设置盘点完成
+    @FormUrlEncoded
     @POST("system/inventory/endInventory")
-    Single<BaseResponse> setEndInventory(@Body RequestBody requestBody);
+    Single<BaseResponse> setEndInventory(@Field("id") long id);
+
+    //取消盘点任务
+    @FormUrlEncoded
+    @POST("system/inventory/cancelInventory")
+    Single<BaseResponse> cancelInventoryTask(@Field("id") long id);
+
+    //查找当前用户进行中的盘点
+    @GET("system/inventory/listMy")
+    Single<Inventories> getInventories();
 
     //查找盘点数据
     @GET("system/user/profile/listMyAllInventory")
@@ -298,7 +309,7 @@ public interface ApiService {
     //查询货柜
     @FormUrlEncoded
     @POST("system/container/get")
-    Single<UserData> queryContainer(@Field("id") String userId);
+    Single<Container> queryContainer(@Field("id") String userId);
 
     /*----------------- user-controller  ----------------*/
     //新增保存用户

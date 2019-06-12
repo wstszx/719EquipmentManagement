@@ -23,6 +23,7 @@ import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
 import com.example.a719equipmentmanagement.adapter.ToDoAdapter;
 import com.example.a719equipmentmanagement.adapter.ToReturnAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.Me;
@@ -30,6 +31,7 @@ import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
@@ -108,7 +110,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initAdapter() {
         invalidEquipAdapter = new InvalidEquipAdapter(R.layout.invalid_equip_item);
-        toAuditAdapter = new ToAuditAdapter(R.layout.invalid_equip_item);
+        toAuditAdapter = new ToAuditAdapter(R.layout.to_audit_item);
         toDoAdapter = new ToDoAdapter(R.layout.invalid_equip_item);
         toReturnAdapter = new ToReturnAdapter(R.layout.invalid_equip_item);
         applyProgressAdapter = new ApplyProgressAdapter(R.layout.invalid_equip_item);
@@ -120,7 +122,7 @@ public class HomeFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread());
         meSingle.flatMap((Function<Me, SingleSource<?>>) me -> {
             if (me != null) {
-                Me.UserBean user = me.getUser();
+                Me.UserBean user = me.getDeptList();
                 if (user != null) {
                     boolean manager = user.isManager();
                     boolean comUser = user.isComUser();
@@ -140,7 +142,12 @@ public class HomeFragment extends BaseFragment {
             return zip();
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new BaseSubscriber<Object>(getContext()) {
+                    @Override
+                    public void onSuccess(Object response) {
+
+                    }
+                });
 
     }
 

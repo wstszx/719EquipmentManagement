@@ -15,34 +15,20 @@ import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
-import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ContainerManageAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.Container;
 import com.example.a719equipmentmanagement.entity.ContainerData;
 import com.example.a719equipmentmanagement.entity.ContainerOne;
 import com.example.a719equipmentmanagement.entity.ContainerTwo;
-import com.example.a719equipmentmanagement.entity.PersonOne;
-import com.example.a719equipmentmanagement.entity.PersonTwo;
-import com.example.a719equipmentmanagement.entity.SectionHeader;
-import com.example.a719equipmentmanagement.entity.SectionItem;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
-import com.example.a719equipmentmanagement.net.NetworkError;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.device.AddDeviceActivity;
-import com.example.a719equipmentmanagement.view.CustomInputDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
-import com.qmuiteam.qmui.widget.section.QMUISection;
-import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
-import com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,22 +36,13 @@ import java.util.List;
 import java.util.Objects;
 
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * 货柜管理

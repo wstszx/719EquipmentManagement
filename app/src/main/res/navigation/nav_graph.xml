@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_scanFragment_to_deviceDetailFragment"
             app:destination="@id/deviceDetailFragment" />
+        <action
+            android:id="@+id/action_scanFragment_to_containerDetailFragment"
+            app:destination="@id/containerDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/inventoryTaskFragment"
@@ -44,4 +47,9 @@
             android:id="@+id/action_deviceDetailFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/containerDetailFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.ContainerDetailFragment"
+        android:label="fragment_container_detail"
+        tools:layout="@layout/fragment_container_detail" />
 </navigation>

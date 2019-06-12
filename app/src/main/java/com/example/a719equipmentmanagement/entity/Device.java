@@ -27,7 +27,7 @@ public class Device {
     public String getLocation() { return location == null ? "" : location; }
     public void setLocation(String location) { this.location = location; }
 
-    public String getUserName() { return userName == null ? "" : userName; }
+    public String getDeptListName() { return userName == null ? "" : userName; }
     public void setUserName(String userName) { this.userName = userName; }
 
     public String getTarget() { return target == null ? "" : target; }
