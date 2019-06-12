@@ -259,11 +259,11 @@ public class AccountingActivity extends BaseActivity {
             return;
         }
         if (StringUtils.isEmpty(verifyPeriod)) {
-            ToastUtils.showShort("？？？？不能为空");
+            ToastUtils.showShort("检定周期不能为空");
             return;
         }
         if (StringUtils.isEmpty(latestVerifyDate)) {
-            ToastUtils.showShort("？？？？不能为空");
+            ToastUtils.showShort("最近检定日期不能为空");
             return;
         }
         if (StringUtils.isEmpty(validDate)) {
