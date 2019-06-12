@@ -16,10 +16,10 @@
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginBottom="@dimen/dp_16"
-        app:layout_constraintBottom_toTopOf="@id/textView16"
+        app:layout_constraintBottom_toTopOf="@id/tv_cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topbar">
@@ -31,37 +31,44 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/tv_cancel"
         android:layout_width="80dp"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="@dimen/dp_16"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_bg"
+        android:gravity="center"
+        android:text="@string/canecl"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/tv_complete"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview" />
+
+    <TextView
+        android:id="@+id/tv_complete"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/round_bg"
+        android:gravity="center"
+        android:text="@string/complete"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/tv_continue"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_cancel"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview" />
+
+    <TextView
+        android:id="@+id/tv_continue"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/round_bg"
         android:gravity="center"
         android:text="@string/continues"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <!--<com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton-->
-    <!--android:id="@+id/bt"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="20dp"-->
-    <!--android:clickable="true"-->
-    <!--android:focusable="true"-->
-    <!--android:gravity="center"-->
-    <!--android:padding="10dp"-->
-    <!--android:textColor="@color/app_color_blue"-->
-    <!--android:visibility="gone"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="parent"-->
-    <!--app:layout_constraintTop_toBottomOf="@id/scrollview"-->
-    <!--app:qmui_backgroundColor="@color/app_color_blue_3"-->
-    <!--app:qmui_borderColor="@color/app_color_blue"-->
-    <!--app:qmui_borderWidth="1px"-->
-    <!--tools:text="@string/borrow" />-->
-
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_complete"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,45 +1,29 @@
 package com.example.a719equipmentmanagement.ui.home;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseArray;
-import android.util.SparseBooleanArray;
 import android.view.View;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ChoiceDeptAdapter;
-import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
-import com.example.a719equipmentmanagement.entity.BaseSingleFilter;
-import com.example.a719equipmentmanagement.entity.DeptOne;
-import com.example.a719equipmentmanagement.entity.DeptThree;
-import com.example.a719equipmentmanagement.entity.DeptTwo;
-import com.example.a719equipmentmanagement.entity.DeviceData;
-import com.example.a719equipmentmanagement.entity.Person;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.PersonOne;
-import com.example.a719equipmentmanagement.entity.PersonThree;
-import com.example.a719equipmentmanagement.entity.PersonTwo;
-import com.example.a719equipmentmanagement.entity.TreeData;
-import com.example.a719equipmentmanagement.entity.User;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class ChoiceDeptActivity extends BaseActivity {
 
@@ -58,13 +42,13 @@ public class ChoiceDeptActivity extends BaseActivity {
     }
 
     private void initData() {
-        RetrofitClient.getInstance().getService().getUser()
+        RetrofitClient.getInstance().getService().getDeptList()
                 .compose(CommonCompose.io2main(ChoiceDeptActivity.this))
-                .subscribe(new BaseSubscriber<List<User>>(ChoiceDeptActivity.this) {
+                .subscribe(new BaseSubscriber<List<DeptList>>(ChoiceDeptActivity.this) {
                     @Override
-                    public void onSuccess(List<User> users) {
-                        if (users != null && users.size() > 0) {
-                            createSection(users);
+                    public void onSuccess(List<DeptList> deptLists) {
+                        if (deptLists != null && deptLists.size() > 0) {
+                            createSection(deptLists);
                         }
                     }
                 });
@@ -80,10 +64,10 @@ public class ChoiceDeptActivity extends BaseActivity {
 //                });
     }
 
-    private void createSection(List<User> users) {
+    private void createSection(List<DeptList> deptLists) {
         List<MultiItemEntity> list = new ArrayList<>();
-        for (User user : users) {
-            PersonOne personOne = new PersonOne(user);
+        for (DeptList deptList : deptLists) {
+            PersonOne personOne = new PersonOne(deptList);
             list.add(personOne);
         }
         initAdapter(list);
@@ -105,9 +89,9 @@ public class ChoiceDeptActivity extends BaseActivity {
             int itemType = multiItemEntity.getItemType();
             if (itemType == 0) {
                 PersonOne deptOne = (PersonOne) multiItemEntity;
-                name = deptOne.getUser().getDeptName();
-                pid = deptOne.getUser().getParentId();
-                deptId = deptOne.getUser().getDeptId();
+                name = deptOne.getDeptList().getDeptName();
+                pid = deptOne.getDeptList().getParentId();
+                deptId = deptOne.getDeptList().getDeptId();
             }
             setChoice(position, view);
         });

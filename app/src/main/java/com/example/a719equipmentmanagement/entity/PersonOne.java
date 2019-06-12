@@ -6,18 +6,18 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class PersonOne extends AbstractExpandableItem<PersonTwo> implements MultiItemEntity {
 
-    private User user;
+    private DeptList deptList;
 
     public String getParentTitle() {
         return "无";
     }
 
-    public User getUser() {
-        return user;
+    public DeptList getDeptList() {
+        return deptList;
     }
 
-    public PersonOne(User user) {
-        this.user = user;
+    public PersonOne(DeptList deptList) {
+        this.deptList = deptList;
     }
 
     @Override

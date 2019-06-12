@@ -166,7 +166,7 @@ public class Person implements Serializable {
             this.params = params;
         }
 
-        public int getUserId() {
+        public int getDeptListId() {
             return userId;
         }
 
@@ -198,7 +198,7 @@ public class Person implements Serializable {
             this.loginName = loginName;
         }
 
-        public String getUserName() {
+        public String getDeptListName() {
             return userName;
         }
 

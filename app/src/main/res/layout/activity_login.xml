@@ -11,7 +11,7 @@
     tools:context=".ui.LoginActivity">
     <!--admin/admin123-->
     <!--manager/manager02-->
-    <!--user/user02-->
+    <!--deptList/user02-->
 
 
     <EditText

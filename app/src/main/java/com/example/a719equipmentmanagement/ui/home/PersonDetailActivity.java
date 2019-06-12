@@ -8,26 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseItemEditActivity;
-import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.User;
-import com.example.a719equipmentmanagement.net.BaseSubscriber;
-import com.example.a719equipmentmanagement.net.CommonCompose;
-import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -57,13 +49,13 @@ public class PersonDetailActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        User user = (User) intent.getSerializableExtra("serializable");
-        deptName = user.getDeptName();
-        orderNum = user.getOrderNum();
-        leader = user.getLeader();
-        phone = user.getPhone();
-        email = user.getEmail();
-        status = user.getStatus();
+        DeptList deptList = (DeptList) intent.getSerializableExtra("serializable");
+        deptName = deptList.getDeptName();
+        orderNum = deptList.getOrderNum();
+        leader = deptList.getLeader();
+        phone = deptList.getPhone();
+        email = deptList.getEmail();
+        status = deptList.getStatus();
         switch (status) {
             case "0":
                 status = "正常";

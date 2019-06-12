@@ -160,7 +160,7 @@ public class UserData {
             this.remark = remark;
         }
 
-        public int getUserId() {
+        public int getDeptListId() {
             return userId;
         }
 
@@ -192,7 +192,7 @@ public class UserData {
             this.loginName = loginName;
         }
 
-        public String getUserName() {
+        public String getDeptListName() {
             return userName == null ? "" : userName;
         }
 
@@ -540,7 +540,7 @@ public class UserData {
                 this.parentName = parentName;
             }
 
-            public Object getUsers() {
+            public Object getDeptLists() {
                 return users;
             }
 

@@ -26,7 +26,7 @@ public class ChoiceDeptAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
     protected void convert(BaseViewHolder helper, MultiItemEntity item) {
         if (item.getItemType() == LEVEL_ONE) {
             PersonOne personOne = (PersonOne) item;
-            String name = personOne.getUser().getDeptName();
+            String name = personOne.getDeptList().getDeptName();
             helper.setText(R.id.tv_parent, name);
         }
 

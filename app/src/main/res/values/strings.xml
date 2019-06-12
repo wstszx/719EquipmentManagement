@@ -96,4 +96,6 @@
     <string name="continues">继续</string>
     <string name="save">保存</string>
     <string name="buy_time">购置时间：</string>
+    <string name="by">通过</string>
+    <string name="no_by">不通过</string>
 </resources>

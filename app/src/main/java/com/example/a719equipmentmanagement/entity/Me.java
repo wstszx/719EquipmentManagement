@@ -24,7 +24,7 @@ public class Me {
         this.postGroup = postGroup;
     }
 
-    public UserBean getUser() {
+    public UserBean getDeptList() {
         return user;
     }
 
@@ -161,7 +161,7 @@ public class Me {
             this.remark = remark;
         }
 
-        public int getUserId() {
+        public int getDeptListId() {
             return userId;
         }
 
@@ -193,7 +193,7 @@ public class Me {
             this.loginName = loginName;
         }
 
-        public String getUserName() {
+        public String getDeptListName() {
             return userName == null ? "" : userName;
         }
 
@@ -538,7 +538,7 @@ public class Me {
                 this.parentName = parentName;
             }
 
-            public Object getUsers() {
+            public Object getDeptLists() {
                 return users;
             }
 

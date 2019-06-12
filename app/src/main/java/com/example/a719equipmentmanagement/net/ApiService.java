@@ -23,11 +23,10 @@ import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.TreeData;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.UserData;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
-import com.example.a719equipmentmanagement.entity.UserToDo;
 
 import java.io.File;
 import java.util.IdentityHashMap;
@@ -126,7 +125,7 @@ public interface ApiService {
 
     //查找科室人员数据
     @GET("system/dept/deptlist")
-    Single<List<User>> getUser();
+    Single<List<DeptList>> getDeptList();
 
     //编辑科室
     @FormUrlEncoded

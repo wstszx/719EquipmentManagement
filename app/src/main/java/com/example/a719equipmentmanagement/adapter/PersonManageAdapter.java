@@ -1,21 +1,11 @@
 package com.example.a719equipmentmanagement.adapter;
 
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-
-import androidx.annotation.NonNull;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.entity.Person;
-import com.example.a719equipmentmanagement.entity.User;
+import com.example.a719equipmentmanagement.entity.DeptList;
 
-import java.util.List;
-
-public class PersonManageAdapter extends BaseQuickAdapter<User.UsersBean, BaseViewHolder> {
+public class PersonManageAdapter extends BaseQuickAdapter<DeptList.UsersBean, BaseViewHolder> {
 
     public PersonManageAdapter(int layoutResId) {
         super(layoutResId);
@@ -23,7 +13,7 @@ public class PersonManageAdapter extends BaseQuickAdapter<User.UsersBean, BaseVi
 
 
     @Override
-    protected void convert(BaseViewHolder helper, User.UsersBean item) {
+    protected void convert(BaseViewHolder helper, DeptList.UsersBean item) {
         helper.setText(R.id.tv_username, item.getUserName())
                 .setText(R.id.tv_dept, item.getDept().getDeptName())
                 .setText(R.id.tv_phone, item.getPhonenumber())

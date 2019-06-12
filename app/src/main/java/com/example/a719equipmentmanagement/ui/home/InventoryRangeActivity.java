@@ -99,7 +99,9 @@ public class InventoryRangeActivity extends BaseActivity {
             }
             return new Object();
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(new BaseSubscriber<Object>(this){
+
+                });
 //        Single.zip(deviceData2Single, treeData1,
 //                (deviceData2, treeData, deviceClassifiys) -> {
 //                    boolean mainThread = ThreadUtils.isMainThread();

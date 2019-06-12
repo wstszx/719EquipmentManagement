@@ -4,30 +4,29 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements Serializable {
+public class DeptList implements Serializable {
 
 
     /**
-     * id : 135
+     * id : 155
      * searchValue : null
      * createBy : admin
-     * createTime : 2019-05-20 17:29:46
+     * createTime : 2019-06-05 15:26:32
      * updateBy : null
      * updateTime : null
      * remark : null
-     * params : {}
-     * deptId : 135
+     * deptId : 155
      * parentId : 100
      * ancestors : 0,100
-     * deptName : 修改后
-     * orderNum : 0
-     * leader : 聚餐
-     * phone : 13925362514
-     * email : hh@qq.com
+     * deptName : 301实验室
+     * orderNum : 2
+     * leader : manager02
+     * phone : 18674075322
+     * email : 524545375@qq.com
      * status : 0
      * delFlag : 0
      * parentName : null
-     * users : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-05-23 19:27:05","updateBy":null,"updateTime":null,"remark":"444","params":{},"userId":111,"deptId":135,"parentId":null,"loginName":"张三","userName":"张三","email":"dd@qq.com","phonenumber":"13698253245","sex":"1","avatar":"","password":"d30f949396dbaa2bad6d1c42415fb3fb","salt":"4b0a65","status":"0","delFlag":"0","loginIp":"","loginDate":null,"dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-06-03 14:32:17","updateBy":null,"updateTime":null,"remark":"1取321","params":{},"userId":114,"deptId":135,"parentId":null,"loginName":"manager","userName":"manager","email":"manager@qq.com","phonenumber":"18627099265","sex":"0","avatar":"","password":"115d73a2ba5c897b6f3e36d0c0ce24f2","salt":"a7660e","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-06-03 16:24:20","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"admin":false}]
+     * users : [{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 15:31:02","updateBy":null,"updateTime":null,"remark":"manager02","userId":120,"deptId":155,"parentId":null,"loginName":"manager02","userName":"manager02","email":"manager02@qq.com","phonenumber":"18674075322","sex":"0","avatar":"","password":"9f15560d81684b285703789436d2e25f","salt":"5a2299","status":"0","delFlag":"0","loginIp":"10.11.48.121","loginDate":"2019-06-12 14:40:01","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"comUser":false,"admin":false,"manager":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 16:29:15","updateBy":null,"updateTime":null,"remark":"user02","userId":121,"deptId":155,"parentId":null,"loginName":"user02","userName":"user02","email":"user02@qq.com","phonenumber":"1867407532","sex":"0","avatar":"","password":"6b21ef92dc9ec892912c2b1015ce6117","salt":"8b3dff","status":"0","delFlag":"0","loginIp":"10.11.48.121","loginDate":"2019-06-11 18:08:08","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"comUser":false,"admin":false,"manager":false},{"id":null,"searchValue":null,"createBy":"admin","createTime":"2019-06-05 16:29:39","updateBy":null,"updateTime":null,"remark":"user03","userId":122,"deptId":155,"parentId":null,"loginName":"user03","userName":"user03","email":"user03@qq.com","phonenumber":"18674075324","sex":"0","avatar":"","password":"e65c9621143a96a873b5cb12c23fb67d","salt":"fa0d1d","status":"0","delFlag":"0","loginIp":"","loginDate":null,"dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null},"roles":[],"roleIds":null,"postIds":null,"list":null,"comUser":false,"admin":false,"manager":false}]
      */
 
     private int id;
@@ -37,7 +36,6 @@ public class User implements Serializable {
     private Object updateBy;
     private Object updateTime;
     private Object remark;
-    private ParamsBean params;
     private int deptId;
     private int parentId;
     private String ancestors;
@@ -105,14 +103,6 @@ public class User implements Serializable {
 
     public void setRemark(Object remark) {
         this.remark = remark;
-    }
-
-    public ParamsBean getParams() {
-        return params;
-    }
-
-    public void setParams(ParamsBean params) {
-        this.params = params;
     }
 
     public int getDeptId() {
@@ -214,40 +204,38 @@ public class User implements Serializable {
         this.users = users;
     }
 
-    public static class ParamsBean implements Serializable {
-    }
-
-    public static class UsersBean implements Serializable {
+    public static class UsersBean implements Serializable{
         /**
          * id : null
          * searchValue : null
          * createBy : admin
-         * createTime : 2019-05-23 19:27:05
+         * createTime : 2019-06-05 15:31:02
          * updateBy : null
          * updateTime : null
-         * remark : 444
-         * params : {}
-         * userId : 111
-         * deptId : 135
+         * remark : manager02
+         * userId : 120
+         * deptId : 155
          * parentId : null
-         * loginName : 张三
-         * userName : 张三
-         * email : dd@qq.com
-         * phonenumber : 13698253245
-         * sex : 1
+         * loginName : manager02
+         * userName : manager02
+         * email : manager02@qq.com
+         * phonenumber : 18674075322
+         * sex : 0
          * avatar :
-         * password : d30f949396dbaa2bad6d1c42415fb3fb
-         * salt : 4b0a65
+         * password : 9f15560d81684b285703789436d2e25f
+         * salt : 5a2299
          * status : 0
          * delFlag : 0
-         * loginIp :
-         * loginDate : null
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"params":{},"deptId":135,"parentId":null,"ancestors":null,"deptName":"修改后","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null}
+         * loginIp : 10.11.48.121
+         * loginDate : 2019-06-12 14:40:01
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":null,"ancestors":null,"deptName":"301实验室","orderNum":null,"leader":null,"phone":null,"email":null,"status":null,"delFlag":null,"parentName":null,"users":null}
          * roles : []
          * roleIds : null
          * postIds : null
          * list : null
+         * comUser : false
          * admin : false
+         * manager : false
          */
 
         private Object id;
@@ -257,7 +245,6 @@ public class User implements Serializable {
         private Object updateBy;
         private Object updateTime;
         private String remark;
-        private ParamsBeanX params;
         private int userId;
         private int deptId;
         private Object parentId;
@@ -272,12 +259,14 @@ public class User implements Serializable {
         private String status;
         private String delFlag;
         private String loginIp;
-        private Object loginDate;
+        private String loginDate;
         private DeptBean dept;
-        private int[] roleIds;
+        private Object roleIds;
         private Object postIds;
         private Object list;
+        private boolean comUser;
         private boolean admin;
+        private boolean manager;
         private List<?> roles;
 
         public Object getId() {
@@ -334,14 +323,6 @@ public class User implements Serializable {
 
         public void setRemark(String remark) {
             this.remark = remark;
-        }
-
-        public ParamsBeanX getParams() {
-            return params;
-        }
-
-        public void setParams(ParamsBeanX params) {
-            this.params = params;
         }
 
         public int getUserId() {
@@ -456,11 +437,11 @@ public class User implements Serializable {
             this.loginIp = loginIp;
         }
 
-        public Object getLoginDate() {
-            return loginDate;
+        public String getLoginDate() {
+            return loginDate == null ? "" : loginDate;
         }
 
-        public void setLoginDate(Object loginDate) {
+        public void setLoginDate(String loginDate) {
             this.loginDate = loginDate;
         }
 
@@ -472,11 +453,11 @@ public class User implements Serializable {
             this.dept = dept;
         }
 
-        public int[] getRoleIds() {
+        public Object getRoleIds() {
             return roleIds;
         }
 
-        public void setRoleIds(int[] roleIds) {
+        public void setRoleIds(Object roleIds) {
             this.roleIds = roleIds;
         }
 
@@ -496,12 +477,28 @@ public class User implements Serializable {
             this.list = list;
         }
 
+        public boolean isComUser() {
+            return comUser;
+        }
+
+        public void setComUser(boolean comUser) {
+            this.comUser = comUser;
+        }
+
         public boolean isAdmin() {
             return admin;
         }
 
         public void setAdmin(boolean admin) {
             this.admin = admin;
+        }
+
+        public boolean isManager() {
+            return manager;
+        }
+
+        public void setManager(boolean manager) {
+            this.manager = manager;
         }
 
         public List<?> getRoles() {
@@ -515,10 +512,7 @@ public class User implements Serializable {
             this.roles = roles;
         }
 
-        public static class ParamsBeanX implements Serializable {
-        }
-
-        public static class DeptBean implements Serializable {
+        public static class DeptBean implements Serializable{
             /**
              * id : null
              * searchValue : null
@@ -527,11 +521,10 @@ public class User implements Serializable {
              * updateBy : null
              * updateTime : null
              * remark : null
-             * params : {}
-             * deptId : 135
+             * deptId : 155
              * parentId : null
              * ancestors : null
-             * deptName : 修改后
+             * deptName : 301实验室
              * orderNum : null
              * leader : null
              * phone : null
@@ -549,7 +542,6 @@ public class User implements Serializable {
             private Object updateBy;
             private Object updateTime;
             private Object remark;
-            private ParamsBeanXX params;
             private int deptId;
             private Object parentId;
             private Object ancestors;
@@ -617,14 +609,6 @@ public class User implements Serializable {
 
             public void setRemark(Object remark) {
                 this.remark = remark;
-            }
-
-            public ParamsBeanXX getParams() {
-                return params;
-            }
-
-            public void setParams(ParamsBeanXX params) {
-                this.params = params;
             }
 
             public int getDeptId() {
@@ -721,9 +705,6 @@ public class User implements Serializable {
 
             public void setUsers(Object users) {
                 this.users = users;
-            }
-
-            public static class ParamsBeanXX implements Serializable {
             }
         }
     }
