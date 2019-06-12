@@ -42,6 +42,7 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     ZXingView zxingview;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    private int inventoryId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -52,11 +53,12 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
 
     /**
      * 自动关闭软键盘
+     *
      * @param activity
      */
     public static void closeKeybord(Activity activity) {
-        InputMethodManager imm =  (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(imm != null) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
             imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
         }
     }
@@ -64,6 +66,7 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     private void initView() {
         Bundle arguments = getArguments();
         if (arguments != null) {
+            inventoryId = arguments.getInt("inventoryId");
             String title = arguments.getString("title");
             tvTitle.setText(TextUtils.isEmpty(title) ? "" : title);
         }
@@ -108,11 +111,15 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
             String[] split = result.split("\\|");
             String no = split[0];
             String id = split[1];
-            Bundle bundle = new Bundle();
-            bundle.putString("id", id);
             if (StringUtils.equals("E", no)) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("equipId", StringUtils.isEmpty(id) ? 0 : Integer.parseInt(id));
+                bundle.putInt("inventoryId", inventoryId);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.deviceDetailFragment, bundle);
             } else if (StringUtils.equals("C", no)) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("containerId", StringUtils.isEmpty(id) ? 0 : Integer.parseInt(id));
+                bundle.putInt("inventoryId", inventoryId);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.containerDetailFragment, bundle);
             }
         }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.InventoriesAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
@@ -72,7 +73,14 @@ public class NewInventoryTaskFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         if (response != null && response.getCode() == 0) {
-                            Navigation.findNavController(v).navigate(R.id.scanFragment);
+                            String msg = response.getMsg();
+                            boolean empty = StringUtils.isEmpty(msg);
+                            if (!empty) {
+                                int inventoryId = Integer.parseInt(msg);
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("inventoryId", inventoryId);
+                                Navigation.findNavController(v).navigate(R.id.scanFragment, bundle);
+                            }
                         }
                     }
                 });

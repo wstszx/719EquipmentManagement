@@ -14,7 +14,9 @@ public class InventoriesAdapter extends BaseQuickAdapter<Inventories.RowsBean, B
     protected void convert(BaseViewHolder helper, Inventories.RowsBean item) {
         if (item != null) {
             String name = item.getName();
-            helper.setText(R.id.name, name);
+            helper.setText(R.id.name, name)
+                    .addOnClickListener(R.id.tv_cancel)
+                    .addOnClickListener(R.id.tv_continue);
         }
     }
 }

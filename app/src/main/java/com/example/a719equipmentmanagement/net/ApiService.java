@@ -187,9 +187,15 @@ public interface ApiService {
     @POST("system/inventory/addDetails")
     Single<BaseResponse> saveInventoryDevice(@Body RequestBody requestBody);
 
-    //设置盘点结束
+    //设置盘点完成
+    @FormUrlEncoded
     @POST("system/inventory/endInventory")
-    Single<BaseResponse> setEndInventory(@Body RequestBody requestBody);
+    Single<BaseResponse> setEndInventory(@Field("id") long id);
+
+    //取消盘点任务
+    @FormUrlEncoded
+    @POST("system/inventory/cancelInventory")
+    Single<BaseResponse> cancelInventoryTask(@Field("id") long id);
 
     //查找当前用户进行中的盘点
     @GET("system/inventory/listMy")

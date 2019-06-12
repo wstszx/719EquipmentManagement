@@ -37,8 +37,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edittext"
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
@@ -82,8 +82,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/edittext1"
+        <TextView
+            android:id="@+id/textView1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="32dp"
@@ -115,24 +115,11 @@
         android:gravity="center"
         android:text="@string/canecl"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/tv_complete"
+        app:layout_constraintEnd_toStartOf="@+id/tv_continue"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <TextView
-        android:id="@+id/tv_complete"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/round_bg"
-        android:gravity="center"
-        android:text="@string/complete"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toStartOf="@+id/tv_continue"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <TextView
         android:id="@+id/tv_continue"
@@ -145,7 +132,7 @@
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_complete"
+        app:layout_constraintStart_toEndOf="@+id/tv_cancel"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 

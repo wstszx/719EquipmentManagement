@@ -16,6 +16,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.InventoriesAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.base.BaseFragment;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.Inventories;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
@@ -28,6 +29,8 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class InventoryTaskFragment extends BaseFragment {
 
@@ -40,6 +43,7 @@ public class InventoryTaskFragment extends BaseFragment {
     ConstraintLayout constraint;
     private InventoriesAdapter adapter;
     private boolean isCanClick;
+    private int inventoryId;
 
 
     @Override
@@ -54,13 +58,70 @@ public class InventoryTaskFragment extends BaseFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener((adapter, view, position) -> {
-            Inventories.RowsBean rowsBean = (Inventories.RowsBean) adapter.getData().get(position);
-            int id = rowsBean.getId();
-            Bundle bundle = new Bundle();
-            bundle.putInt("id", id);
-            Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
+//        adapter.setOnItemClickListener((adapter, view, position) -> {
+//            Inventories.RowsBean rowsBean = (Inventories.RowsBean) adapter.getData().get(position);
+//            int id = rowsBean.getId();
+//            Bundle bundle = new Bundle();
+//            bundle.putInt("id", id);
+//            Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
+//        });
+//        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildLongClickListener() {
+//            @Override
+//            public boolean onItemChildLongClick(BaseQuickAdapter adapter, View view, int position) {
+//                Inventories.RowsBean rowsBean = (Inventories.RowsBean) adapter.getData().get(position);
+//                id = rowsBean.getId();
+//                switch (view.getId()) {
+//                    case R.id.tv_cancel:
+//                        cancelInventory();
+//                        break;
+//                    case R.id.tv_continue:
+//                        continueInventory(view);
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                Inventories.RowsBean rowsBean = (Inventories.RowsBean) adapter.getData().get(position);
+                inventoryId = rowsBean.getId();
+                switch (view.getId()) {
+                    case R.id.tv_cancel:
+                        cancelInventory();
+                        break;
+                    case R.id.tv_continue:
+                        continueInventory(view);
+                        break;
+                }
+            }
         });
+    }
+
+    /**
+     * 继续盘点
+     */
+    private void continueInventory(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("inventoryId", inventoryId);
+        Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
+    }
+
+    /**
+     * 取消盘点
+     */
+    private void cancelInventory() {
+        RetrofitClient.getInstance().getService().cancelInventoryTask(inventoryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response.getCode() == 0) {
+                            initData();
+                        }
+                    }
+                });
     }
 
     private void initTopbar() {
@@ -83,6 +144,7 @@ public class InventoryTaskFragment extends BaseFragment {
                                 isCanClick = false;
                                 adapter.setNewData(rows);
                             } else {
+                                adapter.setNewData(rows);
                                 isCanClick = true;
                             }
                         }
