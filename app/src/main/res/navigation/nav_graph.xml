@@ -46,10 +46,22 @@
         <action
             android:id="@+id/action_deviceDetailFragment_to_scanFragment"
             app:destination="@id/scanFragment" />
+        <action
+            android:id="@+id/action_deviceDetailFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
     </fragment>
     <fragment
         android:id="@+id/containerDetailFragment"
         android:name="com.example.a719equipmentmanagement.ui.home.ContainerDetailFragment"
         android:label="fragment_container_detail"
-        tools:layout="@layout/fragment_container_detail" />
+        tools:layout="@layout/fragment_container_detail" >
+        <action
+            android:id="@+id/action_containerDetailFragment_to_resultFragment"
+            app:destination="@id/resultFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultFragment"
+        android:name="com.example.a719equipmentmanagement.ui.home.ResultFragment"
+        android:label="fragment_result"
+        tools:layout="@layout/fragment_result" />
 </navigation>

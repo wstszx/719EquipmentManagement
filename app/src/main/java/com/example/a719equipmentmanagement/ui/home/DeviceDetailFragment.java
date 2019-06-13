@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
@@ -28,7 +29,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -75,17 +78,37 @@ public class DeviceDetailFragment extends BaseFragment {
         if (bundle != null) {
             equipId = bundle.getInt("equipId");
             inventoryId = bundle.getInt("inventoryId");
-            RetrofitClient.getInstance().getService().getDeviceDetail(equipId + "")
+
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonArray.put(jsonObject);
+                jsonObject.put("inventoryId", inventoryId);
+                jsonObject.put("equipId", equipId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
+            Single<BaseResponse> baseResponseSingle = RetrofitClient.getInstance().getService().saveInventoryDevice(requestBody)
                     .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+            Single<DeviceDetailData> deviceDetailDataSingle = RetrofitClient.getInstance().getService().getDeviceDetail(equipId + "")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread());
+            Single.zip(baseResponseSingle, deviceDetailDataSingle, (response, detailData) -> {
+                if (detailData != null) {
+                    setData(detailData);
+                }
+                if (response.getCode() == 0) {
+                    ToastUtils.showShort("保存盘点设备");
+                }
+                return new Object();
+            }).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new BaseSubscriber<DeviceDetailData>(getContext()) {
-                        @Override
-                        public void onSuccess(DeviceDetailData detailData) {
-                            if (detailData != null) {
-                                setData(detailData);
-                            }
-                        }
+                    .subscribe(new BaseSubscriber<Object>(getContext()) {
+
                     });
+
         }
     }
 
@@ -253,51 +276,30 @@ public class DeviceDetailFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_cancel:
-                cancelInventory();
+                cancelInventory(view);
                 break;
             case R.id.tv_complete:
-                completeInventory();
+                completeInventory(view);
                 break;
             case R.id.tv_continue:
-                saveInventory(view);
+                Bundle bundle = new Bundle();
+                bundle.putInt("inventoryId", inventoryId);
+                NavHostFragment.findNavController(DeviceDetailFragment.this).navigate(R.id.scanFragment, bundle);
                 break;
         }
     }
 
     /**
-     * 继续盘点
-     * @param view
+     * 保存盘点
      */
-    private void saveInventory(View view) {
-        JSONArray jsonArray = new JSONArray();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonArray.put(jsonObject);
-            jsonObject.put("inventoryId", inventoryId);
-            jsonObject.put("equipId", equipId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
-        RetrofitClient.getInstance().getService().saveInventoryDevice(requestBody)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<BaseResponse>(getContext()) {
-                    @Override
-                    public void onSuccess(BaseResponse response) {
-                        if (response.getCode() == 0) {
-                            Bundle bundle = new Bundle();
-                            bundle.putInt("inventoryId", inventoryId);
-                            Navigation.findNavController(view).navigate(R.id.scanFragment, bundle);
-                        }
-                    }
-                });
+    private void saveInventory() {
+
     }
 
     /**
      * 完成盘点
      */
-    private void completeInventory() {
+    private void completeInventory(View view) {
         RetrofitClient.getInstance().getService().setEndInventory(inventoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -305,7 +307,9 @@ public class DeviceDetailFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         if (response.getCode() == 0) {
-                            ToastUtils.showShort("盘点完成");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", "盘点完成");
+                            Navigation.findNavController(view).navigate(R.id.resultFragment, bundle);
                         }
                     }
                 });
@@ -314,7 +318,7 @@ public class DeviceDetailFragment extends BaseFragment {
     /**
      * 取消盘点
      */
-    private void cancelInventory() {
+    private void cancelInventory(View view) {
         RetrofitClient.getInstance().getService().cancelInventoryTask(inventoryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -322,7 +326,9 @@ public class DeviceDetailFragment extends BaseFragment {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         if (response.getCode() == 0) {
-                            ToastUtils.showShort("取消盘点");
+                            Bundle bundle = new Bundle();
+                            bundle.putString("title", "盘点取消成功");
+                            Navigation.findNavController(view).navigate(R.id.resultFragment, bundle);
                         }
                     }
                 });
