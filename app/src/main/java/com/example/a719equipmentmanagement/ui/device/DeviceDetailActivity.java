@@ -27,6 +27,7 @@ import com.example.a719equipmentmanagement.entity.UserBean;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
 import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
@@ -476,8 +477,10 @@ public class DeviceDetailActivity extends BaseActivity {
         map.put("msg", "");
 //        map.put("operState", operState);
         map.put("dealer", responsor);
-        map.put("validDate", date);
-        map.put("latestVerifyDate", date1);
+        if (operType == 6) {
+            map.put("validDate", date);
+            map.put("latestVerifyDate", date1);
+        }
         RetrofitClient.getInstance().getService().operatingEquip(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -486,7 +489,7 @@ public class DeviceDetailActivity extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
                         if (code == 0) {
-                            ToastUtils.showShort(text + "成功");
+                            ResultActivity.start(DeviceDetailActivity.this, text + "成功");
                         }
                     }
                 });

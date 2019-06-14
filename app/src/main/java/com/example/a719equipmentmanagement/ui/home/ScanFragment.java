@@ -27,7 +27,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
-import cn.bingoogolapple.qrcode.zxing.ZXingView;
+import cn.bingoogolapple.qrcode.zbar.ZBarView;
 
 import static android.content.Context.VIBRATOR_SERVICE;
 
@@ -38,18 +38,25 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
 
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    @BindView(R.id.zxingview)
-    ZXingView zxingview;
+    @BindView(R.id.zbarview)
+    ZBarView zbarview;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     private int inventoryId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        zxingview.setDelegate(this);
+        zbarview.setDelegate(this);
         initView();
         closeKeybord(Objects.requireNonNull(getActivity()));
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        zbarview.startCamera();// 打开后置摄像头开始预览，但是并未开始识别
+//        zbarview.startSpotAndShowRect();//显示扫描框，并开始识别
+//    }
 
     /**
      * 自动关闭软键盘
@@ -79,15 +86,15 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        zxingview.startCamera();// 打开后置摄像头开始预览，但是并未开始识别
-        zxingview.startSpotAndShowRect(); // 显示扫描框，并开始识别
+        zbarview.startCamera();// 打开后置摄像头开始预览，但是并未开始识别
+        zbarview.startSpotAndShowRect(); // 显示扫描框，并开始识别
         super.onViewCreated(view, savedInstanceState);
 
     }
 
     @Override
     public void onDestroyView() {
-        zxingview.onDestroy(); // 销毁二维码扫描控件
+        zbarview.onDestroy(); // 销毁二维码扫描控件
         super.onDestroyView();
     }
 
@@ -104,9 +111,9 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        Objects.requireNonNull(getActivity()).setTitle("扫描结果为：" + result);
+//        Objects.requireNonNull(getActivity()).setTitle("扫描结果为：" + result);
         vibrate();
-//        zxingview.startSpot(); // 开始识别
+//        zbarview.startSpot(); // 开始识别
         if (!StringUtils.isEmpty(result)) {
             String[] split = result.split("\\|");
             String no = split[0];
@@ -121,6 +128,8 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
                 bundle.putInt("containerId", StringUtils.isEmpty(id) ? 0 : Integer.parseInt(id));
                 bundle.putInt("inventoryId", inventoryId);
                 Navigation.findNavController(Objects.requireNonNull(getView())).navigate(R.id.containerDetailFragment, bundle);
+            } else {
+                zbarview.startSpot();
             }
         }
     }
@@ -128,16 +137,16 @@ public class ScanFragment extends BaseFragment implements QRCodeView.Delegate {
     @Override
     public void onCameraAmbientBrightnessChanged(boolean isDark) {
 // 这里是通过修改提示文案来展示环境是否过暗的状态，接入方也可以根据 isDark 的值来实现其他交互效果
-        String tipText = zxingview.getScanBoxView().getTipText();
+        String tipText = zbarview.getScanBoxView().getTipText();
         String ambientBrightnessTip = "\n环境过暗，请打开闪光灯";
         if (isDark) {
             if (!tipText.contains(ambientBrightnessTip)) {
-                zxingview.getScanBoxView().setTipText(tipText + ambientBrightnessTip);
+                zbarview.getScanBoxView().setTipText(tipText + ambientBrightnessTip);
             }
         } else {
             if (tipText.contains(ambientBrightnessTip)) {
                 tipText = tipText.substring(0, tipText.indexOf(ambientBrightnessTip));
-                zxingview.getScanBoxView().setTipText(tipText);
+                zbarview.getScanBoxView().setTipText(tipText);
             }
         }
     }

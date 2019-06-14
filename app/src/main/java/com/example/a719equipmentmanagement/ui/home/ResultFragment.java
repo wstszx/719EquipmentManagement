@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.qmuiteam.qmui.widget.QMUITopBar;
@@ -39,7 +40,7 @@ public class ResultFragment extends BaseFragment {
     private void initTopbar() {
         topbar.setTitle("结果页");
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
-
+            MainActivity.start(getContext());
         });
     }
 

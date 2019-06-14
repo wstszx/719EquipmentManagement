@@ -38,7 +38,6 @@ public class ResultActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("结果页");
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
-            finish();
             MainActivity.start(this);
         });
     }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.a719equipmentmanagement.MainActivity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.InventoriesAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -129,7 +130,7 @@ public class InventoryTaskFragment extends BaseFragment {
 //        topbar.addRightTextButton(R.string.complete, R.id.complete).setOnClickListener(v -> {
 //            Navigation.findNavController(v).navigate(R.id.scanFragment);
 //        });
-        topbar.addLeftBackImageButton().setOnClickListener(v -> Objects.requireNonNull(getActivity()).finish());
+        topbar.addLeftBackImageButton().setOnClickListener(v -> MainActivity.start(getContext()));
     }
 
     private void initData() {
