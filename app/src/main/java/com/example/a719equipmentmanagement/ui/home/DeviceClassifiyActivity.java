@@ -143,10 +143,8 @@ public class DeviceClassifiyActivity extends BaseActivity {
             }
         });
         if (isManager) {
+            topbar.removeAllRightViews();
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY));
-
-
-
             adapter1.setOnItemLongClickListener((adapter, view, position) -> {
                 itemViewType = adapter.getItemViewType(position);
                 switch (itemViewType) {
@@ -295,7 +293,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
         return R.layout.activity_device_classifiy;
     }
 
-    public static void start(Context context,boolean isManager) {
+    public static void start(Context context, boolean isManager) {
         Intent starter = new Intent(context, DeviceClassifiyActivity.class);
         starter.putExtra("isManager", isManager);
         context.startActivity(starter);

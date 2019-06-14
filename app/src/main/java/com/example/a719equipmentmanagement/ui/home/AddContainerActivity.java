@@ -24,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -52,6 +55,8 @@ public class AddContainerActivity extends BaseActivity {
     private String containerId;
     private String containerNum;
     private int pid;
+    private String msg;
+    private ArrayList<Integer> qrList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -116,14 +121,25 @@ public class AddContainerActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddContainerActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse response) {
-                        setResult(RESULT_OK);
-                        finish();
+                        if (response != null && response.getCode() == 0) {
+                            msg = response.getMsg();
+                            qrList = new ArrayList<>();
+                            String regEx = "[^0-9]+";
+                            Pattern pattern = Pattern.compile(regEx);
+                            //用定义好的正则表达式拆分字符串，把字符串中的数字留出来
+                            String[] cs = pattern.split(msg);
+                            for (String c : cs) {
+                                qrList.add(Integer.parseInt(c));
+                            }
+                            ToastUtils.showShort("添加货柜成功");
+                            roundButton.setVisibility(View.VISIBLE);
+                        }
+//                        setResult(RESULT_OK);
+//                        finish();
                     }
                 });
 
     }
-//     ToastUtils.showShort("添加货柜成功");
-//                        roundButton.setVisibility(View.VISIBLE);
 
     @Override
     protected int getLayoutId() {
@@ -134,7 +150,7 @@ public class AddContainerActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == ADD_DEPT) {
             if (data != null) {
-                pid = data.getIntExtra("pid",0);
+                pid = data.getIntExtra("pid", 0);
                 name = data.getStringExtra("name");
                 deptId = data.getIntExtra("deptId", 0);
                 tvResult1.setText(name);
@@ -150,7 +166,7 @@ public class AddContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(AddContainerActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
                 break;
             case R.id.round_button:
-                GenerateContainerCodeActivity.start(this, containerId);
+                GenarateQRActivity.start(this, qrList);
                 finish();
                 break;
         }

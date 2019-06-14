@@ -128,13 +128,13 @@ public class DeptManageActivity extends BaseActivity {
                 deptList = personOne.getDeptList();
             }
         });
-        if (isManager) {
+        if (isManager ) {
+            topbar.removeAllRightViews();
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
                 initListPopupIfNeed(addTypes);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(v);
-
             });
 
             adapter1.setOnItemLongClickListener((adapter, v, position) -> {
@@ -247,10 +247,10 @@ public class DeptManageActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             initData();
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void delete() {

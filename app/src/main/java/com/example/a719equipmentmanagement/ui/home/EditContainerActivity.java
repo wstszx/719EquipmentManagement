@@ -17,6 +17,7 @@ import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
@@ -36,12 +37,11 @@ public class EditContainerActivity extends BaseActivity {
     @BindView(R.id.tv_result1)
     TextView tvResult1;
     @BindView(R.id.topbar)
-    QMUITopBarLayout topbar;
+    QMUITopBar topbar;
     @BindView(R.id.round_button)
     QMUIRoundButton roundButton;
     private String name;
     private int id;
-    private int pid;
     private int deptId;
 
     @Override
@@ -52,7 +52,6 @@ public class EditContainerActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-//        pid = intent.getIntExtra("pid", 0);
         id = intent.getIntExtra("id", 0);
         name = intent.getStringExtra("name");
         deptId = intent.getIntExtra("deptId", 0);
@@ -83,7 +82,6 @@ public class EditContainerActivity extends BaseActivity {
         try {
             jsonObject.put("id", id);
             jsonObject.put("deptId", deptId);
-//            jsonObject.put("pid", pid);
             jsonObject.put("name", containerName);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -320,13 +320,10 @@ public class EditPersonActivity extends BaseActivity {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
-                        setResult(RESULT_OK);
-                        finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        String message = e.getMessage();
+                        if (code == 0) {
+                            setResult(RESULT_OK);
+                            finish();
+                        }
                     }
                 });
 

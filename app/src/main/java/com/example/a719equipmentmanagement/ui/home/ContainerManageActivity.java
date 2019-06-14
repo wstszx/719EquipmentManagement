@@ -69,6 +69,7 @@ public class ContainerManageActivity extends BaseActivity {
     private int deptId;
     private String name;
     private boolean isManager;
+    private boolean isFirstAdd = true;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -124,7 +125,8 @@ public class ContainerManageActivity extends BaseActivity {
                 containerData = containerOne.getData();
             }
         });
-        if (isManager) {
+        if (isManager ) {
+            topbar.removeAllRightViews();
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
                     startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
 
@@ -214,17 +216,11 @@ public class ContainerManageActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK) {
             initData();
-//            if (requestCode == EDIT_CONTAINER) {
-//                initData();
-//            } else if (requestCode == ADD_CONTAINER) {
-//                initData();
-//            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void delete() {
-//        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), id + "");
         RetrofitClient.getInstance().getService().deleteContainer(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

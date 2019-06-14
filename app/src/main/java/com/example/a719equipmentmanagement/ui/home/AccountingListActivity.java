@@ -88,6 +88,7 @@ public class AccountingListActivity extends BaseActivity {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
                         String msg = baseResponse.getMsg();
+//                        字符串提取数字
                         String regEx = "[^0-9]+";
                         Pattern pattern = Pattern.compile(regEx);
                         //用定义好的正则表达式拆分字符串，把字符串中的数字留出来

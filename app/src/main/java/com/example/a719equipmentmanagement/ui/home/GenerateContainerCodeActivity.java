@@ -27,6 +27,7 @@ import com.qmuiteam.qmui.widget.QMUITopBar;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +39,7 @@ public class GenerateContainerCodeActivity extends BaseActivity {
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
     private List<ContainerItem> qrList = new ArrayList<>();
-    private String containerId;
+    private String msg;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -56,10 +57,16 @@ public class GenerateContainerCodeActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        containerId = intent.getStringExtra("containerId");
-        ContainerItem item = new ContainerItem();
-        item.setId(containerId);
-        qrList.add(item);
+        msg = intent.getStringExtra("msg");
+        String regEx = "[^0-9]+";
+        Pattern pattern = Pattern.compile(regEx);
+        //用定义好的正则表达式拆分字符串，把字符串中的数字留出来
+        String[] cs = pattern.split(msg);
+        for (String c : cs) {
+            ContainerItem item = new ContainerItem();
+            item.setId(c);
+            qrList.add(item);
+        }
     }
 
     @Override
@@ -128,9 +135,11 @@ public class GenerateContainerCodeActivity extends BaseActivity {
         });
     }
 
-    public static void start(Context context, String containerId) {
+
+
+    public static void start(Context context, String msg) {
         Intent starter = new Intent(context, GenerateContainerCodeActivity.class);
-        starter.putExtra("containerId", containerId);
+        starter.putExtra("msg", msg);
         context.startActivity(starter);
     }
 
