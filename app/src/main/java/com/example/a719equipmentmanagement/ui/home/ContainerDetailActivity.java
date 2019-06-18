@@ -95,9 +95,6 @@ public class ContainerDetailActivity extends BaseActivity {
     private void initTopbar() {
         topbar.setTitle("货柜详情");
         topbar.addRightImageButton(R.mipmap.qrcode, R.id.qrcode).setOnClickListener(v -> {
-            ArrayList<Integer> ids = new ArrayList<>();
-            ids.add(id);
-            GenarateQRActivity.start(this, ids);
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();

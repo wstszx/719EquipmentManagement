@@ -27,12 +27,6 @@ import java.util.concurrent.TimeUnit;
 
 import static android.hardware.usb.UsbManager.ACTION_USB_DEVICE_DETACHED;
 
-/**
- * Created by Administrator
- *
- * @author 猿史森林
- *         Time 2017/8/2
- */
 public class DeviceConnFactoryManager {
 
     public PortManager mPort;
@@ -100,7 +94,7 @@ public class DeviceConnFactoryManager {
      */
     private static final int TSC_STATE_ERR_OCCURS = 0x80;
 
-    private byte[] cpcl={0x1b,0x68};
+    private byte[] cpcl = {0x1b, 0x68};
 
     /**
      * CPCL指令查询打印机实时状态 打印机缺纸状态
@@ -195,7 +189,7 @@ public class DeviceConnFactoryManager {
             queryCommand();
         } else {
             if (this.mPort != null) {
-                    this.mPort=null;
+                this.mPort = null;
             }
             sendStateBroadcast(CONN_STATE_FAILED);
         }
@@ -273,9 +267,9 @@ public class DeviceConnFactoryManager {
         if (this.mPort != null) {
             System.out.println("id -> " + id);
             reader.cancel();
-           boolean b= this.mPort.closePort();
-            if(b) {
-                this.mPort=null;
+            boolean b = this.mPort.closePort();
+            if (b) {
+                this.mPort = null;
                 isOpenPort = false;
                 currentPrinterCommand = null;
             }
@@ -399,7 +393,7 @@ public class DeviceConnFactoryManager {
             return;
         }
         try {
-          //  Log.e(TAG, "data -> " + new String(com.gprinter.command.GpUtils.convertVectorByteTobytes(data), "gb2312"));
+            //  Log.e(TAG, "data -> " + new String(com.gprinter.command.GpUtils.convertVectorByteTobytes(data), "gb2312"));
             this.mPort.writeDataImmediately(data, 0, data.size());
         } catch (Exception e) {
             e.printStackTrace();
@@ -444,11 +438,11 @@ public class DeviceConnFactoryManager {
                             scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (currentPrinterCommand == null||(currentPrinterCommand != PrinterCommand.ESC&&currentPrinterCommand != PrinterCommand.TSC)) {
-                                        Log.e(TAG,Thread.currentThread().getName());
+                                    if (currentPrinterCommand == null || (currentPrinterCommand != PrinterCommand.ESC && currentPrinterCommand != PrinterCommand.TSC)) {
+                                        Log.e(TAG, Thread.currentThread().getName());
                                         //发送CPCL查询打印机状态指令
-                                        sendCommand=cpcl;
-                                        Vector<Byte> data =new Vector<Byte>(cpcl.length);
+                                        sendCommand = cpcl;
+                                        Vector<Byte> data = new Vector<Byte>(cpcl.length);
                                         for (byte b : cpcl) {
                                             data.add(b);
                                         }
@@ -457,17 +451,17 @@ public class DeviceConnFactoryManager {
                                         scheduledExecutorService.schedule(threadFactoryBuilder.newThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if(currentPrinterCommand==null){
+                                                if (currentPrinterCommand == null) {
                                                     if (reader != null) {
                                                         reader.cancel();
                                                         mPort.closePort();
                                                         isOpenPort = false;
-                                                        mPort=null;
+                                                        mPort = null;
                                                         sendStateBroadcast(CONN_STATE_FAILED);
                                                     }
                                                 }
                                             }
-                                        }),2000,TimeUnit.MILLISECONDS);
+                                        }), 2000, TimeUnit.MILLISECONDS);
                                     }
                                 }
                             }), 2000, TimeUnit.MILLISECONDS);
@@ -478,7 +472,7 @@ public class DeviceConnFactoryManager {
         });
     }
 
-    class PrinterReader extends Thread {
+    public class PrinterReader extends Thread {
         private boolean isRun = false;
 
         private byte[] buffer = new byte[100];
@@ -540,16 +534,16 @@ public class DeviceConnFactoryManager {
                                 App.getContext().sendBroadcast(intent);
                             } else if (result == 1) {//查询打印机实时状态
                                 if ((buffer[0] & ESC_STATE_PAPER_ERR) > 0) {
-                                    status += " "+App.getContext().getString(R.string.str_printer_out_of_paper);
+                                    status += " " + App.getContext().getString(R.string.str_printer_out_of_paper);
                                 }
                                 if ((buffer[0] & ESC_STATE_COVER_OPEN) > 0) {
-                                    status += " "+App.getContext().getString(R.string.str_printer_open_cover);
+                                    status += " " + App.getContext().getString(R.string.str_printer_open_cover);
                                 }
                                 if ((buffer[0] & ESC_STATE_ERR_OCCURS) > 0) {
-                                    status += " "+App.getContext().getString(R.string.str_printer_error);
+                                    status += " " + App.getContext().getString(R.string.str_printer_error);
                                 }
-                                String mode=App.getContext().getString(R.string.str_printer_printmode_esc);
-                                ToastUtils.showShort( mode+" "+status);
+                                String mode = App.getContext().getString(R.string.str_printer_printmode_esc);
+                                ToastUtils.showShort(mode + " " + status);
                             }
                         }
                     } else if (sendCommand == tsc) {
@@ -560,36 +554,36 @@ public class DeviceConnFactoryManager {
                         } else {
                             if (cnt == 1) {//查询打印机实时状态
                                 if ((buffer[0] & TSC_STATE_PAPER_ERR) > 0) {//缺纸
-                                    status += " "+App.getContext().getString(R.string.str_printer_out_of_paper);
+                                    status += " " + App.getContext().getString(R.string.str_printer_out_of_paper);
                                 }
                                 if ((buffer[0] & TSC_STATE_COVER_OPEN) > 0) {//开盖
-                                    status += " "+App.getContext().getString(R.string.str_printer_open_cover);
+                                    status += " " + App.getContext().getString(R.string.str_printer_open_cover);
                                 }
                                 if ((buffer[0] & TSC_STATE_ERR_OCCURS) > 0) {//打印机报错
-                                    status += " "+App.getContext().getString(R.string.str_printer_error);
+                                    status += " " + App.getContext().getString(R.string.str_printer_error);
                                 }
-                                String mode=App.getContext().getString(R.string.str_printer_printmode_tsc);
-                                ToastUtils.showShort( mode+" "+status);
+                                String mode = App.getContext().getString(R.string.str_printer_printmode_tsc);
+                                ToastUtils.showShort(mode + " " + status);
                             } else {//打印机状态查询
                                 Intent intent = new Intent(ACTION_QUERY_PRINTER_STATE);
                                 intent.putExtra(DEVICE_ID, id);
                                 App.getContext().sendBroadcast(intent);
                             }
                         }
-                    }else if(sendCommand==cpcl){
+                    } else if (sendCommand == cpcl) {
                         if (currentPrinterCommand == null) {
                             currentPrinterCommand = PrinterCommand.CPCL;
                             sendStateBroadcast(CONN_STATE_CONNECTED);
-                        }else {
+                        } else {
                             if (cnt == 1) {
-                                if ((buffer[0] ==CPCL_STATE_PAPER_ERR)) {//缺纸
-                                    status += " "+App.getContext().getString(R.string.str_printer_out_of_paper);
+                                if ((buffer[0] == CPCL_STATE_PAPER_ERR)) {//缺纸
+                                    status += " " + App.getContext().getString(R.string.str_printer_out_of_paper);
                                 }
-                                if ((buffer[0] ==CPCL_STATE_COVER_OPEN)) {//开盖
-                                    status += " "+App.getContext().getString(R.string.str_printer_open_cover);
+                                if ((buffer[0] == CPCL_STATE_COVER_OPEN)) {//开盖
+                                    status += " " + App.getContext().getString(R.string.str_printer_open_cover);
                                 }
-                                String mode=App.getContext().getString(R.string.str_printer_printmode_cpcl);
-                                ToastUtils.showShort( mode+" "+status);
+                                String mode = App.getContext().getString(R.string.str_printer_printmode_cpcl);
+                                ToastUtils.showShort(mode + " " + status);
                             } else {//打印机状态查询
                                 Intent intent = new Intent(ACTION_QUERY_PRINTER_STATE);
                                 intent.putExtra(DEVICE_ID, id);

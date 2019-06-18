@@ -69,16 +69,29 @@ public class AccountingListActivity extends BaseActivity {
     }
 
     private void accounting() {
-        ArrayList<Integer> setups = new ArrayList<>();
-        JSONArray jsonArray = new JSONArray();
-        List<JSONObject> data = adapter.getData();
-        for (JSONObject jsonObject : data) {
+//       获取填写的设备编号
+        ArrayList<String> equipNoList = new ArrayList<>();
+        ArrayList<String> setups = new ArrayList<>();
+
+        List<JSONObject> data1 = adapter.getData();
+        for (JSONObject jsonObject : data1) {
             try {
-                int setupId = jsonObject.getInt("setupId");
-                setups.add(setupId);
+                String equipNo = jsonObject.getString("equipNo");
+                equipNoList.add(equipNo);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+//        添加建账入库
+        JSONArray jsonArray = new JSONArray();
+        List<JSONObject> data = adapter.getData();
+        for (JSONObject jsonObject : data) {
+//            try {
+//                int setupId = jsonObject.getInt("setupId");
+//                setups.add(setupId);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
             jsonArray.put(jsonObject);
         }
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
@@ -94,9 +107,9 @@ public class AccountingListActivity extends BaseActivity {
                         //用定义好的正则表达式拆分字符串，把字符串中的数字留出来
                         String[] cs = pattern.split(msg);
                         for (String c : cs) {
-                            setups.add(Integer.parseInt(c));
+                            setups.add("E|" + c);
                         }
-                        GenarateQRActivity.start(AccountingListActivity.this, setups);
+                        GenarateQRActivity.start(AccountingListActivity.this, setups, equipNoList);
                         finish();
                     }
                 });

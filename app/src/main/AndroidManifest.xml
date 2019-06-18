@@ -76,7 +76,10 @@
         <activity android:name=".ui.home.DeptManageActivity" />
         <activity android:name=".ui.home.ScanActivity" />
         <activity android:name=".ui.home.AddDeviceClassifyActivity" />
-        <activity android:name=".ui.home.BluetoothDeviceList" />
+        <activity
+            android:name=".ui.home.BluetoothDeviceList"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".ui.home.ChoiceContainerActivity" />
 
         <meta-data

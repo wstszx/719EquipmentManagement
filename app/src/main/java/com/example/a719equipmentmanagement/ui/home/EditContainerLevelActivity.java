@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
@@ -15,13 +14,19 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -31,10 +36,10 @@ public class EditContainerLevelActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.edittext)
     EditText edittext;
+    @BindView(R.id.round_button)
+    QMUIRoundButton roundButton;
     private int id;
     private String name;
-    //    @BindView(R.id.tv_result1)
-//    TextView tvResult1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -44,7 +49,6 @@ public class EditContainerLevelActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-//        pid = intent.getIntExtra("pid", 0);
         id = intent.getIntExtra("id", 0);
         name = intent.getStringExtra("name");
         if (!StringUtils.isEmpty(name)) {

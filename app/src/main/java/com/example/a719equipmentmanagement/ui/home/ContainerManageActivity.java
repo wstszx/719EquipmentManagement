@@ -58,16 +58,24 @@ public class ContainerManageActivity extends BaseActivity {
     RecyclerView recyclerView;
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
-    String[] itemDeletes = new String[]{
+    private ArrayList<String> containerIdList = new ArrayList<>();
+    private ArrayList<String> containerNameList = new ArrayList<>();
+    String[] oneDeletes = new String[]{
+            "批量打印货柜码",
+            "编辑",
+            "删除"
+    };
+    String[] twoDeletes = new String[]{
+            "打印货柜码",
             "编辑",
             "删除"
     };
     private ContainerManageAdapter adapter1;
-    private int id;
+    private int containerId;
     private ContainerData containerData;
     private int itemViewType;
     private int deptId;
-    private String name;
+    private String containerName;
     private boolean isManager;
     private boolean isFirstAdd = true;
 
@@ -125,29 +133,41 @@ public class ContainerManageActivity extends BaseActivity {
                 containerData = containerOne.getData();
             }
         });
-        if (isManager ) {
+        if (isManager) {
             topbar.removeAllRightViews();
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
                     startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
 
             adapter1.setOnItemLongClickListener((adapter, view, position) -> {
                 itemViewType = adapter.getItemViewType(position);
+                containerIdList.clear();
+                containerNameList.clear();
                 switch (itemViewType) {
                     case 0:
                         ContainerOne containerOne = (ContainerOne) adapter.getData().get(position);
                         ContainerData data = containerOne.getData();
-                        id = data.getId();
-                        name = data.getName();
+                        List<ContainerData.ContainersBean> containers = data.getContainers();
+                        for (ContainerData.ContainersBean container : containers) {
+                            String containerName = container.getName();
+                            int containerId = container.getId();
+                            containerIdList.add("C|" + containerId);
+                            containerNameList.add(containerName);
+                        }
+                        containerId = data.getId();
+                        containerName = data.getName();
                         deptId = data.getDeptId();
+                        initListPopupIfNeed(oneDeletes);
                         break;
                     case 1:
                         ContainerTwo containerTwo = (ContainerTwo) adapter.getData().get(position);
                         ContainerData.ContainersBean containerTwoData = containerTwo.getData();
-                        name = containerTwoData.getName();
-                        id = containerTwoData.getId();
+                        containerName = containerTwoData.getName();
+                        containerId = containerTwoData.getId();
+                        containerIdList.add("C|" + containerId);
+                        containerNameList.add(containerName);
+                        initListPopupIfNeed(twoDeletes);
                         break;
                 }
-                initListPopupIfNeed(itemDeletes);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(view);
@@ -189,17 +209,29 @@ public class ContainerManageActivity extends BaseActivity {
                     case "删除":
                         delete();
                         break;
+                    case "批量打印货柜码":
+                        print();
+                        break;
+                    case "打印货柜码":
+                        print();
+                        break;
                 }
             });
             mListPopup.setOnDismissListener(data::clear);
         }
     }
 
+    private void print() {
+        if (containerIdList != null && containerIdList.size() > 0 && containerNameList != null && containerNameList.size() > 0) {
+            GenarateQRActivity.start(this, containerIdList, containerNameList);
+        }
+    }
+
     private void edit() {
         Intent intent = new Intent();
-        intent.putExtra("name", name);
+        intent.putExtra("name", containerName);
         intent.putExtra("deptId", deptId);
-        intent.putExtra("id", id);
+        intent.putExtra("id", containerId);
         switch (itemViewType) {
             case 0:
                 intent.setClass(ContainerManageActivity.this, EditContainerActivity.class);
@@ -221,7 +253,7 @@ public class ContainerManageActivity extends BaseActivity {
     }
 
     private void delete() {
-        RetrofitClient.getInstance().getService().deleteContainer(id)
+        RetrofitClient.getInstance().getService().deleteContainer(containerId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {

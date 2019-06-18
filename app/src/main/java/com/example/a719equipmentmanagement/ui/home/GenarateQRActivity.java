@@ -99,11 +99,13 @@ public class GenarateQRActivity extends BaseActivity {
             Manifest.permission.BLUETOOTH
     };
     private static final int REQUEST_CODE = 0x004;
-    private ArrayList<Integer> ids;
+    private ArrayList<String> ids;
+    private ArrayList<String> stringNameList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initBle();
         checkPermission();
         requestPermission();
         initData();
@@ -128,7 +130,9 @@ public class GenarateQRActivity extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        ids = intent.getIntegerArrayListExtra("id");
+        ids = intent.getStringArrayListExtra("id");
+        stringNameList = intent.getStringArrayListExtra("stringList");
+
     }
 
     @Override
@@ -230,18 +234,17 @@ public class GenarateQRActivity extends BaseActivity {
     /**
      * 初始化蓝牙
      */
-//    private void initBle() {
-//        if (BleManager.getInstance().isSupportBle()) {
-//            if (!BleManager.getInstance().isBlueEnable()) {
-//                BleManager.getInstance().enableBluetooth();
-//            }
-////            initScanRule();
-////            scanBlueDevice();
-//            connectBlueDevice();
-//        } else {
-//            Toast.makeText(GenarateQRActivity.this, "您的设备不支持蓝牙", Toast.LENGTH_SHORT).show();
-//        }
-//    }
+    private void initBle() {
+        if (BleManager.getInstance().isSupportBle()) {
+            if (!BleManager.getInstance().isBlueEnable()) {
+                BleManager.getInstance().enableBluetooth();
+            }
+//            initScanRule();
+//            scanBlueDevice();
+        } else {
+            ToastUtils.showShort("您的设备不支持蓝牙");
+        }
+    }
 
 //    private void connectBlueDevice() {
 //        String mAddress = "DC:0D:30:3C:C1:93";
@@ -270,9 +273,6 @@ public class GenarateQRActivity extends BaseActivity {
 //    }
     private void initTopbar() {
         topbar.setTitle("二维码");
-//        topbar.addRightTextButton(R.string.print, R.id.print).setOnClickListener(v -> {
-//            initBle();
-//        });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
@@ -380,13 +380,15 @@ public class GenarateQRActivity extends BaseActivity {
      */
     private void closeport() {
         if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] != null && DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].mPort != null) {
-//            DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].reader.cancel();
-            DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].mPort.closePort();
-            DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].mPort = null;
+            DeviceConnFactoryManager deviceConnFactoryManager = DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id];
+            deviceConnFactoryManager.reader.cancel();
+            deviceConnFactoryManager.mPort.closePort();
+            deviceConnFactoryManager.mPort = null;
         }
     }
 
-//    private void createChineseQRCode() {
+
+    //    private void createChineseQRCode() {
 //        new MyTask(GenarateQRActivity.this, imageView).execute();
 //    }
 
@@ -422,46 +424,47 @@ public class GenarateQRActivity extends BaseActivity {
      * 发送标签
      */
     void sendLabel() {
-        LabelCommand tsc = new LabelCommand();
-        /* 设置标签尺寸，按照实际尺寸设置 */
-        tsc.addSize(30, 30);
-        /* 设置标签间隙，按照实际尺寸设置，如果为无间隙纸则设置为0 */
-        tsc.addGap(0);
-        /* 设置打印方向 */
-        tsc.addDirection(LabelCommand.DIRECTION.BACKWARD, LabelCommand.MIRROR.NORMAL);
-        /* 开启带Response的打印，用于连续打印 */
-        tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
-        /* 设置原点坐标 */
-        tsc.addReference(0, 0);
-        /* 撕纸模式开启 */
-        tsc.addTear(EscCommand.ENABLE.ON);
-        /* 清除打印缓冲区 */
-        tsc.addCls();
-        /* 绘制简体中文 */
-        tsc.addText(50, 200, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1,
-                containerId + "");
-        /* 绘制图片 */
+        for (int i = 0; i < ids.size(); i++) {
+            LabelCommand tsc = new LabelCommand();
+            /* 设置标签尺寸，按照实际尺寸设置 */
+            tsc.addSize(30, 30);
+            /* 设置标签间隙，按照实际尺寸设置，如果为无间隙纸则设置为0 */
+            tsc.addGap(3);
+            /* 设置打印方向 */
+            tsc.addDirection(LabelCommand.DIRECTION.FORWARD, LabelCommand.MIRROR.NORMAL);
+            /* 开启带Response的打印，用于连续打印 */
+            tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
+            /* 设置原点坐标 */
+            tsc.addReference(0, 0);
+            /* 撕纸模式开启 */
+            tsc.addTear(EscCommand.ENABLE.ON);
+            /* 清除打印缓冲区 */
+            tsc.addCls();
+            /* 绘制简体中文 */
+
+            /* 绘制图片 */
 //        Drawable drawable = imageView.getDrawable();
 //        Bitmap b = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 //        Bitmap b = BitmapFactory.decodeResource(getResources(), drawable);
 //        tsc.addBitmap(0, 0, LabelCommand.BITMAP_MODE.OVERWRITE, 150, b);
-        for (Integer integer : ids) {
-            tsc.addQRCode(60, 60, LabelCommand.EEC.LEVEL_M, 5, LabelCommand.ROTATION.ROTATION_0, integer + "");
-        }
-        /* 绘制一维条码 */
-//        tsc.add1DBarcode(10, 450, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
-        /* 打印标签 */
-        tsc.addPrint(1, 1);
-        /* 打印标签后 蜂鸣器响 */
+            tsc.addQRCode(70, 50, LabelCommand.EEC.LEVEL_M, 5, LabelCommand.ROTATION.ROTATION_0, ids.get(i));
 
-        tsc.addSound(2, 100);
-        tsc.addCashdrwer(LabelCommand.FOOT.F5, 255, 255);
-        Vector<Byte> datas = tsc.getCommand();
-        /* 发送数据 */
-        if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] == null) {
-            return;
+            tsc.addText(80, 170, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1, stringNameList.get(i));
+            /* 绘制一维条码 */
+//        tsc.add1DBarcode(10, 450, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
+            /* 打印标签 */
+            tsc.addPrint(1, 1);
+            /* 打印标签后 蜂鸣器响 */
+
+            tsc.addSound(2, 100);
+            tsc.addCashdrwer(LabelCommand.FOOT.F5, 255, 255);
+            Vector<Byte> datas = tsc.getCommand();
+            /* 发送数据 */
+            if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] == null) {
+                return;
+            }
+            DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
         }
-        DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
     }
 
     private Handler mHandler = new Handler() {
@@ -524,6 +527,7 @@ public class GenarateQRActivity extends BaseActivity {
         }
     };
 
+
 //    static class MyTask extends AsyncTask<Void, Void, Bitmap> {
 //        // 弱引用允许Activity被垃圾收集器清理
 //        private final WeakReference<GenarateQRActivity> weakActivity;
@@ -557,9 +561,10 @@ public class GenarateQRActivity extends BaseActivity {
 //        }
 //    }
 
-    public static void start(Context context, ArrayList<Integer> ids) {
+    public static void start(Context context, ArrayList<String> ids, ArrayList<String> stringList) {
         Intent starter = new Intent(context, GenarateQRActivity.class);
-        starter.putIntegerArrayListExtra("id", ids);
+        starter.putStringArrayListExtra("id", ids);
+        starter.putStringArrayListExtra("stringList", stringList);
         context.startActivity(starter);
     }
 }

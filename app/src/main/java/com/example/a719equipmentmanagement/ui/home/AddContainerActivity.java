@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import butterknife.BindView;
@@ -56,7 +57,7 @@ public class AddContainerActivity extends BaseActivity {
     private String containerNum;
     private int pid;
     private String msg;
-    private ArrayList<Integer> qrList;
+    private ArrayList<String> qrList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -75,7 +76,10 @@ public class AddContainerActivity extends BaseActivity {
         });
     }
 
+    ArrayList<String> containerNameList = new ArrayList<>();
+
     private void addContainer() {
+        containerNameList.clear();
         String containerName = edittext.getText().toString();
         containerNum = edittext2.getText().toString();
         String ownerDept = tvResult1.getText().toString();
@@ -108,6 +112,7 @@ public class AddContainerActivity extends BaseActivity {
                         try {
                             jsonObject1.put("deptId", deptId);
                             jsonObject1.put("name", containerName + "--" + i);
+                            containerNameList.add(containerName + "--" + i);
                             jsonObject1.put("pid", msg);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -129,7 +134,7 @@ public class AddContainerActivity extends BaseActivity {
                             //用定义好的正则表达式拆分字符串，把字符串中的数字留出来
                             String[] cs = pattern.split(msg);
                             for (String c : cs) {
-                                qrList.add(Integer.parseInt(c));
+                                qrList.add("C|" + c);
                             }
                             ToastUtils.showShort("添加货柜成功");
                             roundButton.setVisibility(View.VISIBLE);
@@ -166,7 +171,7 @@ public class AddContainerActivity extends BaseActivity {
                 startActivityForResult(new Intent(AddContainerActivity.this, ChoiceDeptActivity.class), ADD_DEPT);
                 break;
             case R.id.round_button:
-                GenarateQRActivity.start(this, qrList);
+                GenarateQRActivity.start(this, qrList, containerNameList);
                 finish();
                 break;
         }
