@@ -214,21 +214,18 @@ public class DeviceClassifiyActivity extends BaseActivity {
         }
         if (mListPopup == null) {
             mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
-            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView = (TextView) view;
-                    String s = textView.getText().toString();
-                    switch (s) {
-                        case "编辑":
-                            edit();
-                            break;
-                        case "删除":
-                            delete();
-                            break;
-                    }
-                    mListPopup.dismiss();
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), (adapterView, view, i, l) -> {
+                TextView textView = (TextView) view;
+                String s = textView.getText().toString();
+                switch (s) {
+                    case "编辑":
+                        edit();
+                        break;
+                    case "删除":
+                        delete();
+                        break;
                 }
+                mListPopup.dismiss();
             });
             mListPopup.setOnDismissListener(data::clear);
         }

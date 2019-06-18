@@ -49,7 +49,6 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
         parentClassifiy = intent.getStringExtra("parentClassifiy");
         name = intent.getStringExtra("name");
         edittext.setText(name);
-//        edittext1.setText(parentClassifiy);
     }
 
     private void initTopbar() {
@@ -65,7 +64,6 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
 
     private void getInputData() {
         String deviceClassifyName = edittext.getText().toString();
-//        String ownerDeviceClassify = edittext1.getText().toString();
         if (StringUtils.isEmpty(deviceClassifyName)) {
             ToastUtils.showShort("设备分类没有变化");
             return;
@@ -84,8 +82,11 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(EditDeviceClassifiyActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK);
-                        finish();
+                        if (baseResponse != null && baseResponse.getCode() == 0) {
+                            ToastUtils.showShort("修改成功");
+                            setResult(RESULT_OK);
+                            finish();
+                        }
                     }
                 });
     }
