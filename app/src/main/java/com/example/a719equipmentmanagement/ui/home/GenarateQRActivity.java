@@ -225,9 +225,9 @@ public class GenarateQRActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         DeviceConnFactoryManager.closeAllPort();
-        if (threadPool != null) {
-            threadPool.stopThreadPool();
-        }
+//        if (threadPool != null) {
+//            threadPool.stopThreadPool();
+//        }
     }
 
 
@@ -362,7 +362,7 @@ public class GenarateQRActivity extends BaseActivity {
                 if (data != null) {
                     macAddress = data.getStringExtra(BluetoothDeviceList.EXTRA_DEVICE_ADDRESS);
                 }
-                new DeviceConnFactoryManager.Build()
+                DeviceConnFactoryManager build = new DeviceConnFactoryManager.Build()
                         .setId(id)
                         /* 设置连接方式 */
                         .setConnMethod(DeviceConnFactoryManager.CONN_METHOD.BLUETOOTH)
@@ -370,7 +370,15 @@ public class GenarateQRActivity extends BaseActivity {
                         .setMacAddress(macAddress)
                         .build();
                 threadPool = ThreadPool.getInstantiation();
-                threadPool.addTask(() -> DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort());
+                threadPool.addTask(build::openPort);
+//                threadPool.addTask(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        DeviceConnFactoryManager manager = DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id];
+//                        manager.openPort();
+//                    }
+//                });
+//                threadPool.addTask(() -> DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].openPort());
             }
         }
     }

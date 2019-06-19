@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
@@ -163,6 +164,7 @@ public class DeviceConnFactoryManager {
                 System.out.println("id -> " + id);
                 mPort = new BluetoothPort(macAddress);
                 isOpenPort = deviceConnFactoryManagers[id].mPort.openPort();
+                LogUtils.i(isOpenPort);
                 break;
             case USB:
                 mPort = new UsbPort(mContext, mUsbDevice);
@@ -266,7 +268,9 @@ public class DeviceConnFactoryManager {
     public void closePort(int id) {
         if (this.mPort != null) {
             System.out.println("id -> " + id);
-            reader.cancel();
+            if (reader != null) {
+                reader.cancel();
+            }
             boolean b = this.mPort.closePort();
             if (b) {
                 this.mPort = null;
