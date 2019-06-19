@@ -27,7 +27,7 @@ import okhttp3.RequestBody;
 public class EditDeviceClassifiyActivity extends BaseActivity {
     @BindView(R.id.edittext)
     EditText edittext;
-//    @BindView(R.id.edittext1)
+    //    @BindView(R.id.edittext1)
 //    EditText edittext1;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;

@@ -246,7 +246,7 @@ public class GenarateQRActivity extends BaseActivity {
         }
     }
 
-//    private void connectBlueDevice() {
+    //    private void connectBlueDevice() {
 //        String mAddress = "DC:0D:30:3C:C1:93";
 //        BleManager.getInstance().connect(mAddress, new BleGattCallback() {
 //            @Override
@@ -447,9 +447,9 @@ public class GenarateQRActivity extends BaseActivity {
 //        Bitmap b = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 //        Bitmap b = BitmapFactory.decodeResource(getResources(), drawable);
 //        tsc.addBitmap(0, 0, LabelCommand.BITMAP_MODE.OVERWRITE, 150, b);
-            tsc.addQRCode(70, 50, LabelCommand.EEC.LEVEL_M, 5, LabelCommand.ROTATION.ROTATION_0, ids.get(i));
+            tsc.addQRCode(40, 25, LabelCommand.EEC.LEVEL_H, 8, LabelCommand.ROTATION.ROTATION_0, ids.get(i));
 
-            tsc.addText(80, 170, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1, stringNameList.get(i));
+            tsc.addText(80, 200, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1, stringNameList.get(i));
             /* 绘制一维条码 */
 //        tsc.add1DBarcode(10, 450, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
             /* 打印标签 */

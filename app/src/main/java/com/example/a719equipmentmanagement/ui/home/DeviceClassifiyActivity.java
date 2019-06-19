@@ -153,13 +153,16 @@ public class DeviceClassifiyActivity extends BaseActivity {
                         DeviceClassifiy data = deviceTypeOne.getData();
                         id = data.getId();
                         name = data.getName();
-//                    deptId = data.getDeptId();
+                        pid = 0;
                         break;
                     case 1:
                         DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) adapter.getData().get(position);
+                        int parentPosition = adapter1.getParentPosition(deviceTypeTwo);
+                        DeviceTypeOne deviceTypeOne1 = (DeviceTypeOne) adapter.getData().get(parentPosition);
+                        pid = deviceTypeOne1.getData().getId();
                         DeviceClassifiy.CategorysBean deviceTypeTwoData = deviceTypeTwo.getData();
                         name = deviceTypeTwoData.getName();
-                        id = deviceTypeTwoData.getId();
+                        this.id = deviceTypeTwoData.getId();
                         break;
                 }
                 initListPopupIfNeed(deletes);
