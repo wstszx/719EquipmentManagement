@@ -128,7 +128,7 @@ public class DeptManageActivity extends BaseActivity {
                 deptList = personOne.getDeptList();
             }
         });
-        if (isManager ) {
+        if (isManager) {
             topbar.removeAllRightViews();
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
                 initListPopupIfNeed(addTypes);

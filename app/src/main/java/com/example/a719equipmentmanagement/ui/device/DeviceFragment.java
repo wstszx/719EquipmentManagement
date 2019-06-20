@@ -15,8 +15,11 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseSingleFilter;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.PersonOne;
+import com.example.a719equipmentmanagement.entity.PersonTwo;
 import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
@@ -115,14 +118,14 @@ public class DeviceFragment extends BaseFragment {
         Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData(new HashMap<>())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single<List<TreeData>> treeData1 = RetrofitClient.getInstance().getService().getTreeData()
+        Single<List<DeptList>> listSingle1 = RetrofitClient.getInstance().getService().getDeptList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<List<DeviceClassifiy>> listSingle = RetrofitClient.getInstance().getService().findDeviceTypeData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single.zip(deviceData2Single, treeData1, listSingle,
-                (deviceData2, treeData, deviceClassifiys) -> {
+        Single.zip(deviceData2Single, listSingle1, listSingle,
+                (deviceData2, deptLists, deviceClassifiys) -> {
                     boolean mainThread = ThreadUtils.isMainThread();
                     if (mainThread) {
                         if (deviceData2 != null) {
@@ -131,9 +134,8 @@ public class DeviceFragment extends BaseFragment {
                                 adapter.setNewData(rows);
                             }
                         }
-                        if (treeData != null && treeData.size() > 0) {
-//                            createSeaction(treeData);
-                            createSection_deptClassify(treeData);
+                        if (deptLists != null && deptLists.size() > 0) {
+                            createSection_deptClassify(deptLists);
                         }
                         if (deviceClassifiys != null && deviceClassifiys.size() > 0) {
                             createSection_classify(deviceClassifiys);
@@ -155,17 +157,9 @@ public class DeviceFragment extends BaseFragment {
 //        三列表
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
-        RecyclerView recyclerView12 = view1.findViewById(R.id.recyclerView2);
-        RecyclerView recyclerView13 = view1.findViewById(R.id.recyclerView3);
         recyclerView11.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
-        recyclerView12.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
-        recyclerView13.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
-        adapter11 = new BaseFilterAdapter(R.layout.base_filter_right_item);
-        adapter12 = new BaseFilterAdapter(R.layout.base_filter_right_item);
-        adapter13 = new BaseFilterAdapter(R.layout.base_filter_item);
+        adapter11 = new BaseFilterAdapter(R.layout.base_filter_item);
         recyclerView11.setAdapter(adapter11);
-        recyclerView12.setAdapter(adapter12);
-        recyclerView13.setAdapter(adapter13);
         adapter11.setOnItemClickListener((adapter, view, position) -> {
             if (position == adapter11.getData().size() - 1) {
                 map.remove("deptIds");
@@ -173,31 +167,14 @@ public class DeviceFragment extends BaseFragment {
                 dropDownMenu.closeMenu();
                 getDeviceData(map);
             } else {
-                recyclerView12.setVisibility(View.VISIBLE);
                 BaseSingleFilter baseSingleFilter1 = adapter11.getData().get(position);
-                List<BaseSingleFilter> baseSingleFilters1 = deptMap1_2.get(baseSingleFilter1);
-                adapter12.setNewData(baseSingleFilters1);
-                Set<BaseSingleFilter> baseSingleFiltersSet2 = deptMap2_3.keySet();
-                ArrayList<BaseSingleFilter> baseSingleFilters2 = new ArrayList<>(baseSingleFiltersSet2);
-                adapter12.setNewData(baseSingleFilters2);
+                String name = baseSingleFilter1.getName();
+                int deptId = baseSingleFilter1.getId();
+                map.put("deptIds", deptId);
+                dropDownMenu.setTabText(name);
+
             }
-        });
-        adapter12.setOnItemClickListener((adapter, view, position) -> {
-//                adapter13.setNewData(deptThrees);
-            recyclerView13.setVisibility(View.VISIBLE);
-            BaseSingleFilter baseSingleFilter2 = adapter12.getData().get(position);
-            List<BaseSingleFilter> baseSingleFilters2 = deptMap2_3.get(baseSingleFilter2);
-            adapter13.setNewData(baseSingleFilters2);
-        });
-        adapter13.setOnItemClickListener((adapter, view, position) -> {
-            BaseSingleFilter baseSingleFilter3 = adapter13.getData().get(position);
-            String name = baseSingleFilter3.getName();
-            int id = baseSingleFilter3.getId();
-            dropDownMenu.setTabText(name);
             dropDownMenu.closeMenu();
-            recyclerView12.setVisibility(View.INVISIBLE);
-            recyclerView13.setVisibility(View.INVISIBLE);
-            map.put("deptIds", id);
             getDeviceData(map);
         });
 
@@ -227,7 +204,6 @@ public class DeviceFragment extends BaseFragment {
             }
         });
         adapter22.setOnItemClickListener((adapter, view, position) -> {
-//                adapter22.setNewData(filters);
             BaseSingleFilter baseSingleFilter = adapter22.getData().get(position);
             String name = baseSingleFilter.getName();
             int id = baseSingleFilter.getId();
@@ -268,15 +244,12 @@ public class DeviceFragment extends BaseFragment {
         recyclerview5.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
         recyclerview5.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
 
-//        ContentFilterAdapter adapter5 = new ContentFilterAdapter(R.layout.base_device02);
-//        recyclerview5.setAdapter(adapter5);
-//        adapter5.setNewData(devices);
         adapter = new DeviceAdapter(R.layout.base_device02);
         recyclerview5.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = rows.get(position);
             int deviceId = currentItemData.getId();
-            DeviceDetailActivity2.start(getContext(),deviceId+"");
+            DeviceDetailActivity2.start(getContext(), deviceId + "");
         });
 
 
@@ -285,7 +258,8 @@ public class DeviceFragment extends BaseFragment {
 
     private void getDeviceData(Map<String, Object> map) {
         RetrofitClient.getInstance().getService().findDeviceData(map)
-                .compose(CommonCompose.io2main(Objects.requireNonNull(getContext())))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<DeviceData2>(Objects.requireNonNull(getContext())) {
                     @Override
                     public void onSuccess(DeviceData2 deviceData2) {
@@ -301,103 +275,27 @@ public class DeviceFragment extends BaseFragment {
                 });
     }
 
-//    private void createSeaction(List<TreeData> treeData) {
-//        deptOnes = new ArrayList<>();
-//        deptTwos = new ArrayList<>();
-//        deptThrees = new ArrayList<>();
-//        for (TreeData treeData1 : treeData) {
-//            int id1 = treeData1.getId();
-//            String name1 = treeData1.getName();
-//            if (id1 == 100) {
-//                BaseSingleFilter filter1 = new BaseSingleFilter();
-//                filter1.setId(id1);
-//                filter1.setName(name1);
-//                deptOnes.add(filter1);
-//                for (TreeData treeData2 : treeData) {
-//                    int pId2 = treeData2.getPId();
-//                    if (id1 == pId2) {
-//                        String name2 = treeData2.getName();
-//                        int id2 = treeData2.getId();
-//                        BaseSingleFilter filter2 = new BaseSingleFilter();
-//                        filter2.setId(id2);
-//                        filter2.setName(name2);
-//                        deptTwos.add(filter2);
-//                        for (TreeData treeData3 : treeData) {
-//                            int pId3 = treeData3.getPId();
-//                            if (id2 == pId3) {
-//                                String name3 = treeData3.getName();
-//                                int id3 = treeData3.getId();
-//                                BaseSingleFilter filter3 = new BaseSingleFilter();
-//                                filter3.setId(id3);
-//                                filter3.setName(name3);
-//                                deptThrees.add(filter3);
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//            adapter11.setNewData(deptOnes);
-//        }
-//    }
-
-    private Map<BaseSingleFilter, List<BaseSingleFilter>> deptMap1_2 = new HashMap<>();
-    private Map<BaseSingleFilter, List<BaseSingleFilter>> deptMap2_3 = new HashMap<>();
-
-    private void createSection_deptClassify(List<TreeData> treeData) {
-        for (TreeData treeData1 : treeData) {
-            int id1 = treeData1.getId();
-            String name1 = treeData1.getName();
-
-            if (id1 == 100) {
-                BaseSingleFilter filterKey1 = new BaseSingleFilter();
-                filterKey1.setId(id1);
-                filterKey1.setName(name1);
-                List<BaseSingleFilter> filterValueList1 = new ArrayList<>();
-                for (TreeData treeData2 : treeData) {
-                    int pId2 = treeData2.getPId();
-                    if (id1 == pId2) {
-                        BaseSingleFilter filterValue1 = new BaseSingleFilter();
-                        int id2 = treeData2.getId();
-                        String name2 = treeData2.getName();
-                        filterValue1.setId(id2);
-                        filterValue1.setName(name2);
-                        filterValueList1.add(filterValue1);
-                        BaseSingleFilter filterKey2 = new BaseSingleFilter();
-                        filterKey2.setId(id2);
-                        filterKey2.setName(name2);
-                        List<BaseSingleFilter> filterValueList2 = new ArrayList<>();
-                        for (TreeData treeData3 : treeData) {
-                            int pId3 = treeData3.getPId();
-                            if (pId3 == id2) {
-                                BaseSingleFilter filterValue2 = new BaseSingleFilter();
-                                int id3 = treeData3.getId();
-                                String name3 = treeData3.getName();
-                                filterValue2.setId(id3);
-                                filterValue2.setName(name3);
-                                filterValueList2.add(filterValue2);
-                            }
-                        }
-                        deptMap2_3.put(filterKey2, filterValueList2);
-                    }
-                }
-
-                deptMap1_2.put(filterKey1, filterValueList1);
-            }
+    private void createSection_deptClassify(List<DeptList> deptLists) {
+        List<BaseSingleFilter> baseSingleFilterList = new ArrayList<>();
+        for (DeptList deptList : deptLists) {
+            String deptName = deptList.getDeptName();
+            int id = deptList.getId();
+            BaseSingleFilter baseSingleFilter1 = new BaseSingleFilter();
+            baseSingleFilter1.setName(deptName);
+            baseSingleFilter1.setId(id);
+            baseSingleFilterList.add(baseSingleFilter1);
         }
-        BaseSingleFilter filterKey2 = new BaseSingleFilter();
-        filterKey2.setName("不限");
-        filterKey2.setId(-1);
-        deptMap1_2.put(filterKey2, new ArrayList<>());
-        Set<BaseSingleFilter> baseSingleFiltersSet1 = deptMap1_2.keySet();
-        ArrayList<BaseSingleFilter> baseSingleFilters1 = new ArrayList<>(baseSingleFiltersSet1);
-        Collections.reverse(baseSingleFilters1);
-        adapter11.setNewData(baseSingleFilters1);
+        BaseSingleFilter baseSingleFilters2 = new BaseSingleFilter();
+        baseSingleFilters2.setName("不限");
+        baseSingleFilters2.setId(-1);
+        baseSingleFilterList.add(baseSingleFilters2);
+        adapter11.setNewData(baseSingleFilterList);
     }
 
     private Map<BaseSingleFilter, List<BaseSingleFilter>> deviceClassifiysMap = new HashMap<>();
 
     private void createSection_classify(List<DeviceClassifiy> deviceClassifiys) {
-
+        List<BaseSingleFilter> keyList = new ArrayList<>();
         for (DeviceClassifiy deviceClassifiy : deviceClassifiys) {
             int id = deviceClassifiy.getId();
             String name = deviceClassifiy.getName();
@@ -414,16 +312,18 @@ public class DeviceFragment extends BaseFragment {
                 filterValue.setName(name1);
                 filterValueList.add(filterValue);
             }
+            keyList.add(filterKey);
             deviceClassifiysMap.put(filterKey, filterValueList);
         }
         BaseSingleFilter filterKey2 = new BaseSingleFilter();
         filterKey2.setId(-1);
         filterKey2.setName("不限");
+        keyList.add(filterKey2);
         deviceClassifiysMap.put(filterKey2, new ArrayList<>());
-        Set<BaseSingleFilter> baseSingleFiltersSet = deviceClassifiysMap.keySet();
-        ArrayList<BaseSingleFilter> baseSingleFilters1 = new ArrayList<>(baseSingleFiltersSet);
-        Collections.reverse(baseSingleFilters1);
-        adapter21.setNewData(baseSingleFilters1);
+//        Set<BaseSingleFilter> baseSingleFiltersSet = deviceClassifiysMap.keySet();
+//        ArrayList<BaseSingleFilter> baseSingleFilters1 = new ArrayList<>(baseSingleFiltersSet);
+//        Collections.reverse(baseSingleFilters1);
+        adapter21.setNewData(keyList);
     }
 
 
