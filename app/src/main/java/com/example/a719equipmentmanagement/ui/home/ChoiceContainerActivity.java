@@ -96,9 +96,9 @@ public class ChoiceContainerActivity extends BaseActivity {
                     ContainerTwo containerTwo = (ContainerTwo) multiItemEntity;
                     name = containerTwo.getData().getName();
                     id = containerTwo.getData().getId();
+                    setChoice(position, view);
                     break;
             }
-            setChoice(position, view);
         });
     }
 

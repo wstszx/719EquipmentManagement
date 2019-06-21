@@ -76,7 +76,9 @@ public class AccountingListActivity extends BaseActivity {
         List<JSONObject> data1 = adapter.getData();
         for (JSONObject jsonObject : data1) {
             try {
-                String equipNo = jsonObject.getString("equipNo");
+                JSONObject equip = jsonObject.getJSONObject("equip");
+                String equipNo = equip.getString("equipNo");
+
                 equipNoList.add(equipNo);
             } catch (JSONException e) {
                 e.printStackTrace();

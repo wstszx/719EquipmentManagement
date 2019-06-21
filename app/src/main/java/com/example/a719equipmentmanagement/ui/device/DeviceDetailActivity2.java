@@ -1,6 +1,8 @@
 package com.example.a719equipmentmanagement.ui.device;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,53 +11,126 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
+import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.TimeUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.home.AccountingActivity;
+import com.example.a719equipmentmanagement.ui.home.ChoiceContainerActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
+import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity;
 import com.example.a719equipmentmanagement.ui.home.EditDeptActivity;
+import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class DeviceDetailActivity2 extends BaseActivity {
 
-    //    @BindView(R.id.switchs)
-//    Switch switchs;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.constraint)
+    ConstraintLayout constraint;
+    @BindView(R.id.tv_title1)
+    TextView tvTitle1;
+    @BindView(R.id.imageView1)
+    ImageView imageView1;
+    @BindView(R.id.constraint1)
+    ConstraintLayout constraint1;
+    @BindView(R.id.tv_title2)
+    TextView tvTitle2;
+    @BindView(R.id.constraint2)
+    ConstraintLayout constraint2;
+    @BindView(R.id.tv_title3)
+    TextView tvTitle3;
+    @BindView(R.id.imageView3)
+    ImageView imageView3;
+    @BindView(R.id.constraint3)
+    ConstraintLayout constraint3;
+    @BindView(R.id.tv_title4)
+    TextView tvTitle4;
+    @BindView(R.id.constraint4)
+    ConstraintLayout constraint4;
+    @BindView(R.id.tv_title5)
+    TextView tvTitle5;
+    @BindView(R.id.imageView5)
+    ImageView imageView5;
+    @BindView(R.id.constraint5)
+    ConstraintLayout constraint5;
+    @BindView(R.id.tv_title6)
+    TextView tvTitle6;
+    @BindView(R.id.constraint6)
+    ConstraintLayout constraint6;
+    @BindView(R.id.tv_title7)
+    TextView tvTitle7;
+    @BindView(R.id.edittext8)
+    EditText edittext8;
+    @BindView(R.id.tv_result9)
+    TextView tvResult9;
+    //    @BindView(R.id.tv_result10)
+//    TextView tvResult10;
+    @BindView(R.id.edittext11)
+    EditText edittext11;
+    @BindView(R.id.tv_result12)
+    TextView tvResult12;
+    @BindView(R.id.tv_result13)
+    TextView tvResult13;
+    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
+    private String[] classification = {"A", "B", "C"};
+    private String[] technical_status = {"合格", "不合格"};
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-
-    @BindView(R.id.include_1)
-    View include_1;
-    @BindView(R.id.include_2)
-    View include_2;
-    @BindView(R.id.include_3)
-    View include_3;
-    @BindView(R.id.include_4)
-    View include_4;
-    @BindView(R.id.include_5)
-    View include_5;
-    @BindView(R.id.include_6)
-    View include_6;
-    @BindView(R.id.include_7)
-    View include_7;
-
-    private static final int EDIT_DEPT = 1;
-    private String[] deviceAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
+    @BindView(R.id.edittext)
+    EditText edittext;
+    @BindView(R.id.tv_result1)
+    TextView tvResult1;
+    @BindView(R.id.edittext2)
+    EditText edittext2;
+    @BindView(R.id.tv_result3)
+    TextView tvResult3;
+    @BindView(R.id.edittext4)
+    EditText edittext4;
+    @BindView(R.id.tv_result5)
+    TextView tvResult5;
+    @BindView(R.id.edittext6)
+    EditText edittext6;
+    @BindView(R.id.tv_result7)
+    TextView tvResult7;
+    private static final int DEVICE_TYPE = 1;
+    private static final int DEPT_TYPE = 2;
+    private static final int CONTAINER_TYPE = 3;
+    private static final int DATE_ONE = 4;
+    private static final int DATE_TWO = 5;
     private String deviceName;
     private String parameter;
     private String manufactuer;
@@ -66,22 +141,44 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private String deviceStatus;
     private int deviceId;
     private List<String> opers;
-
-    private IncludedLayout includedLayout1;
-    private IncludedLayout includedLayout2;
-    private IncludedLayout includedLayout3;
-    private IncludedLayout includedLayout4;
-    private IncludedLayout includedLayout5;
-    private IncludedLayout includedLayout6;
-    private IncludedLayout includedLayout7;
-
     private QMUIListPopup mListPopup;
     private ArrayAdapter<String> adapter;
+    private int categoryId;
+    private int deptId;
+    private int locationId;
+    private String techStateStr = "";
+    private int tech_statu;
+    private boolean isManager;
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        isManager = SPUtils.getInstance().getBoolean("isManager", false);
         initTopbar();
+        initView();
         initData();
+        AboriginalDateSelect.getInstance().setListener((position, date) -> {
+            switch (position) {
+                case DATE_ONE:
+                    String time = TimeUtils.date2String(date);
+                    tvResult12.setText(time);
+                    break;
+                case DATE_TWO:
+                    String time1 = TimeUtils.date2String(date);
+                    tvResult13.setText(time1);
+                    break;
+            }
+        });
+    }
+
+    private void initView() {
+        if (!isManager) {
+            edittext.setFocusable(false);
+            edittext2.setFocusable(false);
+            edittext4.setFocusable(false);
+            edittext6.setFocusable(false);
+            edittext8.setFocusable(false);
+            edittext11.setFocusable(false);
+        }
     }
 
     @Override
@@ -95,12 +192,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
         context.startActivity(starter);
     }
 
-    static class IncludedLayout {
-        @BindView(R.id.tv_title)
-        TextView tv_title;
-        @BindView(R.id.edittext)
-        EditText editText;
-    }
 
     private void initTopbar() {
         topbar.setTitle("设备详情");
@@ -108,6 +199,133 @@ public class DeviceDetailActivity2 extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
+        if (isManager) {
+            topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> updateDevice());
+        }
+    }
+
+    private void updateDevice() {
+        String name = edittext.getText().toString();
+        String equipNo = edittext2.getText().toString();
+        String dept = tvResult3.getText().toString();
+        String parameter = edittext4.getText().toString();
+        String location = tvResult5.getText().toString();
+        String manufactuer = edittext6.getText().toString();
+        String equipStatus = tvResult7.getText().toString();
+        String responsor = edittext8.getText().toString();
+        String techStatus = tvResult9.getText().toString();
+        String verifyPeriod = edittext11.getText().toString();
+        String latestVerifyDate = tvResult12.getText().toString();
+        String validDate = tvResult13.getText().toString();
+        if (StringUtils.isEmpty(name)) {
+            ToastUtils.showShort("设备名称不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(equipNo)) {
+            ToastUtils.showShort("设备编号不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(dept)) {
+            ToastUtils.showShort("归属部门不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(parameter)) {
+            ToastUtils.showShort("技术参数不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(location)) {
+            ToastUtils.showShort("所在位置不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(manufactuer)) {
+            ToastUtils.showShort("厂家不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(equipStatus)) {
+            ToastUtils.showShort("仪器状态不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(responsor)) {
+            ToastUtils.showShort("负责人不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(techStatus)) {
+            ToastUtils.showShort("技术状态不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(verifyPeriod)) {
+            ToastUtils.showShort("检定周期不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(latestVerifyDate)) {
+            ToastUtils.showShort("最近检定日期不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(validDate)) {
+            ToastUtils.showShort("有效期不能为空");
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("name", name);
+            jsonObject.put("categoryId", categoryId);
+            jsonObject.put("equipNo", equipNo);
+            jsonObject.put("deptId", deptId);
+            jsonObject.put("parameter", parameter);
+            jsonObject.put("locationId", locationId);
+            jsonObject.put("manufactuer", manufactuer);
+            jsonObject.put("status", status);
+            jsonObject.put("responsor", responsor);
+            jsonObject.put("techState", tech_statu);
+            jsonObject.put("verifyPeriod", verifyPeriod);
+            jsonObject.put("latestVerifyDate", latestVerifyDate);
+            jsonObject.put("validDate", validDate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().updateDevice(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity2.this) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response != null && response.getCode() == 0) {
+                            ToastUtils.showShort("保存成功");
+                        }
+                    }
+                });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case DEVICE_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        categoryId = data.getIntExtra("id", 0);
+                        tvResult1.setText(name);
+                    }
+                    break;
+                case DEPT_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        deptId = data.getIntExtra("id", 0);
+                        tvResult3.setText(name);
+                    }
+                    break;
+                case CONTAINER_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        locationId = data.getIntExtra("id", 0);
+                        tvResult5.setText(name);
+                    }
+                    break;
+            }
+        }
     }
 
     private void initData() {
@@ -128,22 +346,34 @@ public class DeviceDetailActivity2 extends BaseActivity {
                         }
                     }
                 });
-
     }
 
     private void setData(DeviceDetailData deviceDetailData) {
         DeviceDetailData.DataBean data = deviceDetailData.getData();
         deviceName = data.getName();
+        String equipNo = data.getEquipNo();
         parameter = data.getParameter();
         manufactuer = data.getManufactuer();
+        int techState = data.getTechState();
         responsor = data.getResponsor();
+        int verifyPeriod = data.getVerifyPeriod();
+        String latestVerifyDate = data.getLatestVerifyDate();
+        String validDate = data.getValidDate();
         DeviceDetailData.DataBean.DeptBean dept1 = data.getDept();
         deptName = dept1.getDeptName();
         DeviceDetailData.DataBean.LocationBean location1 = data.getLocation();
         locationName = location1.getName();
         status = data.getStatus();
         opers = data.getOpers();
-        switch (this.status) {
+        switch (techState) {
+            case 1:
+                techStateStr = "合格";
+                break;
+            case 2:
+                techStateStr = "不合格";
+                break;
+        }
+        switch (status) {
             case 0:
                 deviceStatus = "可用";
                 break;
@@ -178,7 +408,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 deviceStatus = "无状态信息";
                 break;
         }
-        if (this.opers.size() > 0) {
+        if (opers != null && opers.size() > 0) {
             topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
                 initListPopupIfNeed();
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
@@ -186,64 +416,49 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 mListPopup.show(v);
             });
         }
-        initGroupListView();
+        edittext.setText(deptName);
+        edittext2.setText(equipNo);
+        edittext4.setText(parameter);
+        edittext6.setText(manufactuer);
+        tvResult7.setText(deviceStatus);
+        edittext8.setText(responsor);
+        tvResult9.setText(techStateStr);
+        edittext11.setText(String.valueOf(verifyPeriod));
+        tvResult12.setText(latestVerifyDate);
+        tvResult13.setText(validDate);
     }
 
-    private void initGroupListView() {
-        includedLayout1 = new IncludedLayout();
-        includedLayout2 = new IncludedLayout();
-        includedLayout3 = new IncludedLayout();
-        includedLayout4 = new IncludedLayout();
-//        includedLayout5=new IncludedLayout();
-//        includedLayout6=new IncludedLayout();
-        includedLayout7 = new IncludedLayout();
-        ButterKnife.bind(includedLayout1, include_1);
-        ButterKnife.bind(includedLayout2, include_2);
-        ButterKnife.bind(includedLayout3, include_3);
-        ButterKnife.bind(includedLayout4, include_4);
-        ButterKnife.bind(includedLayout7, include_7);
 
-
-        includedLayout1.tv_title.setText(deviceAttrs[0]);
-        includedLayout2.tv_title.setText(deviceAttrs[1]);
-        includedLayout3.tv_title.setText(deviceAttrs[2]);
-        includedLayout4.tv_title.setText(deviceAttrs[3]);
-        includedLayout7.tv_title.setText(deviceAttrs[6]);
-        includedLayout1.editText.setText(deviceName);
-        includedLayout2.editText.setText(parameter);
-        includedLayout3.editText.setText(manufactuer);
-        includedLayout4.editText.setText(responsor);
-        includedLayout7.editText.setText(deviceStatus);
-        TextView tv_title5 = include_5.findViewById(R.id.tv_title);
-        TextView tv_result5 = include_5.findViewById(R.id.tv_result);
-        TextView tv_title6 = include_6.findViewById(R.id.tv_title);
-        TextView tv_result6 = include_6.findViewById(R.id.tv_result);
-
-        tv_title5.setText(deviceAttrs[4]);
-        tv_result5.setText(deptName);
-        tv_title6.setText(deviceAttrs[4]);
-        tv_result6.setText(locationName);
-        include_5.setOnClickListener(v -> {
-            startActivityForResult(new Intent(DeviceDetailActivity2.this, ChoiceDeptActivity.class), EDIT_DEPT);
-        });
-        include_6.setOnClickListener(v -> {
-
-        });
-        includedLayout7.editText.setEnabled(false);
-        if (opers.contains("Edit")) {
-            includedLayout1.editText.setEnabled(true);
-            includedLayout2.editText.setEnabled(true);
-            includedLayout3.editText.setEnabled(true);
-            includedLayout4.editText.setEnabled(true);
-            include_5.setEnabled(true);
-            include_6.setEnabled(true);
-        } else {
-            includedLayout1.editText.setEnabled(false);
-            includedLayout2.editText.setEnabled(false);
-            includedLayout3.editText.setEnabled(false);
-            includedLayout4.editText.setEnabled(false);
-            include_5.setEnabled(false);
-            include_6.setEnabled(false);
+    @OnClick({R.id.constraint1, R.id.constraint3, R.id.constraint5, R.id.constraint7,
+            R.id.constraint9, R.id.constraint12, R.id.constraint13})
+    public void onViewClicked(View view) {
+        if (isManager) {
+            switch (view.getId()) {
+                case R.id.constraint1:
+                    startActivityForResult(new Intent(DeviceDetailActivity2.this, ChoiceDeviceClassifiyActivity.class), DEVICE_TYPE);
+                    break;
+                case R.id.constraint3:
+                    startActivityForResult(new Intent(DeviceDetailActivity2.this, ChoiceDeptActivity.class), DEPT_TYPE);
+                    break;
+                case R.id.constraint5:
+                    startActivityForResult(new Intent(DeviceDetailActivity2.this, ChoiceContainerActivity.class), CONTAINER_TYPE);
+                    break;
+                case R.id.constraint7:
+                    showSimpleBottomSheetList(options, 1);
+                    break;
+                case R.id.constraint9:
+                    showSimpleBottomSheetList(technical_status, 2);
+                    break;
+//            case R.id.constraint10:
+//                showSimpleBottomSheetList(classification, 3);
+//                break;
+                case R.id.constraint12:
+                    AboriginalDateSelect.getInstance().showDateTime(this, DATE_ONE);
+                    break;
+                case R.id.constraint13:
+                    AboriginalDateSelect.getInstance().showDateTime(this, DATE_TWO);
+                    break;
+            }
         }
     }
 
@@ -293,5 +508,32 @@ public class DeviceDetailActivity2 extends BaseActivity {
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    private void showSimpleBottomSheetList(String[] array, int flag) {
+        QMUIBottomSheet.BottomListSheetBuilder bottomListSheetBuilder = new QMUIBottomSheet.BottomListSheetBuilder(this);
+        for (String s : array) {
+            bottomListSheetBuilder.addItem(s != null ? s : "未知");
+        }
+
+        bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+            dialog.dismiss();
+            switch (flag) {
+                case 1:
+                    status = position;
+                    tvResult7.setText(tag);
+                    break;
+                case 2:
+                    tech_statu = position;
+                    tvResult9.setText(tag);
+                    break;
+                case 3:
+                    categoryId = position;
+//                    tvResult10.setText(tag);
+                    break;
+            }
+        })
+                .build()
+                .show();
     }
 }

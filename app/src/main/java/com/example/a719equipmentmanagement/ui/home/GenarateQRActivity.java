@@ -432,46 +432,48 @@ public class GenarateQRActivity extends BaseActivity {
      * 发送标签
      */
     void sendLabel() {
-        for (int i = 0; i < ids.size(); i++) {
-            LabelCommand tsc = new LabelCommand();
-            /* 设置标签尺寸，按照实际尺寸设置 */
-            tsc.addSize(30, 30);
-            /* 设置标签间隙，按照实际尺寸设置，如果为无间隙纸则设置为0 */
-            tsc.addGap(3);
-            /* 设置打印方向 */
-            tsc.addDirection(LabelCommand.DIRECTION.FORWARD, LabelCommand.MIRROR.NORMAL);
-            /* 开启带Response的打印，用于连续打印 */
-            tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
-            /* 设置原点坐标 */
-            tsc.addReference(0, 0);
-            /* 撕纸模式开启 */
-            tsc.addTear(EscCommand.ENABLE.ON);
-            /* 清除打印缓冲区 */
-            tsc.addCls();
-            /* 绘制简体中文 */
+        if (ids != null && ids.size() > 0 && stringNameList != null && stringNameList.size() > 0 && ids.size() == stringNameList.size()) {
+            for (int i = 0; i < ids.size(); i++) {
+                LabelCommand tsc = new LabelCommand();
+                /* 设置标签尺寸，按照实际尺寸设置 */
+                tsc.addSize(30, 30);
+                /* 设置标签间隙，按照实际尺寸设置，如果为无间隙纸则设置为0 */
+                tsc.addGap(3);
+                /* 设置打印方向 */
+                tsc.addDirection(LabelCommand.DIRECTION.FORWARD, LabelCommand.MIRROR.NORMAL);
+                /* 开启带Response的打印，用于连续打印 */
+                tsc.addQueryPrinterStatus(LabelCommand.RESPONSE_MODE.ON);
+                /* 设置原点坐标 */
+                tsc.addReference(0, 0);
+                /* 撕纸模式开启 */
+                tsc.addTear(EscCommand.ENABLE.ON);
+                /* 清除打印缓冲区 */
+                tsc.addCls();
+                /* 绘制简体中文 */
 
-            /* 绘制图片 */
+                /* 绘制图片 */
 //        Drawable drawable = imageView.getDrawable();
 //        Bitmap b = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
 //        Bitmap b = BitmapFactory.decodeResource(getResources(), drawable);
 //        tsc.addBitmap(0, 0, LabelCommand.BITMAP_MODE.OVERWRITE, 150, b);
-            tsc.addQRCode(40, 25, LabelCommand.EEC.LEVEL_H, 8, LabelCommand.ROTATION.ROTATION_0, ids.get(i));
+                tsc.addQRCode(35, 25, LabelCommand.EEC.LEVEL_H, 8, LabelCommand.ROTATION.ROTATION_0, ids.get(i));
 
-            tsc.addText(80, 200, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1, stringNameList.get(i));
-            /* 绘制一维条码 */
+                tsc.addText(82, 200, LabelCommand.FONTTYPE.SIMPLIFIED_CHINESE, LabelCommand.ROTATION.ROTATION_0, LabelCommand.FONTMUL.MUL_1, LabelCommand.FONTMUL.MUL_1, stringNameList.get(i));
+                /* 绘制一维条码 */
 //        tsc.add1DBarcode(10, 450, LabelCommand.BARCODETYPE.CODE128, 100, LabelCommand.READABEL.EANBEL, LabelCommand.ROTATION.ROTATION_0, "SMARNET");
-            /* 打印标签 */
-            tsc.addPrint(1, 1);
-            /* 打印标签后 蜂鸣器响 */
+                /* 打印标签 */
+                tsc.addPrint(1, 1);
+                /* 打印标签后 蜂鸣器响 */
 
-            tsc.addSound(2, 100);
-            tsc.addCashdrwer(LabelCommand.FOOT.F5, 255, 255);
-            Vector<Byte> datas = tsc.getCommand();
-            /* 发送数据 */
-            if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] == null) {
-                return;
+                tsc.addSound(2, 100);
+                tsc.addCashdrwer(LabelCommand.FOOT.F5, 255, 255);
+                Vector<Byte> datas = tsc.getCommand();
+                /* 发送数据 */
+                if (DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id] == null) {
+                    return;
+                }
+                DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
             }
-            DeviceConnFactoryManager.getDeviceConnFactoryManagers()[id].sendDataImmediately(datas);
         }
     }
 

@@ -92,8 +92,8 @@ public class AccountingActivity extends BaseActivity {
     EditText edittext8;
     @BindView(R.id.tv_result9)
     TextView tvResult9;
-    @BindView(R.id.tv_result10)
-    TextView tvResult10;
+//    @BindView(R.id.tv_result10)
+//    TextView tvResult10;
     @BindView(R.id.edittext11)
     EditText edittext11;
     @BindView(R.id.tv_result12)
@@ -125,9 +125,7 @@ public class AccountingActivity extends BaseActivity {
     private int categoryId;
     private int deptId;
     private int status;
-    private Calendar calendar = Calendar.getInstance(Locale.CHINA);
     private int tech_statu;
-//    private Integer id;
 
 
     @Override
@@ -136,29 +134,17 @@ public class AccountingActivity extends BaseActivity {
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case DATE_ONE:
-                    String date = TimeUtils.date2String(calendar.getTime());
+                    String date = TimeUtils.date2String(dateFormat);
                     tvResult12.setText(date);
-//                    tvResult12.setText(dateFormat.format(calendar.getTime()));
                     break;
                 case DATE_TWO:
-                    String date1 = TimeUtils.date2String(calendar.getTime());
+                    String date1 = TimeUtils.date2String(dateFormat);
                     tvResult13.setText(date1);
                     break;
             }
         });
-//        initData();
     }
 
-//    private void initData() {
-//        RetrofitClient.getInstance().getService().getNextId()
-//                .compose(CommonCompose.io2main(this))
-//                .subscribe(new BaseSubscriber<Integer>(AccountingActivity.this) {
-//                    @Override
-//                    public void onSuccess(Integer integer) {
-//                        id = integer;
-//                    }
-//                });
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -209,7 +195,7 @@ public class AccountingActivity extends BaseActivity {
                     break;
                 case 3:
                     categoryId = position;
-                    tvResult10.setText(tag);
+//                    tvResult10.setText(tag);
                     break;
             }
         })
@@ -231,9 +217,13 @@ public class AccountingActivity extends BaseActivity {
     private void accounting() {
         String name = edittext.getText().toString();
         String equipNo = edittext2.getText().toString();
+        String dept = tvResult3.getText().toString();
         String parameter = edittext4.getText().toString();
+        String location = tvResult5.getText().toString();
         String manufactuer = edittext6.getText().toString();
+        String equipStatus = tvResult7.getText().toString();
         String responsor = edittext8.getText().toString();
+        String techStatus = tvResult9.getText().toString();
         String verifyPeriod = edittext11.getText().toString();
         String latestVerifyDate = tvResult12.getText().toString();
         String validDate = tvResult13.getText().toString();
@@ -241,21 +231,36 @@ public class AccountingActivity extends BaseActivity {
             ToastUtils.showShort("设备名称不能为空");
             return;
         }
-
         if (StringUtils.isEmpty(equipNo)) {
             ToastUtils.showShort("设备编号不能为空");
             return;
         }
+        if (StringUtils.isEmpty(dept)) {
+            ToastUtils.showShort("归属部门不能为空");
+            return;
+        }
         if (StringUtils.isEmpty(parameter)) {
-            ToastUtils.showShort("设备指标不能为空");
+            ToastUtils.showShort("技术参数不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(location)) {
+            ToastUtils.showShort("所在位置不能为空");
             return;
         }
         if (StringUtils.isEmpty(manufactuer)) {
             ToastUtils.showShort("厂家不能为空");
             return;
         }
+        if (StringUtils.isEmpty(equipStatus)) {
+            ToastUtils.showShort("仪器状态不能为空");
+            return;
+        }
         if (StringUtils.isEmpty(responsor)) {
-            ToastUtils.showShort("责任人不能为空");
+            ToastUtils.showShort("负责人不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(techStatus)) {
+            ToastUtils.showShort("技术状态不能为空");
             return;
         }
         if (StringUtils.isEmpty(verifyPeriod)) {
@@ -273,7 +278,6 @@ public class AccountingActivity extends BaseActivity {
 
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();
-//        jsonArray.put(jsonObject);
         try {
             jsonObject.put("equip", jsonObject1);
             jsonObject1.put("name", name);
@@ -309,7 +313,7 @@ public class AccountingActivity extends BaseActivity {
     }
 
     @OnClick({R.id.constraint1, R.id.constraint3, R.id.constraint5, R.id.constraint7,
-            R.id.constraint9, R.id.constraint10, R.id.constraint12, R.id.constraint13})
+            R.id.constraint9,  R.id.constraint12, R.id.constraint13})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.constraint1:
@@ -327,9 +331,9 @@ public class AccountingActivity extends BaseActivity {
             case R.id.constraint9:
                 showSimpleBottomSheetList(technical_status, 2);
                 break;
-            case R.id.constraint10:
-                showSimpleBottomSheetList(classification, 3);
-                break;
+//            case R.id.constraint10:
+//                showSimpleBottomSheetList(classification, 3);
+//                break;
             case R.id.constraint12:
                 AboriginalDateSelect.getInstance().showDateTime(this, DATE_ONE);
                 break;

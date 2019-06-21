@@ -8,11 +8,11 @@ import android.widget.TimePicker;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class AboriginalDateSelect {
-    private DateFormat dateFormat = DateFormat.getDateTimeInstance();
-    private Calendar calendar = Calendar.getInstance(Locale.CHINA);
+    private Calendar calendar = Calendar.getInstance();
     private static AboriginalDateSelect aboriginalTimeSelect;
 
     public static AboriginalDateSelect getInstance() {
@@ -23,23 +23,17 @@ public class AboriginalDateSelect {
     }
 
     public void showDateTime(Context context, final int position) {
-        final TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-            @Override
-            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                calendar.set(Calendar.MINUTE, minute);
-                listener.setValue(position,dateFormat);
-            }
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context, (view, hourOfDay, minute) -> {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            listener.setValue(position, calendar.getTime());
         }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
-        DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context, (view, year, month, dayOfMonth) -> {
 
-                calendar.set(Calendar.MONTH, year);
-                calendar.set(Calendar.MONTH, month);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                timePickerDialog.show();
-            }
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            timePickerDialog.show();
         }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
@@ -53,7 +47,7 @@ public class AboriginalDateSelect {
     private SelectDateListener listener;
 
     public interface SelectDateListener {
-        void setValue(int position, DateFormat dateFormat);
+        void setValue(int position, Date date);
     }
 
 

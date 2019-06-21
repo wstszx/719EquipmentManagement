@@ -14,6 +14,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import butterknife.BindView;
 
 public class MainActivity extends BaseActivity {
@@ -47,9 +49,10 @@ public class MainActivity extends BaseActivity {
     private Fragment mineFragment;
     private Fragment deviceFragment;
     private Fragment currentFragment;
+    private FragmentTransaction beginTransaction;
 
     private void initFragment(Bundle savedInstanceState) {
-//        FragmentTransaction beginTransaction = getSupportFragmentManager().beginTransaction();
+//        beginTransaction = getSupportFragmentManager().beginTransaction();
         if (savedInstanceState != null) {
             homeFragment = getSupportFragmentManager().getFragment(savedInstanceState, HomeFragment.class.getSimpleName());
             deviceFragment = getSupportFragmentManager().getFragment(savedInstanceState, DeviceFragment.class.getSimpleName());
@@ -62,7 +65,7 @@ public class MainActivity extends BaseActivity {
         }
         currentFragment = homeFragment;
         //默认显示第一个页面
-            getSupportFragmentManager().beginTransaction().add(R.id.framelayout, homeFragment, "homeFragment").commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.framelayout, homeFragment, "homeFragment").commit();
 
     }
 

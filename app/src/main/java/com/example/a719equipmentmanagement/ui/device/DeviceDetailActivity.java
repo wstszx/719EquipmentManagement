@@ -86,7 +86,6 @@ public class DeviceDetailActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
     private List<String> opers;
-    private Calendar calendar = Calendar.getInstance(Locale.CHINA);
     private ReturnInspectionDialog returnInspectionDialog;
     private String date;
     private String date1;
@@ -352,11 +351,11 @@ public class DeviceDetailActivity extends BaseActivity {
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case VALID_DATA:
-                    date = TimeUtils.date2String(calendar.getTime());
+                    date = TimeUtils.date2String(dateFormat);
                     returnInspectionDialog.getEditText().setText(date);
                     break;
                 case LAST_DATA:
-                    date1 = TimeUtils.date2String(calendar.getTime());
+                    date1 = TimeUtils.date2String(dateFormat);
                     returnInspectionDialog.getEditText1().setText(date1);
                     break;
             }

@@ -289,12 +289,6 @@ public class DeviceDetailFragment extends BaseFragment {
         }
     }
 
-    /**
-     * 保存盘点
-     */
-    private void saveInventory() {
-
-    }
 
     /**
      * 完成盘点

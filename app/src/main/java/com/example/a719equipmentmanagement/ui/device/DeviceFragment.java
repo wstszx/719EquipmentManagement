@@ -1,41 +1,30 @@
 package com.example.a719equipmentmanagement.ui.device;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 
 import com.blankj.utilcode.util.ThreadUtils;
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.BaseFilterAdapter;
-import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
 import com.example.a719equipmentmanagement.entity.BaseSingleFilter;
 import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.DeviceClassifiy;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
-import com.example.a719equipmentmanagement.entity.PersonOne;
-import com.example.a719equipmentmanagement.entity.PersonTwo;
-import com.example.a719equipmentmanagement.entity.TreeData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
-import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.view.DropDownMenu;
 import com.qmuiteam.qmui.widget.QMUITopBar;
-import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -55,31 +44,15 @@ public class DeviceFragment extends BaseFragment {
     ConstraintLayout constrainlayout;
     @BindView(R.id.dropDownMenu)
     DropDownMenu dropDownMenu;
+    @BindView(R.id.topbar)
+    QMUITopBar topbar;
+
     private String[] filterArray = {"科室分类", "设备分类", "状态"};
     private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
 
-    //    private List<Integer> deptOption=new ArrayList();//科室类别
-    private List<BaseSingleFilter> deptId = new ArrayList<>();
-    private List categoryOption = new ArrayList();//设备类别
-    private List statusOption = new ArrayList();//状态类别
-
-    @BindView(R.id.topbar)
-    QMUITopBar topbar;
     private List<BaseSingleFilter> filters = new ArrayList<>();
-
     private DeviceAdapter adapter;
-    private int rowCount;
-    private DeptManageAdapter adapter1;
-    List<MultiItemEntity> list = new ArrayList<>();
-    private QMUIListPopup mListPopup;
-    private List<BaseSingleFilter> deptOnes;
-    private List<BaseSingleFilter> deptTwos;
-    private List<BaseSingleFilter> deptThrees;
     private BaseFilterAdapter adapter11;
-    private BaseFilterAdapter adapter12;
-    private BaseFilterAdapter adapter13;
-    private List<BaseSingleFilter> deptOnes_classify;
-    private List<BaseSingleFilter> deptTwos_classify;
     private BaseFilterAdapter adapter21;
     private BaseFilterAdapter adapter22;
     private Map<String, Object> map = new HashMap<>();
@@ -91,7 +64,6 @@ public class DeviceFragment extends BaseFragment {
         }
         return fragment;
     }
-
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -132,6 +104,8 @@ public class DeviceFragment extends BaseFragment {
                             rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
+                            } else {
+                                adapter.setEmptyView(R.layout.empty);
                             }
                         }
                         if (deptLists != null && deptLists.size() > 0) {
@@ -154,7 +128,7 @@ public class DeviceFragment extends BaseFragment {
     private void initView() {
         List<View> popupViews = new ArrayList<>();
 
-//        三列表
+//        单列表
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
         recyclerView11.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
@@ -164,15 +138,14 @@ public class DeviceFragment extends BaseFragment {
             if (position == adapter11.getData().size() - 1) {
                 map.remove("deptIds");
                 dropDownMenu.setTabText(filterArray[0]);
-                dropDownMenu.closeMenu();
-                getDeviceData(map);
+//                dropDownMenu.closeMenu();
+//                getDeviceData(map);
             } else {
                 BaseSingleFilter baseSingleFilter1 = adapter11.getData().get(position);
                 String name = baseSingleFilter1.getName();
                 int deptId = baseSingleFilter1.getId();
                 map.put("deptIds", deptId);
                 dropDownMenu.setTabText(name);
-
             }
             dropDownMenu.closeMenu();
             getDeviceData(map);
@@ -251,8 +224,6 @@ public class DeviceFragment extends BaseFragment {
             int deviceId = currentItemData.getId();
             DeviceDetailActivity2.start(getContext(), deviceId + "");
         });
-
-
         dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
     }
 
@@ -320,9 +291,6 @@ public class DeviceFragment extends BaseFragment {
         filterKey2.setName("不限");
         keyList.add(filterKey2);
         deviceClassifiysMap.put(filterKey2, new ArrayList<>());
-//        Set<BaseSingleFilter> baseSingleFiltersSet = deviceClassifiysMap.keySet();
-//        ArrayList<BaseSingleFilter> baseSingleFilters1 = new ArrayList<>(baseSingleFiltersSet);
-//        Collections.reverse(baseSingleFilters1);
         adapter21.setNewData(keyList);
     }
 

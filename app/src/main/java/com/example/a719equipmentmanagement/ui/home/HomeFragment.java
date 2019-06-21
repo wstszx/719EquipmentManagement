@@ -239,16 +239,6 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
-//    private void setMenu() {
-//        if (isManager) {
-//
-//        }
-//    }
-
-//    private Single<Object> convertRequest() {
-//
-//    }
-
     private void initView() {
         topbar.setTitle("首页");
 
