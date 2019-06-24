@@ -92,7 +92,7 @@ public class AccountingActivity extends BaseActivity {
     EditText edittext8;
     @BindView(R.id.tv_result9)
     TextView tvResult9;
-//    @BindView(R.id.tv_result10)
+    //    @BindView(R.id.tv_result10)
 //    TextView tvResult10;
     @BindView(R.id.edittext11)
     EditText edittext11;
@@ -282,7 +282,7 @@ public class AccountingActivity extends BaseActivity {
             jsonObject.put("equip", jsonObject1);
             jsonObject1.put("name", name);
             jsonObject1.put("categoryId", categoryId);
-            jsonObject1.put("equipNo", equipNo);
+            jsonObject1.put("sn", equipNo);
             jsonObject1.put("deptId", deptId);
             jsonObject1.put("parameter", parameter);
             jsonObject1.put("locationId", locationId);
@@ -313,7 +313,7 @@ public class AccountingActivity extends BaseActivity {
     }
 
     @OnClick({R.id.constraint1, R.id.constraint3, R.id.constraint5, R.id.constraint7,
-            R.id.constraint9,  R.id.constraint12, R.id.constraint13})
+            R.id.constraint9, R.id.constraint12, R.id.constraint13})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.constraint1:

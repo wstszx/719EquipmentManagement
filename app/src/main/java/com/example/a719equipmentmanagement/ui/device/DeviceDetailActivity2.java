@@ -1,9 +1,5 @@
 package com.example.a719equipmentmanagement.ui.device;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +8,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
@@ -26,11 +24,9 @@ import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.ui.home.AccountingActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceContainerActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity;
-import com.example.a719equipmentmanagement.ui.home.EditDeptActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -42,10 +38,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,23 +85,26 @@ public class DeviceDetailActivity2 extends BaseActivity {
     TextView tvTitle6;
     @BindView(R.id.constraint6)
     ConstraintLayout constraint6;
+    @BindView(R.id.constraint7)
+    ConstraintLayout constraint7;
     @BindView(R.id.tv_title7)
     TextView tvTitle7;
     @BindView(R.id.edittext8)
     EditText edittext8;
     @BindView(R.id.tv_result9)
     TextView tvResult9;
-    //    @BindView(R.id.tv_result10)
-//    TextView tvResult10;
     @BindView(R.id.edittext11)
     EditText edittext11;
     @BindView(R.id.tv_result12)
     TextView tvResult12;
     @BindView(R.id.tv_result13)
     TextView tvResult13;
-    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
-    private String[] classification = {"A", "B", "C"};
-    private String[] technical_status = {"合格", "不合格"};
+    @BindView(R.id.constraint9)
+    ConstraintLayout constraint9;
+    @BindView(R.id.constraint12)
+    ConstraintLayout constraint12;
+    @BindView(R.id.constraint13)
+    ConstraintLayout constraint13;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     @BindView(R.id.edittext)
@@ -126,6 +123,18 @@ public class DeviceDetailActivity2 extends BaseActivity {
     EditText edittext6;
     @BindView(R.id.tv_result7)
     TextView tvResult7;
+    @BindView(R.id.tv_title8)
+    TextView tvTitle8;
+    @BindView(R.id.tv_title9)
+    TextView tvTitle9;
+    @BindView(R.id.tv_title11)
+    TextView tvTitle11;
+    @BindView(R.id.tv_title12)
+    TextView tvTitle12;
+    @BindView(R.id.tv_title13)
+    TextView tvTitle13;
+    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
+    private String[] technical_status = {"合格", "不合格"};
     private static final int DEVICE_TYPE = 1;
     private static final int DEPT_TYPE = 2;
     private static final int CONTAINER_TYPE = 3;
@@ -171,14 +180,51 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initView() {
-        if (!isManager) {
-            edittext.setFocusable(false);
-            edittext2.setFocusable(false);
-            edittext4.setFocusable(false);
-            edittext6.setFocusable(false);
-            edittext8.setFocusable(false);
-            edittext11.setFocusable(false);
-        }
+        tvTitle.setEnabled(false);
+        tvTitle1.setEnabled(false);
+        tvTitle2.setEnabled(false);
+        tvTitle3.setEnabled(false);
+        tvTitle4.setEnabled(false);
+        tvTitle5.setEnabled(false);
+        tvTitle6.setEnabled(false);
+        tvTitle7.setEnabled(false);
+        tvTitle8.setEnabled(false);
+        tvTitle9.setEnabled(false);
+        tvTitle11.setEnabled(false);
+        tvTitle12.setEnabled(false);
+        tvTitle13.setEnabled(false);
+
+        edittext.setFocusable(false);
+        tvResult1.setEnabled(false);
+        edittext2.setFocusable(false);
+        tvResult3.setEnabled(false);
+        edittext4.setFocusable(false);
+        tvResult5.setEnabled(false);
+        edittext6.setFocusable(false);
+        tvResult7.setEnabled(false);
+        edittext8.setFocusable(false);
+        tvResult9.setEnabled(false);
+        edittext11.setFocusable(false);
+        tvResult12.setEnabled(false);
+        tvResult13.setEnabled(false);
+        edittext.setEnabled(false);
+        edittext2.setEnabled(false);
+        edittext4.setEnabled(false);
+        edittext6.setEnabled(false);
+        edittext8.setEnabled(false);
+        edittext11.setEnabled(false);
+        constraint.setEnabled(false);
+        constraint1.setEnabled(false);
+        constraint2.setEnabled(false);
+        constraint3.setEnabled(false);
+        constraint4.setEnabled(false);
+        constraint5.setEnabled(false);
+        constraint6.setEnabled(false);
+        constraint7.setEnabled(false);
+        constraint9.setEnabled(false);
+        constraint12.setEnabled(false);
+        constraint13.setEnabled(false);
+
     }
 
     @Override
@@ -186,9 +232,9 @@ public class DeviceDetailActivity2 extends BaseActivity {
         return R.layout.activity_device_detail2;
     }
 
-    public static void start(Context context, String id) {
+    public static void start(Context context, String deviceId) {
         Intent starter = new Intent(context, DeviceDetailActivity2.class);
-        starter.putExtra("id", id);
+        starter.putExtra("deviceId", deviceId);
         context.startActivity(starter);
     }
 
@@ -199,9 +245,9 @@ public class DeviceDetailActivity2 extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-        if (isManager) {
-            topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> updateDevice());
-        }
+//        if (isManager) {
+//            topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> updateDevice());
+//        }
     }
 
     private void updateDevice() {
@@ -269,7 +315,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
         try {
             jsonObject.put("name", name);
             jsonObject.put("categoryId", categoryId);
-            jsonObject.put("equipNo", equipNo);
+            jsonObject.put("sn", equipNo);
             jsonObject.put("deptId", deptId);
             jsonObject.put("parameter", parameter);
             jsonObject.put("locationId", locationId);
@@ -330,9 +376,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
 
     private void initData() {
         Intent intent = getIntent();
-        String id = intent.getStringExtra("id");
-        getDetail(id);
-        deviceId = Integer.parseInt(id);
+        String deviceId = intent.getStringExtra("deviceId");
+        getDetail(deviceId);
     }
 
     private void getDetail(String id) {
@@ -366,10 +411,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
         status = data.getStatus();
         opers = data.getOpers();
         switch (techState) {
-            case 1:
+            case 0:
                 techStateStr = "合格";
                 break;
-            case 2:
+            case 1:
                 techStateStr = "不合格";
                 break;
         }
@@ -409,7 +454,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 break;
         }
         if (opers != null && opers.size() > 0) {
-            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+            topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
                 initListPopupIfNeed();
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -419,6 +464,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
         edittext.setText(deptName);
         edittext2.setText(equipNo);
         edittext4.setText(parameter);
+        tvResult5.setText(locationName);
         edittext6.setText(manufactuer);
         tvResult7.setText(deviceStatus);
         edittext8.setText(responsor);
@@ -529,11 +575,17 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     break;
                 case 3:
                     categoryId = position;
-//                    tvResult10.setText(tag);
                     break;
             }
         })
                 .build()
                 .show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

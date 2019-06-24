@@ -9,10 +9,13 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.TimeUtils;
@@ -54,24 +57,90 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private static final int VALID_DATA = 1;
     private static final int LAST_DATA = 2;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.constraint)
+    ConstraintLayout constraint;
+    @BindView(R.id.tv_title1)
+    TextView tvTitle1;
+    @BindView(R.id.imageView1)
+    ImageView imageView1;
+    @BindView(R.id.constraint1)
+    ConstraintLayout constraint1;
+    @BindView(R.id.tv_title2)
+    TextView tvTitle2;
+    @BindView(R.id.constraint2)
+    ConstraintLayout constraint2;
+    @BindView(R.id.tv_title3)
+    TextView tvTitle3;
+    @BindView(R.id.imageView3)
+    ImageView imageView3;
+    @BindView(R.id.constraint3)
+    ConstraintLayout constraint3;
+    @BindView(R.id.tv_title4)
+    TextView tvTitle4;
+    @BindView(R.id.constraint4)
+    ConstraintLayout constraint4;
+    @BindView(R.id.tv_title5)
+    TextView tvTitle5;
+    @BindView(R.id.imageView5)
+    ImageView imageView5;
+    @BindView(R.id.constraint5)
+    ConstraintLayout constraint5;
+    @BindView(R.id.tv_title6)
+    TextView tvTitle6;
+    @BindView(R.id.constraint6)
+    ConstraintLayout constraint6;
+    @BindView(R.id.constraint7)
+    ConstraintLayout constraint7;
+    @BindView(R.id.tv_title7)
+    TextView tvTitle7;
+    @BindView(R.id.edittext8)
+    EditText edittext8;
+    @BindView(R.id.tv_result9)
+    TextView tvResult9;
+    @BindView(R.id.edittext11)
+    EditText edittext11;
+    @BindView(R.id.tv_result12)
+    TextView tvResult12;
+    @BindView(R.id.tv_result13)
+    TextView tvResult13;
+    @BindView(R.id.constraint9)
+    ConstraintLayout constraint9;
+    @BindView(R.id.constraint12)
+    ConstraintLayout constraint12;
+    @BindView(R.id.constraint13)
+    ConstraintLayout constraint13;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-
-    @BindView(R.id.groupListView)
-    QMUIGroupListView groupListView;
-
-    private QMUICommonListItemView listItemView;
-    private QMUICommonListItemView item0;
-    private QMUICommonListItemView item1;
-    private QMUICommonListItemView item2;
-    private QMUICommonListItemView item3;
-    private QMUICommonListItemView item4;
-    private QMUICommonListItemView item5;
-    private QMUICommonListItemView item6;
-    private QMUICommonListItemView item7;
+    @BindView(R.id.edittext)
+    EditText edittext;
+    @BindView(R.id.tv_result1)
+    TextView tvResult1;
+    @BindView(R.id.edittext2)
+    EditText edittext2;
+    @BindView(R.id.tv_result3)
+    TextView tvResult3;
+    @BindView(R.id.edittext4)
+    EditText edittext4;
+    @BindView(R.id.tv_result5)
+    TextView tvResult5;
+    @BindView(R.id.edittext6)
+    EditText edittext6;
+    @BindView(R.id.tv_result7)
+    TextView tvResult7;
+    @BindView(R.id.tv_title8)
+    TextView tvTitle8;
+    @BindView(R.id.tv_title9)
+    TextView tvTitle9;
+    @BindView(R.id.tv_title11)
+    TextView tvTitle11;
+    @BindView(R.id.tv_title12)
+    TextView tvTitle12;
+    @BindView(R.id.tv_title13)
+    TextView tvTitle13;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
-    private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
     private String name;
     private String parameter;
     private String manufactuer;
@@ -80,7 +149,6 @@ public class DeviceDetailActivity extends BaseActivity {
     private String locationName;
     private String deviceStatus;
 
-    private int mStyle = R.style.QMUI_Dialog;
     private int status;
     private int equipId;
     private ArrayAdapter<String> adapter;
@@ -91,6 +159,7 @@ public class DeviceDetailActivity extends BaseActivity {
     private String date1;
     private AuditDialog auditDialog;
     private int userId;
+    private String techStateStr;
 
 
     @Override
@@ -103,6 +172,50 @@ public class DeviceDetailActivity extends BaseActivity {
     private void initView() {
         returnInspectionDialog = new ReturnInspectionDialog(this);
         auditDialog = new AuditDialog(this);
+        tvTitle.setEnabled(false);
+        tvTitle1.setEnabled(false);
+        tvTitle2.setEnabled(false);
+        tvTitle3.setEnabled(false);
+        tvTitle4.setEnabled(false);
+        tvTitle5.setEnabled(false);
+        tvTitle6.setEnabled(false);
+        tvTitle7.setEnabled(false);
+        tvTitle8.setEnabled(false);
+        tvTitle9.setEnabled(false);
+        tvTitle11.setEnabled(false);
+        tvTitle12.setEnabled(false);
+        tvTitle13.setEnabled(false);
+
+        edittext.setFocusable(false);
+        tvResult1.setEnabled(false);
+        edittext2.setFocusable(false);
+        tvResult3.setEnabled(false);
+        edittext4.setFocusable(false);
+        tvResult5.setEnabled(false);
+        edittext6.setFocusable(false);
+        tvResult7.setEnabled(false);
+        edittext8.setFocusable(false);
+        tvResult9.setEnabled(false);
+        edittext11.setFocusable(false);
+        tvResult12.setEnabled(false);
+        tvResult13.setEnabled(false);
+        edittext.setEnabled(false);
+        edittext2.setEnabled(false);
+        edittext4.setEnabled(false);
+        edittext6.setEnabled(false);
+        edittext8.setEnabled(false);
+        edittext11.setEnabled(false);
+        constraint.setEnabled(false);
+        constraint1.setEnabled(false);
+        constraint2.setEnabled(false);
+        constraint3.setEnabled(false);
+        constraint4.setEnabled(false);
+        constraint5.setEnabled(false);
+        constraint6.setEnabled(false);
+        constraint7.setEnabled(false);
+        constraint9.setEnabled(false);
+        constraint12.setEnabled(false);
+        constraint13.setEnabled(false);
     }
 
     private void initData() {
@@ -181,7 +294,7 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     private void setMenu() {
-        topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+        topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
             initListPopupIfNeed(opers);
             mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
             mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
@@ -192,14 +305,27 @@ public class DeviceDetailActivity extends BaseActivity {
     private void setData(DeviceScanData.DataBean dataBean) {
         DeviceScanData.DataBean.DeptBean dept = dataBean.getDept();
         DeviceScanData.DataBean.LocationBean location = dataBean.getLocation();
+        String equipNo = dataBean.getEquipNo();
+        int techState = dataBean.getTechState();
         equipId = dataBean.getId();
         name = dataBean.getName();
+        int verifyPeriod = dataBean.getVerifyPeriod();
+        String latestVerifyDate = dataBean.getLatestVerifyDate();
+        String validDate = dataBean.getValidDate();
         parameter = dataBean.getParameter();
         manufactuer = dataBean.getManufactuer();
         responsor = dataBean.getResponsor();
         deptName = dept == null ? "无部门信息" : dept.getDeptName();
         locationName = location == null ? "无位置信息" : location.getName();
         status = dataBean.getStatus();
+        switch (techState) {
+            case 0:
+                techStateStr = "合格";
+                break;
+            case 1:
+                techStateStr = "不合格";
+                break;
+        }
         switch (status) {
             case 0:
                 deviceStatus = "可用";
@@ -235,8 +361,17 @@ public class DeviceDetailActivity extends BaseActivity {
                 deviceStatus = "无状态信息";
                 break;
         }
-        initGroupListView();
-
+        edittext.setText(deptName);
+        edittext2.setText(equipNo);
+        edittext4.setText(parameter);
+        tvResult5.setText(locationName);
+        edittext6.setText(manufactuer);
+        tvResult7.setText(deviceStatus);
+        edittext8.setText(responsor);
+        tvResult9.setText(techStateStr);
+        edittext11.setText(String.valueOf(verifyPeriod));
+        tvResult12.setText(latestVerifyDate);
+        tvResult13.setText(validDate);
     }
 
     private void initTopbar() {
@@ -245,20 +380,6 @@ public class DeviceDetailActivity extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-//        RetrofitClient.getInstance().getService().findDeviceData()
-//                .compose(CommonCompose.io2main(this))
-//                .subscribe(new BaseSubscriber<DeviceData2>(this) {
-//                    @Override
-//                    public void onSuccess(DeviceData2 deviceData) {
-//                        if (deviceData != null) {
-//                            List<DeviceData2.RowsBean> rows = deviceData.getRows();
-//                            if (rows != null && rows.size() > 0) {
-////                                adapter.setNewData(rows);
-//
-//                            }
-//                        }
-//                    }
-//                });
     }
 
     private void initListPopupIfNeed(List<String> listItems) {
@@ -362,80 +483,6 @@ public class DeviceDetailActivity extends BaseActivity {
         });
     }
 
-    private void initGroupListView() {
-        View.OnClickListener onClickListener = v -> {
-
-        };
-
-        View.OnClickListener onClickListener4 = v -> {
-            listItemView = (QMUICommonListItemView) v;
-        };
-        View.OnClickListener onClickListener5 = v -> {
-            listItemView = (QMUICommonListItemView) v;
-        };
-
-        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-
-        item0 = groupListView.createItemView(
-                null,
-                containerAttrs[0],
-                name,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item0.setTag(0);
-        section.addItemView(item0, onClickListener);
-        item1 = groupListView.createItemView(
-                null,
-                containerAttrs[1],
-                parameter,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item1.setTag(1);
-        section.addItemView(item1, onClickListener);
-        item2 = groupListView.createItemView(
-                null,
-                containerAttrs[2],
-                manufactuer,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item2.setTag(2);
-        section.addItemView(item2, onClickListener);
-        item3 = groupListView.createItemView(
-                null,
-                containerAttrs[3],
-                responsor,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item3.setTag(3);
-        section.addItemView(item3, onClickListener);
-        item4 = groupListView.createItemView(
-                null,
-                containerAttrs[4],
-                deptName,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item4.setTag(4);
-        section.addItemView(item4, onClickListener4);
-        item5 = groupListView.createItemView(
-                null,
-                containerAttrs[5],
-                locationName,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item5.setTag(5);
-        section.addItemView(item5, onClickListener5);
-        item6 = groupListView.createItemView(
-                null,
-                containerAttrs[6],
-                deviceStatus,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item6.setTag(6);
-        section.addItemView(item6, onClickListener);
-
-        section.addTo(groupListView);
-
-    }
 
     public static void start(Context context, String id) {
         Intent starter = new Intent(context, DeviceDetailActivity.class);
@@ -448,12 +495,7 @@ public class DeviceDetailActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            String text = data.getStringExtra("text");
-            TextView detailTextView = listItemView.getDetailTextView();
-            detailTextView.setSingleLine(true);
-            detailTextView.setMaxEms(8);
-            detailTextView.setEllipsize(TextUtils.TruncateAt.END);
-            detailTextView.setText(text);
+
         }
     }
 
@@ -474,7 +516,6 @@ public class DeviceDetailActivity extends BaseActivity {
         map.put("equipId", equipId);
         map.put("operType", operType);
         map.put("msg", "");
-//        map.put("operState", operState);
         map.put("dealer", responsor);
         if (operType == 6) {
             map.put("validDate", date);
@@ -513,8 +554,6 @@ public class DeviceDetailActivity extends BaseActivity {
         map.put("msg", msg);
         map.put("operState", operState);
         map.put("dealer", userId);
-//        map.put("validDate", date);
-//        map.put("latestVerifyDate", date1);
         RetrofitClient.getInstance().getService().operatingEquip(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -587,13 +626,10 @@ public class DeviceDetailActivity extends BaseActivity {
             final int checkedIndex = 1;
             new QMUIDialog.CheckableDialogBuilder(this)
                     .setCheckedIndex(checkedIndex)
-                    .addItems(strings, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            userId = userBeanList.get(which).getUserId();
-                            auditDialog.getEditText().setText(strings[which]);
-                            dialog.dismiss();
-                        }
+                    .addItems(strings, (dialog, which) -> {
+                        userId = userBeanList.get(which).getUserId();
+                        auditDialog.getEditText().setText(strings[which]);
+                        dialog.dismiss();
                     })
                     .create(mCurrentDialogStyle).show();
         }

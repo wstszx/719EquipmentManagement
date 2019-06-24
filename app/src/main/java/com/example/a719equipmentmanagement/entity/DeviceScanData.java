@@ -90,7 +90,7 @@ public class DeviceScanData {
         private int techState;
         private String responsor;
         private int verifyPeriod;
-        private Object latestVerifyDate;
+        private String latestVerifyDate;
         private String validDate;
         private int status;
         private int delFlag;
@@ -258,11 +258,11 @@ public class DeviceScanData {
             this.verifyPeriod = verifyPeriod;
         }
 
-        public Object getLatestVerifyDate() {
-            return latestVerifyDate;
+        public String getLatestVerifyDate() {
+            return latestVerifyDate == null ? "" : latestVerifyDate;
         }
 
-        public void setLatestVerifyDate(Object latestVerifyDate) {
+        public void setLatestVerifyDate(String latestVerifyDate) {
             this.latestVerifyDate = latestVerifyDate;
         }
 

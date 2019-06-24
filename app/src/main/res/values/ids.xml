@@ -48,4 +48,5 @@
     <item name="connect" type="id"/>
     <item name="view" type="id"/>
     <item name="continues" type="id"/>
+    <item name="menu" type="id"/>
 </resources>

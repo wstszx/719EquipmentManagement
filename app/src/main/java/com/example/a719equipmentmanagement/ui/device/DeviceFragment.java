@@ -1,6 +1,7 @@
 package com.example.a719equipmentmanagement.ui.device;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -37,8 +39,11 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.app.Activity.RESULT_OK;
+
 public class DeviceFragment extends BaseFragment {
 
+    private static final int DEVICE_DETAIL = 1;
     private static DeviceFragment fragment;
     @BindView(R.id.constrainlayout)
     ConstraintLayout constrainlayout;
@@ -222,9 +227,25 @@ public class DeviceFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = rows.get(position);
             int deviceId = currentItemData.getId();
-            DeviceDetailActivity2.start(getContext(), deviceId + "");
+            Intent intent = new Intent();
+            intent.putExtra("deviceId", String.valueOf(deviceId));
+            intent.setClass(getContext(), DeviceDetailActivity2.class);
+            startActivityForResult(intent, DEVICE_DETAIL);
+//            DeviceDetailActivity2.start(getContext(), String.valueOf(deviceId));
         });
         dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode ) {
+                case DEVICE_DETAIL:
+                    getDeviceData(new HashMap<>());
+                    break;
+            }
+        }
     }
 
     private void getDeviceData(Map<String, Object> map) {
