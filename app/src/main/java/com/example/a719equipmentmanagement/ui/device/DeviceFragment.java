@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.BaseFilterAdapter;
 import com.example.a719equipmentmanagement.adapter.DeviceAdapter;
@@ -19,6 +23,9 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.view.DropDownMenu;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -217,32 +225,49 @@ public class DeviceFragment extends BaseFragment {
         popupViews.add(view2);
         popupViews.add(recyclerView4);
 
-        RecyclerView recyclerview5 = new RecyclerView(Objects.requireNonNull(getContext()));
+        RecyclerView recyclerview5 = new RecyclerView(getContext());
         recyclerview5.setBackgroundColor(Color.WHITE);
-        recyclerview5.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
-        recyclerview5.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
+        recyclerview5.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        SmartRefreshLayout refreshLayout = new SmartRefreshLayout(getContext());
+        refreshLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        refreshLayout.addView(recyclerview5);
+        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                LogUtils.i("我在调用下拉");
+            }
+        });
 
         adapter = new DeviceAdapter(R.layout.base_device02);
+        adapter.setUpFetchEnable(false);
+        adapter.setUpFetchListener(new BaseQuickAdapter.UpFetchListener() {
+            @Override
+            public void onUpFetch() {
+                adapter.setUpFetching(true);
+                getDeviceData(map);
+            }
+        });
         recyclerview5.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
-            DeviceData2.RowsBean currentItemData = rows.get(position);
+            DeviceData2.RowsBean currentItemData = (DeviceData2.RowsBean) adapter.getData().get(position);
             int deviceId = currentItemData.getId();
             Intent intent = new Intent();
             intent.putExtra("deviceId", String.valueOf(deviceId));
             intent.setClass(getContext(), DeviceDetailActivity2.class);
             startActivityForResult(intent, DEVICE_DETAIL);
-//            DeviceDetailActivity2.start(getContext(), String.valueOf(deviceId));
         });
-        dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, recyclerview5);
+        dropDownMenu.setDropDownMenu(Arrays.asList(filterArray), popupViews, refreshLayout);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            switch (requestCode ) {
+            switch (requestCode) {
                 case DEVICE_DETAIL:
-                    getDeviceData(new HashMap<>());
+                    getDeviceData(map);
                     break;
             }
         }
@@ -252,9 +277,10 @@ public class DeviceFragment extends BaseFragment {
         RetrofitClient.getInstance().getService().findDeviceData(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new BaseSubscriber<DeviceData2>(Objects.requireNonNull(getContext())) {
+                .subscribe(new BaseSubscriber<DeviceData2>(getContext()) {
                     @Override
                     public void onSuccess(DeviceData2 deviceData2) {
+                        adapter.setUpFetching(false);
                         if (deviceData2 != null) {
                             rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
@@ -263,6 +289,11 @@ public class DeviceFragment extends BaseFragment {
                                 adapter.setNewData(null);
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        adapter.setUpFetchEnable(false);
                     }
                 });
     }

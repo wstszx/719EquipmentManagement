@@ -49,4 +49,5 @@
     <item name="view" type="id"/>
     <item name="continues" type="id"/>
     <item name="menu" type="id"/>
+    <item name="canecl" type="id"/>
 </resources>

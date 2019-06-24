@@ -172,6 +172,11 @@ public interface ApiService {
     @POST("system/equip/update")
     Single<BaseResponse> updateDevice(@Body RequestBody requestBody);
 
+    //删除设备
+    @FormUrlEncoded
+    @POST("system/equip/del")
+    Single<BaseResponse> deleteDevice(@Field("id") String id);
+
 
     /*----------------- inventory-controller ----------------*/
     //新建盘点任务

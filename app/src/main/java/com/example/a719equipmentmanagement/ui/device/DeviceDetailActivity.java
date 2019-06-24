@@ -24,6 +24,7 @@ import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
+import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.UserBean;
@@ -141,7 +142,6 @@ public class DeviceDetailActivity extends BaseActivity {
     private static final int VALID_DATA = 1;
     private static final int LAST_DATA = 2;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-
     private String name;
     private String parameter;
     private String manufactuer;
@@ -149,7 +149,6 @@ public class DeviceDetailActivity extends BaseActivity {
     private String deptName;
     private String locationName;
     private String deviceStatus;
-
     private int status;
     private int equipId;
     private ArrayAdapter<String> adapter;
@@ -161,6 +160,10 @@ public class DeviceDetailActivity extends BaseActivity {
     private AuditDialog auditDialog;
     private int userId;
     private String techStateStr;
+    private String categoryName;
+    private int locationId;
+    private int deptId;
+    private int categoryId;
 
 
     @Override
@@ -308,6 +311,7 @@ public class DeviceDetailActivity extends BaseActivity {
         DeviceScanData.DataBean.LocationBean location = dataBean.getLocation();
         String equipNo = dataBean.getEquipNo();
         int techState = dataBean.getTechState();
+        String deviceName = dataBean.getName();
         equipId = dataBean.getId();
         name = dataBean.getName();
         int verifyPeriod = dataBean.getVerifyPeriod();
@@ -316,9 +320,20 @@ public class DeviceDetailActivity extends BaseActivity {
         parameter = dataBean.getParameter();
         manufactuer = dataBean.getManufactuer();
         responsor = dataBean.getResponsor();
-        deptName = dept == null ? "无部门信息" : dept.getDeptName();
-        locationName = location == null ? "无位置信息" : location.getName();
+        if (dept != null) {
+            deptId = dept.getDeptId();
+            deptName = dept.getDeptName();
+        }
+        if (location != null) {
+            locationId = location.getId();
+            locationName = location.getName();
+        }
         status = dataBean.getStatus();
+        DeviceScanData.DataBean.CategoryBean category = dataBean.getCategory();
+        if (category != null) {
+            categoryId = category.getId();
+            categoryName = category.getName();
+        }
         switch (techState) {
             case 0:
                 techStateStr = "合格";
@@ -362,8 +377,10 @@ public class DeviceDetailActivity extends BaseActivity {
                 deviceStatus = "无状态信息";
                 break;
         }
-        edittext.setText(deptName);
+        edittext.setText(deviceName);
+        tvResult1.setText(categoryName);
         edittext2.setText(equipNo);
+        tvResult3.setText(deptName);
         edittext4.setText(parameter);
         tvResult5.setText(locationName);
         edittext6.setText(manufactuer);
@@ -454,7 +471,15 @@ public class DeviceDetailActivity extends BaseActivity {
      * 删除设备
      */
     private void deleteDevice() {
+        RetrofitClient.getInstance().getService().deleteDevice(String.valueOf(equipId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
 
+                    }
+                });
     }
 
     /**
@@ -505,6 +530,10 @@ public class DeviceDetailActivity extends BaseActivity {
         constraint9.setEnabled(true);
         constraint12.setEnabled(true);
         constraint13.setEnabled(true);
+        topbar.removeAllLeftViews();
+        topbar.removeAllRightViews();
+        topbar.addLeftTextButton(R.string.canecl, R.id.canecl);
+        topbar.addRightTextButton(R.string.save, R.id.save);
     }
 
     private void showReturnInspectionDialog(String s) {
@@ -514,7 +543,6 @@ public class DeviceDetailActivity extends BaseActivity {
                 .setInputType(InputType.TYPE_CLASS_DATETIME)
                 .setInputType1(InputType.TYPE_CLASS_DATETIME)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
-
                 .addAction("确定", (dialog, index) -> {
                     dialog.dismiss();
                     operatingEquip(6, s);

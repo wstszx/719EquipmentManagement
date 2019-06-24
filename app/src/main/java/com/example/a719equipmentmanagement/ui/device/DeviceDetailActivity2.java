@@ -175,6 +175,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private String date;
     private String date1;
     private int userId;
+    private String categoryName;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -213,17 +214,17 @@ public class DeviceDetailActivity2 extends BaseActivity {
         tvTitle12.setEnabled(false);
         tvTitle13.setEnabled(false);
 
-        edittext.setFocusable(false);
+//        edittext.setFocusable(false);
         tvResult1.setEnabled(false);
-        edittext2.setFocusable(false);
+//        edittext2.setFocusable(false);
         tvResult3.setEnabled(false);
-        edittext4.setFocusable(false);
+//        edittext4.setFocusable(false);
         tvResult5.setEnabled(false);
-        edittext6.setFocusable(false);
+//        edittext6.setFocusable(false);
         tvResult7.setEnabled(false);
-        edittext8.setFocusable(false);
+//        edittext8.setFocusable(false);
         tvResult9.setEnabled(false);
-        edittext11.setFocusable(false);
+//        edittext11.setFocusable(false);
         tvResult12.setEnabled(false);
         tvResult13.setEnabled(false);
         edittext.setEnabled(false);
@@ -264,9 +265,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
             finish();
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
-//        if (isManager) {
-//            topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> updateDevice());
-//        }
     }
 
     private void updateDevice() {
@@ -332,6 +330,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
         }
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("id", equipId);
             jsonObject.put("name", name);
             jsonObject.put("categoryId", categoryId);
             jsonObject.put("sn", equipNo);
@@ -356,6 +355,17 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     @Override
                     public void onSuccess(BaseResponse response) {
                         if (response != null && response.getCode() == 0) {
+                            topbar.removeAllLeftViews();
+                            topbar.removeAllRightViews();
+                            initTopbar();
+                            if (opers != null && opers.size() > 0) {
+                                topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
+                                    initListPopupIfNeed(opers);
+                                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                                    mListPopup.show(v1);
+                                });
+                            }
                             ToastUtils.showShort("保存成功");
                         }
                     }
@@ -414,84 +424,99 @@ public class DeviceDetailActivity2 extends BaseActivity {
 
     private void setData(DeviceDetailData deviceDetailData) {
         DeviceDetailData.DataBean data = deviceDetailData.getData();
-        deviceName = data.getName();
-        equipId = data.getId();
-        String equipNo = data.getEquipNo();
-        parameter = data.getParameter();
-        manufactuer = data.getManufactuer();
-        int techState = data.getTechState();
-        responsor = data.getResponsor();
-        int verifyPeriod = data.getVerifyPeriod();
-        String latestVerifyDate = data.getLatestVerifyDate();
-        String validDate = data.getValidDate();
-        DeviceDetailData.DataBean.DeptBean dept1 = data.getDept();
-        deptName = dept1.getDeptName();
-        DeviceDetailData.DataBean.LocationBean location1 = data.getLocation();
-        locationName = location1.getName();
-        status = data.getStatus();
-        opers = data.getOpers();
-        switch (techState) {
-            case 0:
-                techStateStr = "合格";
-                break;
-            case 1:
-                techStateStr = "不合格";
-                break;
+        if (data != null) {
+            deviceName = data.getName();
+            equipId = data.getId();
+            String equipNo = data.getEquipNo();
+            parameter = data.getParameter();
+            manufactuer = data.getManufactuer();
+            int techState = data.getTechState();
+            responsor = data.getResponsor();
+            int verifyPeriod = data.getVerifyPeriod();
+            String latestVerifyDate = data.getLatestVerifyDate();
+            String validDate = data.getValidDate();
+            DeviceDetailData.DataBean.DeptBean dept1 = data.getDept();
+            if (dept1 != null) {
+                deptId = dept1.getDeptId();
+                deptName = dept1.getDeptName();
+            }
+            DeviceDetailData.DataBean.CategoryBean category = data.getCategory();
+            if (category != null) {
+                categoryId = category.getId();
+                categoryName = category.getName();
+            }
+            DeviceDetailData.DataBean.LocationBean location1 = data.getLocation();
+            if (location1 != null) {
+                locationId = location1.getId();
+                locationName = location1.getName();
+            }
+            status = data.getStatus();
+            opers = data.getOpers();
+            switch (techState) {
+                case 0:
+                    techStateStr = "合格";
+                    break;
+                case 1:
+                    techStateStr = "不合格";
+                    break;
+            }
+            switch (status) {
+                case 0:
+                    deviceStatus = "可用";
+                    break;
+                case 1:
+                    deviceStatus = "借用";
+                    break;
+                case 2:
+                    deviceStatus = "送检占用";
+                    break;
+                case 3:
+                    deviceStatus = "送检";
+                    break;
+                case 4:
+                    deviceStatus = "报废占用";
+                    break;
+                case 5:
+                    deviceStatus = "报废";
+                    break;
+                case 6:
+                    deviceStatus = "封存";
+                    break;
+                case 7:
+                    deviceStatus = "解封占用";
+                    break;
+                case 8:
+                    deviceStatus = "过期";
+                    break;
+                case 9:
+                    deviceStatus = "外借";
+                    break;
+                default:
+                    deviceStatus = "无状态信息";
+                    break;
+            }
+            if (opers != null && opers.size() > 0) {
+                topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
+                    initListPopupIfNeed(opers);
+                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                    mListPopup.show(v);
+                });
+            }
+            edittext.setText(deviceName);
+            tvResult1.setText(categoryName);
+            edittext2.setText(equipNo);
+            tvResult3.setText(deptName);
+            edittext4.setText(parameter);
+            tvResult5.setText(locationName);
+            edittext6.setText(manufactuer);
+            tvResult7.setText(deviceStatus);
+            edittext8.setText(responsor);
+            tvResult9.setText(techStateStr);
+            edittext11.setText(String.valueOf(verifyPeriod));
+            tvResult12.setText(latestVerifyDate);
+            tvResult13.setText(validDate);
         }
-        switch (status) {
-            case 0:
-                deviceStatus = "可用";
-                break;
-            case 1:
-                deviceStatus = "借用";
-                break;
-            case 2:
-                deviceStatus = "送检占用";
-                break;
-            case 3:
-                deviceStatus = "送检";
-                break;
-            case 4:
-                deviceStatus = "报废占用";
-                break;
-            case 5:
-                deviceStatus = "报废";
-                break;
-            case 6:
-                deviceStatus = "封存";
-                break;
-            case 7:
-                deviceStatus = "解封占用";
-                break;
-            case 8:
-                deviceStatus = "过期";
-                break;
-            case 9:
-                deviceStatus = "外借";
-                break;
-            default:
-                deviceStatus = "无状态信息";
-                break;
-        }
-        if (opers != null && opers.size() > 0) {
-            topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
-                initListPopupIfNeed(opers);
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(v);
-            });
-        }
-        edittext.setText(deptName);
-        edittext2.setText(equipNo);
-        edittext4.setText(parameter);
-        tvResult5.setText(locationName);
-        edittext6.setText(manufactuer);
-        tvResult7.setText(deviceStatus);
-        edittext8.setText(responsor);
-        tvResult9.setText(techStateStr);
-        edittext11.setText(String.valueOf(verifyPeriod));
-        tvResult12.setText(latestVerifyDate);
-        tvResult13.setText(validDate);
     }
 
 
@@ -526,7 +551,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initListPopupIfNeed(List<String> listItems) {
-
         List<String> data = new ArrayList<>(listItems);
         if (adapter == null) {
             adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
@@ -596,7 +620,15 @@ public class DeviceDetailActivity2 extends BaseActivity {
      * 删除设备
      */
     private void deleteDevice() {
-        
+        RetrofitClient.getInstance().getService().deleteDevice(String.valueOf(equipId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity2.this) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+
+                    }
+                });
     }
 
     /**
@@ -617,17 +649,11 @@ public class DeviceDetailActivity2 extends BaseActivity {
         tvTitle12.setEnabled(true);
         tvTitle13.setEnabled(true);
 
-        edittext.setFocusable(true);
         tvResult1.setEnabled(true);
-        edittext2.setFocusable(true);
         tvResult3.setEnabled(true);
-        edittext4.setFocusable(true);
         tvResult5.setEnabled(true);
-        edittext6.setFocusable(true);
         tvResult7.setEnabled(true);
-        edittext8.setFocusable(true);
         tvResult9.setEnabled(true);
-        edittext11.setFocusable(true);
         tvResult12.setEnabled(true);
         tvResult13.setEnabled(true);
         edittext.setEnabled(true);
@@ -647,6 +673,24 @@ public class DeviceDetailActivity2 extends BaseActivity {
         constraint9.setEnabled(true);
         constraint12.setEnabled(true);
         constraint13.setEnabled(true);
+        topbar.removeAllLeftViews();
+        topbar.removeAllRightViews();
+        topbar.addLeftTextButton(R.string.canecl, R.id.canecl).setOnClickListener(v -> {
+            topbar.removeAllLeftViews();
+            topbar.removeAllRightViews();
+            initTopbar();
+            if (opers != null && opers.size() > 0) {
+                topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
+                    initListPopupIfNeed(opers);
+                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                    mListPopup.show(v1);
+                });
+            }
+        });
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
+            updateDevice();
+        });
     }
 
     private List<UserBean> userBeanList = new ArrayList<>();
@@ -662,7 +706,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     auditEquip(operType, 1, s);
 
                 })
-
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
                     auditEquip(operType, 2, s);

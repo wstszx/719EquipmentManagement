@@ -21,11 +21,17 @@
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
         <activity android:name=".ui.home.ResultActivity"></activity>
         <activity android:name=".ui.home.EditContainerLevelActivity" />
         <activity android:name=".ui.home.ToAuditActivity" />
@@ -53,8 +59,14 @@
         <activity android:name=".ui.home.InventoryActivity" />
         <activity android:name=".ui.home.AccountingActivity" />
         <activity android:name=".ui.home.PersonDetailActivity" />
-        <activity android:name=".ui.device.DeviceDetailActivity" />
-        <activity android:name=".ui.device.DeviceDetailActivity2" />
+        <activity
+            android:name=".ui.device.DeviceDetailActivity"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+        <activity
+            android:name=".ui.device.DeviceDetailActivity2"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".ui.home.DeviceClassifiyActivity" />
         <activity android:name=".ui.home.MsgActivity" />
         <activity android:name=".ui.LoginActivity">
@@ -68,7 +80,6 @@
         <activity android:name=".ui.mine.HandleHistoryActivity" />
         <activity android:name=".ui.mine.InventoryHistoryActivity" />
         <activity android:name=".ui.mine.BorrowHistoryActivity" />
-        <activity android:name=".ui.device.FilterActivity" />
         <activity android:name=".ui.home.GenarateQRActivity" />
         <activity android:name=".base.BaseItemEditActivity" />
         <activity android:name=".ui.home.ContainerDetailActivity" />
@@ -81,14 +92,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".ui.home.ChoiceContainerActivity" />
-
-        <meta-data
-            android:name="design_width_in_dp"
-            android:value="360" />
-        <meta-data
-            android:name="design_height_in_dp"
-            android:value="640" />
-
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

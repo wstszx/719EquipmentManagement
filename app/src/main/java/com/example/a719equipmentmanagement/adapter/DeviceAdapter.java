@@ -1,20 +1,12 @@
 package com.example.a719equipmentmanagement.adapter;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.view.View;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.entity.Device;
-import com.example.a719equipmentmanagement.entity.DeviceData;
 import com.example.a719equipmentmanagement.entity.DeviceData2;
 
-import java.util.List;
-
-import androidx.annotation.Nullable;
 
 public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseViewHolder> {
     public DeviceAdapter(int layoutResId) {
