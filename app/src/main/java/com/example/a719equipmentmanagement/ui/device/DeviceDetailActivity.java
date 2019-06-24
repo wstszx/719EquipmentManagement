@@ -55,8 +55,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DeviceDetailActivity extends BaseActivity {
 
-    private static final int VALID_DATA = 1;
-    private static final int LAST_DATA = 2;
+
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.constraint)
@@ -139,6 +138,8 @@ public class DeviceDetailActivity extends BaseActivity {
     TextView tvTitle12;
     @BindView(R.id.tv_title13)
     TextView tvTitle13;
+    private static final int VALID_DATA = 1;
+    private static final int LAST_DATA = 2;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
 
     private String name;
@@ -384,9 +385,7 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void initListPopupIfNeed(List<String> listItems) {
 
-        List<String> data = new ArrayList<>();
-        data.addAll(listItems);
-//        Collections.addAll(data, listItems);
+        List<String> data = new ArrayList<>(listItems);
         if (adapter == null) {
             adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
         } else {
@@ -395,63 +394,117 @@ public class DeviceDetailActivity extends BaseActivity {
         }
         if (mListPopup == null) {
             mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
-            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView = (TextView) view;
-                    String s = textView.getText().toString();
-                    switch (s) {
-                        case "借用":
-                            operatingEquip(1, s);
-                            break;
-                        case "归还":
-                            operatingEquip(2, s);
-                            break;
-                        case "送检申请":
-                            operatingEquip(3, s);
-                            break;
-                        case "审核送检":
-                            showAuditDialog(4, s);
-                            break;
-                        case "送检借出":
-                            operatingEquip(5, s);
-                            break;
-                        case "送检归还":
-                            showReturnInspectionDialog(s);
-                            break;
-                        case "报废申请":
-                            operatingEquip(7, s);
-                            break;
-                        case "审核报废":
-                            showAuditDialog(8, s);
-                            break;
-                        case "报废处理":
-                            operatingEquip(9, s);
-                            break;
-                        case "封存":
-                            operatingEquip(10, s);
-                            break;
-                        case "解封申请":
-                            operatingEquip(11, s);
-                            break;
-                        case "审核解封":
-                            showAuditDialog(12, s);
-                            break;
-                        case "解封":
-                            operatingEquip(13, s);
-                            break;
-                        case "编辑":
-                            operatingEquip(14, s);
-                            break;
-                        case "删除":
-                            operatingEquip(15, s);
-                            break;
-                    }
-                    mListPopup.dismiss();
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), (adapterView, view, i, l) -> {
+                TextView textView = (TextView) view;
+                String s = textView.getText().toString();
+                switch (s) {
+                    case "借用":
+                        operatingEquip(1, s);
+                        break;
+                    case "归还":
+                        operatingEquip(2, s);
+                        break;
+                    case "送检申请":
+                        operatingEquip(3, s);
+                        break;
+                    case "审核送检":
+                        showAuditDialog(4, s);
+                        break;
+                    case "送检借出":
+                        operatingEquip(5, s);
+                        break;
+                    case "送检归还":
+                        showReturnInspectionDialog(s);
+                        break;
+                    case "报废申请":
+                        operatingEquip(7, s);
+                        break;
+                    case "审核报废":
+                        showAuditDialog(8, s);
+                        break;
+                    case "报废处理":
+                        operatingEquip(9, s);
+                        break;
+                    case "封存":
+                        operatingEquip(10, s);
+                        break;
+                    case "解封申请":
+                        operatingEquip(11, s);
+                        break;
+                    case "审核解封":
+                        showAuditDialog(12, s);
+                        break;
+                    case "解封":
+                        operatingEquip(13, s);
+                        break;
+                    case "编辑":
+                        setEditStatu();
+                        break;
+                    case "删除":
+                        deleteDevice();
+                        break;
                 }
+                mListPopup.dismiss();
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    /**
+     * 删除设备
+     */
+    private void deleteDevice() {
+
+    }
+
+    /**
+     * 设置设备详情可编辑
+     */
+    private void setEditStatu() {
+        tvTitle.setEnabled(true);
+        tvTitle1.setEnabled(true);
+        tvTitle2.setEnabled(true);
+        tvTitle3.setEnabled(true);
+        tvTitle4.setEnabled(true);
+        tvTitle5.setEnabled(true);
+        tvTitle6.setEnabled(true);
+        tvTitle7.setEnabled(true);
+        tvTitle8.setEnabled(true);
+        tvTitle9.setEnabled(true);
+        tvTitle11.setEnabled(true);
+        tvTitle12.setEnabled(true);
+        tvTitle13.setEnabled(true);
+
+        edittext.setFocusable(true);
+        tvResult1.setEnabled(true);
+        edittext2.setFocusable(true);
+        tvResult3.setEnabled(true);
+        edittext4.setFocusable(true);
+        tvResult5.setEnabled(true);
+        edittext6.setFocusable(true);
+        tvResult7.setEnabled(true);
+        edittext8.setFocusable(true);
+        tvResult9.setEnabled(true);
+        edittext11.setFocusable(true);
+        tvResult12.setEnabled(true);
+        tvResult13.setEnabled(true);
+        edittext.setEnabled(true);
+        edittext2.setEnabled(true);
+        edittext4.setEnabled(true);
+        edittext6.setEnabled(true);
+        edittext8.setEnabled(true);
+        edittext11.setEnabled(true);
+        constraint.setEnabled(true);
+        constraint1.setEnabled(true);
+        constraint2.setEnabled(true);
+        constraint3.setEnabled(true);
+        constraint4.setEnabled(true);
+        constraint5.setEnabled(true);
+        constraint6.setEnabled(true);
+        constraint7.setEnabled(true);
+        constraint9.setEnabled(true);
+        constraint12.setEnabled(true);
+        constraint13.setEnabled(true);
     }
 
     private void showReturnInspectionDialog(String s) {

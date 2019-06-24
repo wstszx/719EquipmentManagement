@@ -3,6 +3,7 @@ package com.example.a719equipmentmanagement.ui.device;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,17 +21,23 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
+import com.example.a719equipmentmanagement.entity.UserBean;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ChoiceContainerActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity;
+import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
+import com.example.a719equipmentmanagement.view.AuditDialog;
+import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
@@ -39,6 +46,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -133,6 +141,9 @@ public class DeviceDetailActivity2 extends BaseActivity {
     TextView tvTitle12;
     @BindView(R.id.tv_title13)
     TextView tvTitle13;
+    private static final int VALID_DATA = 1;
+    private static final int LAST_DATA = 2;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
     private String[] technical_status = {"合格", "不合格"};
     private static final int DEVICE_TYPE = 1;
@@ -158,6 +169,12 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private String techStateStr = "";
     private int tech_statu;
     private boolean isManager;
+    private int equipId;
+    private ReturnInspectionDialog returnInspectionDialog;
+    private AuditDialog auditDialog;
+    private String date;
+    private String date1;
+    private int userId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -180,6 +197,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initView() {
+        returnInspectionDialog = new ReturnInspectionDialog(this);
+        auditDialog = new AuditDialog(this);
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
         tvTitle2.setEnabled(false);
@@ -396,6 +415,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private void setData(DeviceDetailData deviceDetailData) {
         DeviceDetailData.DataBean data = deviceDetailData.getData();
         deviceName = data.getName();
+        equipId = data.getId();
         String equipNo = data.getEquipNo();
         parameter = data.getParameter();
         manufactuer = data.getManufactuer();
@@ -455,7 +475,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
         }
         if (opers != null && opers.size() > 0) {
             topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
-                initListPopupIfNeed();
+                initListPopupIfNeed(opers);
                 mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
                 mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
                 mListPopup.show(v);
@@ -495,9 +515,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 case R.id.constraint9:
                     showSimpleBottomSheetList(technical_status, 2);
                     break;
-//            case R.id.constraint10:
-//                showSimpleBottomSheetList(classification, 3);
-//                break;
                 case R.id.constraint12:
                     AboriginalDateSelect.getInstance().showDateTime(this, DATE_ONE);
                     break;
@@ -508,52 +525,287 @@ public class DeviceDetailActivity2 extends BaseActivity {
         }
     }
 
-    private void initListPopupIfNeed() {
-        int size = opers.size();
-        String[] handleTypes = new String[size];
-        for (int i = 0; i < size; i++) {
-            String handleEnglish = opers.get(i);
-            switch (handleEnglish) {
-                case "Edit":
-                    handleTypes[i] = "编辑";
-                    break;
-                case "Del":
-                    handleTypes[i] = "删除";
-                    break;
-            }
-        }
-        List<String> data = new ArrayList<>();
-        Collections.addAll(data, handleTypes);
+    private void initListPopupIfNeed(List<String> listItems) {
+
+        List<String> data = new ArrayList<>(listItems);
         if (adapter == null) {
             adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
         } else {
-            adapter.addAll(data);
+            adapter.addAll(listItems);
             adapter.notifyDataSetChanged();
         }
         if (mListPopup == null) {
             mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
-            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView = (TextView) view;
-                    String s = textView.getText().toString();
-                    switch (s) {
-                        case "处理1":
-//                            Intent addDeptIntent = new Intent();
-//                            addDeptIntent.setClass(DeptManageActivity.this, AddDeptActivity.class);
-//                            startActivityForResult(addDeptIntent, ADD_DEPT);
-                            break;
-                        case "处理2":
-//                            Intent addPersonIntent = new Intent();
-//                            addPersonIntent.setClass(DeptManageActivity.this, AddPersonActivity.class);
-//                            startActivityForResult(addPersonIntent, ADD_PERSON);
-                            break;
-                    }
-                    mListPopup.dismiss();
+            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), (adapterView, view, i, l) -> {
+                TextView textView = (TextView) view;
+                String s = textView.getText().toString();
+                switch (s) {
+                    case "借用":
+                        operatingEquip(1, s);
+                        break;
+                    case "归还":
+                        operatingEquip(2, s);
+                        break;
+                    case "送检申请":
+                        operatingEquip(3, s);
+                        break;
+                    case "审核送检":
+                        showAuditDialog(4, s);
+                        break;
+                    case "送检借出":
+                        operatingEquip(5, s);
+                        break;
+                    case "送检归还":
+                        showReturnInspectionDialog(s);
+                        break;
+                    case "报废申请":
+                        operatingEquip(7, s);
+                        break;
+                    case "审核报废":
+                        showAuditDialog(8, s);
+                        break;
+                    case "报废处理":
+                        operatingEquip(9, s);
+                        break;
+                    case "封存":
+                        operatingEquip(10, s);
+                        break;
+                    case "解封申请":
+                        operatingEquip(11, s);
+                        break;
+                    case "审核解封":
+                        showAuditDialog(12, s);
+                        break;
+                    case "解封":
+                        operatingEquip(13, s);
+                        break;
+                    case "编辑":
+                        setEditStatu();
+                        break;
+                    case "删除":
+                        deleteDevice();
+                        break;
                 }
+                mListPopup.dismiss();
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    /**
+     * 删除设备
+     */
+    private void deleteDevice() {
+        
+    }
+
+    /**
+     * 设置设备详情可编辑
+     */
+    private void setEditStatu() {
+        tvTitle.setEnabled(true);
+        tvTitle1.setEnabled(true);
+        tvTitle2.setEnabled(true);
+        tvTitle3.setEnabled(true);
+        tvTitle4.setEnabled(true);
+        tvTitle5.setEnabled(true);
+        tvTitle6.setEnabled(true);
+        tvTitle7.setEnabled(true);
+        tvTitle8.setEnabled(true);
+        tvTitle9.setEnabled(true);
+        tvTitle11.setEnabled(true);
+        tvTitle12.setEnabled(true);
+        tvTitle13.setEnabled(true);
+
+        edittext.setFocusable(true);
+        tvResult1.setEnabled(true);
+        edittext2.setFocusable(true);
+        tvResult3.setEnabled(true);
+        edittext4.setFocusable(true);
+        tvResult5.setEnabled(true);
+        edittext6.setFocusable(true);
+        tvResult7.setEnabled(true);
+        edittext8.setFocusable(true);
+        tvResult9.setEnabled(true);
+        edittext11.setFocusable(true);
+        tvResult12.setEnabled(true);
+        tvResult13.setEnabled(true);
+        edittext.setEnabled(true);
+        edittext2.setEnabled(true);
+        edittext4.setEnabled(true);
+        edittext6.setEnabled(true);
+        edittext8.setEnabled(true);
+        edittext11.setEnabled(true);
+        constraint.setEnabled(true);
+        constraint1.setEnabled(true);
+        constraint2.setEnabled(true);
+        constraint3.setEnabled(true);
+        constraint4.setEnabled(true);
+        constraint5.setEnabled(true);
+        constraint6.setEnabled(true);
+        constraint7.setEnabled(true);
+        constraint9.setEnabled(true);
+        constraint12.setEnabled(true);
+        constraint13.setEnabled(true);
+    }
+
+    private List<UserBean> userBeanList = new ArrayList<>();
+
+    private void showAuditDialog(int operType, String s) {
+        userBeanList.clear();
+        auditDialog.setTitle(s)
+                .setPlaceholder1("请输入理由")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("不通过", (dialog, index) -> {
+                    dialog.dismiss();
+                    auditEquip(operType, 1, s);
+
+                })
+
+                .addAction("通过", (dialog, index) -> {
+                    dialog.dismiss();
+                    auditEquip(operType, 2, s);
+                })
+                .create(mCurrentDialogStyle).show();
+        auditDialog.getRightImageView().setOnClickListener(v -> {
+            RetrofitClient.getInstance().getService().getDeptList()
+                    .compose(CommonCompose.io2main(DeviceDetailActivity2.this))
+                    .subscribe(new BaseSubscriber<List<DeptList>>(DeviceDetailActivity2.this) {
+                        @Override
+                        public void onSuccess(List<DeptList> users) {
+                            if (users != null && users.size() > 0) {
+                                for (DeptList user : users) {
+                                    List<DeptList.UsersBean> deptLists = user.getUsers();
+                                    if (deptLists != null && deptLists.size() > 0) {
+                                        for (DeptList.UsersBean deptList : deptLists) {
+                                            String userName = deptList.getUserName();
+                                            int userId = deptList.getUserId();
+                                            UserBean userBean = new UserBean();
+                                            userBean.setUserId(userId);
+                                            userBean.setUserName(userName);
+                                            userBeanList.add(userBean);
+                                        }
+                                    }
+                                }
+                                showSingleChoiceDialog();
+                            }
+                        }
+                    });
+        });
+    }
+
+    private void showSingleChoiceDialog() {
+        String[] userNameArray = new String[]{};
+        List<String> userNameList = new ArrayList<>();
+        for (UserBean userBean : userBeanList) {
+            String userName = userBean.getUserName();
+            userNameList.add(userName);
+        }
+        String[] strings = userNameList.toArray(userNameArray);
+        if (strings != null && strings.length > 0) {
+            final int checkedIndex = 1;
+            new QMUIDialog.CheckableDialogBuilder(this)
+                    .setCheckedIndex(checkedIndex)
+                    .addItems(strings, (dialog, which) -> {
+                        userId = userBeanList.get(which).getUserId();
+                        auditDialog.getEditText().setText(strings[which]);
+                        dialog.dismiss();
+                    })
+                    .create(mCurrentDialogStyle).show();
+        }
+    }
+
+    /**
+     * 审核设备
+     *
+     * @param operType
+     * @param text
+     */
+    private void auditEquip(int operType, int operState, String text) {
+        HashMap<String, Object> map = new HashMap<>();
+        String msg = auditDialog.getEditText1().getText().toString();
+        String userName = auditDialog.getEditText().getText().toString();
+        if (StringUtils.isEmpty(userName)) {
+            ToastUtils.showShort("请选择负责人");
+            return;
+        }
+        map.put("equipId", equipId);
+        map.put("operType", operType);
+        map.put("msg", msg);
+        map.put("operState", operState);
+        map.put("dealer", userId);
+        RetrofitClient.getInstance().getService().operatingEquip(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity2.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        int code = baseResponse.getCode();
+                        if (code == 0) {
+                            ToastUtils.showShort(text + "成功");
+                        }
+                    }
+                });
+    }
+
+    private void showReturnInspectionDialog(String s) {
+        returnInspectionDialog.setTitle(s)
+                .setPlaceholder("有效期")
+                .setPlaceholder1("最后检验日期")
+                .setInputType(InputType.TYPE_CLASS_DATETIME)
+                .setInputType1(InputType.TYPE_CLASS_DATETIME)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    operatingEquip(6, s);
+                })
+                .create(mCurrentDialogStyle).show();
+        returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity2.this, VALID_DATA));
+        returnInspectionDialog.getRightImageView1().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity2.this, LAST_DATA));
+        AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
+            switch (position) {
+                case VALID_DATA:
+                    date = TimeUtils.date2String(dateFormat);
+                    returnInspectionDialog.getEditText().setText(date);
+                    break;
+                case LAST_DATA:
+                    date1 = TimeUtils.date2String(dateFormat);
+                    returnInspectionDialog.getEditText1().setText(date1);
+                    break;
+            }
+        });
+    }
+
+    /**
+     * 操作设备
+     *
+     * @param operType
+     * @param text
+     */
+    private void operatingEquip(int operType, String text) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("equipId", equipId);
+        map.put("operType", operType);
+        map.put("msg", "");
+        map.put("dealer", responsor);
+        if (operType == 6) {
+            map.put("validDate", date);
+            map.put("latestVerifyDate", date1);
+        }
+        RetrofitClient.getInstance().getService().operatingEquip(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity2.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        int code = baseResponse.getCode();
+                        if (code == 0) {
+                            ResultActivity.start(DeviceDetailActivity2.this, text + "成功");
+                        }
+                    }
+                });
     }
 
     private void showSimpleBottomSheetList(String[] array, int flag) {
@@ -582,10 +834,4 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 .show();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

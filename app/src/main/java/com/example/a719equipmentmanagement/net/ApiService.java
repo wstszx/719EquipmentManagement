@@ -71,7 +71,6 @@ public interface ApiService {
     //删除设备分类
     @FormUrlEncoded
     @POST("system/category/del")
-//    Single<BaseResponse> deleteDeviceType(@Body RequestBody requestBody);
     Single<BaseResponse> deleteDeviceType(@Field("id") int id);
 
     //查找设备分类数据
