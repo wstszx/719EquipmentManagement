@@ -86,7 +86,7 @@ public class EditPersonActivity extends BaseActivity {
     private int userId;
     private int deptId;
     private String[] sexArray = {"男", "女", "未知"};
-    private String[] roleArray = {"超级系统管理员", "实验室管理员", "普通用户"};
+    private String[] roleArray = {"实验室管理员", "普通用户"};
     private int id;
     private String name;
     private int roleId = 3;
@@ -221,9 +221,6 @@ public class EditPersonActivity extends BaseActivity {
                             if (roleIds != null && roleIds.size() > 0) {
                                 roleId = roleIds.get(0);
                                 switch (roleId) {
-                                    case 1:
-                                        tvResult8.setText("超级系统管理员");
-                                        break;
                                     case 2:
                                         tvResult8.setText("实验室管理员");
                                         break;
@@ -265,7 +262,7 @@ public class EditPersonActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("编辑人员");
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             editPerson();
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
@@ -285,16 +282,16 @@ public class EditPersonActivity extends BaseActivity {
         if (StringUtils.isEmpty(username)) {
             ToastUtils.showShort("用户名称不能为空");
             return;
-        }else if (StringUtils.isEmpty(dept)) {
+        } else if (StringUtils.isEmpty(dept)) {
             ToastUtils.showShort("所属部门不能为空");
             return;
-        }else if (StringUtils.isEmpty(loginName)) {
+        } else if (StringUtils.isEmpty(loginName)) {
             ToastUtils.showShort("登录账号不能为空");
             return;
-        }else if (!RegexUtils.isEmail(email)) {
+        } else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }else if (!RegexUtils.isMobileExact(phoneNum)) {
+        } else if (!RegexUtils.isMobileExact(phoneNum)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }

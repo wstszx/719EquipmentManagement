@@ -58,7 +58,7 @@ public class EditContainerLevelActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("编辑货柜层");
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             editContainer();
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {

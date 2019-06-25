@@ -3,7 +3,12 @@ package com.example.a719equipmentmanagement.ui.home;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -16,9 +21,13 @@ import com.example.a719equipmentmanagement.entity.DeviceData2;
 import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.view.AuditDialog;
+import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
+import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,36 +50,130 @@ import okhttp3.RequestBody;
  * A simple {@link Fragment} subclass.
  */
 public class DeviceDetailFragment extends BaseFragment {
-    private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人", "所属部门", "位置", "状态"};
-
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
+    @BindView(R.id.constraint)
+    ConstraintLayout constraint;
+    @BindView(R.id.tv_title1)
+    TextView tvTitle1;
+    @BindView(R.id.imageView1)
+    ImageView imageView1;
+    @BindView(R.id.constraint1)
+    ConstraintLayout constraint1;
+    @BindView(R.id.tv_title2)
+    TextView tvTitle2;
+    @BindView(R.id.constraint2)
+    ConstraintLayout constraint2;
+    @BindView(R.id.tv_title3)
+    TextView tvTitle3;
+    @BindView(R.id.imageView3)
+    ImageView imageView3;
+    @BindView(R.id.constraint3)
+    ConstraintLayout constraint3;
+    @BindView(R.id.tv_title4)
+    TextView tvTitle4;
+    @BindView(R.id.constraint4)
+    ConstraintLayout constraint4;
+    @BindView(R.id.tv_title5)
+    TextView tvTitle5;
+    @BindView(R.id.imageView5)
+    ImageView imageView5;
+    @BindView(R.id.constraint5)
+    ConstraintLayout constraint5;
+    @BindView(R.id.tv_title6)
+    TextView tvTitle6;
+    @BindView(R.id.constraint6)
+    ConstraintLayout constraint6;
+    @BindView(R.id.constraint7)
+    ConstraintLayout constraint7;
+    @BindView(R.id.tv_title7)
+    TextView tvTitle7;
+    @BindView(R.id.edittext8)
+    EditText edittext8;
+    @BindView(R.id.tv_result9)
+    TextView tvResult9;
+    @BindView(R.id.edittext11)
+    EditText edittext11;
+    @BindView(R.id.tv_result12)
+    TextView tvResult12;
+    @BindView(R.id.tv_result13)
+    TextView tvResult13;
+    @BindView(R.id.constraint9)
+    ConstraintLayout constraint9;
+    @BindView(R.id.constraint12)
+    ConstraintLayout constraint12;
+    @BindView(R.id.constraint13)
+    ConstraintLayout constraint13;
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
-    @BindView(R.id.groupListView)
-    QMUIGroupListView groupListView;
-    private QMUICommonListItemView listItemView;
-    private QMUICommonListItemView item0;
-    private QMUICommonListItemView item1;
-    private QMUICommonListItemView item2;
-    private QMUICommonListItemView item3;
-    private QMUICommonListItemView item4;
-    private QMUICommonListItemView item5;
-    private QMUICommonListItemView item6;
-    private int status;
-    private String locationName;
-    private String deptName;
-    private String responsor;
-    private String manufactuer;
-    private String parameter;
+    @BindView(R.id.edittext)
+    EditText edittext;
+    @BindView(R.id.tv_result1)
+    TextView tvResult1;
+    @BindView(R.id.edittext2)
+    EditText edittext2;
+    @BindView(R.id.tv_result3)
+    TextView tvResult3;
+    @BindView(R.id.edittext4)
+    EditText edittext4;
+    @BindView(R.id.tv_result5)
+    TextView tvResult5;
+    @BindView(R.id.edittext6)
+    EditText edittext6;
+    @BindView(R.id.tv_result7)
+    TextView tvResult7;
+    @BindView(R.id.tv_title8)
+    TextView tvTitle8;
+    @BindView(R.id.tv_title9)
+    TextView tvTitle9;
+    @BindView(R.id.tv_title11)
+    TextView tvTitle11;
+    @BindView(R.id.tv_title12)
+    TextView tvTitle12;
+    @BindView(R.id.tv_title13)
+    TextView tvTitle13;
+    private static final int VALID_DATA = 1;
+    private static final int LAST_DATA = 2;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String name;
+    private String parameter;
+    private String manufactuer;
+    private String responsor;
+    private String deptName;
+    private String locationName;
     private String deviceStatus;
+    private int status;
     private int equipId;
+    private ArrayAdapter<String> adapter;
+    private QMUIListPopup mListPopup;
+    private List<String> opers;
+    private ReturnInspectionDialog returnInspectionDialog;
+    private String date;
+    private String date1;
+    private AuditDialog auditDialog;
+    private int userId;
+    private String techStateStr;
+    private String categoryName;
+    private int locationId;
+    private int deptId;
+    private int categoryId;
     private int inventoryId;
     private String equipNo;
+    private String deviceName;
+
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        initTopbar();
         initView();
         initData();
+    }
+
+    private void initTopbar() {
+        topbar.setTitle("设备详情");
+        topbar.addLeftBackImageButton().setOnClickListener(v -> {
+            Navigation.findNavController(v).navigateUp();
+        });
     }
 
     private void initData() {
@@ -108,163 +211,142 @@ public class DeviceDetailFragment extends BaseFragment {
                     .subscribe(new BaseSubscriber<Object>(getContext()) {
 
                     });
-
         }
     }
 
-    private void setData(DeviceDetailData detailData) {
-        DeviceDetailData.DataBean data = detailData.getData();
+    private void setData(DeviceDetailData deviceDetailData) {
+        DeviceDetailData.DataBean data = deviceDetailData.getData();
+        if (data != null) {
+            deviceName = data.getName();
+            equipId = data.getId();
+            String equipNo = data.getEquipNo();
+            parameter = data.getParameter();
+            manufactuer = data.getManufactuer();
+            int techState = data.getTechState();
+            responsor = data.getResponsor();
+            int verifyPeriod = data.getVerifyPeriod();
+            String latestVerifyDate = data.getLatestVerifyDate();
+            String validDate = data.getValidDate();
+            DeviceDetailData.DataBean.DeptBean dept1 = data.getDept();
+            if (dept1 != null) {
+                deptId = dept1.getDeptId();
+                deptName = dept1.getDeptName();
+            }
+            DeviceDetailData.DataBean.CategoryBean category = data.getCategory();
+            if (category != null) {
+                categoryId = category.getId();
+                categoryName = category.getName();
+            }
+            DeviceDetailData.DataBean.LocationBean location1 = data.getLocation();
+            if (location1 != null) {
+                locationId = location1.getId();
+                locationName = location1.getName();
+            }
+            status = data.getStatus();
+            opers = data.getOpers();
+            switch (techState) {
+                case 0:
+                    techStateStr = "合格";
+                    break;
+                case 1:
+                    techStateStr = "不合格";
+                    break;
+            }
+            switch (status) {
+                case 0:
+                    deviceStatus = "可用";
+                    break;
+                case 1:
+                    deviceStatus = "借用";
+                    break;
+                case 2:
+                    deviceStatus = "送检占用";
+                    break;
+                case 3:
+                    deviceStatus = "送检";
+                    break;
+                case 4:
+                    deviceStatus = "报废占用";
+                    break;
+                case 5:
+                    deviceStatus = "报废";
+                    break;
+                case 6:
+                    deviceStatus = "封存";
+                    break;
+                case 7:
+                    deviceStatus = "解封占用";
+                    break;
+                case 8:
+                    deviceStatus = "过期";
+                    break;
+                case 9:
+                    deviceStatus = "外借";
+                    break;
+                default:
+                    deviceStatus = "无状态信息";
+                    break;
+            }
 
-        DeviceDetailData.DataBean.DeptBean dept = data.getDept();
-
-        DeviceDetailData.DataBean.LocationBean location = data.getLocation();
-        equipNo = data.getEquipNo();
-        name = data.getName();
-        parameter = data.getParameter();
-        manufactuer = data.getManufactuer();
-        responsor = data.getResponsor();
-        deptName = dept == null ? "无部门信息" : dept.getDeptName();
-        locationName = location == null ? "无位置信息" : location.getName();
-        status = data.getStatus();
-        switch (status) {
-            case 0:
-                deviceStatus = "可用";
-                break;
-            case 1:
-                deviceStatus = "借用";
-                break;
-            case 2:
-                deviceStatus = "送检占用";
-                break;
-            case 3:
-                deviceStatus = "送检";
-                break;
-            case 4:
-                deviceStatus = "报废占用";
-                break;
-            case 5:
-                deviceStatus = "报废";
-                break;
-            case 6:
-                deviceStatus = "封存";
-                break;
-            case 7:
-                deviceStatus = "解封占用";
-                break;
-            case 8:
-                deviceStatus = "过期";
-                break;
-            case 9:
-                deviceStatus = "外借";
-                break;
-            default:
-                deviceStatus = "无状态信息";
-                break;
+            edittext.setText(deviceName);
+            tvResult1.setText(categoryName);
+            edittext2.setText(equipNo);
+            tvResult3.setText(deptName);
+            edittext4.setText(parameter);
+            tvResult5.setText(locationName);
+            edittext6.setText(manufactuer);
+            tvResult7.setText(deviceStatus);
+            edittext8.setText(responsor);
+            tvResult9.setText(techStateStr);
+            edittext11.setText(String.valueOf(verifyPeriod));
+            tvResult12.setText(latestVerifyDate);
+            tvResult13.setText(validDate);
         }
-        initGroupListView();
-
     }
 
     private void initView() {
-        topbar.setTitle("设备详情");
-        topbar.addLeftBackImageButton().setOnClickListener(v -> {
-            Navigation.findNavController(v).navigateUp();
-        });
+//        returnInspectionDialog = new ReturnInspectionDialog(getContext());
+//        auditDialog = new AuditDialog(getContext());
+        tvTitle.setEnabled(false);
+        tvTitle1.setEnabled(false);
+        tvTitle2.setEnabled(false);
+        tvTitle3.setEnabled(false);
+        tvTitle4.setEnabled(false);
+        tvTitle5.setEnabled(false);
+        tvTitle6.setEnabled(false);
+        tvTitle7.setEnabled(false);
+        tvTitle8.setEnabled(false);
+        tvTitle9.setEnabled(false);
+        tvTitle11.setEnabled(false);
+        tvTitle12.setEnabled(false);
+        tvTitle13.setEnabled(false);
+
+        tvResult1.setEnabled(false);
+        tvResult3.setEnabled(false);
+        tvResult5.setEnabled(false);
+        tvResult7.setEnabled(false);
+        tvResult9.setEnabled(false);
+        tvResult12.setEnabled(false);
+        tvResult13.setEnabled(false);
+        edittext.setEnabled(false);
+        edittext2.setEnabled(false);
+        edittext4.setEnabled(false);
+        edittext6.setEnabled(false);
+        edittext8.setEnabled(false);
+        edittext11.setEnabled(false);
+        constraint.setEnabled(false);
+        constraint1.setEnabled(false);
+        constraint2.setEnabled(false);
+        constraint3.setEnabled(false);
+        constraint4.setEnabled(false);
+        constraint5.setEnabled(false);
+        constraint6.setEnabled(false);
+        constraint7.setEnabled(false);
+        constraint9.setEnabled(false);
+        constraint12.setEnabled(false);
+        constraint13.setEnabled(false);
     }
 
-    private void initGroupListView() {
-        View.OnClickListener onClickListener = v -> {
-
-        };
-
-        View.OnClickListener onClickListener4 = v -> {
-            listItemView = (QMUICommonListItemView) v;
-        };
-        View.OnClickListener onClickListener5 = v -> {
-            listItemView = (QMUICommonListItemView) v;
-        };
-
-        QMUIGroupListView.Section section = QMUIGroupListView.newSection(getContext());
-
-
-        item0 = groupListView.createItemView(
-                null,
-                containerAttrs[0],
-                name,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item0.setTag(0);
-        section.addItemView(item0, onClickListener);
-        item1 = groupListView.createItemView(
-                null,
-                containerAttrs[1],
-                parameter,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item1.setTag(1);
-        section.addItemView(item1, onClickListener);
-        item2 = groupListView.createItemView(
-                null,
-                containerAttrs[2],
-                manufactuer,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item2.setTag(2);
-        section.addItemView(item2, onClickListener);
-        item3 = groupListView.createItemView(
-                null,
-                containerAttrs[3],
-                responsor,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item3.setTag(3);
-        section.addItemView(item3, onClickListener);
-        item4 = groupListView.createItemView(
-                null,
-                containerAttrs[4],
-                deptName,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item4.setTag(4);
-        section.addItemView(item4, onClickListener4);
-        item5 = groupListView.createItemView(
-                null,
-                containerAttrs[5],
-                locationName,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item5.setTag(5);
-        section.addItemView(item5, onClickListener5);
-        item6 = groupListView.createItemView(
-                null,
-                containerAttrs[6],
-                deviceStatus,
-                QMUICommonListItemView.HORIZONTAL,
-                QMUICommonListItemView.ACCESSORY_TYPE_NONE);
-        item6.setTag(6);
-        section.addItemView(item6, onClickListener);
-
-//        //测试部分item7,8
-//        item7 = groupListView.createItemView(
-//                null,
-//                containerAttrs[7],
-//                "测试条目",
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item7.setTag(7);
-//        section.addItemView(item7, onClickListener7);
-//        QMUICommonListItemView item8 = groupListView.createItemView(
-//                null,
-//                containerAttrs[7],
-//                "测试弹窗",
-//                QMUICommonListItemView.HORIZONTAL,
-//                QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
-//        item8.setTag(8);
-//        section.addItemView(item8, onClickListener8);
-
-        section.addTo(groupListView);
-
-    }
 
     @Override
     protected int getLayoutId() {

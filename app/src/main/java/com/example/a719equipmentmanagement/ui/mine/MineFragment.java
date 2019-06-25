@@ -32,13 +32,12 @@ public class MineFragment extends BaseFragment {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private QMUICommonListItemView listItemView;
-    private String[] containerAttrs = {"个人信息", "申请历史", "借用历史", "盘点历史", "处理历史", "审核历史"};
-    //    private String[] containerAttrs1 = {"个人信息", "借用历史", "处理历史", "审核历史"};
+    private String[] containerAttrs = {"个人信息", "借用历史", "申请历史", "审核历史", "处理历史", "盘点历史"};
     private int roleId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
-        roleId = SPUtils.getInstance().getInt("roleId", 0);
+//        roleId = SPUtils.getInstance().getInt("roleId", 0);
         initTopbar();
         initGroupListView();
         initTextView();
@@ -105,8 +104,6 @@ public class MineFragment extends BaseFragment {
                 case "审核历史":
                     ReviewHistoryActivity.start(getContext());
                     break;
-
-
             }
         };
 

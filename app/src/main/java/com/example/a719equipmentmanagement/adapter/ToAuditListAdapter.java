@@ -11,11 +11,10 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.ToAudit;
-import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.utils.Constant;
 
-public class ToAuditAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseViewHolder> {
-    public ToAuditAdapter(int layoutResId) {
+public class ToAuditListAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseViewHolder> {
+    public ToAuditListAdapter(int layoutResId) {
         super(layoutResId);
     }
 
@@ -34,10 +33,9 @@ public class ToAuditAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseViewH
             SpannableString spannableString = new SpannableString(equipNo);
             spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
             builder.append(createBy).append(createTime).append(equipType).append(spannableString).append(name);
-            helper.setText(R.id.number, builder);
-//            helper.setText(R.id.number, equip.getEquipNo())
-//                    .addOnClickListener(R.id.tv_by)
-//                    .addOnClickListener(R.id.tv_no_by);
+            helper.setText(R.id.number, builder)
+                    .addOnClickListener(R.id.tv_by)
+                    .addOnClickListener(R.id.tv_no_by);
         }
     }
 }

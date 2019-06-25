@@ -1,11 +1,19 @@
 package com.example.a719equipmentmanagement.adapter;
 
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
+
+import androidx.core.content.ContextCompat;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
+import com.example.a719equipmentmanagement.App;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.entity.ApplyProgress;
 import com.example.a719equipmentmanagement.entity.ToAudit;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
+import com.example.a719equipmentmanagement.utils.Constant;
 
 public class ApplyProgressAdapter extends BaseQuickAdapter<UserToAudit.RowsBean, BaseViewHolder> {
     public ApplyProgressAdapter(int layoutResId) {
@@ -14,10 +22,19 @@ public class ApplyProgressAdapter extends BaseQuickAdapter<UserToAudit.RowsBean,
 
     @Override
     protected void convert(BaseViewHolder helper, UserToAudit.RowsBean item) {
-        UserToAudit.RowsBean.EquipBean equip = item.getEquip();
-        if (equip != null) {
-            helper.setText(R.id.deviceName, equip.getName())
-                    .setText(R.id.number, equip.getEquipNo());
+        if (item != null) {
+            UserToAudit.RowsBean.EquipBean equip = item.getEquip();
+            String createTime = item.getCreateTime();
+            int type = item.getType();
+            String equipType = Constant.getEquipType(type);
+            String equipNo = equip.getEquipNo();
+            String name = equip.getName();
+
+            SpannableStringBuilder builder = new SpannableStringBuilder();
+            SpannableString spannableString = new SpannableString(equipNo);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
+            builder.append(createTime).append(equipType).append(spannableString).append(name);
+            helper.setText(R.id.number, builder);
         }
     }
 }

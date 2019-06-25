@@ -37,12 +37,13 @@ public class EditContainerActivity extends BaseActivity {
     @BindView(R.id.tv_result1)
     TextView tvResult1;
     @BindView(R.id.topbar)
-    QMUITopBar topbar;
+    QMUITopBarLayout topbar;
     @BindView(R.id.round_button)
     QMUIRoundButton roundButton;
     private String name;
     private int id;
     private int deptId;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class EditContainerActivity extends BaseActivity {
     private void initData() {
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        pid = intent.getIntExtra("pid", 0);
         name = intent.getStringExtra("name");
         deptId = intent.getIntExtra("deptId", 0);
         if (!StringUtils.isEmpty(name)) {
@@ -62,7 +64,7 @@ public class EditContainerActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("编辑货柜");
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             topbar.removeAllRightViews();
             editContainer();
         });
@@ -81,6 +83,7 @@ public class EditContainerActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", id);
+            jsonObject.put("pid", pid);
             jsonObject.put("deptId", deptId);
             jsonObject.put("name", containerName);
         } catch (JSONException e) {
@@ -94,7 +97,6 @@ public class EditContainerActivity extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         if (baseResponse.getCode() == 0) {
                             ToastUtils.showShort("编辑货柜成功");
-                            roundButton.setVisibility(View.VISIBLE);
                         }
                     }
                 });
@@ -105,7 +107,7 @@ public class EditContainerActivity extends BaseActivity {
         if (requestCode == EDIT_DEPT) {
             if (data != null) {
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("id", 0);
+                deptId = data.getIntExtra("deptId", 0);
                 tvResult1.setText(name);
             }
         }
@@ -114,14 +116,8 @@ public class EditContainerActivity extends BaseActivity {
 
     @OnClick({R.id.constraint1, R.id.round_button})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.constraint1:
-                startActivityForResult(new Intent(EditContainerActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
-                break;
-            case R.id.round_button:
-                GenerateContainerCodeActivity.start(this, "");
-                finish();
-                break;
+        if (view.getId() == R.id.constraint1) {
+            startActivityForResult(new Intent(EditContainerActivity.this, ChoiceDeptActivity.class), EDIT_DEPT);
         }
     }
 

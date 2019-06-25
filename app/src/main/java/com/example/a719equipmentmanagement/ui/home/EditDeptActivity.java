@@ -141,7 +141,7 @@ public class EditDeptActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("编辑部门");
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             editDept();
 
         });

@@ -53,7 +53,7 @@ public class EditDeviceClassifiyActivity extends BaseActivity {
 
     private void initTopbar() {
         topbar.setTitle("编辑设备分类");
-        topbar.addRightTextButton(R.string.confirm, R.id.confirm).setOnClickListener(v -> {
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
             getInputData();
         });
         topbar.addLeftBackImageButton().setOnClickListener(v -> {

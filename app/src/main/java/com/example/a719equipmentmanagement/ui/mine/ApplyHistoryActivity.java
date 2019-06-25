@@ -54,7 +54,7 @@ public class ApplyHistoryActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        adapter = new ApplyHistoryAdapter(R.layout.return_item);
+        adapter = new ApplyHistoryAdapter(R.layout.apply_history);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
@@ -73,7 +73,6 @@ public class ApplyHistoryActivity extends BaseActivity {
 
     private void initView() {
         initTopbar();
-//        initGroupListView();
     }
 
     private void initTopbar() {
@@ -83,22 +82,5 @@ public class ApplyHistoryActivity extends BaseActivity {
             overridePendingTransition(R.anim.slide_still, R.anim.slide_out_right);
         });
     }
-
-//    private void initGroupListView() {
-//        String time = "时间";
-//        String result = "，已完成报废";
-//        View.OnClickListener onClickListener = v -> {
-//        };
-//        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-//        for (int i = 0; i < date.length; i++) {
-//            QMUICommonListItemView item = groupListView.createItemView(
-//                    null,
-//                    time + date[i],
-//                    details[i] + result,
-//                    QMUICommonListItemView.VERTICAL, 0);
-//            section.addItemView(item, onClickListener);
-//        }
-//        section.addTo(groupListView);
-//    }
 
 }

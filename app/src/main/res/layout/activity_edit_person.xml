@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint9"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
+                android:layout_height="70dp">
 
                 <TextView
                     android:id="@+id/tv_title9"
@@ -69,7 +69,6 @@
 
                 <EditText
                     android:id="@+id/edittext9"
-                    tools:text="放大镜看房价的看克积分开发巨额罚款金额"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginStart="32dp"
@@ -77,12 +76,15 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:gravity="start"
-                    android:maxLength="40"
+                    android:maxLength="60"
+                    android:maxLines="3"
+                    android:padding="@dimen/dp_8"
                     android:textSize="@dimen/sp_14"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_title9"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="放大镜看房风纪扣克尔克可" />
 
                 <View
                     android:layout_width="match_parent"

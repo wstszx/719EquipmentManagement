@@ -78,6 +78,7 @@ public class ContainerManageActivity extends BaseActivity {
     private String containerName;
     private boolean isManager;
     private boolean isFirstAdd = true;
+    private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -154,6 +155,7 @@ public class ContainerManageActivity extends BaseActivity {
                             containerNameList.add(containerName);
                         }
                         containerId = data.getId();
+                        pid = data.getPid();
                         containerName = data.getName();
                         deptId = data.getDeptId();
                         initListPopupIfNeed(oneDeletes);
@@ -163,6 +165,8 @@ public class ContainerManageActivity extends BaseActivity {
                         ContainerData.ContainersBean containerTwoData = containerTwo.getData();
                         containerName = containerTwoData.getName();
                         containerId = containerTwoData.getId();
+                        pid = containerTwoData.getPid();
+                        deptId = containerTwoData.getDeptId();
                         containerIdList.add("C|" + containerId);
                         containerNameList.add(containerName);
                         initListPopupIfNeed(twoDeletes);
@@ -231,6 +235,7 @@ public class ContainerManageActivity extends BaseActivity {
         Intent intent = new Intent();
         intent.putExtra("name", containerName);
         intent.putExtra("deptId", deptId);
+        intent.putExtra("pid", pid);
         intent.putExtra("id", containerId);
         switch (itemViewType) {
             case 0:

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,7 +24,6 @@ import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
 import com.example.a719equipmentmanagement.adapter.ToDoAdapter;
 import com.example.a719equipmentmanagement.adapter.ToReturnAdapter;
 import com.example.a719equipmentmanagement.base.BaseFragment;
-import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.HomeBean;
 import com.example.a719equipmentmanagement.entity.InvalidEquip;
 import com.example.a719equipmentmanagement.entity.Me;
@@ -34,6 +34,9 @@ import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +86,8 @@ public class HomeFragment extends BaseFragment {
     TextView tv4;
     @BindView(R.id.tv_5)
     TextView tv5;
+    @BindView(R.id.refreshlayout)
+    SmartRefreshLayout refreshlayout;
     private String[] features = {"组织管理", "货柜管理", "设备分类", "建账入库", "盘点"};
     private int[] featuresImg = {R.mipmap.departmanage, R.mipmap.container, R.mipmap.device, R.mipmap.storage,
             R.mipmap.inventory};
@@ -188,7 +193,7 @@ public class HomeFragment extends BaseFragment {
                 if (toAudit != null) {
                     List<ToAudit.RowsBean> rows = toAudit.getRows();
                     if (rows != null && rows.size() > 0) {
-                        tv2.setText("我的待审任务：" + "(" + rows.size() + ")");
+                        tv3.setText("我的待审任务：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
                         }
@@ -198,7 +203,7 @@ public class HomeFragment extends BaseFragment {
                 if (toDo != null) {
                     List<ToDo.RowsBean> rows = toDo.getRows();
                     if (rows != null && rows.size() > 0) {
-                        tv3.setText("我的待办事项：" + "(" + rows.size() + ")");
+                        tv4.setText("我的待办事项：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
                         }
@@ -208,7 +213,7 @@ public class HomeFragment extends BaseFragment {
                 if (toReturn != null) {
                     List<ToReturn.RowsBean> rows = toReturn.getRows();
                     if (rows != null && rows.size() > 0) {
-                        tv4.setText("我的待还设备：" + "(" + rows.size() + ")");
+                        tv2.setText("我的待还设备：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
                         }
@@ -241,7 +246,6 @@ public class HomeFragment extends BaseFragment {
 
     private void initView() {
         topbar.setTitle("首页");
-
         View view = LayoutInflater.from(getContext()).inflate(R.layout.borrow_return, null);
         view.setOnClickListener(v -> ScanActivity.start(getContext()));
         RelativeLayout.LayoutParams layoutParams = topbar.generateTopBarImageButtonLayoutParams();
@@ -261,10 +265,15 @@ public class HomeFragment extends BaseFragment {
         recyclerview5.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
 
         recyclerview1.setAdapter(invalidEquipAdapter);
-        recyclerview2.setAdapter(toAuditAdapter);
-        recyclerview3.setAdapter(toDoAdapter);
-        recyclerview4.setAdapter(toReturnAdapter);
+        recyclerview2.setAdapter(toReturnAdapter);
+        recyclerview3.setAdapter(toAuditAdapter);
+        recyclerview4.setAdapter(toDoAdapter);
         recyclerview5.setAdapter(applyProgressAdapter);
+
+        refreshlayout.setOnRefreshListener(refreshLayout -> {
+            refreshLayout.finishRefresh();
+            initData();
+        });
 
     }
 
@@ -322,13 +331,13 @@ public class HomeFragment extends BaseFragment {
                 InvalidEquipActivity.start(getContext());
                 break;
             case R.id.tv_more2:
-                ToAuditActivity.start(getContext());
+                ToReturnDeviceActivity.start(getContext());
                 break;
             case R.id.tv_more3:
-                ToDoListActivity.start(getContext(), isManager);
+                ToAuditActivity.start(getContext());
                 break;
             case R.id.tv_more4:
-                ToReturnDeviceActivity.start(getContext());
+                ToDoListActivity.start(getContext(), isManager);
                 break;
             case R.id.tv_more5:
                 ApplyProgressActivity.start(getContext());

@@ -15,6 +15,7 @@ import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class BorrowHistoryActivity extends BaseActivity {
     private void initAdapter() {
         adapter = new BorrowHistoryAdapter(R.layout.return_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
     }
 

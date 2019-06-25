@@ -34,6 +34,7 @@ import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
+import com.example.a719equipmentmanagement.view.OperaDialog;
 import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -55,7 +56,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public class DeviceDetailActivity extends BaseActivity {
-
 
     @BindView(R.id.tv_title)
     TextView tvTitle;
@@ -164,6 +164,7 @@ public class DeviceDetailActivity extends BaseActivity {
     private int locationId;
     private int deptId;
     private int categoryId;
+    private OperaDialog operaDialog;
 
 
     @Override
@@ -176,6 +177,8 @@ public class DeviceDetailActivity extends BaseActivity {
     private void initView() {
         returnInspectionDialog = new ReturnInspectionDialog(this);
         auditDialog = new AuditDialog(this);
+        operaDialog = new OperaDialog(this);
+
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
         tvTitle2.setEnabled(false);
@@ -255,46 +258,6 @@ public class DeviceDetailActivity extends BaseActivity {
                 }
             }
         });
-//        Single.zip(baseResponseSingle, deviceData2Single, (response, deviceData2) -> {
-//            if (deviceData2 != null) {
-//                List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-//                if (rows != null && rows.size() > 0) {
-//                    DeviceData2.RowsBean rowsBean = rows.get(0);
-//                    setData(rowsBean);
-//                }
-//            }
-//            if (response != null) {
-//                DeviceScanData.DataBean data = response.getData();
-//                if (data != null) {
-//                    List<String> opers = data.getOpers();
-//                    if (opers != null && opers.size() > 0) {
-//                        DeviceDetailActivity.this.opers = opers;
-//                        setMenu();
-//                    } else {
-//                        topbar.removeAllRightViews();
-//                    }
-//                }
-//            }
-//            return new Object();
-//        }).subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new BaseSubscriber<Object>(this) {
-//
-//                });
-//        RetrofitClient.getInstance().getService().findDeviceData(map)
-//                .compose(CommonCompose.io2main(DeviceDetailActivity.this))
-//                .subscribe(new BaseSubscriber<DeviceData2>(DeviceDetailActivity.this) {
-//                    @Override
-//                    public void onSuccess(DeviceData2 deviceData2) {
-//                        if (deviceData2 != null) {
-//                            List<DeviceData2.RowsBean> rows = deviceData2.getRows();
-//                            if (rows != null && rows.size() > 0) {
-//                                DeviceData2.RowsBean rowsBean = rows.get(0);
-//                                setData(rowsBean);
-//                            }
-//                        }
-//                    }
-//                });
     }
 
     private void setMenu() {
@@ -416,43 +379,43 @@ public class DeviceDetailActivity extends BaseActivity {
                 String s = textView.getText().toString();
                 switch (s) {
                     case "借用":
-                        operatingEquip(1, s);
+                        showOperaDialog(1, s);
                         break;
                     case "归还":
-                        operatingEquip(2, s);
+                        showOperaDialog(2, s);
                         break;
                     case "送检申请":
-                        operatingEquip(3, s);
+                        showOperaDialog(3, s);
                         break;
                     case "审核送检":
                         showAuditDialog(4, s);
                         break;
                     case "送检借出":
-                        operatingEquip(5, s);
+                        showOperaDialog(5, s);
                         break;
                     case "送检归还":
                         showReturnInspectionDialog(s);
                         break;
                     case "报废申请":
-                        operatingEquip(7, s);
+                        showOperaDialog(7, s);
                         break;
                     case "审核报废":
                         showAuditDialog(8, s);
                         break;
                     case "报废处理":
-                        operatingEquip(9, s);
+                        showOperaDialog(9, s);
                         break;
                     case "封存":
-                        operatingEquip(10, s);
+                        showOperaDialog(10, s);
                         break;
                     case "解封申请":
-                        operatingEquip(11, s);
+                        showOperaDialog(11, s);
                         break;
                     case "审核解封":
                         showAuditDialog(12, s);
                         break;
                     case "解封":
-                        operatingEquip(13, s);
+                        showOperaDialog(13, s);
                         break;
                     case "编辑":
                         setEditStatu();
@@ -465,6 +428,18 @@ public class DeviceDetailActivity extends BaseActivity {
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    private void showOperaDialog(int operType, String s) {
+        operaDialog.setTitle(s)
+                .setPlaceholder("请输入理由")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    operatingEquip(operType, s);
+                })
+                .create(mCurrentDialogStyle).show();
     }
 
     /**
@@ -660,7 +635,6 @@ public class DeviceDetailActivity extends BaseActivity {
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
                     auditEquip(operType, 1, s);
-
                 })
 
                 .addAction("通过", (dialog, index) -> {

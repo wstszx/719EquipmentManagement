@@ -15,6 +15,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ToAuditAdapter;
+import com.example.a719equipmentmanagement.adapter.ToAuditListAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ToAudit;
@@ -36,7 +37,7 @@ public class ToAuditActivity extends BaseActivity {
     QMUITopBar topBar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-    private ToAuditAdapter toAuditAdapter;
+    private ToAuditListAdapter toAuditListAdapter;
     private int equipId;
     private String dealer;
 
@@ -50,12 +51,12 @@ public class ToAuditActivity extends BaseActivity {
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(ToAuditActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        toAuditAdapter = new ToAuditAdapter(R.layout.to_audit_items);
-        recyclerView.setAdapter(toAuditAdapter);
-        toAuditAdapter.setOnItemChildClickListener((adapter, view, position) -> {
+        toAuditListAdapter = new ToAuditListAdapter(R.layout.to_audit_items);
+        recyclerView.setAdapter(toAuditListAdapter);
+        toAuditListAdapter.setOnItemChildClickListener((adapter, view, position) -> {
             TextView textView = (TextView) view;
             String string = textView.getText().toString();
-            ToAudit.RowsBean rowsBean = toAuditAdapter.getData().get(position);
+            ToAudit.RowsBean rowsBean = toAuditListAdapter.getData().get(position);
             equipId = rowsBean.getEquipId();
             dealer = rowsBean.getDealer();
             switch (string) {
@@ -111,7 +112,7 @@ public class ToAuditActivity extends BaseActivity {
                         if (toAudit != null) {
                             List<ToAudit.RowsBean> rows = toAudit.getRows();
                             if (rows != null && rows.size() > 0) {
-                                toAuditAdapter.setNewData(rows);
+                                toAuditListAdapter.setNewData(rows);
                             }
                         }
                     }

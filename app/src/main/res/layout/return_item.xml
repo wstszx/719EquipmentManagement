@@ -15,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:singleLine="true"
-        android:maxEms="8"
         tools:text="TextView1333465464446412" />
 
     <TextView
@@ -26,7 +25,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_1"
         android:singleLine="true"
-        android:maxEms="8"
         tools:text="TextView" />
 
     <TextView
@@ -39,7 +37,6 @@
         app:layout_constraintStart_toStartOf="@+id/tv_1"
         app:layout_constraintTop_toBottomOf="@+id/tv_1"
         android:singleLine="true"
-        android:maxEms="8"
         tools:text="TextView1365456431315646" />
 
     <TextView
@@ -50,6 +47,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_3"
         android:singleLine="true"
-        android:maxEms="8"
         tools:text="TextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

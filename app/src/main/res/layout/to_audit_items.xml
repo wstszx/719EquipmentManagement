@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/number"
@@ -12,50 +12,48 @@
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="序号" />
 
-    <TextView
-        android:id="@+id/deviceName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/number"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="设备名称" />
+    <!--<TextView-->
+        <!--android:id="@+id/deviceName"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="32dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintStart_toEndOf="@id/number"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+        <!--tools:text="设备名称" />-->
 
     <TextView
         android:id="@+id/tv_by"
         android:layout_width="60dp"
         android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/round_bg"
         android:gravity="center"
         android:text="@string/by"
         android:textColor="#008000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/tv_no_by"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number" />
 
     <TextView
         android:id="@+id/tv_no_by"
         android:layout_width="60dp"
         android:layout_height="30dp"
-        android:layout_marginEnd="32dp"
         android:background="@drawable/round_bg"
         android:gravity="center"
         android:text="@string/no_by"
         android:textColor="@color/qmui_config_color_red"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_by"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_by"
+        app:layout_constraintTop_toTopOf="@+id/tv_by" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

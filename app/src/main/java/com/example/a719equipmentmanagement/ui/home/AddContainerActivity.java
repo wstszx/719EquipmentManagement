@@ -137,7 +137,6 @@ public class AddContainerActivity extends BaseActivity {
                                 qrList.add("C|" + c);
                             }
                             ToastUtils.showShort("添加货柜成功");
-                            roundButton.setVisibility(View.VISIBLE);
                         }
 //                        setResult(RESULT_OK);
 //                        finish();

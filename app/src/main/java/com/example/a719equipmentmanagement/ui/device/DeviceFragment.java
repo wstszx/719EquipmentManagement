@@ -23,8 +23,14 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.view.DropDownMenu;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.scwang.smartrefresh.header.BezierCircleHeader;
+import com.scwang.smartrefresh.header.DropBoxHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.header.BezierRadarHeader;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
@@ -70,6 +76,8 @@ public class DeviceFragment extends BaseFragment {
     private BaseFilterAdapter adapter22;
     private Map<String, Object> map = new HashMap<>();
     private List<DeviceData2.RowsBean> rows;
+    private int pageNum = 1;
+    private SmartRefreshLayout refreshLayout;
 
     public static DeviceFragment newInstance() {
         if (fragment == null) {
@@ -100,7 +108,9 @@ public class DeviceFragment extends BaseFragment {
     }
 
     private void convertRequest() {
-        Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData(new HashMap<>())
+        map.put("pageNum", 1);
+        map.put("pageSize", 10);
+        Single<DeviceData2> deviceData2Single = RetrofitClient.getInstance().getService().findDeviceData(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<List<DeptList>> listSingle1 = RetrofitClient.getInstance().getService().getDeptList()
@@ -168,8 +178,8 @@ public class DeviceFragment extends BaseFragment {
         View view2 = getLayoutInflater().inflate(R.layout.base_double_list, null);
         RecyclerView recyclerView21 = view2.findViewById(R.id.recyclerView1);
         RecyclerView recyclerView22 = view2.findViewById(R.id.recyclerView2);
-        recyclerView21.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
-        recyclerView22.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
+        recyclerView21.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView22.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter21 = new BaseFilterAdapter(R.layout.base_filter_right_item);
         adapter22 = new BaseFilterAdapter(R.layout.base_filter_item);
         recyclerView21.setAdapter(adapter21);
@@ -201,9 +211,9 @@ public class DeviceFragment extends BaseFragment {
         });
 
 //      单列表
-        RecyclerView recyclerView4 = new RecyclerView(new ContextThemeWrapper(Objects.requireNonNull(getContext()), R.style.ScrollbarRecyclerView));
+        RecyclerView recyclerView4 = new RecyclerView(new ContextThemeWrapper(getContext(), R.style.ScrollbarRecyclerView));
         BaseFilterAdapter adapter4 = new BaseFilterAdapter(R.layout.base_filter_item);
-        recyclerView4.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
+        recyclerView4.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView4.setAdapter(adapter4);
         recyclerView4.setScrollbarFadingEnabled(true);
         adapter4.setNewData(filters);
@@ -226,29 +236,34 @@ public class DeviceFragment extends BaseFragment {
         popupViews.add(recyclerView4);
 
         RecyclerView recyclerview5 = new RecyclerView(getContext());
+        recyclerview5.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         recyclerview5.setBackgroundColor(Color.WHITE);
         recyclerview5.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        SmartRefreshLayout refreshLayout = new SmartRefreshLayout(getContext());
-        refreshLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        refreshLayout = new SmartRefreshLayout(getContext());
+        refreshLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         refreshLayout.addView(recyclerview5);
-        refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        refreshLayout.setOnRefreshListener(refreshLayout1 -> {
+            refreshLayout1.finishRefresh();
+            LogUtils.i("我在调用下拉");
+            pageNum = 1;
+            map.put("pageNum", 1);
+            map.put("pageSize", 10);
+            getDeviceData(map);
+        });
+        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                LogUtils.i("我在调用下拉");
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                refreshLayout.finishLoadMore();
+                pageNum++;
+                map.put("pageNum", pageNum);
+                map.put("pageSize", 10);
+                refreshDeviceData(map);
             }
         });
 
         adapter = new DeviceAdapter(R.layout.base_device02);
-        adapter.setUpFetchEnable(false);
-        adapter.setUpFetchListener(new BaseQuickAdapter.UpFetchListener() {
-            @Override
-            public void onUpFetch() {
-                adapter.setUpFetching(true);
-                getDeviceData(map);
-            }
-        });
         recyclerview5.setAdapter(adapter);
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = (DeviceData2.RowsBean) adapter.getData().get(position);
@@ -265,10 +280,8 @@ public class DeviceFragment extends BaseFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case DEVICE_DETAIL:
-                    getDeviceData(map);
-                    break;
+            if (requestCode == DEVICE_DETAIL) {
+                getDeviceData(map);
             }
         }
     }
@@ -280,7 +293,6 @@ public class DeviceFragment extends BaseFragment {
                 .subscribe(new BaseSubscriber<DeviceData2>(getContext()) {
                     @Override
                     public void onSuccess(DeviceData2 deviceData2) {
-                        adapter.setUpFetching(false);
                         if (deviceData2 != null) {
                             rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
@@ -290,10 +302,27 @@ public class DeviceFragment extends BaseFragment {
                             }
                         }
                     }
+                });
+    }
 
+    private void refreshDeviceData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().findDeviceData(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<DeviceData2>(getContext()) {
                     @Override
-                    public void onError(Throwable e) {
-                        adapter.setUpFetchEnable(false);
+                    public void onSuccess(DeviceData2 deviceData2) {
+                        if (deviceData2 != null) {
+                            rows = deviceData2.getRows();
+                            if (rows != null) {
+                                if (rows.size() == 10) {
+                                    adapter.addData(rows);
+                                } else {
+                                    adapter.addData(rows);
+                                    refreshLayout.finishLoadMore();
+                                }
+                            }
+                        }
                     }
                 });
     }
