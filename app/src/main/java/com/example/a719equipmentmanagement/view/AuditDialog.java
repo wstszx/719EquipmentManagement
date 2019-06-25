@@ -45,7 +45,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         return this;
     }
     /**
-     * 设置第一个输入框的 placeholder
+     * 设置第二个输入框的 placeholder
      */
     public AuditDialog setPlaceholder1(String placeholder) {
         this.mPlaceholder1 = placeholder;

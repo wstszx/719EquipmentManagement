@@ -432,12 +432,13 @@ public class DeviceDetailActivity extends BaseActivity {
 
     private void showOperaDialog(int operType, String s) {
         operaDialog.setTitle(s)
-                .setPlaceholder("请输入理由")
+                .setPlaceholder("备注")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确定", (dialog, index) -> {
                     dialog.dismiss();
-                    operatingEquip(operType, s);
+                    String msg = operaDialog.getEditText().getText().toString();
+                    operatingEquip(operType, s, msg);
                 })
                 .create(mCurrentDialogStyle).show();
     }
@@ -515,12 +516,15 @@ public class DeviceDetailActivity extends BaseActivity {
         returnInspectionDialog.setTitle(s)
                 .setPlaceholder("有效期")
                 .setPlaceholder1("最后检验日期")
+                .setPlaceholder2("备注")
                 .setInputType(InputType.TYPE_CLASS_DATETIME)
                 .setInputType1(InputType.TYPE_CLASS_DATETIME)
+                .setInputType2(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("确定", (dialog, index) -> {
                     dialog.dismiss();
-                    operatingEquip(6, s);
+                    String msg = returnInspectionDialog.getEditText2().getText().toString();
+                    operatingEquip(6, s, msg);
                 })
                 .create(mCurrentDialogStyle).show();
         returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity.this, VALID_DATA));
@@ -565,13 +569,13 @@ public class DeviceDetailActivity extends BaseActivity {
      * 操作设备
      *
      * @param operType
-     * @param text
+     * @param title
      */
-    private void operatingEquip(int operType, String text) {
+    private void operatingEquip(int operType, String title, String msg) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("equipId", equipId);
         map.put("operType", operType);
-        map.put("msg", "");
+        map.put("msg", StringUtils.isEmpty(msg) ? "" : msg);
         map.put("dealer", responsor);
         if (operType == 6) {
             map.put("validDate", date);
@@ -585,7 +589,7 @@ public class DeviceDetailActivity extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
                         if (code == 0) {
-                            ResultActivity.start(DeviceDetailActivity.this, text + "成功");
+                            ResultActivity.start(DeviceDetailActivity.this, title + "成功");
                         }
                     }
                 });
@@ -607,7 +611,7 @@ public class DeviceDetailActivity extends BaseActivity {
         }
         map.put("equipId", equipId);
         map.put("operType", operType);
-        map.put("msg", msg);
+        map.put("msg", StringUtils.isEmpty(msg) ? "" : msg);
         map.put("operState", operState);
         map.put("dealer", userId);
         RetrofitClient.getInstance().getService().operatingEquip(map)
@@ -629,14 +633,13 @@ public class DeviceDetailActivity extends BaseActivity {
     private void showAuditDialog(int operType, String s) {
         userBeanList.clear();
         auditDialog.setTitle(s)
-                .setPlaceholder1("请输入理由")
-                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .setPlaceholder1("备注")
+                .setInputType1(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
                     auditEquip(operType, 1, s);
                 })
-
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
                     auditEquip(operType, 2, s);

@@ -22,17 +22,23 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogBuilder;
 public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDialog> {
     protected String mPlaceholder;
     protected String mPlaceholder1;
+    protected String mPlaceholder2;
     protected TransformationMethod mTransformationMethod;
     protected RelativeLayout mMainLayout;
     protected EditText mEditText;
     protected ImageView mRightImageView;
     private int mInputType = InputType.TYPE_CLASS_TEXT;
     private int mInputType1 = InputType.TYPE_TEXT_VARIATION_PASSWORD;
+    private int mInputType2 = InputType.TYPE_CLASS_TEXT;
     private CharSequence mDefaultText = null;
     private EditText mEditText1;
     private ImageView mRightImageView1;
     private RelativeLayout mMainLayout1;
     private CharSequence mDefaultText1;
+    private CharSequence mDefaultText2;
+    private EditText mEditText2;
+    private ImageView mRightImageView2;
+    private RelativeLayout mMainLayout2;
 
     public ReturnInspectionDialog(Context context) {
         super(context);
@@ -45,11 +51,20 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         this.mPlaceholder = placeholder;
         return this;
     }
+
     /**
-     * 设置第一个输入框的 placeholder
+     * 设置第二个输入框的 placeholder
      */
     public ReturnInspectionDialog setPlaceholder1(String placeholder) {
         this.mPlaceholder1 = placeholder;
+        return this;
+    }
+
+    /**
+     * 设置第三个输入框的 placeholder
+     */
+    public ReturnInspectionDialog setPlaceholder2(String placeholder) {
+        this.mPlaceholder2 = placeholder;
         return this;
     }
 
@@ -64,8 +79,14 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         mDefaultText = defaultText;
         return this;
     }
+
     public ReturnInspectionDialog setDefaultText1(CharSequence defaultText) {
         mDefaultText1 = defaultText;
+        return this;
+    }
+
+    public ReturnInspectionDialog setDefaultText2(CharSequence defaultText) {
+        mDefaultText2 = defaultText;
         return this;
     }
 
@@ -84,11 +105,22 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         mInputType = inputType;
         return this;
     }
+
     public ReturnInspectionDialog setInputType1(int inputType) {
         mInputType1 = inputType;
         return this;
     }
 
+    public ReturnInspectionDialog setInputType2(int inputType) {
+        mInputType2 = inputType;
+        return this;
+    }
+
+    /**
+     * @param dialog
+     * @param parent
+     * @param context
+     */
     @Override
     protected void onCreateContent(QMUIDialog dialog, ViewGroup parent, Context context) {
         mEditText = new EditText(context);
@@ -141,7 +173,7 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
 //        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText1.setId(R.id.qmui_dialog_edit_input);
 
-        if (!QMUILangHelper.isNullOrEmpty(mDefaultText)) {
+        if (!QMUILangHelper.isNullOrEmpty(mDefaultText1)) {
             mEditText1.setText(mDefaultText1);
         }
 
@@ -170,16 +202,61 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         RelativeLayout.LayoutParams editLp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editLp1.addRule(RelativeLayout.LEFT_OF, mRightImageView1.getId());
         editLp1.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        if (mPlaceholder != null) {
+        if (mPlaceholder1 != null) {
             mEditText1.setHint(mPlaceholder1);
+        }
+//        第三个
+        mEditText2 = new EditText(context);
+
+        QMUIDialog.MessageDialogBuilder.assignMessageTvWithAttr(mEditText2, hasTitle(), R.attr.qmui_dialog_edit_content_style);
+        mEditText2.setFocusable(false);
+        mEditText2.setEnabled(false);
+        mEditText2.setFocusableInTouchMode(true);
+//        mEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
+        mEditText2.setId(R.id.qmui_dialog_edit_input);
+
+        if (!QMUILangHelper.isNullOrEmpty(mDefaultText2)) {
+            mEditText2.setText(mDefaultText2);
+        }
+
+        mRightImageView2 = new ImageView(context);
+        mRightImageView2.setImageResource(R.mipmap.date);
+        mRightImageView2.setId(R.id.qmui_dialog_edit_right_icon);
+        mRightImageView2.setVisibility(View.GONE);
+
+        mMainLayout2 = new RelativeLayout(context);
+        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp2.topMargin = mEditText2.getPaddingTop();
+        lp2.leftMargin = mEditText2.getPaddingLeft();
+        lp2.rightMargin = mEditText2.getPaddingRight();
+        lp2.bottomMargin = mEditText2.getPaddingBottom();
+        mMainLayout2.setBackgroundResource(R.drawable.qmui_edittext_bg_border_bottom);
+        mMainLayout2.setLayoutParams(lp2);
+
+        if (mTransformationMethod != null) {
+            mEditText2.setTransformationMethod(mTransformationMethod);
+        } else {
+            mEditText2.setInputType(mInputType2);
+        }
+
+        mEditText2.setBackgroundResource(0);
+        mEditText2.setPadding(0, 0, 0, QMUIDisplayHelper.dpToPx(5));
+        RelativeLayout.LayoutParams editLp2 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        editLp2.addRule(RelativeLayout.LEFT_OF, mRightImageView2.getId());
+        editLp2.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
+        if (mPlaceholder2 != null) {
+            mEditText2.setHint(mPlaceholder2);
         }
         mMainLayout.addView(mEditText, createEditTextLayoutParams());
         mMainLayout1.addView(mEditText1, createEditTextLayoutParams());
+        mMainLayout2.addView(mEditText2, createEditTextLayoutParams());
         mMainLayout.addView(mRightImageView, createRightIconLayoutParams());
         mMainLayout1.addView(mRightImageView1, createRightIconLayoutParams());
+        mMainLayout2.addView(mRightImageView2, createRightIconLayoutParams());
 
         parent.addView(mMainLayout);
         parent.addView(mMainLayout1);
+        parent.addView(mMainLayout2);
     }
 
     protected RelativeLayout.LayoutParams createEditTextLayoutParams() {
@@ -229,10 +306,19 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         return mEditText1;
     }
 
+    public EditText getEditText2() {
+        return mEditText2;
+    }
+
     public ImageView getRightImageView() {
         return mRightImageView;
     }
+
     public ImageView getRightImageView1() {
         return mRightImageView1;
+    }
+
+    public ImageView getRightImageView2() {
+        return mRightImageView2;
     }
 }
