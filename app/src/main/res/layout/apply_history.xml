@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:maxEms="8"
         android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -32,21 +31,23 @@
         android:id="@+id/tv_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
         android:maxEms="8"
         android:singleLine="true"
-        app:layout_constraintStart_toStartOf="@+id/tv_1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_8"
+        app:layout_constraintTop_toBottomOf="@+id/tv_8"
         tools:text="TextView1365456431315646" />
 
     <TextView
         android:id="@+id/tv_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:singleLine="true"
-        app:layout_constraintStart_toStartOf="@id/tv_3"
-        app:layout_constraintTop_toBottomOf="@id/tv_3"
+        app:layout_constraintStart_toStartOf="@id/tv_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_1"
         tools:text="TextView" />
 
     <TextView
@@ -54,7 +55,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_4"
+        app:layout_constraintEnd_toStartOf="@+id/tv_6"
         app:layout_constraintStart_toEndOf="@+id/tv_4"
         app:layout_constraintTop_toTopOf="@+id/tv_4"
         tools:text="TextView" />
@@ -63,8 +66,9 @@
         android:id="@+id/tv_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_4"
-        app:layout_constraintStart_toEndOf="@+id/tv_5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_4"
         tools:text="TextView" />
 
@@ -72,7 +76,7 @@
         android:id="@+id/tv_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/tv_4"
         app:layout_constraintTop_toBottomOf="@+id/tv_4"
         tools:text="TextView" />
@@ -81,9 +85,7 @@
         android:id="@+id/tv_8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/tv_7"
         app:layout_constraintTop_toBottomOf="@+id/tv_7"
         tools:text="TextView" />
@@ -93,7 +95,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_8"
+        app:layout_constraintEnd_toStartOf="@+id/tv_10"
         app:layout_constraintStart_toEndOf="@+id/tv_8"
         app:layout_constraintTop_toTopOf="@+id/tv_8"
         tools:text="TextView" />
@@ -102,9 +106,9 @@
         android:id="@+id/tv_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginEnd="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_9"
-        app:layout_constraintStart_toEndOf="@+id/tv_9"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_9"
         tools:text="TextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>

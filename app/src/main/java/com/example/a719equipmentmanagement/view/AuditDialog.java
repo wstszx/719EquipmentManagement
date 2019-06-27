@@ -25,8 +25,8 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
     protected RelativeLayout mMainLayout;
     protected EditText mEditText;
     protected ImageView mRightImageView;
-    private int mInputType = InputType.TYPE_CLASS_TEXT;
-    private int mInputType1 = InputType.TYPE_TEXT_VARIATION_PASSWORD;
+    private int mInputType;
+    private int mInputType1;
     private CharSequence mDefaultText = null;
     private EditText mEditText1;
     private ImageView mRightImageView1;
@@ -44,6 +44,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         this.mPlaceholder = placeholder;
         return this;
     }
+
     /**
      * 设置第二个输入框的 placeholder
      */
@@ -63,6 +64,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         mDefaultText = defaultText;
         return this;
     }
+
     public AuditDialog setDefaultText1(CharSequence defaultText) {
         mDefaultText1 = defaultText;
         return this;
@@ -83,6 +85,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         mInputType = inputType;
         return this;
     }
+
     public AuditDialog setInputType1(int inputType) {
         mInputType1 = inputType;
         return this;
@@ -140,7 +143,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
 //        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText1.setId(R.id.qmui_dialog_edit_input);
 
-        if (!QMUILangHelper.isNullOrEmpty(mDefaultText)) {
+        if (!QMUILangHelper.isNullOrEmpty(mDefaultText1)) {
             mEditText1.setText(mDefaultText1);
         }
 
@@ -168,7 +171,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         RelativeLayout.LayoutParams editLp1 = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         editLp1.addRule(RelativeLayout.LEFT_OF, mRightImageView1.getId());
         editLp1.addRule(RelativeLayout.CENTER_VERTICAL, RelativeLayout.TRUE);
-        if (mPlaceholder != null) {
+        if (mPlaceholder1 != null) {
             mEditText1.setHint(mPlaceholder1);
         }
         mMainLayout.addView(mEditText, createEditTextLayoutParams());
@@ -199,18 +202,10 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
     protected void onAfter(QMUIDialog dialog, LinearLayout parent, Context context) {
         super.onAfter(dialog, parent, context);
         final InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0);
-            }
-        });
-        mEditText.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mEditText.requestFocus();
-                inputMethodManager.showSoftInput(mEditText, 0);
-            }
+        dialog.setOnDismissListener(dialog1 -> inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0));
+        mEditText.postDelayed(() -> {
+            mEditText.requestFocus();
+            inputMethodManager.showSoftInput(mEditText, 0);
         }, 300);
     }
 

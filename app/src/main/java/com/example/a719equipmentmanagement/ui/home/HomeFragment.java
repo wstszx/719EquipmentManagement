@@ -116,8 +116,8 @@ public class HomeFragment extends BaseFragment {
     private void initAdapter() {
         invalidEquipAdapter = new InvalidEquipAdapter(R.layout.invalid_equip_item);
         toAuditAdapter = new ToAuditAdapter(R.layout.to_audit_item);
-        toDoAdapter = new ToDoAdapter(R.layout.invalid_equip_item);
-        toReturnAdapter = new ToReturnAdapter(R.layout.invalid_equip_item);
+        toDoAdapter = new ToDoAdapter(R.layout.to_audit_item);
+        toReturnAdapter = new ToReturnAdapter(R.layout.to_audit_item);
         applyProgressAdapter = new ApplyProgressAdapter(R.layout.invalid_equip_item);
     }
 
@@ -253,11 +253,16 @@ public class HomeFragment extends BaseFragment {
         view.setLayoutParams(layoutParams);
         topbar.addRightView(view, R.id.view);
 //        初始化主页下方列表
-        recyclerview1.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerview2.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerview3.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerview4.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager3 = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager4 = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager5 = new LinearLayoutManager(getContext());
+        recyclerview1.setLayoutManager(layoutManager1);
+        recyclerview2.setLayoutManager(layoutManager2);
+        recyclerview3.setLayoutManager(layoutManager3);
+        recyclerview4.setLayoutManager(layoutManager4);
+        recyclerview5.setLayoutManager(layoutManager5);
         recyclerview1.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
         recyclerview2.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
         recyclerview3.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));

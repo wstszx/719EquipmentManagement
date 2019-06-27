@@ -154,17 +154,14 @@ public class DeviceDetailActivity extends BaseActivity {
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
     private List<String> opers;
-    private ReturnInspectionDialog returnInspectionDialog;
     private String date;
     private String date1;
-    private AuditDialog auditDialog;
     private int userId;
     private String techStateStr;
     private String categoryName;
     private int locationId;
     private int deptId;
     private int categoryId;
-    private OperaDialog operaDialog;
 
 
     @Override
@@ -175,9 +172,6 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        returnInspectionDialog = new ReturnInspectionDialog(this);
-        auditDialog = new AuditDialog(this);
-        operaDialog = new OperaDialog(this);
 
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
@@ -431,6 +425,8 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     private void showOperaDialog(int operType, String s) {
+        OperaDialog operaDialog = new OperaDialog(this);
+
         operaDialog.setTitle(s)
                 .setPlaceholder("备注")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
@@ -513,6 +509,8 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     private void showReturnInspectionDialog(String s) {
+        ReturnInspectionDialog returnInspectionDialog = new ReturnInspectionDialog(this);
+
         returnInspectionDialog.setTitle(s)
                 .setPlaceholder("有效期")
                 .setPlaceholder1("最后检验日期")
@@ -594,7 +592,7 @@ public class DeviceDetailActivity extends BaseActivity {
      * @param operType
      * @param text
      */
-    private void auditEquip(int operType, int operState, String text) {
+    private void auditEquip(int operType, int operState, String text, AuditDialog auditDialog) {
         HashMap<String, Object> map = new HashMap<>();
         String msg = auditDialog.getEditText1().getText().toString();
         String userName = auditDialog.getEditText().getText().toString();
@@ -624,6 +622,8 @@ public class DeviceDetailActivity extends BaseActivity {
     private List<UserBean> userBeanList = new ArrayList<>();
 
     private void showAuditDialog(int operType, String s) {
+        AuditDialog auditDialog = new AuditDialog(this);
+
         userBeanList.clear();
         auditDialog.setTitle(s)
                 .setPlaceholder1("备注")
@@ -631,11 +631,11 @@ public class DeviceDetailActivity extends BaseActivity {
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 1, s);
+                    auditEquip(operType, 1, s, auditDialog);
                 })
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 2, s);
+                    auditEquip(operType, 2, s, auditDialog);
                 })
                 .create(mCurrentDialogStyle).show();
         auditDialog.getRightImageView().setOnClickListener(v -> {
@@ -658,14 +658,14 @@ public class DeviceDetailActivity extends BaseActivity {
                                         }
                                     }
                                 }
-                                showSingleChoiceDialog();
+                                showSingleChoiceDialog(auditDialog);
                             }
                         }
                     });
         });
     }
 
-    private void showSingleChoiceDialog() {
+    private void showSingleChoiceDialog(AuditDialog auditDialog) {
         String[] userNameArray = new String[]{};
         List<String> userNameList = new ArrayList<>();
         for (UserBean userBean : userBeanList) {

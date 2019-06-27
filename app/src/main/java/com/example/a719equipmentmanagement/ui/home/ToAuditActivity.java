@@ -23,9 +23,11 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -37,15 +39,21 @@ public class ToAuditActivity extends BaseActivity {
     QMUITopBar topBar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.refreshlayout)
+    SmartRefreshLayout refreshlayout;
     private ToAuditListAdapter toAuditListAdapter;
     private int equipId;
     private String dealer;
+    private int pageNum = 1;
+    private Map<String, Object> map = new HashMap<>();
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initAdapter();
-        initData();
+        map.put("pageNum", 1);
+        map.put("pageSize", 10);
+        initData(map);
     }
 
     private void initAdapter() {
@@ -88,7 +96,7 @@ public class ToAuditActivity extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
                         if (code == 0) {
-                            initData();
+//                            initData();
                             ToastUtils.showShort(string + "成功");
                         }
                     }
@@ -102,8 +110,8 @@ public class ToAuditActivity extends BaseActivity {
         });
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().toAudit()
+    private void initData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().toAudit(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<ToAudit>(ToAuditActivity.this) {

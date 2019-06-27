@@ -30,11 +30,16 @@ public class ApplyProgressAdapter extends BaseQuickAdapter<UserToAudit.RowsBean,
             String equipNo = equip.getEquipNo();
             String name = equip.getName();
 
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            SpannableString spannableString = new SpannableString(equipNo);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
-            builder.append(createTime).append(equipType).append(spannableString).append(name);
-            helper.setText(R.id.number, builder);
+//            SpannableStringBuilder builder = new SpannableStringBuilder();
+//            SpannableString spannableString = new SpannableString(equipNo);
+//            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
+//            builder.append(createTime).append(equipType).append(spannableString).append(name);
+            helper
+                    .setText(R.id.tv_1, equipNo)
+                    .setText(R.id.tv_2, name)
+                    .setText(R.id.tv_3, createTime)
+                    .setText(R.id.tv_4, equipType)
+            ;
         }
     }
 }

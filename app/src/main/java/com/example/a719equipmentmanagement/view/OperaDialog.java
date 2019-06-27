@@ -74,8 +74,8 @@ public class OperaDialog extends QMUIDialogBuilder<OperaDialog> {
         mEditText = new EditText(context);
 
         QMUIDialog.MessageDialogBuilder.assignMessageTvWithAttr(mEditText, hasTitle(), R.attr.qmui_dialog_edit_content_style);
-        mEditText.setFocusable(false);
-        mEditText.setEnabled(false);
+        mEditText.setFocusable(true);
+        mEditText.setEnabled(true);
         mEditText.setFocusableInTouchMode(true);
 //        mEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText.setId(R.id.qmui_dialog_edit_input);

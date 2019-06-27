@@ -171,13 +171,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private int tech_statu;
     private boolean isManager;
     private int equipId;
-    private ReturnInspectionDialog returnInspectionDialog;
-    private AuditDialog auditDialog;
     private String date;
     private String date1;
     private int userId;
     private String categoryName;
-    private OperaDialog operaDialog;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -200,9 +197,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initView() {
-        returnInspectionDialog = new ReturnInspectionDialog(this);
-        auditDialog = new AuditDialog(this);
-        operaDialog = new OperaDialog(this);
+
 
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
@@ -615,6 +610,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void showOperaDialog(int operType, String s) {
+        OperaDialog operaDialog = new OperaDialog(this);
         operaDialog.setTitle(s)
                 .setPlaceholder("备注")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
@@ -708,48 +704,48 @@ public class DeviceDetailActivity2 extends BaseActivity {
 
     private void showAuditDialog(int operType, String s) {
         userBeanList.clear();
+        AuditDialog auditDialog = new AuditDialog(this);
+
         auditDialog.setTitle(s)
-                .setPlaceholder1("请输入理由")
+                .setPlaceholder1("备注")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 1, s);
+                    auditEquip(operType, 1, s, auditDialog);
 
                 })
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 2, s);
+                    auditEquip(operType, 2, s, auditDialog);
                 })
                 .create(mCurrentDialogStyle).show();
-        auditDialog.getRightImageView().setOnClickListener(v -> {
-            RetrofitClient.getInstance().getService().getDeptList()
-                    .compose(CommonCompose.io2main(DeviceDetailActivity2.this))
-                    .subscribe(new BaseSubscriber<List<DeptList>>(DeviceDetailActivity2.this) {
-                        @Override
-                        public void onSuccess(List<DeptList> users) {
-                            if (users != null && users.size() > 0) {
-                                for (DeptList user : users) {
-                                    List<DeptList.UsersBean> deptLists = user.getUsers();
-                                    if (deptLists != null && deptLists.size() > 0) {
-                                        for (DeptList.UsersBean deptList : deptLists) {
-                                            String userName = deptList.getUserName();
-                                            int userId = deptList.getUserId();
-                                            UserBean userBean = new UserBean();
-                                            userBean.setUserId(userId);
-                                            userBean.setUserName(userName);
-                                            userBeanList.add(userBean);
-                                        }
+        auditDialog.getRightImageView().setOnClickListener(v -> RetrofitClient.getInstance().getService().getDeptList()
+                .compose(CommonCompose.io2main(DeviceDetailActivity2.this))
+                .subscribe(new BaseSubscriber<List<DeptList>>(DeviceDetailActivity2.this) {
+                    @Override
+                    public void onSuccess(List<DeptList> users) {
+                        if (users != null && users.size() > 0) {
+                            for (DeptList user : users) {
+                                List<DeptList.UsersBean> deptLists = user.getUsers();
+                                if (deptLists != null && deptLists.size() > 0) {
+                                    for (DeptList.UsersBean deptList : deptLists) {
+                                        String userName = deptList.getUserName();
+                                        int userId = deptList.getUserId();
+                                        UserBean userBean = new UserBean();
+                                        userBean.setUserId(userId);
+                                        userBean.setUserName(userName);
+                                        userBeanList.add(userBean);
                                     }
                                 }
-                                showSingleChoiceDialog();
                             }
+                            showSingleChoiceDialog(auditDialog);
                         }
-                    });
-        });
+                    }
+                }));
     }
 
-    private void showSingleChoiceDialog() {
+    private void showSingleChoiceDialog(AuditDialog auditDialog) {
         String[] userNameArray = new String[]{};
         List<String> userNameList = new ArrayList<>();
         for (UserBean userBean : userBeanList) {
@@ -776,7 +772,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
      * @param operType
      * @param text
      */
-    private void auditEquip(int operType, int operState, String text) {
+    private void auditEquip(int operType, int operState, String text, AuditDialog auditDialog) {
         HashMap<String, Object> map = new HashMap<>();
         String msg = auditDialog.getEditText1().getText().toString();
         String userName = auditDialog.getEditText().getText().toString();
@@ -804,6 +800,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void showReturnInspectionDialog(String s) {
+        ReturnInspectionDialog returnInspectionDialog = new ReturnInspectionDialog(this);
+
         returnInspectionDialog.setTitle(s)
                 .setPlaceholder("有效期")
                 .setPlaceholder1("最后检验日期")
@@ -888,5 +886,4 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 .build()
                 .show();
     }
-
 }

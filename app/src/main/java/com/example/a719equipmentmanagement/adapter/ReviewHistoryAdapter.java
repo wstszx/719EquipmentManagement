@@ -29,7 +29,7 @@ public class ReviewHistoryAdapter extends BaseQuickAdapter<ReviewHistory.RowsBea
             String updateBy = item.getUpdateBy();
             String updateTime = item.getUpdateTime();
             int state = item.getState();
-            String deviceState = Constant.getDeviceState(state);
+            String reviewState = Constant.getReviewState(state);
             ReviewHistory.RowsBean.EquipBean equip = item.getEquip();
             if (equip != null) {
                 equipNo = equip.getEquipNo();
@@ -37,14 +37,14 @@ public class ReviewHistoryAdapter extends BaseQuickAdapter<ReviewHistory.RowsBea
             }
             helper.setText(R.id.tv_1, equipNo)
                     .setText(R.id.tv_2, name)
-                    .setText(R.id.tv_3, remark)
-                    .setText(R.id.tv_4, createBy)
-                    .setText(R.id.tv_5, createTime + "的")
+                    .setText(R.id.tv_3, "备注：" + remark)
+                    .setText(R.id.tv_4, createTime)
+                    .setText(R.id.tv_5, createBy)
                     .setText(R.id.tv_6, equipType)
-                    .setText(R.id.tv_7, auditOpinion)
-                    .setText(R.id.tv_8, updateBy)
-                    .setText(R.id.tv_9, updateTime)
-                    .setText(R.id.tv_10, deviceState)
+                    .setText(R.id.tv_7, "审核意见：" + auditOpinion)
+                    .setText(R.id.tv_8, updateTime)
+                    .setText(R.id.tv_9, updateBy)
+                    .setText(R.id.tv_10, reviewState)
             ;
         }
     }

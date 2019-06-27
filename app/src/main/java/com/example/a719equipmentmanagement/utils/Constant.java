@@ -95,4 +95,26 @@ public class Constant {
         }
         return deviceStateStr;
     }
+
+    public static String getReviewState(int state) {
+        String ReviewStateStr = null;
+        switch (state) {
+            case -1:
+                ReviewStateStr = "已取消";
+                break;
+            case 1:
+                ReviewStateStr = "待审批";
+                break;
+            case 2:
+                ReviewStateStr = "审核不通过";
+                break;
+            case 3:
+                ReviewStateStr = "审核通过";
+                break;
+            case 4:
+                ReviewStateStr = "已经处理";
+                break;
+        }
+        return ReviewStateStr;
+    }
 }

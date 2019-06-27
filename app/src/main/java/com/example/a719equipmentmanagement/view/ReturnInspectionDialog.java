@@ -209,8 +209,8 @@ public class ReturnInspectionDialog extends QMUIDialogBuilder<ReturnInspectionDi
         mEditText2 = new EditText(context);
 
         QMUIDialog.MessageDialogBuilder.assignMessageTvWithAttr(mEditText2, hasTitle(), R.attr.qmui_dialog_edit_content_style);
-        mEditText2.setFocusable(false);
-        mEditText2.setEnabled(false);
+        mEditText2.setFocusable(true);
+        mEditText2.setEnabled(true);
         mEditText2.setFocusableInTouchMode(true);
 //        mEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText2.setId(R.id.qmui_dialog_edit_input);

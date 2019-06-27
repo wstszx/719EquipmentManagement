@@ -217,27 +217,27 @@ public interface ApiService {
 
     //管理员：即将过期的设备
     @GET("invalidEquip")
-    Single<List<InvalidEquip>> invalidEquip();
+    Single<List<InvalidEquip>> invalidEquip(@QueryMap Map<String, Object> map);
 
     //管理员：我的待审任务
     @GET("toAudit")
-    Single<ToAudit> toAudit();
+    Single<ToAudit> toAudit(@QueryMap Map<String, Object> map);
 
     //管理员: 我的待办事项（送检、解封、报废）
     @GET("toHandle")
-    Single<ToDo> toHandle();
+    Single<ToDo> toHandle(@QueryMap Map<String, Object> map);
 
     //普通用户: 我的待还设备
     @GET("toReturn")
-    Single<ToReturn> toReturn();
+    Single<ToReturn> toReturn(@QueryMap Map<String, Object> map);
 
     //普通用户: 我的申请进度
     @GET("userToAudit")
-    Single<UserToAudit> userToAudit();
+    Single<UserToAudit> userToAudit(@QueryMap Map<String, Object> map);
 
     //普通用户: 我的待办事项
     @GET("userToDo")
-    Single<ToDo> userToDo();
+    Single<ToDo> userToDo(@QueryMap Map<String, Object> map);
 
 
     /*----------------- profile-controller  ----------------*/
