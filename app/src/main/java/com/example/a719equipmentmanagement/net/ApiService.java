@@ -139,15 +139,6 @@ public interface ApiService {
     @GET("system/dept/treeData")
     Single<List<TreeData>> getTreeData();
 
-//    //获取人员列表
-//    @FormUrlEncoded
-//    @POST("system/user/list")
-//    Single<Person> getPersonList(@Field("pageSize") int pageSize,
-//                                 @Field("pageNum") int pageNum,
-//                                 @Field("orderByColumn") String orderByColumn,
-//                                 @Field("isAsc") String isAsc);
-
-
     /* -------------- dict-data-controller  ----------------------- */
     //获取数据字典
     @GET("system/dict/data/findByType")
@@ -205,9 +196,9 @@ public interface ApiService {
     @GET("system/inventory/listMy")
     Single<Inventories> getInventories();
 
-    //查找盘点数据
+    //查找盘点历史
     @GET("system/user/profile/listMyAllInventory")
-    Single<InventoryHistory> findInventoryData();
+    Single<InventoryHistory> findInventoryData(@QueryMap Map<String, Object> map);
 
     //获取盘点记录id
     @GET("system/inventory/nextId")
@@ -215,7 +206,7 @@ public interface ApiService {
 
     //查找当前用户处理历史
     @GET("system/user/profile/listMyAllHandle")
-    Single<HandleHistory> getHandle();
+    Single<HandleHistory> getHandle(@QueryMap Map<String, Object> map);
 
 
     /*----------------- msg-controller  ----------------*/
@@ -292,11 +283,11 @@ public interface ApiService {
 
     //查找当前用户的审核历史
     @GET("system/user/profile/listMyAllVerify")
-    Single<ReviewHistory> findReviewHistory();
+    Single<ReviewHistory> findReviewHistory(@QueryMap Map<String, Object> map);
 
     //查找当前用户的申请历史
     @GET("system/user/profile/listMyAllApply")
-    Single<ApplyHistory> findUserApplyHistory();
+    Single<ApplyHistory> findUserApplyHistory(@QueryMap Map<String, Object> map);
 
     //查找建账入库数据
     @GET("system/setup/nextId")
@@ -304,7 +295,7 @@ public interface ApiService {
 
     //查找建账入库数据
     @GET("system/user/profile/listMyAllBorrow")
-    Single<BorrowHistory> getBorrowHistory();
+    Single<BorrowHistory> getBorrowHistory(@QueryMap Map<String, Object> map);
 
     //查找用户数据
     @GET("system/user/get")

@@ -127,7 +127,11 @@ public class DeviceFragment extends BaseFragment {
                             rows = deviceData2.getRows();
                             if (rows != null && rows.size() > 0) {
                                 adapter.setNewData(rows);
+                                if (rows.size() != 10) {
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
+                                }
                             } else {
+                                refreshLayout.finishLoadMoreWithNoMoreData();
                                 adapter.setEmptyView(R.layout.empty);
                             }
                         }
@@ -252,15 +256,12 @@ public class DeviceFragment extends BaseFragment {
             map.put("pageSize", 10);
             getDeviceData(map);
         });
-        refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                refreshLayout.finishLoadMore();
-                pageNum++;
-                map.put("pageNum", pageNum);
-                map.put("pageSize", 10);
-                refreshDeviceData(map);
-            }
+        refreshLayout.setOnLoadMoreListener(refreshLayout -> {
+            refreshLayout.finishLoadMore();
+            pageNum++;
+            map.put("pageNum", pageNum);
+            map.put("pageSize", 10);
+            refreshDeviceData(map);
         });
 
         adapter = new DeviceAdapter(R.layout.base_device02);
@@ -315,11 +316,9 @@ public class DeviceFragment extends BaseFragment {
                         if (deviceData2 != null) {
                             rows = deviceData2.getRows();
                             if (rows != null) {
-                                if (rows.size() == 10) {
-                                    adapter.addData(rows);
-                                } else {
-                                    adapter.addData(rows);
-                                    refreshLayout.finishLoadMore();
+                                adapter.addData(rows);
+                                if (rows.size() < 10) {
+                                    refreshLayout.finishLoadMoreWithNoMoreData();
                                 }
                             }
                         }

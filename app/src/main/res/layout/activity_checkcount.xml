@@ -12,10 +12,17 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/qmui_topbar_height" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshlayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@color/qmui_config_color_white" />
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@color/qmui_config_color_white" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 </LinearLayout>

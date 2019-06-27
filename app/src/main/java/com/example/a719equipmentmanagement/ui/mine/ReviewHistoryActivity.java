@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.BorrowHistoryAdapter;
 import com.example.a719equipmentmanagement.adapter.ReviewHistoryAdapter;
@@ -20,8 +21,11 @@ import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
 import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,18 +36,23 @@ public class ReviewHistoryActivity extends BaseActivity {
     QMUITopBar topbar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
+    @BindView(R.id.refreshlayout)
+    SmartRefreshLayout refreshlayout;
     private ReviewHistoryAdapter adapter;
-
+    private int pageNum = 1;
+    private Map<String, Object> map = new HashMap<>();
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initView();
         initAdapter();
-        initData();
+        map.put("pageNum", 1);
+        map.put("pageSize", 10);
+        initData(map);
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().findReviewHistory()
+    private void initData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().findReviewHistory(map)
                 .compose(CommonCompose.io2main(ReviewHistoryActivity.this))
                 .subscribe(new BaseSubscriber<ReviewHistory>(ReviewHistoryActivity.this) {
                     @Override
@@ -51,6 +60,29 @@ public class ReviewHistoryActivity extends BaseActivity {
                         List<ReviewHistory.RowsBean> rows = reviewHistory.getRows();
                         if (rows != null && rows.size() > 0) {
                             adapter.setNewData(rows);
+                            if (rows.size() < 10) {
+                                refreshlayout.finishLoadMoreWithNoMoreData();
+                            }
+                        } else {
+                            refreshlayout.finishLoadMoreWithNoMoreData();
+                            adapter.setEmptyView(R.layout.empty);
+                        }
+                    }
+                });
+    }
+
+    private void refreshData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().findReviewHistory(map)
+                .compose(CommonCompose.io2main(ReviewHistoryActivity.this))
+                .subscribe(new BaseSubscriber<ReviewHistory>(ReviewHistoryActivity.this) {
+                    @Override
+                    public void onSuccess(ReviewHistory reviewHistory) {
+                        List<ReviewHistory.RowsBean> rows = reviewHistory.getRows();
+                        if (rows != null) {
+                            adapter.addData(rows);
+                            if (rows.size() < 10) {
+                                refreshlayout.finishLoadMoreWithNoMoreData();
+                            }
                         }
                     }
                 });
@@ -58,9 +90,25 @@ public class ReviewHistoryActivity extends BaseActivity {
 
     private void initAdapter() {
         adapter = new ReviewHistoryAdapter(R.layout.apply_history);
+        adapter.bindToRecyclerView(recyclerview);
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerview.setAdapter(adapter);
+        refreshlayout.setOnRefreshListener(refreshLayout1 -> {
+            refreshLayout1.finishRefresh();
+            LogUtils.i("我在调用下拉");
+            pageNum = 1;
+            map.put("pageNum", 1);
+            map.put("pageSize", 10);
+            initData(map);
+        });
+        refreshlayout.setOnLoadMoreListener(refreshLayout -> {
+            refreshLayout.finishLoadMore();
+            pageNum++;
+            map.put("pageNum", pageNum);
+            map.put("pageSize", 10);
+            refreshData(map);
+        });
     }
 
 

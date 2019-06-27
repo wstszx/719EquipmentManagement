@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.BorrowHistoryAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -15,12 +16,15 @@ import com.example.a719equipmentmanagement.entity.BorrowHistory;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
-import com.example.a719equipmentmanagement.view.SpaceItemDecoration;
 import com.qmuiteam.qmui.widget.QMUITopBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BorrowHistoryActivity extends BaseActivity {
 
@@ -29,34 +33,79 @@ public class BorrowHistoryActivity extends BaseActivity {
     RecyclerView recyclerView;
     @BindView(R.id.topbar)
     QMUITopBar topbar;
-    private String[] date = new String[]{"2019年4月1日", "2019年3月1日", "2019年5月1日"};
-    private String[] details = new String[]{"温度计，型号参数，20100401", "压力表，型号参数，20100301", "传感器，型号参数，20100024"};
-    private String[] action = new String[]{"，归还", "，借用", "，归还"};
+    @BindView(R.id.refreshlayout)
+    SmartRefreshLayout refreshlayout;
     private BorrowHistoryAdapter adapter;
+    private int pageNum = 1;
+    private Map<String, Object> map = new HashMap<>();
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
         initAdapter();
-        initData();
+        map.put("pageNum", 1);
+        map.put("pageSize", 10);
+        initData(map);
     }
 
     private void initAdapter() {
         adapter = new BorrowHistoryAdapter(R.layout.return_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
+        refreshlayout.setOnRefreshListener(refreshLayout1 -> {
+            refreshLayout1.finishRefresh();
+            LogUtils.i("我在调用下拉");
+            pageNum = 1;
+            map.put("pageNum", 1);
+            map.put("pageSize", 10);
+            initData(map);
+        });
+        refreshlayout.setOnLoadMoreListener(refreshLayout -> {
+            refreshLayout.finishLoadMore();
+            pageNum++;
+            map.put("pageNum", pageNum);
+            map.put("pageSize", 10);
+            refreshData(map);
+        });
     }
 
-    private void initData() {
-        RetrofitClient.getInstance().getService().getBorrowHistory()
+    private void refreshData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().getBorrowHistory(map)
                 .compose(CommonCompose.io2main(BorrowHistoryActivity.this))
-                .subscribe(new BaseSubscriber<BorrowHistory>(BorrowHistoryActivity.this){
+                .subscribe(new BaseSubscriber<BorrowHistory>(BorrowHistoryActivity.this) {
                     @Override
                     public void onSuccess(BorrowHistory borrowHistory) {
                         if (borrowHistory != null) {
                             List<BorrowHistory.RowsBean> rows = borrowHistory.getRows();
-                            adapter.setNewData(rows);
+                            if (rows != null) {
+                                adapter.addData(rows);
+                                if (rows.size() < 10) {
+                                    refreshlayout.finishLoadMoreWithNoMoreData();
+                                }
+                            }
+                        }
+                    }
+                });
+    }
+
+    private void initData(Map<String, Object> map) {
+        RetrofitClient.getInstance().getService().getBorrowHistory(map)
+                .compose(CommonCompose.io2main(BorrowHistoryActivity.this))
+                .subscribe(new BaseSubscriber<BorrowHistory>(BorrowHistoryActivity.this) {
+                    @Override
+                    public void onSuccess(BorrowHistory borrowHistory) {
+                        if (borrowHistory != null) {
+                            List<BorrowHistory.RowsBean> rows = borrowHistory.getRows();
+                            if (rows != null && rows.size() > 0) {
+                                adapter.setNewData(rows);
+                                if (rows.size() != 10) {
+                                    refreshlayout.finishLoadMoreWithNoMoreData();
+                                }
+                            }else {
+                                refreshlayout.finishLoadMoreWithNoMoreData();
+                                adapter.setEmptyView(R.layout.empty);
+                            }
                         }
                     }
                 });
@@ -65,7 +114,7 @@ public class BorrowHistoryActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_return;
+        return R.layout.activity_borrow;
     }
 
     public static void start(Context context) {
@@ -82,20 +131,6 @@ public class BorrowHistoryActivity extends BaseActivity {
         });
     }
 
-//    private void initGroupListView() {
-//        String time = "时间";
-//        View.OnClickListener onClickListener = v -> {};
-//        QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
-//        for (int i = 0; i < date.length; i++) {
-//            QMUICommonListItemView item = groupListView.createItemView(
-//                    null,
-//                    time +date[i],
-//                    details[i]+action[i],
-//                    QMUICommonListItemView.VERTICAL, 0);
-//            section.addItemView(item, onClickListener);
-//        }
-//        section.addTo(groupListView);
-//    }
 
 }
 
