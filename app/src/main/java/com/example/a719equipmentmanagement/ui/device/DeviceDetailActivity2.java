@@ -33,6 +33,7 @@ import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
+import com.example.a719equipmentmanagement.view.OperaDialog;
 import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
@@ -176,6 +177,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private String date1;
     private int userId;
     private String categoryName;
+    private OperaDialog operaDialog;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -200,6 +202,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private void initView() {
         returnInspectionDialog = new ReturnInspectionDialog(this);
         auditDialog = new AuditDialog(this);
+        operaDialog = new OperaDialog(this);
+
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
         tvTitle2.setEnabled(false);
@@ -559,43 +563,43 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 String s = textView.getText().toString();
                 switch (s) {
                     case "借用":
-                        operatingEquip(1, s);
+                        showOperaDialog(1, s);
                         break;
                     case "归还":
-                        operatingEquip(2, s);
+                        showOperaDialog(2, s);
                         break;
                     case "送检申请":
-                        operatingEquip(3, s);
+                        showOperaDialog(3, s);
                         break;
                     case "审核送检":
                         showAuditDialog(4, s);
                         break;
                     case "送检借出":
-                        operatingEquip(5, s);
+                        showOperaDialog(5, s);
                         break;
                     case "送检归还":
                         showReturnInspectionDialog(s);
                         break;
                     case "报废申请":
-                        operatingEquip(7, s);
+                        showOperaDialog(7, s);
                         break;
                     case "审核报废":
                         showAuditDialog(8, s);
                         break;
                     case "报废处理":
-                        operatingEquip(9, s);
+                        showOperaDialog(9, s);
                         break;
                     case "封存":
-                        operatingEquip(10, s);
+                        showOperaDialog(10, s);
                         break;
                     case "解封申请":
-                        operatingEquip(11, s);
+                        showOperaDialog(11, s);
                         break;
                     case "审核解封":
                         showAuditDialog(12, s);
                         break;
                     case "解封":
-                        operatingEquip(13, s);
+                        showOperaDialog(13, s);
                         break;
                     case "编辑":
                         setEditStatu();
@@ -608,6 +612,19 @@ public class DeviceDetailActivity2 extends BaseActivity {
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    private void showOperaDialog(int operType, String s) {
+        operaDialog.setTitle(s)
+                .setPlaceholder("备注")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    String msg = operaDialog.getEditText().getText().toString();
+                    operatingEquip(operType, s, msg);
+                })
+                .create(mCurrentDialogStyle).show();
     }
 
     /**
@@ -796,7 +813,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
 
                 .addAction("确定", (dialog, index) -> {
                     dialog.dismiss();
-                    operatingEquip(6, s);
+                    String msg = returnInspectionDialog.getEditText2().getText().toString();
+                    operatingEquip(6, s, msg);
                 })
                 .create(mCurrentDialogStyle).show();
         returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity2.this, VALID_DATA));
@@ -819,13 +837,13 @@ public class DeviceDetailActivity2 extends BaseActivity {
      * 操作设备
      *
      * @param operType
-     * @param text
+     * @param title
      */
-    private void operatingEquip(int operType, String text) {
+    private void operatingEquip(int operType, String title, String msg) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("equipId", equipId);
         map.put("operType", operType);
-        map.put("msg", "");
+        map.put("msg", StringUtils.isEmpty(msg) ? "" : msg);
         map.put("dealer", responsor);
         if (operType == 6) {
             map.put("validDate", date);
@@ -839,7 +857,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         int code = baseResponse.getCode();
                         if (code == 0) {
-                            ResultActivity.start(DeviceDetailActivity2.this, text + "成功");
+                            ResultActivity.start(DeviceDetailActivity2.this, title + "成功");
                         }
                     }
                 });

@@ -376,6 +376,6 @@ public class DeviceFragment extends BaseFragment {
 
 
     private void initTopbar() {
-        topbar.setTitle("设备筛选");
+        topbar.setTitle("设备");
     }
 }

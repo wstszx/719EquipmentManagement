@@ -101,7 +101,7 @@ public class InventoryHistoryActivity extends BaseActivity {
                             if (rows.size() != 10) {
                                 refreshlayout.finishLoadMoreWithNoMoreData();
                             }
-                        }else {
+                        } else {
                             refreshlayout.finishLoadMoreWithNoMoreData();
                             adapter.setEmptyView(R.layout.empty);
                         }
