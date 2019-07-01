@@ -6,6 +6,7 @@ import android.text.InputType;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -140,7 +141,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         mEditText1.setFocusable(true);
         mEditText1.setEnabled(true);
         mEditText1.setFocusableInTouchMode(true);
-//        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
+        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText1.setId(R.id.qmui_dialog_edit_input);
 
         if (!QMUILangHelper.isNullOrEmpty(mDefaultText1)) {

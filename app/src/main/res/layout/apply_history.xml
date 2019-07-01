@@ -32,12 +32,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="20dp"
         android:maxEms="8"
         android:singleLine="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/tv_8"
-        app:layout_constraintTop_toBottomOf="@+id/tv_8"
+        app:layout_constraintStart_toStartOf="@+id/tv_4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_4"
         tools:text="TextView1365456431315646" />
 
     <TextView
@@ -77,8 +75,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_4"
-        app:layout_constraintTop_toBottomOf="@+id/tv_4"
+        android:layout_marginBottom="@dimen/dp_16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_8"
+        app:layout_constraintTop_toBottomOf="@+id/tv_8"
         tools:text="TextView" />
 
     <TextView
@@ -86,8 +86,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_7"
-        app:layout_constraintTop_toBottomOf="@+id/tv_7"
+        app:layout_constraintStart_toStartOf="@+id/tv_3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_3"
         tools:text="TextView" />
 
     <TextView

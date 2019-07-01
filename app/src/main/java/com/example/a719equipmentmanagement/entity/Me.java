@@ -7,9 +7,9 @@ public class Me {
 
 
     /**
-     * postGroup : 董事长
-     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2018-03-16 11:33:00","updateBy":null,"updateTime":null,"remark":"管理员","userId":1,"deptId":100,"parentId":null,"loginName":"admin","userName":"王刚","email":"wg@163.com","phonenumber":"15888888888","sex":"男","avatar":"2019/06/03/65f81e08ca118375d3e5005e1162db0c.jpg","password":"1033075292f90df5af9af9e4361677c2","salt":"c2c2d4","status":"0","delFlag":"0","loginIp":"127.0.0.1","loginDate":"2019-06-07 23:58:14","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[1],"postIds":null,"list":null,"comUser":false,"admin":true,"manager":false}
-     * roleGroup : 超级系统管理员
+     * postGroup :
+     * user : {"id":null,"searchValue":null,"createBy":null,"createTime":"2019-06-05 15:31:02","updateBy":null,"updateTime":null,"remark":"manager02","userId":120,"deptId":155,"parentId":null,"loginName":"manager02","userName":"manager02nam","email":"18674075322","phonenumber":"18674075322","sex":"男","avatar":"","password":"9f15560d81684b285703789436d2e25f","salt":"5a2299","status":"0","delFlag":"0","loginIp":"10.11.55.249","loginDate":"2019-06-28 11:07:06","dept":{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":100,"ancestors":null,"deptName":"301实验室","orderNum":"2","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null},"roles":[{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":2,"roleName":"实验室管理员","roleKey":"manager","roleSort":"2","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}],"roleIds":[2],"postIds":null,"list":null,"manager":true,"admin":false,"comUser":false}
+     * roleGroup : 实验室管理员
      */
 
     private String postGroup;
@@ -24,7 +24,7 @@ public class Me {
         this.postGroup = postGroup;
     }
 
-    public UserBean getDeptList() {
+    public UserBean getUser() {
         return user;
     }
 
@@ -45,36 +45,36 @@ public class Me {
          * id : null
          * searchValue : null
          * createBy : null
-         * createTime : 2018-03-16 11:33:00
+         * createTime : 2019-06-05 15:31:02
          * updateBy : null
          * updateTime : null
-         * remark : 管理员
-         * userId : 1
-         * deptId : 100
+         * remark : manager02
+         * userId : 120
+         * deptId : 155
          * parentId : null
-         * loginName : admin
-         * userName : 王刚
-         * email : wg@163.com
-         * phonenumber : 15888888888
+         * loginName : manager02
+         * userName : manager02nam
+         * email : 18674075322
+         * phonenumber : 18674075322
          * sex : 男
-         * avatar : 2019/06/03/65f81e08ca118375d3e5005e1162db0c.jpg
-         * password : 1033075292f90df5af9af9e4361677c2
-         * salt : c2c2d4
+         * avatar :
+         * password : 9f15560d81684b285703789436d2e25f
+         * salt : 5a2299
          * status : 0
          * delFlag : 0
-         * loginIp : 127.0.0.1
-         * loginDate : 2019-06-07 23:58:14
-         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":100,"parentId":0,"ancestors":null,"deptName":"三亚试验","orderNum":"0","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null}
-         * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":1,"roleName":"超级系统管理员","roleKey":"admin","roleSort":"1","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
-         * roleIds : [1]
+         * loginIp : 10.11.55.249
+         * loginDate : 2019-06-28 11:07:06
+         * dept : {"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"deptId":155,"parentId":100,"ancestors":null,"deptName":"301实验室","orderNum":"2","leader":null,"phone":null,"email":null,"status":"0","delFlag":null,"parentName":null,"users":null}
+         * roles : [{"id":null,"searchValue":null,"createBy":null,"createTime":null,"updateBy":null,"updateTime":null,"remark":null,"roleId":2,"roleName":"实验室管理员","roleKey":"manager","roleSort":"2","dataScope":"1","status":"0","delFlag":null,"flag":false,"menuIds":null,"deptIds":null}]
+         * roleIds : [2]
          * postIds : null
          * list : null
+         * manager : true
+         * admin : false
          * comUser : false
-         * admin : true
-         * manager : false
          */
 
-        private int id;
+        private Object id;
         private Object searchValue;
         private Object createBy;
         private String createTime;
@@ -99,17 +99,17 @@ public class Me {
         private DeptBean dept;
         private Object postIds;
         private Object list;
-        private boolean comUser;
-        private boolean admin;
         private boolean manager;
+        private boolean admin;
+        private boolean comUser;
         private List<RolesBean> roles;
         private List<Integer> roleIds;
 
-        public int getId() {
+        public Object getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(Object id) {
             this.id = id;
         }
 
@@ -161,7 +161,7 @@ public class Me {
             this.remark = remark;
         }
 
-        public int getDeptListId() {
+        public int getUserId() {
             return userId;
         }
 
@@ -193,7 +193,7 @@ public class Me {
             this.loginName = loginName;
         }
 
-        public String getDeptListName() {
+        public String getUserName() {
             return userName == null ? "" : userName;
         }
 
@@ -305,12 +305,12 @@ public class Me {
             this.list = list;
         }
 
-        public boolean isComUser() {
-            return comUser;
+        public boolean isManager() {
+            return manager;
         }
 
-        public void setComUser(boolean comUser) {
-            this.comUser = comUser;
+        public void setManager(boolean manager) {
+            this.manager = manager;
         }
 
         public boolean isAdmin() {
@@ -321,12 +321,12 @@ public class Me {
             this.admin = admin;
         }
 
-        public boolean isManager() {
-            return manager;
+        public boolean isComUser() {
+            return comUser;
         }
 
-        public void setManager(boolean manager) {
-            this.manager = manager;
+        public void setComUser(boolean comUser) {
+            this.comUser = comUser;
         }
 
         public List<RolesBean> getRoles() {
@@ -360,11 +360,11 @@ public class Me {
              * updateBy : null
              * updateTime : null
              * remark : null
-             * deptId : 100
-             * parentId : 0
+             * deptId : 155
+             * parentId : 100
              * ancestors : null
-             * deptName : 三亚试验
-             * orderNum : 0
+             * deptName : 301实验室
+             * orderNum : 2
              * leader : null
              * phone : null
              * email : null
@@ -538,7 +538,7 @@ public class Me {
                 this.parentName = parentName;
             }
 
-            public Object getDeptLists() {
+            public Object getUsers() {
                 return users;
             }
 
@@ -556,10 +556,10 @@ public class Me {
              * updateBy : null
              * updateTime : null
              * remark : null
-             * roleId : 1
-             * roleName : 超级系统管理员
-             * roleKey : admin
-             * roleSort : 1
+             * roleId : 2
+             * roleName : 实验室管理员
+             * roleKey : manager
+             * roleSort : 2
              * dataScope : 1
              * status : 0
              * delFlag : null

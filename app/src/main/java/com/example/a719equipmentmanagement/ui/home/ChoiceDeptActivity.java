@@ -144,7 +144,7 @@ public class ChoiceDeptActivity extends BaseActivity {
             Intent intent = new Intent();
             intent.putExtra("pid", pid);
             intent.putExtra("name", name);
-            intent.putExtra("deptId", deptId);
+            intent.putExtra("id", deptId);
             setResult(RESULT_OK, intent);
             finish();
         });

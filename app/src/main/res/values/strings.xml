@@ -98,4 +98,6 @@
     <string name="buy_time">购置时间：</string>
     <string name="by">通过</string>
     <string name="no_by">不通过</string>
+    <string name="login_name">登录名称:</string>
+    <string name="Review">审核</string>
 </resources>

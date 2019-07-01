@@ -42,6 +42,12 @@ public class PersonInfoActivity extends BaseActivity {
     TextView tvResult2;
     @BindView(R.id.edittext3)
     EditText edittext3;
+    @BindView(R.id.tv_result4)
+    TextView tvResult4;
+    @BindView(R.id.tv_result5)
+    TextView tvResult5;
+    @BindView(R.id.edittext6)
+    EditText edittext6;
     private Me me;
     private int userId;
     private String[] sexArray = {"男", "女", "未知"};
@@ -68,11 +74,19 @@ public class PersonInfoActivity extends BaseActivity {
                     public void onSuccess(Me me) {
                         if (me != null) {
                             PersonInfoActivity.this.me = me;
-                            Me.UserBean user = me.getDeptList();
+                            Me.UserBean user = me.getUser();
                             if (user != null) {
-                                userId = user.getDeptListId();
-                                String userName = user.getDeptListName();
+                                userId = user.getUserId();
+                                String userName = user.getUserName();
+                                String loginName = user.getLoginName();
+                                String email = user.getEmail();
+                                Me.UserBean.DeptBean dept = user.getDept();
+                                if (dept != null) {
+                                    String deptName = dept.getDeptName();
+                                    tvResult4.setText(deptName);
+                                }
                                 String sex = user.getSex();
+                                edittext6.setText(email);
                                 List<Me.UserBean.RolesBean> roles = user.getRoles();
                                 if (roles != null && roles.size() > 0) {
                                     roleId = user.getRoles().get(0).getRoleId();
@@ -80,6 +94,7 @@ public class PersonInfoActivity extends BaseActivity {
                                 String phonenumber = user.getPhonenumber();
                                 edittext.setText(userName);
                                 tvResult1.setText(sex);
+                                tvResult5.setText(loginName);
                                 switch (roleId) {
                                     case 1:
                                         tvResult2.setText("超级系统管理员");
@@ -113,29 +128,41 @@ public class PersonInfoActivity extends BaseActivity {
     private void savePersonInfo() {
         String userName = edittext.getText().toString();
         String phonenumber = edittext3.getText().toString();
+        String email = edittext6.getText().toString();
         if (!RegexUtils.isMobileExact(phonenumber)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }
 
-        if (!StringUtils.isEmpty(userName)) {
+        if (StringUtils.isEmpty(userName)) {
             ToastUtils.showShort("请填写用户名称");
+            return;
+        }
+
+        if (StringUtils.isEmpty(email)) {
+            ToastUtils.showShort("请填写邮箱");
             return;
         }
         Map<String, Object> map = new HashMap<>();
         map.put("userName", userName);
         map.put("sex", sexId);
         map.put("phonenumber", phonenumber);
+        map.put("email", phonenumber);
         RetrofitClient.getInstance().getService().updataUserData(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<BaseResponse>(PersonInfoActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse response) {
-
+                        if (response != null) {
+                            int code = response.getCode();
+                            if (code == 0) {
+                                ToastUtils.showShort("保存成功");
+                            }
+                        }
                     }
                 });
-        finish();
+
     }
 
     @Override
@@ -178,4 +205,5 @@ public class PersonInfoActivity extends BaseActivity {
                 .build()
                 .show();
     }
+
 }

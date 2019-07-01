@@ -146,7 +146,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private static final int LAST_DATA = 2;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
-    private String[] technical_status = {"合格", "不合格"};
+    private String[] technical_status = {"合格", "不合格", "限制使用"};
     private static final int DEVICE_TYPE = 1;
     private static final int DEPT_TYPE = 2;
     private static final int CONTAINER_TYPE = 3;
@@ -185,12 +185,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
         AboriginalDateSelect.getInstance().setListener((position, date) -> {
             switch (position) {
                 case DATE_ONE:
-                    String time = TimeUtils.date2String(date);
-                    tvResult12.setText(time);
+                    tvResult12.setText(date);
                     break;
                 case DATE_TWO:
-                    String time1 = TimeUtils.date2String(date);
-                    tvResult13.setText(time1);
+                    tvResult13.setText(date);
                     break;
             }
         });
@@ -534,10 +532,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     showSimpleBottomSheetList(technical_status, 2);
                     break;
                 case R.id.constraint12:
-                    AboriginalDateSelect.getInstance().showDateTime(this, DATE_ONE);
+                    AboriginalDateSelect.getInstance().showDate(this, DATE_ONE);
                     break;
                 case R.id.constraint13:
-                    AboriginalDateSelect.getInstance().showDateTime(this, DATE_TWO);
+                    AboriginalDateSelect.getInstance().showDate(this, DATE_TWO);
                     break;
             }
         }
@@ -815,16 +813,16 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     operatingEquip(6, s, msg);
                 })
                 .create(mCurrentDialogStyle).show();
-        returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity2.this, VALID_DATA));
-        returnInspectionDialog.getRightImageView1().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity2.this, LAST_DATA));
+        returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDate(DeviceDetailActivity2.this, VALID_DATA));
+        returnInspectionDialog.getRightImageView1().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDate(DeviceDetailActivity2.this, LAST_DATA));
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case VALID_DATA:
-                    date = TimeUtils.date2String(dateFormat);
+                    date = dateFormat;
                     returnInspectionDialog.getEditText().setText(date);
                     break;
                 case LAST_DATA:
-                    date1 = TimeUtils.date2String(dateFormat);
+                    date1 = dateFormat;
                     returnInspectionDialog.getEditText1().setText(date1);
                     break;
             }

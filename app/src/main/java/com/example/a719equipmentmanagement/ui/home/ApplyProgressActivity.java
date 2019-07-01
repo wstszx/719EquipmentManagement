@@ -3,16 +3,20 @@ package com.example.a719equipmentmanagement.ui.home;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ApplyProgressAdapter;
 import com.example.a719equipmentmanagement.adapter.ToReturnAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
@@ -52,8 +56,21 @@ public class ApplyProgressActivity extends BaseActivity {
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(ApplyProgressActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new ApplyProgressAdapter(R.layout.to_audit_item);
+        adapter = new ApplyProgressAdapter(R.layout.apply_progress_item);
+        adapter.bindToRecyclerView(recyclerView);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+            @Override
+            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+                switch (view.getId()) {
+                    case R.id.tv_cancel:
+                        UserToAudit.RowsBean rowsBean = (UserToAudit.RowsBean) adapter.getData().get(position);
+                        int id = rowsBean.getId();
+                        cancelApply(id);
+                        break;
+                }
+            }
+        });
         refreshlayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();
             LogUtils.i("我在调用下拉");
@@ -71,8 +88,26 @@ public class ApplyProgressActivity extends BaseActivity {
         });
     }
 
+    private void cancelApply(int id) {
+        RetrofitClient.getInstance().getService().cancelOperatingEquip(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(ApplyProgressActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response != null) {
+                            int code = response.getCode();
+                            if (code == 0) {
+                                initData(map);
+                                ToastUtils.showShort("取消申请成功");
+                            }
+                        }
+                    }
+                });
+    }
+
     private void initTopbar() {
-        topBar.setTitle("我的待还设备");
+        topBar.setTitle("我的申请进度");
         topBar.addLeftBackImageButton().setOnClickListener(v -> {
             finish();
         });

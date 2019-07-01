@@ -78,6 +78,7 @@ public class DeviceFragment extends BaseFragment {
     private List<DeviceData2.RowsBean> rows;
     private int pageNum = 1;
     private SmartRefreshLayout refreshLayout;
+    private RecyclerView recyclerview5;
 
     public static DeviceFragment newInstance() {
         if (fragment == null) {
@@ -132,7 +133,7 @@ public class DeviceFragment extends BaseFragment {
                                 }
                             } else {
                                 refreshLayout.finishLoadMoreWithNoMoreData();
-                                adapter.setEmptyView(R.layout.empty);
+                                adapter.setEmptyView(R.layout.empty, recyclerview5);
                             }
                         }
                         if (deptLists != null && deptLists.size() > 0) {
@@ -175,6 +176,9 @@ public class DeviceFragment extends BaseFragment {
                 dropDownMenu.setTabText(name);
             }
             dropDownMenu.closeMenu();
+            refreshLayout.resetNoMoreData();
+            pageNum = 1;
+            map.put("pageNum", 1);
             getDeviceData(map);
         });
 
@@ -195,6 +199,9 @@ public class DeviceFragment extends BaseFragment {
                 map.remove("categoryIds");
                 dropDownMenu.setTabText(filterArray[1]);
                 dropDownMenu.closeMenu();
+                refreshLayout.resetNoMoreData();
+                pageNum = 1;
+                map.put("pageNum", 1);
                 getDeviceData(map);
             } else {
                 recyclerView22.setVisibility(View.VISIBLE);
@@ -210,7 +217,10 @@ public class DeviceFragment extends BaseFragment {
             dropDownMenu.setTabText(name);
             dropDownMenu.closeMenu();
             recyclerView22.setVisibility(View.INVISIBLE);
+            refreshLayout.resetNoMoreData();
             map.put("categoryIds", id);
+            pageNum = 1;
+            map.put("pageNum", 1);
             getDeviceData(map);
         });
 
@@ -232,6 +242,9 @@ public class DeviceFragment extends BaseFragment {
                 map.remove("status");
             }
             dropDownMenu.closeMenu();
+            refreshLayout.resetNoMoreData();
+            pageNum = 1;
+            map.put("pageNum", 1);
             getDeviceData(map);
         });
 
@@ -239,14 +252,14 @@ public class DeviceFragment extends BaseFragment {
         popupViews.add(view2);
         popupViews.add(recyclerView4);
 
-        RecyclerView recyclerview5 = new RecyclerView(getContext());
-        recyclerview5.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        recyclerview5 = new RecyclerView(getContext());
+        recyclerview5.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         recyclerview5.setBackgroundColor(Color.WHITE);
         recyclerview5.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerview5.setLayoutManager(new LinearLayoutManager(getContext()));
 
         refreshLayout = new SmartRefreshLayout(getContext());
-        refreshLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        refreshLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         refreshLayout.addView(recyclerview5);
         refreshLayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();

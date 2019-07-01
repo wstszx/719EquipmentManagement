@@ -92,8 +92,6 @@ public class AccountingActivity extends BaseActivity {
     EditText edittext8;
     @BindView(R.id.tv_result9)
     TextView tvResult9;
-    //    @BindView(R.id.tv_result10)
-//    TextView tvResult10;
     @BindView(R.id.edittext11)
     EditText edittext11;
     @BindView(R.id.tv_result12)
@@ -101,8 +99,7 @@ public class AccountingActivity extends BaseActivity {
     @BindView(R.id.tv_result13)
     TextView tvResult13;
     private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
-    private String[] classification = {"A", "B", "C"};
-    private String[] technical_status = {"合格", "不合格"};
+    private String[] technical_status = {"合格", "不合格", "限制使用"};
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     @BindView(R.id.edittext)
@@ -134,12 +131,10 @@ public class AccountingActivity extends BaseActivity {
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case DATE_ONE:
-                    String date = TimeUtils.date2String(dateFormat);
-                    tvResult12.setText(date);
+                    tvResult12.setText(dateFormat);
                     break;
                 case DATE_TWO:
-                    String date1 = TimeUtils.date2String(dateFormat);
-                    tvResult13.setText(date1);
+                    tvResult13.setText(dateFormat);
                     break;
             }
         });
@@ -190,7 +185,7 @@ public class AccountingActivity extends BaseActivity {
                     tvResult7.setText(tag);
                     break;
                 case 2:
-                    tech_statu = position;
+                    tech_statu = position + 1;
                     tvResult9.setText(tag);
                     break;
                 case 3:
@@ -335,10 +330,10 @@ public class AccountingActivity extends BaseActivity {
 //                showSimpleBottomSheetList(classification, 3);
 //                break;
             case R.id.constraint12:
-                AboriginalDateSelect.getInstance().showDateTime(this, DATE_ONE);
+                AboriginalDateSelect.getInstance().showDate(this, DATE_ONE);
                 break;
             case R.id.constraint13:
-                AboriginalDateSelect.getInstance().showDateTime(this, DATE_TWO);
+                AboriginalDateSelect.getInstance().showDate(this, DATE_TWO);
                 break;
         }
     }

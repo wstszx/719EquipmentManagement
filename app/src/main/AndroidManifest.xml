@@ -55,7 +55,6 @@
         <activity android:name=".ui.home.AddDeptActivity" />
         <activity android:name=".ui.device.AddDeviceActivity" />
         <activity android:name=".ui.home.AddPersonActivity" />
-        <activity android:name=".ui.home.CheckActivity" />
         <activity android:name=".ui.home.InventoryActivity" />
         <activity android:name=".ui.home.AccountingActivity" />
         <activity android:name=".ui.home.PersonDetailActivity" />

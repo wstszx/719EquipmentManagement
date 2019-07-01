@@ -55,6 +55,7 @@ public class ToDoListActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(ToDoListActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toDoListAdapter = new ToDoListAdapter(R.layout.to_audit_item);
+        toDoListAdapter.bindToRecyclerView(recyclerView);
         recyclerView.setAdapter(toDoListAdapter);
         refreshlayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();

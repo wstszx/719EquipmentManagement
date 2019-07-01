@@ -39,6 +39,7 @@ public class ApplyProgressAdapter extends BaseQuickAdapter<UserToAudit.RowsBean,
                     .setText(R.id.tv_2, name)
                     .setText(R.id.tv_3, createTime)
                     .setText(R.id.tv_4, equipType)
+                    .addOnClickListener(R.id.tv_cancel)
             ;
         }
     }

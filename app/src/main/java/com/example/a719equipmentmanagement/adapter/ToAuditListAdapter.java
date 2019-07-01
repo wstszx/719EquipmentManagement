@@ -26,16 +26,25 @@ public class ToAuditListAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseV
             String createTime = item.getCreateTime();
             int type = item.getType();
             String equipType = Constant.getEquipType(type);
-            String equipNo = equip.getEquipNo();
-            String name = equip.getName();
+            if (equip != null) {
+                String equipNo = equip.getEquipNo();
+                String name = equip.getName();
+                helper.setText(R.id.tv_1, equipNo)
+                        .setText(R.id.tv_2, name);
+            }
 
-            SpannableStringBuilder builder = new SpannableStringBuilder();
-            SpannableString spannableString = new SpannableString(equipNo);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
-            builder.append(createBy).append(createTime).append(equipType).append(spannableString).append(name);
-            helper.setText(R.id.number, builder)
-                    .addOnClickListener(R.id.tv_by)
-                    .addOnClickListener(R.id.tv_no_by);
+//            SpannableStringBuilder builder = new SpannableStringBuilder();
+//            SpannableString spannableString = new SpannableString(equipNo);
+//            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
+//            builder.append(createBy).append(createTime).append(equipType).append(spannableString).append(name);
+//            helper.setText(R.id.number, builder)
+//                    .addOnClickListener(R.id.tv_by)
+//                    .addOnClickListener(R.id.tv_no_by);
+            helper.setText(R.id.tv_3, createTime)
+                    .setText(R.id.tv_4, equipType)
+                    .setText(R.id.tv_5, createBy)
+                    .addOnClickListener(R.id.review)
+            ;
         }
     }
 }

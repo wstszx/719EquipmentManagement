@@ -292,11 +292,14 @@ public class DeviceDetailActivity extends BaseActivity {
             categoryName = category.getName();
         }
         switch (techState) {
-            case 0:
+            case 1:
                 techStateStr = "合格";
                 break;
-            case 1:
+            case 2:
                 techStateStr = "不合格";
+                break;
+            case 3:
+                techStateStr = "限制使用";
                 break;
         }
         switch (status) {
@@ -525,16 +528,16 @@ public class DeviceDetailActivity extends BaseActivity {
                     operatingEquip(6, s, msg);
                 })
                 .create(mCurrentDialogStyle).show();
-        returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity.this, VALID_DATA));
-        returnInspectionDialog.getRightImageView1().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDateTime(DeviceDetailActivity.this, LAST_DATA));
+        returnInspectionDialog.getRightImageView().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDate(DeviceDetailActivity.this, VALID_DATA));
+        returnInspectionDialog.getRightImageView1().setOnClickListener(v -> AboriginalDateSelect.getInstance().showDate(DeviceDetailActivity.this, LAST_DATA));
         AboriginalDateSelect.getInstance().setListener((position, dateFormat) -> {
             switch (position) {
                 case VALID_DATA:
-                    date = TimeUtils.date2String(dateFormat);
+                    date = dateFormat;
                     returnInspectionDialog.getEditText().setText(date);
                     break;
                 case LAST_DATA:
-                    date1 = TimeUtils.date2String(dateFormat);
+                    date1 = dateFormat;
                     returnInspectionDialog.getEditText1().setText(date1);
                     break;
             }

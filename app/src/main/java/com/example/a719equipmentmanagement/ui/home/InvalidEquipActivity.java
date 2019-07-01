@@ -52,6 +52,7 @@ public class InvalidEquipActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(InvalidEquipActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         invalidEquipAdapter = new InvalidEquipAdapter(R.layout.invalid_equip_item);
+        invalidEquipAdapter.bindToRecyclerView(recyclerView);
         recyclerView.setAdapter(invalidEquipAdapter);
         refreshlayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();

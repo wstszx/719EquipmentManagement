@@ -214,7 +214,7 @@ public class AddPersonActivity extends BaseActivity {
         if (data != null) {
             String name = data.getStringExtra("name");
             pid = data.getIntExtra("pid", 0);
-            deptId = data.getIntExtra("deptId", 0);
+            deptId = data.getIntExtra("id", 0);
             tvResult2.setText(name);
         }
         super.onActivityResult(requestCode, resultCode, data);

@@ -39,7 +39,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -127,7 +129,7 @@ public class HomeFragment extends BaseFragment {
                 .observeOn(AndroidSchedulers.mainThread());
         meSingle.flatMap((Function<Me, SingleSource<?>>) me -> {
             if (me != null) {
-                Me.UserBean user = me.getDeptList();
+                Me.UserBean user = me.getUser();
                 if (user != null) {
                     boolean manager = user.isManager();
                     boolean comUser = user.isComUser();
@@ -157,27 +159,30 @@ public class HomeFragment extends BaseFragment {
     }
 
     private SingleSource<?> zip() {
-        Single<List<InvalidEquip>> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip()
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNum", 1);
+        map.put("pageSize", 10);
+        Single<List<InvalidEquip>> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit()
+        Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<ToDo> toDoSingle;
         if (isManager) {
-            toDoSingle = RetrofitClient.getInstance().getService().toHandle()
+            toDoSingle = RetrofitClient.getInstance().getService().toHandle(map)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         } else {
-            toDoSingle = RetrofitClient.getInstance().getService().userToDo()
+            toDoSingle = RetrofitClient.getInstance().getService().userToDo(map)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
 
-        Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn()
+        Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-        Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit()
+        Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         return Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, (invalidEquip, toAudit, toDo, toReturn, userToAudit) -> {

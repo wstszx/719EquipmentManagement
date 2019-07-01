@@ -77,12 +77,30 @@ public class DeptManageActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initAdapter();
         initData();
+    }
+
+    private void initAdapter() {
+        adapter1 = new DeptManageAdapter(this, null);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.setAdapter(adapter1);
+        adapter1.bindToRecyclerView(recyclerview);
+
     }
 
     private void initData() {
         Intent intent = getIntent();
         isManager = intent.getBooleanExtra("isManager", false);
+        if (isManager) {
+            topbar.removeAllRightViews();
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
+                initListPopupIfNeed(addTypes);
+                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                mListPopup.show(v);
+            });
+        }
         RetrofitClient.getInstance().getService().getDeptList()
                 .compose(CommonCompose.io2main(DeptManageActivity.this))
                 .subscribe(new BaseSubscriber<List<DeptList>>(DeptManageActivity.this) {
@@ -91,6 +109,8 @@ public class DeptManageActivity extends BaseActivity {
                         DeptManageActivity.this.deptLists = deptLists;
                         if (deptLists != null && deptLists.size() > 0) {
                             createSection(deptLists);
+                        } else {
+                            adapter1.setEmptyView(R.layout.empty);
                         }
                     }
                 });
@@ -99,6 +119,7 @@ public class DeptManageActivity extends BaseActivity {
 
     private void createSection(List<DeptList> deptLists) {
         List<MultiItemEntity> list = new ArrayList<>();
+
         for (DeptList deptList : deptLists) {
             PersonOne personOne = new PersonOne(deptList);
             List<DeptList.UsersBean> users1 = deptList.getUsers();
@@ -108,11 +129,7 @@ public class DeptManageActivity extends BaseActivity {
             }
             list.add(personOne);
         }
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        adapter1 = new DeptManageAdapter(this, list);
-        adapter1.bindToRecyclerView(recyclerview);
-        adapter1.setEmptyView(R.layout.empty);
-        recyclerview.setAdapter(adapter1);
+        adapter1.setNewData(list);
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             itemViewType = adapter.getItemViewType(position);
             ImageView imageView = (ImageView) adapter.getViewByPosition(position, R.id.iv_right);
@@ -129,13 +146,7 @@ public class DeptManageActivity extends BaseActivity {
             }
         });
         if (isManager) {
-            topbar.removeAllRightViews();
-            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> {
-                initListPopupIfNeed(addTypes);
-                mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
-                mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
-                mListPopup.show(v);
-            });
+
 
             adapter1.setOnItemLongClickListener((adapter, v, position) -> {
                 itemViewType = adapter.getItemViewType(position);
@@ -267,6 +278,8 @@ public class DeptManageActivity extends BaseActivity {
                             public void onSuccess(List<DeptList> deptLists) {
                                 if (deptLists != null && deptLists.size() > 0) {
                                     createSection(deptLists);
+                                } else {
+                                    adapter1.setEmptyView(R.layout.empty);
                                 }
                             }
                         });

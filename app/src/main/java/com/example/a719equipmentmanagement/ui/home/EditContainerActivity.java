@@ -107,7 +107,7 @@ public class EditContainerActivity extends BaseActivity {
         if (requestCode == EDIT_DEPT) {
             if (data != null) {
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("deptId", 0);
+                deptId = data.getIntExtra("id", 0);
                 tvResult1.setText(name);
             }
         }

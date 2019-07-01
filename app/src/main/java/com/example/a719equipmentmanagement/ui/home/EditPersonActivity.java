@@ -245,9 +245,9 @@ public class EditPersonActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (data != null && resultCode == RESULT_OK) {
             if (requestCode == OWNER_DEPT) {
-                id = data.getIntExtra("id", 0);
+                id = data.getIntExtra("pid", 0);
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("deptId", 0);
+                deptId = data.getIntExtra("id", 0);
                 tvResult2.setText(name);
             }
         }

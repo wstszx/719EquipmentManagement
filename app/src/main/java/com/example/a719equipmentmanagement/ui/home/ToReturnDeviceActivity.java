@@ -53,6 +53,7 @@ public class ToReturnDeviceActivity extends BaseActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(ToReturnDeviceActivity.this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         toReturnAdapter = new ToReturnAdapter(R.layout.to_audit_item);
+        toReturnAdapter.bindToRecyclerView(recyclerView);
         recyclerView.setAdapter(toReturnAdapter);
         refreshlayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();

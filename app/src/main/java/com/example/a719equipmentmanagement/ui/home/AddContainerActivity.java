@@ -156,7 +156,7 @@ public class AddContainerActivity extends BaseActivity {
             if (data != null) {
                 pid = data.getIntExtra("pid", 0);
                 name = data.getStringExtra("name");
-                deptId = data.getIntExtra("deptId", 0);
+                deptId = data.getIntExtra("id", 0);
                 tvResult1.setText(name);
             }
         }

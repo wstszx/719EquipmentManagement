@@ -67,6 +67,7 @@ public class EditDeptActivity extends BaseActivity {
     private String email;
     private String status;
     private int id1;
+    private int deptId;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -130,6 +131,7 @@ public class EditDeptActivity extends BaseActivity {
             phone = data.getPhone();
             email = data.getEmail();
             status = data.getStatus();
+            deptId = data.getDeptId();
         }
     }
 
@@ -161,19 +163,19 @@ public class EditDeptActivity extends BaseActivity {
         if (StringUtils.isEmpty(deptName)) {
             ToastUtils.showShort("部门名称不能为空");
             return;
-        }else if (StringUtils.isEmpty(leader)) {
+        } else if (StringUtils.isEmpty(leader)) {
             ToastUtils.showShort("负责人不能为空");
             return;
-        }else if (!RegexUtils.isEmail(email)) {
+        } else if (!RegexUtils.isEmail(email)) {
             ToastUtils.showShort("请填写正确的邮箱");
             return;
-        }else if (!RegexUtils.isMobileExact(phone)) {
+        } else if (!RegexUtils.isMobileExact(phone)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }
 
         try {
-            map.put("deptId", id1);
+            map.put("deptId", deptId);
             map.put("deptName", deptName);
             map.put("parentId", id);
             map.put("leader", leader);
@@ -207,7 +209,7 @@ public class EditDeptActivity extends BaseActivity {
             case EDIT_DEPT:
                 if (data != null) {
                     name = data.getStringExtra("name");
-                    id = data.getIntExtra("id", 0);
+                    deptId = data.getIntExtra("id", 0);
                     tv_result.setText(name);
                 }
                 break;

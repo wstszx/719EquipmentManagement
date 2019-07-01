@@ -261,6 +261,11 @@ public interface ApiService {
     @POST("system/eqLog/oper")
     Single<BaseResponse> operatingEquip(@FieldMap Map<String, Object> map);
 
+    //取消操作设备
+    @FormUrlEncoded
+    @POST("system/eqLog/cancel")
+    Single<BaseResponse> cancelOperatingEquip(@Field("id") long id);
+
     //保存头像
     @FormUrlEncoded
     @POST("system/user/profile/updateAvatar")
