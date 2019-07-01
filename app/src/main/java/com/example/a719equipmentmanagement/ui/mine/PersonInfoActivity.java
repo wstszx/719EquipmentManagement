@@ -139,8 +139,8 @@ public class PersonInfoActivity extends BaseActivity {
             return;
         }
 
-        if (StringUtils.isEmpty(email)) {
-            ToastUtils.showShort("请填写邮箱");
+        if (!RegexUtils.isEmail(email)) {
+            ToastUtils.showShort("请填写正确的邮箱");
             return;
         }
         Map<String, Object> map = new HashMap<>();
