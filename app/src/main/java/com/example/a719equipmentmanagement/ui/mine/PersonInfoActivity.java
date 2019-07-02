@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -179,27 +178,19 @@ public class PersonInfoActivity extends BaseActivity {
     @OnClick({R.id.constraint1})
     public void onViewClicked(View view) {
         if (view.getId() == R.id.constraint1) {
-            showSimpleBottomSheetList(sexArray, 1);
+            showSimpleBottomSheetList(sexArray);
         }
     }
 
-    private void showSimpleBottomSheetList(String[] array, int flag) {
+    private void showSimpleBottomSheetList(String[] array) {
         QMUIBottomSheet.BottomListSheetBuilder bottomListSheetBuilder = new QMUIBottomSheet.BottomListSheetBuilder(this);
         for (String s : array) {
             bottomListSheetBuilder.addItem(s != null ? s : "未知");
         }
 
         bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-            switch (flag) {
-                case 1:
-                    sexId = position;
-                    tvResult1.setText(tag);
-                    break;
-                case 2:
-                    roleId = position;
-                    tvResult2.setText(tag);
-                    break;
-            }
+            sexId = position;
+            tvResult1.setText(tag);
             dialog.dismiss();
         })
                 .build()

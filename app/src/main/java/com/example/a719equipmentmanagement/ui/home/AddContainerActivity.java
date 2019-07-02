@@ -107,12 +107,12 @@ public class AddContainerActivity extends BaseActivity {
                     String msg = response.getMsg();
                     int containNum = Integer.parseInt(containerNum);
                     JSONArray jsonArray = new JSONArray();
-                    for (int i = 0; i < containNum; i++) {
+                    for (int i = 1; i <= containNum; i++) {
                         JSONObject jsonObject1 = new JSONObject();
                         try {
                             jsonObject1.put("deptId", deptId);
-                            jsonObject1.put("name", containerName + "--" + i);
-                            containerNameList.add(containerName + "--" + i);
+                            jsonObject1.put("name", containerName + "——" + i);
+                            containerNameList.add(containerName + "——" + i);
                             jsonObject1.put("pid", msg);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -137,9 +137,9 @@ public class AddContainerActivity extends BaseActivity {
                                 qrList.add("C|" + c);
                             }
                             ToastUtils.showShort("添加货柜成功");
+                            setResult(RESULT_OK);
+                            finish();
                         }
-//                        setResult(RESULT_OK);
-//                        finish();
                     }
                 });
 

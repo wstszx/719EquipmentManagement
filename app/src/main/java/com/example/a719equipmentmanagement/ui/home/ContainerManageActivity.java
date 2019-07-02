@@ -77,18 +77,30 @@ public class ContainerManageActivity extends BaseActivity {
     private int deptId;
     private String containerName;
     private boolean isManager;
-    private boolean isFirstAdd = true;
     private int pid;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initAdapter();
         initData();
+    }
+
+    private void initAdapter() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter1 = new ContainerManageAdapter(null);
+        adapter1.bindToRecyclerView(recyclerView);
+        recyclerView.setAdapter(adapter1);
     }
 
     private void initData() {
         Intent intent = getIntent();
         isManager = intent.getBooleanExtra("isManager", false);
+        if (isManager) {
+            topbar.removeAllRightViews();
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
+                    startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
+        }
         RetrofitClient.getInstance().getService().findContainerData()
                 .compose(CommonCompose.io2main(ContainerManageActivity.this))
                 .subscribe(new BaseSubscriber<List<ContainerData>>(ContainerManageActivity.this) {
@@ -96,6 +108,8 @@ public class ContainerManageActivity extends BaseActivity {
                     public void onSuccess(List<ContainerData> baseResponse) {
                         if (baseResponse != null && baseResponse.size() > 0) {
                             bindUi(baseResponse);
+                        } else {
+                            adapter1.setEmptyView(R.layout.empty);
                         }
                     }
                 });
@@ -114,11 +128,7 @@ public class ContainerManageActivity extends BaseActivity {
             }
             list.add(containerOne);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter1 = new ContainerManageAdapter(list);
-        adapter1.bindToRecyclerView(recyclerView);
-        adapter1.setEmptyView(R.layout.empty);
-        recyclerView.setAdapter(adapter1);
+        adapter1.setNewData(list);
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             int itemViewType = adapter.getItemViewType(position);
             if (itemViewType == 0) {
@@ -135,10 +145,6 @@ public class ContainerManageActivity extends BaseActivity {
             }
         });
         if (isManager) {
-            topbar.removeAllRightViews();
-            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v ->
-                    startActivityForResult(new Intent(this, AddContainerActivity.class), ADD_CONTAINER));
-
             adapter1.setOnItemLongClickListener((adapter, view, position) -> {
                 itemViewType = adapter.getItemViewType(position);
                 containerIdList.clear();

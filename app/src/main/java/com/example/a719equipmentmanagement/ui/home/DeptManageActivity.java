@@ -146,8 +146,6 @@ public class DeptManageActivity extends BaseActivity {
             }
         });
         if (isManager) {
-
-
             adapter1.setOnItemLongClickListener((adapter, v, position) -> {
                 itemViewType = adapter.getItemViewType(position);
                 switch (itemViewType) {

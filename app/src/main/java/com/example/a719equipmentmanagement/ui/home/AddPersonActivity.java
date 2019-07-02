@@ -64,9 +64,7 @@ public class AddPersonActivity extends BaseActivity {
     QMUITopBarLayout topbar;
 
     private String[] sexArray = {"男", "女", "未知"};
-    private String[] roleArray = {"超级系统管理员", "普通用户", "实验室管理员"};
-    private QMUIListPopup mListPopup;
-    private ArrayAdapter<String> adapter;
+    private String[] roleArray = {"实验室管理员", "普通用户"};
     private int deptId;
     private int roleId;
     private QMUIBottomSheet build;
@@ -107,21 +105,17 @@ public class AddPersonActivity extends BaseActivity {
         for (String s : array) {
             bottomListSheetBuilder.addItem(s != null ? s : "未知");
         }
-        build = bottomListSheetBuilder.setOnSheetItemClickListener(new QMUIBottomSheet.BottomListSheetBuilder.OnSheetItemClickListener() {
-
-            @Override
-            public void onClick(QMUIBottomSheet dialog, View itemView, int position, String tag) {
-                roleId = position;
-                dialog.dismiss();
-                switch (flag) {
-                    case 1:
-                        sexTag = position;
-                        tvResult1.setText(tag);
-                        break;
-                    case 2:
-                        tvResult7.setText(tag);
-                        break;
-                }
+        build = bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+            roleId = position;
+            dialog.dismiss();
+            switch (flag) {
+                case 1:
+                    sexTag = position;
+                    tvResult1.setText(tag);
+                    break;
+                case 2:
+                    tvResult7.setText(tag);
+                    break;
             }
         })
                 .build();
@@ -158,31 +152,47 @@ public class AddPersonActivity extends BaseActivity {
     private void addPerson() {
         Map<String, Object> map = new HashMap<>();
         String username = edittext.getText().toString();
+        String sex = tvResult1.getText().toString();
         String dept = tvResult2.getText().toString();
         String phoneNum = edittext3.getText().toString();
         String email = edittext4.getText().toString();
         String loginName = edittext5.getText().toString();
         String password = edittext6.getText().toString();
+        String roleStr = tvResult7.getText().toString();
         String remark = edittext9.getText().toString();
         if (StringUtils.isEmpty(username)) {
             ToastUtils.showShort("用户名称不能为空");
             return;
-        }else if (StringUtils.isEmpty(dept)) {
+        }
+        if (StringUtils.isEmpty(sex)) {
+            ToastUtils.showShort("性别不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(dept)) {
             ToastUtils.showShort("所属部门不能为空");
             return;
-        }else if (StringUtils.isEmpty(loginName)) {
-            ToastUtils.showShort("登录账号不能为空");
-            return;
-        }else if (StringUtils.isEmpty(password)) {
-            ToastUtils.showShort("登录密码不能为空");
-            return;
-        }else if (!RegexUtils.isEmail(email)) {
-            ToastUtils.showShort("请填写正确的邮箱");
-            return;
-        }else if (!RegexUtils.isMobileExact(phoneNum)) {
+        }
+        if (!RegexUtils.isMobileExact(phoneNum)) {
             ToastUtils.showShort("请填写正确的手机号");
             return;
         }
+        if (!RegexUtils.isEmail(email)) {
+            ToastUtils.showShort("请填写正确的邮箱");
+            return;
+        }
+        if (StringUtils.isEmpty(loginName)) {
+            ToastUtils.showShort("登录账号不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(password)) {
+            ToastUtils.showShort("登录密码不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(roleStr)) {
+            ToastUtils.showShort("角色不能为空");
+            return;
+        }
+
         try {
             map.put("userName", username);
             map.put("sex", sexTag);
@@ -230,30 +240,30 @@ public class AddPersonActivity extends BaseActivity {
         context.startActivity(starter);
     }
 
-    private void initListPopupIfNeed(String[] listItems) {
-
-        List<String> data = new ArrayList<>();
-
-        Collections.addAll(data, listItems);
-        if (adapter == null) {
-            adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
-        } else {
-            adapter.addAll(data);
-            adapter.notifyDataSetChanged();
-        }
-        if (mListPopup == null) {
-            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
-            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    TextView textView = (TextView) view;
-                    String s = textView.getText().toString();
-                    mListPopup.dismiss();
-                }
-            });
-            mListPopup.setOnDismissListener(data::clear);
-        }
-    }
+//    private void initListPopupIfNeed(String[] listItems) {
+//
+//        List<String> data = new ArrayList<>();
+//
+//        Collections.addAll(data, listItems);
+//        if (adapter == null) {
+//            adapter = new ArrayAdapter<>(this, R.layout.simple_list_item, data);
+//        } else {
+//            adapter.addAll(data);
+//            adapter.notifyDataSetChanged();
+//        }
+//        if (mListPopup == null) {
+//            mListPopup = new QMUIListPopup(this, QMUIPopup.DIRECTION_NONE, adapter);
+//            mListPopup.create(QMUIDisplayHelper.dp2px(this, 250), QMUIDisplayHelper.dp2px(this, 200), new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                    TextView textView = (TextView) view;
+//                    String s = textView.getText().toString();
+//                    mListPopup.dismiss();
+//                }
+//            });
+//            mListPopup.setOnDismissListener(data::clear);
+//        }
+//    }
 
 
     @OnClick({R.id.constraint1, R.id.constraint2, R.id.constraint8})

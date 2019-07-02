@@ -20,13 +20,21 @@
                 android:id="@+id/include_1"
                 layout="@layout/base_edit_item" />
 
-            <include
-                android:id="@+id/include_2"
-                layout="@layout/base_enter_item" />
+            <!--<include-->
+                <!--android:id="@+id/include_2"-->
+                <!--layout="@layout/base_enter_item" />-->
 
             <!--<include-->
                 <!--android:id="@+id/include_3"-->
                 <!--layout="@layout/base_edit_item" />-->
+
+            <include
+                android:id="@+id/include_2"
+                layout="@layout/base_edit_item" />
+
+            <include
+                android:id="@+id/include_3"
+                layout="@layout/base_edit_item" />
 
             <include
                 android:id="@+id/include_4"
@@ -34,16 +42,7 @@
 
             <include
                 android:id="@+id/include_5"
-                layout="@layout/base_edit_item" />
-
-            <include
-                android:id="@+id/include_6"
-                layout="@layout/base_edit_item" />
-
-            <include
-                android:id="@+id/include_7"
                 layout="@layout/base_switch_item" />
-
 
         </LinearLayout>
     </ScrollView>
