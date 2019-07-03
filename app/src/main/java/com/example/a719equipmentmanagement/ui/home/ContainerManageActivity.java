@@ -78,6 +78,7 @@ public class ContainerManageActivity extends BaseActivity {
     private String containerName;
     private boolean isManager;
     private int pid;
+    private int containerPosition;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -109,7 +110,7 @@ public class ContainerManageActivity extends BaseActivity {
                         if (baseResponse != null && baseResponse.size() > 0) {
                             bindUi(baseResponse);
                         } else {
-                            adapter1.setEmptyView(R.layout.empty);
+                            adapter1.setEmptyView(R.layout.empty, recyclerView);
                         }
                     }
                 });
@@ -149,6 +150,7 @@ public class ContainerManageActivity extends BaseActivity {
                 itemViewType = adapter.getItemViewType(position);
                 containerIdList.clear();
                 containerNameList.clear();
+                containerPosition = position;
                 switch (itemViewType) {
                     case 0:
                         ContainerOne containerOne = (ContainerOne) adapter.getData().get(position);
@@ -270,7 +272,14 @@ public class ContainerManageActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(ContainerManageActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        initData();
+                        if (baseResponse != null) {
+                            int code = baseResponse.getCode();
+                            if (code == 0) {
+                                ToastUtils.showShort("删除成功");
+//                                initData();
+                                adapter1.remove(containerPosition);
+                            }
+                        }
                     }
                 });
     }

@@ -89,7 +89,7 @@ public class EditPersonActivity extends BaseActivity {
     private String[] roleArray = {"实验室管理员", "普通用户"};
     private int id;
     private String name;
-    private int roleId = 3;
+    private int roleId;
     private int sexTag;
 
 
@@ -183,6 +183,7 @@ public class EditPersonActivity extends BaseActivity {
                     tv_result1.setText(tag);
                     break;
                 case 2:
+                    roleId = position + 2;
                     tvResult8.setText(tag);
                     break;
             }

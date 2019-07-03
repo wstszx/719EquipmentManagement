@@ -631,7 +631,13 @@ public class DeviceDetailActivity2 extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity2.this) {
                     @Override
                     public void onSuccess(BaseResponse response) {
-
+                        if (response != null) {
+                            int code = response.getCode();
+                            if (code == 0) {
+                                setResult(RESULT_OK);
+                                finish();
+                            }
+                        }
                     }
                 });
     }

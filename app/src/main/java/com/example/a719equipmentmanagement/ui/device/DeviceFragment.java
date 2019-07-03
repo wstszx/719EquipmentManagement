@@ -295,6 +295,8 @@ public class DeviceFragment extends BaseFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == DEVICE_DETAIL) {
+                pageNum = 1;
+                map.put("pageNum", 1);
                 getDeviceData(map);
             }
         }

@@ -88,11 +88,11 @@ public class EditContainerLevelActivity extends BaseActivity {
                     public void onSuccess(BaseResponse baseResponse) {
                         if (baseResponse.getCode() == 0) {
                             ToastUtils.showShort("编辑货柜成功");
+                            setResult(RESULT_OK);
+                            finish();
                         }
                     }
                 });
-        setResult(RESULT_OK);
-        finish();
     }
 
     @Override
