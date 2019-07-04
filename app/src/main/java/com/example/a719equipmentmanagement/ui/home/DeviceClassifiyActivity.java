@@ -80,23 +80,35 @@ public class DeviceClassifiyActivity extends BaseActivity {
     };
     private DeviceClassifiyAdapter adapter1;
     private int id;
-    private String parentClassifiy;
     private String name;
     private int pid;
     private DeviceTypeOne deviceTypeOne;
     private DeviceClassifiy deviceTypeData;
     private int itemViewType;
     private boolean isManager;
+    private int deviceClassifiyPosition;
 
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initAdapter();
         initData();
+    }
+
+    private void initAdapter() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter1 = new DeviceClassifiyAdapter(null);
+        adapter1.bindToRecyclerView(recyclerView);
+        recyclerView.setAdapter(adapter1);
     }
 
     private void initData() {
         Intent intent = getIntent();
         isManager = intent.getBooleanExtra("isManager", false);
+        if (isManager) {
+            topbar.removeAllRightViews();
+            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY));
+        }
         RetrofitClient.getInstance().getService().findDeviceTypeData()
                 .compose(CommonCompose.io2main(DeviceClassifiyActivity.this))
                 .subscribe(new BaseSubscriber<List<DeviceClassifiy>>(DeviceClassifiyActivity.this) {
@@ -104,6 +116,8 @@ public class DeviceClassifiyActivity extends BaseActivity {
                     public void onSuccess(List<DeviceClassifiy> baseResponse) {
                         if (baseResponse != null && baseResponse.size() > 0) {
                             bindUi(baseResponse);
+                        } else {
+                            adapter1.setEmptyView(R.layout.empty, recyclerView);
                         }
                     }
                 });
@@ -122,11 +136,7 @@ public class DeviceClassifiyActivity extends BaseActivity {
             }
             list.add(deviceTypeOne);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter1 = new DeviceClassifiyAdapter(list);
-        adapter1.bindToRecyclerView(recyclerView);
-        adapter1.setEmptyView(R.layout.empty);
-        recyclerView.setAdapter(adapter1);
+        adapter1.setNewData(list);
         adapter1.setOnItemClickListener((adapter, view, position) -> {
             int itemViewType = adapter.getItemViewType(position);
             if (itemViewType == 0) {
@@ -143,10 +153,10 @@ public class DeviceClassifiyActivity extends BaseActivity {
             }
         });
         if (isManager) {
-            topbar.removeAllRightViews();
-            topbar.addRightImageButton(R.mipmap.add, R.id.add).setOnClickListener(v -> startActivityForResult(new Intent(DeviceClassifiyActivity.this, AddDeviceClassifyActivity.class), ADD_DEVICE_CLASSIFY));
+
             adapter1.setOnItemLongClickListener((adapter, view, position) -> {
                 itemViewType = adapter.getItemViewType(position);
+                deviceClassifiyPosition = position;
                 switch (itemViewType) {
                     case 0:
                         DeviceTypeOne deviceTypeOne = (DeviceTypeOne) adapter.getData().get(position);
@@ -282,7 +292,13 @@ public class DeviceClassifiyActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(DeviceClassifiyActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        initData();
+                        if (baseResponse != null) {
+                            int code = baseResponse.getCode();
+                            if (code == 0) {
+                                ToastUtils.showShort("删除成功");
+                                adapter1.remove(deviceClassifiyPosition);
+                            }
+                        }
                     }
                 });
     }

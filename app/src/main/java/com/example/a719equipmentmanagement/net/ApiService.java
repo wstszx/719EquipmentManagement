@@ -153,7 +153,7 @@ public interface ApiService {
     //依据id查询设备详情
     @FormUrlEncoded
     @POST("system/equip/get")
-    Single<DeviceDetailData> getDeviceDetail(@Field("id") String id);
+    Single<DeviceDetailData> getDeviceDetail(@Field("id") int id);
 
     //查找设备数据
     @GET("system/equip/list")

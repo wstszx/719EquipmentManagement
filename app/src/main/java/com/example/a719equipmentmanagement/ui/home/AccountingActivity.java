@@ -124,7 +124,6 @@ public class AccountingActivity extends BaseActivity {
     private int status;
     private int tech_statu;
 
-
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
@@ -139,7 +138,6 @@ public class AccountingActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

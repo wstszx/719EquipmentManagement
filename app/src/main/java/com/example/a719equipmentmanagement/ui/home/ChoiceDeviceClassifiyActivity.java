@@ -51,7 +51,16 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
     @Override
     protected void init(Bundle savedInstanceState) {
         initTopbar();
+        initAdapter();
         initData();
+    }
+
+    private void initAdapter() {
+        adapter = new ChoiceDeviceClassifiyAdapter(null);
+        adapter.bindToRecyclerView(recyclerview);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recyclerview.setAdapter(adapter);
     }
 
     private void initData() {
@@ -80,23 +89,30 @@ public class ChoiceDeviceClassifiyActivity extends BaseActivity {
             }
             list.add(typeOne);
         }
-        initAdapter(list);
-    }
-
-    private void initAdapter(List<MultiItemEntity> list) {
-        adapter = new ChoiceDeviceClassifiyAdapter(list);
-        adapter.bindToRecyclerView(recyclerview);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerview.setAdapter(adapter);
-
+        adapter.setNewData(list);
+        for (int i = 0; i < adapter.getData().size(); i++) {
+            adapter.expand(i, true);
+        }
         adapter.setOnItemClickListener((adapter, view, position) -> {
             MultiItemEntity multiItemEntity = (MultiItemEntity) adapter.getData().get(position);
             int itemType = multiItemEntity.getItemType();
-            if (itemType == 0) {
-                DeviceTypeOne typeOne = (DeviceTypeOne) multiItemEntity;
-                name = typeOne.getData().getName();
-                id = typeOne.getData().getId();
+            switch (itemType) {
+                case 0:
+                    DeviceTypeOne typeOne = (DeviceTypeOne) multiItemEntity;
+                    DeviceClassifiy data = typeOne.getData();
+                    if (data != null) {
+                        name = data.getName();
+                        id = data.getId();
+                    }
+                    break;
+                case 1:
+                    DeviceTypeTwo typeTwo = (DeviceTypeTwo) multiItemEntity;
+                    DeviceClassifiy.CategorysBean twoData = typeTwo.getData();
+                    if (twoData != null) {
+                        name = twoData.getName();
+                        id = twoData.getId();
+                    }
+                    break;
             }
             setChoice(position, view);
         });

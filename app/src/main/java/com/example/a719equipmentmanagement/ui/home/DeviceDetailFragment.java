@@ -195,7 +195,7 @@ public class DeviceDetailFragment extends BaseFragment {
             Single<BaseResponse> baseResponseSingle = RetrofitClient.getInstance().getService().saveInventoryDevice(requestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
-            Single<DeviceDetailData> deviceDetailDataSingle = RetrofitClient.getInstance().getService().getDeviceDetail(equipId + "")
+            Single<DeviceDetailData> deviceDetailDataSingle = RetrofitClient.getInstance().getService().getDeviceDetail(equipId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
             Single.zip(baseResponseSingle, deviceDetailDataSingle, (response, detailData) -> {

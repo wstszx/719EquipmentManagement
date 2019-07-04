@@ -30,6 +30,7 @@ import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ChoiceContainerActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
 import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity;
+import com.example.a719equipmentmanagement.ui.home.GenarateQRActivity;
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
@@ -175,6 +176,8 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private String date1;
     private int userId;
     private String categoryName;
+    private ArrayList<String> snList;
+    private ArrayList<String> deviceIdList;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -195,8 +198,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initView() {
-
-
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
         tvTitle2.setEnabled(false);
@@ -243,11 +244,11 @@ public class DeviceDetailActivity2 extends BaseActivity {
         return R.layout.activity_device_detail2;
     }
 
-    public static void start(Context context, String deviceId) {
-        Intent starter = new Intent(context, DeviceDetailActivity2.class);
-        starter.putExtra("deviceId", deviceId);
-        context.startActivity(starter);
-    }
+//    public static void start(Context context, String deviceId) {
+//        Intent starter = new Intent(context, DeviceDetailActivity2.class);
+//        starter.putExtra("deviceId", deviceId);
+//        context.startActivity(starter);
+//    }
 
 
     private void initTopbar() {
@@ -260,7 +261,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
 
     private void updateDevice() {
         String name = edittext.getText().toString();
-        String equipNo = edittext2.getText().toString();
+        String sn = edittext2.getText().toString();
         String dept = tvResult3.getText().toString();
         String parameter = edittext4.getText().toString();
         String location = tvResult5.getText().toString();
@@ -275,7 +276,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             ToastUtils.showShort("设备名称不能为空");
             return;
         }
-        if (StringUtils.isEmpty(equipNo)) {
+        if (StringUtils.isEmpty(sn)) {
             ToastUtils.showShort("设备编号不能为空");
             return;
         }
@@ -324,7 +325,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             jsonObject.put("id", equipId);
             jsonObject.put("name", name);
             jsonObject.put("categoryId", categoryId);
-            jsonObject.put("sn", equipNo);
+            jsonObject.put("sn", sn);
             jsonObject.put("deptId", deptId);
             jsonObject.put("parameter", parameter);
             jsonObject.put("locationId", locationId);
@@ -349,7 +350,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                             topbar.removeAllLeftViews();
                             topbar.removeAllRightViews();
                             initTopbar();
-                            if (opers != null && opers.size() > 0) {
+                            if (opers != null) {
                                 topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
                                     initListPopupIfNeed(opers);
                                     mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
@@ -395,13 +396,18 @@ public class DeviceDetailActivity2 extends BaseActivity {
     }
 
     private void initData() {
+        snList = new ArrayList<>();
+        deviceIdList = new ArrayList<>();
         Intent intent = getIntent();
-        String deviceId = intent.getStringExtra("deviceId");
+        int deviceId = intent.getIntExtra("deviceId", 0);
+        String sn = intent.getStringExtra("sn");
+        snList.add(sn);
+        deviceIdList.add("E|" + deviceId);
         getDetail(deviceId);
     }
 
-    private void getDetail(String id) {
-        RetrofitClient.getInstance().getService().getDeviceDetail(id)
+    private void getDetail(int deviceId) {
+        RetrofitClient.getInstance().getService().getDeviceDetail(deviceId)
                 .compose(CommonCompose.io2main(DeviceDetailActivity2.this))
                 .subscribe(new BaseSubscriber<DeviceDetailData>(DeviceDetailActivity2.this) {
                     @Override
@@ -443,6 +449,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             }
             status = data.getStatus();
             opers = data.getOpers();
+            opers.add(0, "打印二维码");
             switch (techState) {
                 case 0:
                     techStateStr = "合格";
@@ -486,7 +493,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     deviceStatus = "无状态信息";
                     break;
             }
-            if (opers != null && opers.size() > 0) {
+            if (opers != null) {
                 topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v -> {
                     initListPopupIfNeed(opers);
                     mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
@@ -600,10 +607,19 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     case "删除":
                         deleteDevice();
                         break;
+                    case "打印二维码":
+                        print();
+                        break;
                 }
                 mListPopup.dismiss();
             });
             mListPopup.setOnDismissListener(data::clear);
+        }
+    }
+
+    private void print() {
+        if (snList != null && snList.size() > 0 && deviceIdList != null && deviceIdList.size() > 0) {
+            GenarateQRActivity.start(this, deviceIdList, snList);
         }
     }
 
@@ -690,7 +706,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             topbar.removeAllLeftViews();
             topbar.removeAllRightViews();
             initTopbar();
-            if (opers != null && opers.size() > 0) {
+            if (opers != null) {
                 topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
                     initListPopupIfNeed(opers);
                     mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);

@@ -282,8 +282,10 @@ public class DeviceFragment extends BaseFragment {
         adapter.setOnItemClickListener((adapter, view, position) -> {
             DeviceData2.RowsBean currentItemData = (DeviceData2.RowsBean) adapter.getData().get(position);
             int deviceId = currentItemData.getId();
+            String sn = currentItemData.getSn();
             Intent intent = new Intent();
-            intent.putExtra("deviceId", String.valueOf(deviceId));
+            intent.putExtra("deviceId", deviceId);
+            intent.putExtra("sn", sn);
             intent.setClass(getContext(), DeviceDetailActivity2.class);
             startActivityForResult(intent, DEVICE_DETAIL);
         });
