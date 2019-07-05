@@ -630,15 +630,16 @@ public class DeviceDetailActivity extends BaseActivity {
         userBeanList.clear();
         auditDialog.setTitle(s)
                 .setPlaceholder1("备注")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
                 .setInputType1(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 1, s, auditDialog);
+                    auditEquip(operType, 2, s, auditDialog);
                 })
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 2, s, auditDialog);
+                    auditEquip(operType, 3, s, auditDialog);
                 })
                 .create(mCurrentDialogStyle).show();
         auditDialog.getRightImageView().setOnClickListener(v -> {

@@ -99,7 +99,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         QMUIDialog.MessageDialogBuilder.assignMessageTvWithAttr(mEditText, hasTitle(), R.attr.qmui_dialog_edit_content_style);
         mEditText.setFocusable(false);
         mEditText.setEnabled(false);
-        mEditText.setFocusableInTouchMode(true);
+        mEditText.setFocusableInTouchMode(false);
 //        mEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText.setId(R.id.qmui_dialog_edit_input);
 
@@ -141,7 +141,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         mEditText1.setFocusable(true);
         mEditText1.setEnabled(true);
         mEditText1.setFocusableInTouchMode(true);
-        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
+//        mEditText1.setImeOptions(EditorInfo.IME_ACTION_GO);
         mEditText1.setId(R.id.qmui_dialog_edit_input);
 
         if (!QMUILangHelper.isNullOrEmpty(mDefaultText1)) {
@@ -178,7 +178,7 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
         mMainLayout.addView(mEditText, createEditTextLayoutParams());
         mMainLayout1.addView(mEditText1, createEditTextLayoutParams());
         mMainLayout.addView(mRightImageView, createRightIconLayoutParams());
-        mMainLayout1.addView(mRightImageView1, createRightIconLayoutParams());
+//        mMainLayout1.addView(mRightImageView1, createRightIconLayoutParams());
 
         parent.addView(mMainLayout);
         parent.addView(mMainLayout1);
@@ -203,10 +203,10 @@ public class AuditDialog extends QMUIDialogBuilder<AuditDialog> {
     protected void onAfter(QMUIDialog dialog, LinearLayout parent, Context context) {
         super.onAfter(dialog, parent, context);
         final InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        dialog.setOnDismissListener(dialog1 -> inputMethodManager.hideSoftInputFromWindow(mEditText.getWindowToken(), 0));
-        mEditText.postDelayed(() -> {
-            mEditText.requestFocus();
-            inputMethodManager.showSoftInput(mEditText, 0);
+        dialog.setOnDismissListener(dialog1 -> inputMethodManager.hideSoftInputFromWindow(mEditText1.getWindowToken(), 0));
+        mEditText1.postDelayed(() -> {
+            mEditText1.requestFocus();
+            inputMethodManager.showSoftInput(mEditText1, 0);
         }, 300);
     }
 

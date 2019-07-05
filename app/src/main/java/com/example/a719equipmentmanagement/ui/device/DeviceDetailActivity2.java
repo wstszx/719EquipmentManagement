@@ -729,15 +729,16 @@ public class DeviceDetailActivity2 extends BaseActivity {
         auditDialog.setTitle(s)
                 .setPlaceholder1("备注")
                 .setInputType(InputType.TYPE_CLASS_TEXT)
+                .setInputType1(InputType.TYPE_CLASS_TEXT)
                 .addAction("取消", (dialog, index) -> dialog.dismiss())
                 .addAction("不通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 1, s, auditDialog);
+                    auditEquip(operType, 2, s, auditDialog);
 
                 })
                 .addAction("通过", (dialog, index) -> {
                     dialog.dismiss();
-                    auditEquip(operType, 2, s, auditDialog);
+                    auditEquip(operType, 3, s, auditDialog);
                 })
                 .create(mCurrentDialogStyle).show();
         auditDialog.getRightImageView().setOnClickListener(v -> RetrofitClient.getInstance().getService().getDeptList()
@@ -746,6 +747,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     @Override
                     public void onSuccess(List<DeptList> users) {
                         if (users != null && users.size() > 0) {
+                            userBeanList.clear();
                             for (DeptList user : users) {
                                 List<DeptList.UsersBean> deptLists = user.getUsers();
                                 if (deptLists != null && deptLists.size() > 0) {

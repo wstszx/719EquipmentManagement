@@ -106,7 +106,6 @@ public class AddPersonActivity extends BaseActivity {
             bottomListSheetBuilder.addItem(s != null ? s : "未知");
         }
         build = bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-            roleId = position;
             dialog.dismiss();
             switch (flag) {
                 case 1:
@@ -114,6 +113,7 @@ public class AddPersonActivity extends BaseActivity {
                     tvResult1.setText(tag);
                     break;
                 case 2:
+                    roleId = position + 2;
                     tvResult7.setText(tag);
                     break;
             }
@@ -204,6 +204,7 @@ public class AddPersonActivity extends BaseActivity {
             map.put("password", password);
             map.put("status", switchs.isChecked() ? "0" : "1");
             map.put("role", roleId);
+            map.put("roleIds", roleId);
             map.put("remark", remark);
         } catch (Exception e) {
             e.printStackTrace();
