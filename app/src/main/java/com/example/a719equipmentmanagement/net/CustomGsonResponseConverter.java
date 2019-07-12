@@ -1,5 +1,6 @@
 package com.example.a719equipmentmanagement.net;
 
+import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.example.a719equipmentmanagement.utils.JsonUtils;
 import com.google.gson.Gson;
