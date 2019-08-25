@@ -5,8 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
     android:background="@mipmap/b"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".ui.LoginActivity">
     <!--admin/admin123-->
@@ -26,8 +26,8 @@
         android:hint="@string/input_account"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="admin"
         android:textColor="@color/app_color_description"
+        android:textColorHint="@color/white"
         android:textSize="@dimen/sp_14"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,10 +43,11 @@
         android:drawablePadding="9dp"
         android:hint="@string/input_password"
         android:inputType="textPassword"
+
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:text="admin123"
         android:textColor="@color/app_color_description"
+        android:textColorHint="@color/white"
         android:textSize="@dimen/sp_14"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
