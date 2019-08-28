@@ -6,10 +6,10 @@ import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
 public class DeptOne extends AbstractExpandableItem<DeptTwo> implements MultiItemEntity {
 
-    private TreeData dept;
+    private DeptList dept;
     private boolean isSelect;
 
-    public void setDept(TreeData dept) {
+    public void setDept(DeptList dept) {
         this.dept = dept;
     }
 
@@ -21,11 +21,11 @@ public class DeptOne extends AbstractExpandableItem<DeptTwo> implements MultiIte
         isSelect = select;
     }
 
-    public TreeData getDept() {
+    public DeptList getDept() {
         return dept;
     }
 
-    public DeptOne(TreeData dept) {
+    public DeptOne(DeptList dept) {
         this.dept = dept;
     }
 

@@ -3,13 +3,9 @@ package com.example.a719equipmentmanagement.adapter;
 import android.content.Context;
 
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.R;
-import com.example.a719equipmentmanagement.entity.DeptOne;
-import com.example.a719equipmentmanagement.entity.DeptThree;
-import com.example.a719equipmentmanagement.entity.DeptTwo;
 import com.example.a719equipmentmanagement.entity.PersonOne;
 
 import java.util.List;

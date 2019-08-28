@@ -14,60 +14,59 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="end"
-        android:paddingStart="@dimen/dp_16"
+        android:paddingStart="@dimen/dp_48"
         android:paddingEnd="@dimen/dp_16"
         android:textColor="@color/colorHelper_square_alpha_background"
         android:textSize="@dimen/sp_14"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_leader"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="fjdkf" />
 
-    <TextView
-        android:id="@+id/tv_leader"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16"
-        android:textColor="@color/colorHelper_square_alpha_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_status"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/dept_type" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_leader"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:gravity="end"-->
+<!--        android:paddingStart="@dimen/dp_16"-->
+<!--        android:paddingEnd="@dimen/dp_16"-->
+<!--        android:textColor="@color/colorHelper_square_alpha_background"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/tv_status"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/tv_parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:text="@string/dept_type" />-->
 
-    <TextView
-        android:id="@+id/tv_status"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:gravity="end"
-        android:paddingStart="@dimen/dp_16"
-        android:paddingEnd="@dimen/dp_16"
-        android:textColor="@color/colorHelper_square_alpha_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/iv_right"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/tv_leader"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/status" />
+<!--    <TextView-->
+<!--        android:id="@+id/tv_status"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginEnd="32dp"-->
+<!--        android:gravity="end"-->
+<!--        android:paddingStart="@dimen/dp_16"-->
+<!--        android:paddingEnd="@dimen/dp_16"-->
+<!--        android:textColor="@color/colorHelper_square_alpha_background"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/iv_right"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/tv_leader"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        tools:text="@string/status" />-->
 
 
-    <ImageView
-        android:id="@+id/iv_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/iv_right"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="8dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <View
         android:layout_width="match_parent"

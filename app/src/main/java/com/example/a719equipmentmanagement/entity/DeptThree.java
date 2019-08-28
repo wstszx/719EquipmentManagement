@@ -4,13 +4,15 @@ import com.chad.library.adapter.base.entity.AbstractExpandableItem;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.a719equipmentmanagement.adapter.DeptManageAdapter;
 
-public class DeptThree  implements MultiItemEntity {
+import java.util.List;
 
-    private TreeData dept;
+public class DeptThree implements MultiItemEntity {
+
+    private DeptList.UsersBean usersBean;
     private boolean isSelect;
 
-    public void setDept(TreeData dept) {
-        this.dept = dept;
+    public void setusersBean(DeptList.UsersBean usersBean) {
+        this.usersBean = usersBean;
     }
 
     public boolean isSelect() {
@@ -21,12 +23,12 @@ public class DeptThree  implements MultiItemEntity {
         isSelect = select;
     }
 
-    public TreeData getDept() {
-        return dept;
+    public DeptList.UsersBean getusersBean() {
+        return usersBean;
     }
 
-    public DeptThree(TreeData dept) {
-        this.dept = dept;
+    public DeptThree(DeptList.UsersBean usersBean) {
+        this.usersBean = usersBean;
     }
 
     @Override
