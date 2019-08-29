@@ -33,12 +33,12 @@ public class ChoiceContainerAdapter extends BaseMultiItemQuickAdapter<MultiItemE
             case LEVEL_ONE:
                 ContainerOne containerOne = (ContainerOne) item;
                 String name = containerOne.getData().getName();
-                helper.setText(R.id.tv_parent, name);
+                helper.setText(R.id.tv_one, name);
                 break;
             case LEVEL_TWO:
                 ContainerTwo containerTwo = (ContainerTwo) item;
                 String name1 = containerTwo.getData().getName();
-                helper.setText(R.id.tv_parent, name1);
+                helper.setText(R.id.tv_two, name1);
                 break;
         }
     }

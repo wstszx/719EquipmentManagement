@@ -75,8 +75,6 @@ public class DeptManageActivity extends BaseActivity {
     private int userId;
     private boolean isManager;
     private DeptThree deptThree;
-    private String userName;
-    private int userId1;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -142,20 +140,17 @@ public class DeptManageActivity extends BaseActivity {
                 for (DeptList deptList2 : deptLists) {
                     int parentId2 = deptList2.getParentId();
                     if (deptTwoId == parentId2) {
-                        int deptThreeId = deptList2.getId();
+//                        int deptThreeId = deptList2.getId();
                         DeptTwo deptTwo = new DeptTwo();
                         deptTwo.setDept(deptList2);
                         deptTwo.setExpand(true);
                         deptOne.addSubItem(deptTwo);
-//                        第三层
-                        for (DeptList deptList3 : deptLists) {
-                            int parentId3 = deptList3.getParentId();
-                            if (deptThreeId == parentId3) {
-                                List<DeptList.UsersBean> users = deptList3.getUsers();
-                                for (DeptList.UsersBean user : users) {
-                                    DeptThree deptThree = new DeptThree(user);
-                                    deptTwo.addSubItem(deptThree);
-                                }
+                        //                        第三层
+                        List<DeptList.UsersBean> users2 = deptList2.getUsers();
+                        if (users2 != null && users2.size() > 0) {
+                            for (DeptList.UsersBean usersBean : users2) {
+                                DeptThree deptThree = new DeptThree(usersBean);
+                                deptTwo.addSubItem(deptThree);
                             }
                         }
                     }
@@ -199,8 +194,8 @@ public class DeptManageActivity extends BaseActivity {
                         adapter1.expand(position, true);
                         Objects.requireNonNull(imageView).setImageResource(R.mipmap.xiala);
                     }
-                    deptList = deptTwo.getDept();
                 }
+                deptList = deptTwo.getDept();
             }
         });
         if (isManager) {
@@ -209,32 +204,28 @@ public class DeptManageActivity extends BaseActivity {
                 switch (itemViewType) {
                     case 0:
                         deptOne = (DeptOne) adapter.getData().get(position);
-                        DeptList dept = deptOne.getDept();
-                        parentTitle = dept.getDeptName();
-//                        deptList = dept.get();
-                        deptId = dept.getDeptId();
+                        deptList = deptOne.getDept();
+                        parentTitle = deptList.getDeptName();
+                        deptId = deptList.getDeptId();
                         break;
                     case 1:
                         deptTwo = (DeptTwo) adapter.getData().get(position);
-                        boolean expand = deptTwo.isExpand();
-                        if (expand) {
-                            DeptList dept1 = deptTwo.getDept();
-                            parentTitle = dept1.getDeptName();
-//                        usersBean = dept1.getDeptList();
-//                        userId = dept1.getDeptList().getUserId();
-                            deptId = usersBean.getDeptId();
-                        } else {
-                            DeptList.UsersBean usersBean = deptTwo.getUsersBean();
-                            userName = usersBean.getUserName();
-                            userId1 = usersBean.getUserId();
-                        }
+                        deptList = deptTwo.getDept();
+                        parentTitle = deptList.getDeptName();
+                        deptId = deptList.getDeptId();
                         break;
                     case 2:
                         deptThree = (DeptThree) adapter.getData().get(position);
-                        DeptList.UsersBean usersBean = deptThree.getusersBean();
+                        usersBean = deptThree.getUsersBean();
                         parentTitle = usersBean.getUserName();
-//                        usersBean = deptThree.getDeptList();
-//                        userId = deptThree.getDeptList().getUserId();
+                        userId = usersBean.getUserId();
+                        deptId = usersBean.getDeptId();
+                        break;
+                    case 3:
+                        deptTwo = (DeptTwo) adapter.getData().get(position);
+                        usersBean = deptTwo.getUsersBean();
+                        parentTitle = usersBean.getUserName();
+                        userId = usersBean.getUserId();
                         deptId = usersBean.getDeptId();
                         break;
                 }
@@ -313,18 +304,20 @@ public class DeptManageActivity extends BaseActivity {
     private void edit() {
         switch (itemViewType) {
             case 0:
+            case 1:
                 Intent intent = new Intent();
                 intent.putExtra("parentTitle", parentTitle);
                 intent.putExtra("data", deptList);
                 intent.setClass(DeptManageActivity.this, EditDeptActivity.class);
                 startActivityForResult(intent, EDIT_DEPT);
                 break;
-            case 1:
-                Intent intent1 = new Intent();
-                intent1.putExtra("parentTitle", parentTitle);
-                intent1.putExtra("data", usersBean);
-                intent1.setClass(DeptManageActivity.this, EditPersonActivity.class);
-                startActivityForResult(intent1, EDIT_PERSON);
+            case 2:
+            case 3:
+                Intent intent2 = new Intent();
+                intent2.putExtra("parentTitle", parentTitle);
+                intent2.putExtra("data", usersBean);
+                intent2.setClass(DeptManageActivity.this, EditPersonActivity.class);
+                startActivityForResult(intent2, EDIT_PERSON);
                 break;
         }
     }
@@ -343,6 +336,7 @@ public class DeptManageActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread());
         switch (itemViewType) {
             case 0:
+            case 1:
                 RetrofitClient.getInstance().getService().delete(deptId)
                         .flatMap((Function<BaseResponse, SingleSource<List<DeptList>>>) baseResponse -> user)
                         .compose(CommonCompose.io2main(DeptManageActivity.this))
@@ -357,7 +351,8 @@ public class DeptManageActivity extends BaseActivity {
                             }
                         });
                 break;
-            case 1:
+            case 2:
+            case 3:
                 RetrofitClient.getInstance().getService().deleteUser(userId)
                         .flatMap((Function<BaseResponse, SingleSource<List<DeptList>>>) baseResponse -> user)
                         .compose(CommonCompose.io2main(DeptManageActivity.this))
@@ -371,8 +366,6 @@ public class DeptManageActivity extends BaseActivity {
                         });
                 break;
         }
-
-
     }
 
 

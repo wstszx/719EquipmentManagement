@@ -18,7 +18,7 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
         helper.setText(R.id.textView1, item.getName())
                 .setText(R.id.textView2, item.getParameter())
                 .setText(R.id.textView3, item.getEquipNo())
-                .setText(R.id.textView7,item.getCreateTime());
+                .setText(R.id.textView7, item.getCreateTime());
 
         DeviceData2.RowsBean.DeptBean dept = item.getDept();
         helper.setText(R.id.textView4, dept == null ? "无部门信息" : dept.getDeptName());
@@ -65,6 +65,10 @@ public class DeviceAdapter extends BaseQuickAdapter<DeviceData2.RowsBean, BaseVi
             case 9:
                 helper.setTextColor(R.id.textView5, Color.RED);
                 helper.setText(R.id.textView5, "外借");
+                break;
+            case 10:
+                helper.setTextColor(R.id.textView5, Color.RED);
+                helper.setText(R.id.textView5, "未送检");
                 break;
             default:
                 helper.setBackgroundColor(R.id.textView5, Color.GREEN);

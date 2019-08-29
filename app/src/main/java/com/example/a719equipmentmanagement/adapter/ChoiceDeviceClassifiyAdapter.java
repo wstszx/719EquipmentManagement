@@ -42,12 +42,12 @@ public class ChoiceDeviceClassifiyAdapter extends BaseMultiItemQuickAdapter<Mult
                     helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
                 }
                 String name = deviceTypeOne.getData().getName();
-                helper.setText(R.id.tv_parent, name);
+                helper.setText(R.id.tv_one, name);
                 break;
             case LEVEL_TWO:
                 DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) item;
                 String name1 = deviceTypeTwo.getData().getName();
-                helper.setText(R.id.tv_parent, name1);
+                helper.setText(R.id.tv_two, name1);
                 break;
         }
     }

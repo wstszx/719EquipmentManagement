@@ -1,5 +1,6 @@
 package com.example.a719equipmentmanagement.adapter;
 
+import android.graphics.Color;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -32,8 +33,44 @@ public class InvalidEquipAdapter extends BaseQuickAdapter<InvalidEquip, BaseView
                     .setText(R.id.tv_1, equipNo)
                     .setText(R.id.tv_2, name)
                     .setText(R.id.tv_3, validDate)
-                    .setText(R.id.tv_4, "过期")
             ;
+            switch (item.getStatus()) {
+                case 0:
+                    helper.setText(R.id.tv_4, "可用");
+                    break;
+                case 1:
+                    helper.setText(R.id.tv_4, "借用");
+                    break;
+                case 2:
+                    helper.setText(R.id.tv_4, "送检占用");
+                    break;
+                case 3:
+                    helper.setText(R.id.tv_4, "送检");
+                    break;
+                case 4:
+                    helper.setText(R.id.tv_4, "报废占用");
+                    break;
+                case 5:
+                    helper.setText(R.id.tv_4, "报废");
+                    break;
+                case 6:
+                    helper.setText(R.id.tv_4, "封存");
+                    break;
+                case 7:
+                    helper.setText(R.id.tv_4, "解封占用");
+                    break;
+                case 8:
+                    helper.setText(R.id.tv_4, "过期");
+                    break;
+                case 9:
+                    helper.setText(R.id.tv_4, "外借");
+                    break;
+                case 10:
+                    helper.setText(R.id.tv_4, "未送检");
+                    break;
+
+            }
+
         }
     }
 }

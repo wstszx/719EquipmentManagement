@@ -23,7 +23,7 @@ public class DeptThree implements MultiItemEntity {
         isSelect = select;
     }
 
-    public DeptList.UsersBean getusersBean() {
+    public DeptList.UsersBean getUsersBean() {
         return usersBean;
     }
 

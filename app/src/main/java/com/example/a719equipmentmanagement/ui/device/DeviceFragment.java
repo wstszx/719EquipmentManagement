@@ -67,7 +67,7 @@ public class DeviceFragment extends BaseFragment {
     QMUITopBar topbar;
 
     private String[] filterArray = {"科室分类", "设备分类", "状态"};
-    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
+    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "未送检", "不限"};
 
     private List<BaseSingleFilter> filters = new ArrayList<>();
     private DeviceAdapter adapter;

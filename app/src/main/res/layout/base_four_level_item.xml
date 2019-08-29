@@ -26,7 +26,7 @@
     <!--app:layout_constraintBottom_toBottomOf="parent"-->
     <!--app:layout_constraintEnd_toStartOf="@+id/tv_status"-->
     <!--app:layout_constraintHorizontal_bias="0.5"-->
-    <!--app:layout_constraintStart_toEndOf="@+id/tv_parent"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/tv_four"-->
     <!--app:layout_constraintTop_toTopOf="parent"-->
     <!--tools:text="@string/dept_type" />-->
 
@@ -46,7 +46,7 @@
 
 
     <TextView
-        android:id="@+id/tv_parent"
+        android:id="@+id/tv_four"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"

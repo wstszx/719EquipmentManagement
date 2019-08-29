@@ -36,6 +36,7 @@ import com.example.a719equipmentmanagement.entity.ToDo;
 import com.example.a719equipmentmanagement.entity.ToReturn;
 import com.example.a719equipmentmanagement.entity.UserToAudit;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -129,8 +130,9 @@ public class HomeFragment extends BaseFragment {
 
     private void initData() {
         Single<Me> meSingle = RetrofitClient.getInstance().getService().getMe()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .compose(CommonCompose.io2main(getContext()));
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread());
         meSingle.flatMap((Function<Me, SingleSource<?>>) me -> {
             if (me != null) {
                 Me.UserBean user = me.getUser();
@@ -151,8 +153,10 @@ public class HomeFragment extends BaseFragment {
                 }
             }
             return zip();
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        })
+                .compose(CommonCompose.io2main(getContext()))
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new BaseSubscriber<Object>(getContext()) {
                     @Override
                     public void onSuccess(Object response) {
@@ -167,32 +171,38 @@ public class HomeFragment extends BaseFragment {
         map.put("pageNum", 1);
         map.put("pageSize", 10);
         Single<List<InvalidEquip>> invalidEquipSingle = RetrofitClient.getInstance().getService().invalidEquip(map)
+//                .compose(CommonCompose.io2main(getContext()));
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<ToAudit> toAuditSingle = RetrofitClient.getInstance().getService().toAudit(map)
+//                .compose(CommonCompose.io2main(getContext()));
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<ToDo> toDoSingle;
         if (isManager) {
             toDoSingle = RetrofitClient.getInstance().getService().toHandle(map)
+//                    .compose(CommonCompose.io2main(getContext()));
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         } else {
             toDoSingle = RetrofitClient.getInstance().getService().userToDo(map)
+//                    .compose(CommonCompose.io2main(getContext()));
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         }
 
         Single<ToReturn> toReturnSingle = RetrofitClient.getInstance().getService().toReturn(map)
+//                .compose(CommonCompose.io2main(getContext()));
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         Single<UserToAudit> userToAuditSingle = RetrofitClient.getInstance().getService().userToAudit(map)
+//                .compose(CommonCompose.io2main(getContext()));
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         return Single.zip(invalidEquipSingle, toAuditSingle, toDoSingle, toReturnSingle, userToAuditSingle, (invalidEquip, toAudit, toDo, toReturn, userToAudit) -> {
             boolean mainThread = ThreadUtils.isMainThread();
             if (mainThread) {
-                if (invalidEquip != null && invalidEquip.size() > 0) {
+                if (invalidEquip != null) {
                     tv1.setText("即将过期的设备：" + "(" + invalidEquip.size() + ")");
                     if (invalidEquip.size() > 3) {
                         invalidEquip = invalidEquip.subList(0, 3);
@@ -201,7 +211,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (toAudit != null) {
                     List<ToAudit.RowsBean> rows = toAudit.getRows();
-                    if (rows != null && rows.size() > 0) {
+                    if (rows != null) {
                         tv3.setText("我的待审任务：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
@@ -211,7 +221,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (toDo != null) {
                     List<ToDo.RowsBean> rows = toDo.getRows();
-                    if (rows != null && rows.size() > 0) {
+                    if (rows != null) {
                         tv4.setText("我的待办事项：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
@@ -221,7 +231,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (toReturn != null) {
                     List<ToReturn.RowsBean> rows = toReturn.getRows();
-                    if (rows != null && rows.size() > 0) {
+                    if (rows != null) {
                         tv2.setText("我的待还设备：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);
@@ -231,7 +241,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 if (userToAudit != null) {
                     List<UserToAudit.RowsBean> rows = userToAudit.getRows();
-                    if (rows != null && rows.size() > 0) {
+                    if (rows != null) {
                         tv5.setText("我的申请进度：" + "(" + rows.size() + ")");
                         if (rows.size() > 3) {
                             rows = rows.subList(0, 3);

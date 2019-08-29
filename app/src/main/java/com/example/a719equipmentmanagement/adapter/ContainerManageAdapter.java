@@ -45,7 +45,7 @@ public class ContainerManageAdapter extends BaseMultiItemQuickAdapter<MultiItemE
                 ContainerOne containerOne = (ContainerOne) item;
                 ContainerData data = containerOne.getData();
                 String name = data.getName();
-                helper.setText(R.id.tv_parent, name);
+                helper.setText(R.id.tv_one, name);
                 if (containerOne.isExpanded()) {
                     helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
                 } else {

@@ -104,6 +104,7 @@
         <activity android:name=".ui.home.ToDoListActivity" />
         <activity android:name=".ui.home.ToReturnDeviceActivity" />
         <activity android:name=".ui.home.ApplyProgressActivity" />
+        <activity android:name=".ui.home.ChoiceDeptActivity2" />
     </application>
 
 </manifest>

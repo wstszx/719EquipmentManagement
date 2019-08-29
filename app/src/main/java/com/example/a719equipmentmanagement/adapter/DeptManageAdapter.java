@@ -37,7 +37,7 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
         addItemType(LEVEL_ONE, R.layout.base_one_level_item);
         addItemType(LEVEL_TWO, R.layout.base_two_level_item);
         addItemType(LEVEL_THREE, R.layout.base_three_level_item);
-        addItemType(LEVEL_FOUR, R.layout.base_two_level_item);
+        addItemType(LEVEL_FOUR, R.layout.base_four_level_item);
     }
 
 
@@ -66,33 +66,36 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
 //                });
                 break;
             case LEVEL_TWO:
-                DeptTwo personTwo = (DeptTwo) item;
-                DeptList dept = personTwo.getDept();
+                DeptTwo deptTwo = (DeptTwo) item;
+                DeptList dept = deptTwo.getDept();
+                boolean expand = deptTwo.isExpand();
                 setLevel1Data(dept, helper);
-                if (personTwo.isExpanded()) {
+                if (deptTwo.isExpanded()) {
                     helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
                 } else {
                     helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
                 }
-//                helper.getView(R.id.constraint).setOnClickListener(v -> {
-//                    int pos = helper.getAdapterPosition();
-//                    if (personTwo.isExpanded()) {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
-//                        collapse(pos, true);
-//                    } else {
-//                        helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
-//                        expand(pos, true);
-//                    }
-//                });
+//                if (expand) {
+//                    helper.itemView.setOnClickListener(v -> {
+//                        int pos = helper.getAdapterPosition();
+//                        if (deptTwo.isExpanded()) {
+//                            helper.setImageResource(R.id.iv_right, R.mipmap.shangla);
+//                            collapse(pos, true);
+//                        } else {
+//                            helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
+//                            expand(pos, true);
+//                        }
+//                    });
+//                }
                 break;
             case LEVEL_THREE:
                 DeptThree deptThree = (DeptThree) item;
-                DeptList.UsersBean usersBean = deptThree.getusersBean();
+                DeptList.UsersBean usersBean = deptThree.getUsersBean();
                 setLevel2Data(usersBean, helper);
                 break;
             case LEVEL_FOUR:
-                DeptTwo deptTwo = (DeptTwo) item;
-                DeptList.UsersBean usersBean1 = deptTwo.getUsersBean();
+                DeptTwo deptTwo1 = (DeptTwo) item;
+                DeptList.UsersBean usersBean1 = deptTwo1.getUsersBean();
                 setLevel3Data(usersBean1, helper);
                 break;
         }
@@ -100,7 +103,7 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
 
     private void setLevelData(DeptList deptList, BaseViewHolder helper) {
         String deptName = deptList.getDeptName();
-        helper.setText(R.id.tv_parent, deptName);
+        helper.setText(R.id.tv_one, deptName);
     }
 
     private void setLevel1Data(DeptList deptList, BaseViewHolder helper) {
@@ -112,16 +115,16 @@ public class DeptManageAdapter extends BaseMultiItemQuickAdapter<MultiItemEntity
 //                helper.setText(R.id.tv_parent, userName);
 //            }
 //        }
-        helper.setText(R.id.tv_parent, deptName);
+        helper.setText(R.id.tv_two, deptName);
     }
 
     private void setLevel2Data(DeptList.UsersBean usersBean, BaseViewHolder helper) {
         String userName = usersBean.getUserName();
-        helper.setText(R.id.tv_parent, userName);
+        helper.setText(R.id.tv_three, userName);
     }
 
     private void setLevel3Data(DeptList.UsersBean usersBean, BaseViewHolder helper) {
         String userName = usersBean.getUserName();
-        helper.setText(R.id.tv_parent, userName);
+        helper.setText(R.id.tv_four, userName);
     }
 }

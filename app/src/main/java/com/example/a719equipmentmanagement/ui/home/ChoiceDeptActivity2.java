@@ -15,9 +15,7 @@ import com.example.a719equipmentmanagement.adapter.ChoiceDeptAdapter;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.DeptOne;
-import com.example.a719equipmentmanagement.entity.DeptThree;
 import com.example.a719equipmentmanagement.entity.DeptTwo;
-import com.example.a719equipmentmanagement.entity.PersonOne;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
@@ -28,7 +26,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ChoiceDeptActivity extends BaseActivity {
+public class ChoiceDeptActivity2 extends BaseActivity {
 
     @BindView(R.id.topbar)
     QMUITopBar topbar;
@@ -46,8 +44,8 @@ public class ChoiceDeptActivity extends BaseActivity {
 
     private void initData() {
         RetrofitClient.getInstance().getService().getDeptList()
-                .compose(CommonCompose.io2main(ChoiceDeptActivity.this))
-                .subscribe(new BaseSubscriber<List<DeptList>>(ChoiceDeptActivity.this) {
+                .compose(CommonCompose.io2main(ChoiceDeptActivity2.this))
+                .subscribe(new BaseSubscriber<List<DeptList>>(ChoiceDeptActivity2.this) {
                     @Override
                     public void onSuccess(List<DeptList> deptLists) {
                         if (deptLists != null && deptLists.size() > 0) {
@@ -62,18 +60,7 @@ public class ChoiceDeptActivity extends BaseActivity {
         for (DeptList deptList : deptLists) {
             int parentId = deptList.getParentId();
             if (parentId == 100) {
-                int deptTwoId = deptList.getId();
                 DeptOne deptOne = new DeptOne(deptList);
-//                第二层
-                for (DeptList deptList2 : deptLists) {
-                    int parentId2 = deptList2.getParentId();
-                    if (deptTwoId == parentId2) {
-                        DeptTwo deptTwo = new DeptTwo();
-                        deptTwo.setDept(deptList2);
-                        deptTwo.setExpand(true);
-                        deptOne.addSubItem(deptTwo);
-                    }
-                }
                 list.add(deptOne);
             }
         }
@@ -165,10 +152,5 @@ public class ChoiceDeptActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_choice_dept;
     }
-
-//    public static void start(Context context) {
-//        Intent starter = new Intent(context, ChoiceDeptActivity.class);
-//        context.startActivity(starter);
-//    }
 
 }

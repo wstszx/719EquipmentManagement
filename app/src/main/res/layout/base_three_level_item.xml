@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/tv_parent"
+        android:id="@+id/tv_three"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -36,7 +36,7 @@
 <!--        app:layout_constraintBottom_toBottomOf="parent"-->
 <!--        app:layout_constraintEnd_toStartOf="@+id/tv_status"-->
 <!--        app:layout_constraintHorizontal_bias="0.5"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/tv_parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/tv_three"-->
 <!--        app:layout_constraintTop_toTopOf="parent"-->
 <!--        tools:text="@string/dept_type" />-->
 

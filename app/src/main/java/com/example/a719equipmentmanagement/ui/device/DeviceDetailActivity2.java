@@ -146,7 +146,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private static final int VALID_DATA = 1;
     private static final int LAST_DATA = 2;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "不限"};
+    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "未送检", "不限"};
     private String[] technical_status = {"合格", "不合格", "限制使用"};
     private static final int DEVICE_TYPE = 1;
     private static final int DEPT_TYPE = 2;

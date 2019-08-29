@@ -41,7 +41,7 @@ public class DeviceClassifiyAdapter extends BaseMultiItemQuickAdapter<MultiItemE
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, MultiItemEntity item) {
+    protected void convert(@NonNull BaseViewHolder helper, MultiItemEntity item) {
         switch (item.getItemType()) {
             case LEVEL_ONE:
                 DeviceTypeOne deviceTypeOne = (DeviceTypeOne) item;
@@ -51,12 +51,12 @@ public class DeviceClassifiyAdapter extends BaseMultiItemQuickAdapter<MultiItemE
                     helper.setImageResource(R.id.iv_right, R.mipmap.xiala);
                 }
                 String name = deviceTypeOne.getData().getName();
-                helper.setText(R.id.tv_parent, name);
+                helper.setText(R.id.tv_one, name);
                 break;
             case LEVEL_TWO:
                 DeviceTypeTwo deviceTypeTwo = (DeviceTypeTwo) item;
                 String name1 = deviceTypeTwo.getData().getName();
-                helper.setText(R.id.tv_parent, name1);
+                helper.setText(R.id.tv_two, name1);
                 break;
         }
     }
