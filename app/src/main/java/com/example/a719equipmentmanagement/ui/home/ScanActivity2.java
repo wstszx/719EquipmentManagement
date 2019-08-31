@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,23 +13,42 @@ import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
+import com.example.a719equipmentmanagement.entity.BaseResponse;
+import com.example.a719equipmentmanagement.net.BaseSubscriber;
+import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.device.DeviceDetailActivity;
+import com.example.a719equipmentmanagement.view.OperaDialog;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zbar.ZBarView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
-public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
-    private static final String TAG = ScanActivity.class.getSimpleName();
+public class ScanActivity2 extends BaseActivity implements QRCodeView.Delegate {
+    private static final String TAG = ScanActivity2.class.getSimpleName();
     @BindView(R.id.zbarview)
     ZBarView zbarview;
     @BindView(R.id.iv_back)
     ImageView ivBack;
     private String id;
+    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
+    private int equipId;
+    private String responsor;
+    private String date;
+    private String date1;
+
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        equipId = intent.getIntExtra("equipId", 0);
+        responsor = intent.getStringExtra("responsor");
+        date = intent.getStringExtra("date");
+        date1 = intent.getStringExtra("date1");
         zbarview.setDelegate(this);
     }
 
@@ -50,8 +70,12 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
         return R.layout.activity_scan;
     }
 
-    public static void start(Context context) {
-        Intent starter = new Intent(context, ScanActivity.class);
+    public static void start(Context context, int equipId, String responsor, String date, String date1) {
+        Intent starter = new Intent(context, ScanActivity2.class);
+        starter.putExtra("equipId", equipId);
+        starter.putExtra("responsor", responsor);
+        starter.putExtra("date", date);
+        starter.putExtra("date1", date1);
         context.startActivity(starter);
     }
 
@@ -93,12 +117,11 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 //                }
 //                DeviceDetailActivity.start(this, id);
 //                finish();
-                if (StringUtils.equals("E", no)) {
-                    DeviceDetailActivity.start(this, id);
-                    finish();
+                if (StringUtils.equals("C", no)) {
+                    showOperaDialog(2, "归还");
                 } else {
                     zbarview.startSpot();
-                    ToastUtils.showShort("请扫描设备二维码");
+                    ToastUtils.showShort("请扫描货柜二维码");
                 }
             }
 //            else if (StringUtils.equals("C", no)) {
@@ -106,6 +129,47 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
 //            }
 
         }
+    }
+
+    private void showOperaDialog(int operType, String s) {
+        OperaDialog operaDialog = new OperaDialog(this);
+
+        operaDialog.setTitle(s)
+                .setPlaceholder("备注")
+                .setInputType(InputType.TYPE_CLASS_TEXT)
+                .addAction("取消", (dialog, index) -> dialog.dismiss())
+                .addAction("确定", (dialog, index) -> {
+                    dialog.dismiss();
+                    String msg = operaDialog.getEditText().getText().toString();
+                    operatingEquip(operType, s, msg);
+                })
+                .create(mCurrentDialogStyle).show();
+    }
+
+    /**
+     * 操作设备
+     *
+     * @param operType
+     * @param title
+     */
+    private void operatingEquip(int operType, String title, String msg) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("equipId", equipId);
+        map.put("operType", operType);
+        map.put("msg", StringUtils.isEmpty(msg) ? "" : msg);
+        map.put("dealer", responsor);
+        RetrofitClient.getInstance().getService().operatingEquip(map)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(ScanActivity2.this) {
+                    @Override
+                    public void onSuccess(BaseResponse baseResponse) {
+                        int code = baseResponse.getCode();
+                        if (code == 0) {
+                            ResultActivity.start(ScanActivity2.this, title + "成功");
+                        }
+                    }
+                });
     }
 
     @Override

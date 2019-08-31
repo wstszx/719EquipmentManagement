@@ -32,6 +32,8 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
+import com.example.a719equipmentmanagement.ui.home.ScanActivity;
+import com.example.a719equipmentmanagement.ui.home.ScanActivity2;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
 import com.example.a719equipmentmanagement.view.OperaDialog;
@@ -333,6 +335,9 @@ public class DeviceDetailActivity extends BaseActivity {
             case 9:
                 deviceStatus = "外借";
                 break;
+            case 10:
+                deviceStatus = "未送检";
+                break;
             default:
                 deviceStatus = "无状态信息";
                 break;
@@ -379,7 +384,8 @@ public class DeviceDetailActivity extends BaseActivity {
                         showOperaDialog(1, s);
                         break;
                     case "归还":
-                        showOperaDialog(2, s);
+                        returnEquip();
+//                        showOperaDialog(2, s);
                         break;
                     case "送检申请":
                         showOperaDialog(3, s);
@@ -425,6 +431,13 @@ public class DeviceDetailActivity extends BaseActivity {
             });
             mListPopup.setOnDismissListener(data::clear);
         }
+    }
+
+    /**
+     * 归还设备
+     */
+    private void returnEquip() {
+        ScanActivity2.start(this, equipId, responsor, date, date1);
     }
 
     private void showOperaDialog(int operType, String s) {

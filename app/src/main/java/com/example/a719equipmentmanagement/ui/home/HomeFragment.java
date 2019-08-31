@@ -1,8 +1,11 @@
 package com.example.a719equipmentmanagement.ui.home;
 
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +23,7 @@ import com.blankj.utilcode.util.ImageUtils;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.ThreadUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.adapter.ApplyProgressAdapter;
 import com.example.a719equipmentmanagement.adapter.HomeAdapter;
@@ -263,10 +267,35 @@ public class HomeFragment extends BaseFragment {
         });
     }
 
+    /**
+     * 判断是否安装了应用
+     * @return true 为已经安装
+     */
+    private boolean hasApplication() {
+        PackageManager manager = getContext().getPackageManager();
+        Intent action = new Intent(Intent.ACTION_VIEW);
+        action.setData(Uri.parse("cjveg://cjveg:8888/topics"));
+        List list = manager.queryIntentActivities(action, PackageManager.GET_RESOLVED_FILTER);
+        return list != null && list.size() > 0;
+    }
+
     private void initView() {
         topbar.setTitle("首页");
         View view = LayoutInflater.from(getContext()).inflate(R.layout.borrow_return, null);
         view.setOnClickListener(v -> ScanActivity.start(getContext()));
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (hasApplication()) {
+//                    ToastUtils.showShort("有");
+//                    Uri uri = Uri.parse("cjveg://cjveg:8888/topics");
+//                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                    startActivity(intent);
+//                } else {
+//                    ToastUtils.showShort("无");
+//                }
+//            }
+//        });
         RelativeLayout.LayoutParams layoutParams = topbar.generateTopBarImageButtonLayoutParams();
         layoutParams.addRule(Gravity.CENTER | Gravity.RIGHT);
         view.setLayoutParams(layoutParams);
