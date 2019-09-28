@@ -3,6 +3,15 @@ package com.example.a719equipmentmanagement.entity;
 public class BaseSingleFilter {
     private int id;
     private String name;
+    private boolean isExistRight;
+
+    public boolean isExistRight() {
+        return isExistRight;
+    }
+
+    public void setExistRight(boolean existRight) {
+        isExistRight = existRight;
+    }
 
     public int getId() {
         return id;

@@ -1,5 +1,7 @@
 package com.example.a719equipmentmanagement.adapter;
 
+import androidx.annotation.NonNull;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.a719equipmentmanagement.R;
@@ -11,7 +13,11 @@ public class BaseFilterAdapter extends BaseQuickAdapter<BaseSingleFilter, BaseVi
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, BaseSingleFilter item) {
-        helper.setText(R.id.tv_name, item.getName());
+    protected void convert(@NonNull BaseViewHolder helper, BaseSingleFilter item) {
+        if (item != null) {
+            boolean existRight = item.isExistRight();
+            helper.setVisible(R.id.imageView2, existRight)
+                    .setText(R.id.tv_name, item.getName());
+        }
     }
 }

@@ -160,7 +160,7 @@ public class DeviceFragment extends BaseFragment {
         View view1 = getLayoutInflater().inflate(R.layout.base_triple_list, null);
         RecyclerView recyclerView11 = view1.findViewById(R.id.recyclerView1);
         recyclerView11.setLayoutManager(new LinearLayoutManager(Objects.requireNonNull(getContext())));
-        adapter11 = new BaseFilterAdapter(R.layout.base_filter_item);
+        adapter11 = new BaseFilterAdapter(R.layout.base_filter_right_item);
         recyclerView11.setAdapter(adapter11);
         adapter11.setOnItemClickListener((adapter, view, position) -> {
             if (position == adapter11.getData().size() - 1) {
@@ -189,7 +189,7 @@ public class DeviceFragment extends BaseFragment {
         recyclerView21.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView22.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter21 = new BaseFilterAdapter(R.layout.base_filter_right_item);
-        adapter22 = new BaseFilterAdapter(R.layout.base_filter_item);
+        adapter22 = new BaseFilterAdapter(R.layout.base_filter_right_item);
         recyclerView21.setAdapter(adapter21);
         recyclerView22.setAdapter(adapter22);
 
@@ -204,10 +204,24 @@ public class DeviceFragment extends BaseFragment {
                 map.put("pageNum", 1);
                 getDeviceData(map);
             } else {
-                recyclerView22.setVisibility(View.VISIBLE);
                 BaseSingleFilter baseSingleFilter = adapter21.getData().get(position);
-                List<BaseSingleFilter> baseSingleFilters = deviceClassifiysMap.get(baseSingleFilter);
-                adapter22.setNewData(baseSingleFilters);
+                String name = baseSingleFilter.getName();
+                int id = baseSingleFilter.getId();
+                boolean existRight = baseSingleFilter.isExistRight();
+                if (existRight) {
+                    recyclerView22.setVisibility(View.VISIBLE);
+                    List<BaseSingleFilter> baseSingleFilters = deviceClassifiysMap.get(baseSingleFilter);
+                    adapter22.setNewData(baseSingleFilters);
+                } else {
+                    dropDownMenu.setTabText(name);
+                    dropDownMenu.closeMenu();
+                    recyclerView22.setVisibility(View.INVISIBLE);
+                    refreshLayout.resetNoMoreData();
+                    map.put("categoryIds", id);
+                    pageNum = 1;
+                    map.put("pageNum", 1);
+                    getDeviceData(map);
+                }
             }
         });
         adapter22.setOnItemClickListener((adapter, view, position) -> {
@@ -226,7 +240,7 @@ public class DeviceFragment extends BaseFragment {
 
 //      单列表
         RecyclerView recyclerView4 = new RecyclerView(new ContextThemeWrapper(getContext(), R.style.ScrollbarRecyclerView));
-        BaseFilterAdapter adapter4 = new BaseFilterAdapter(R.layout.base_filter_item);
+        BaseFilterAdapter adapter4 = new BaseFilterAdapter(R.layout.base_filter_right_item);
         recyclerView4.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView4.setAdapter(adapter4);
         recyclerView4.setScrollbarFadingEnabled(true);
@@ -372,20 +386,29 @@ public class DeviceFragment extends BaseFragment {
             filterKey.setId(id);
             List<DeviceClassifiy.CategorysBean> deviceClassifiyListBeanList = deviceClassifiy.getCategorys();
             List<BaseSingleFilter> filterValueList = new ArrayList<>();
-            for (DeviceClassifiy.CategorysBean listBean : deviceClassifiyListBeanList) {
-                BaseSingleFilter filterValue = new BaseSingleFilter();
-                int id1 = listBean.getId();
-                String name1 = listBean.getName();
-                filterValue.setId(id1);
-                filterValue.setName(name1);
-                filterValueList.add(filterValue);
+
+            if (deviceClassifiyListBeanList != null && deviceClassifiyListBeanList.size() > 0) {
+                filterKey.setExistRight(true);
+                for (DeviceClassifiy.CategorysBean listBean : deviceClassifiyListBeanList) {
+                    BaseSingleFilter filterValue = new BaseSingleFilter();
+                    int id1 = listBean.getId();
+                    String name1 = listBean.getName();
+                    filterValue.setId(id1);
+                    filterValue.setName(name1);
+                    filterValueList.add(filterValue);
+                }
+                keyList.add(filterKey);
+                deviceClassifiysMap.put(filterKey, filterValueList);
+            } else {
+                filterKey.setExistRight(false);
+                keyList.add(filterKey);
+                deviceClassifiysMap.put(filterKey, new ArrayList<>());
             }
-            keyList.add(filterKey);
-            deviceClassifiysMap.put(filterKey, filterValueList);
         }
         BaseSingleFilter filterKey2 = new BaseSingleFilter();
         filterKey2.setId(-1);
         filterKey2.setName("不限");
+        filterKey2.setExistRight(false);
         keyList.add(filterKey2);
         deviceClassifiysMap.put(filterKey2, new ArrayList<>());
         adapter21.setNewData(keyList);
