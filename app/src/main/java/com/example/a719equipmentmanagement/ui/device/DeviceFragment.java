@@ -277,7 +277,6 @@ public class DeviceFragment extends BaseFragment {
         refreshLayout.addView(recyclerview5);
         refreshLayout.setOnRefreshListener(refreshLayout1 -> {
             refreshLayout1.finishRefresh();
-            LogUtils.i("我在调用下拉");
             pageNum = 1;
             map.put("pageNum", 1);
             map.put("pageSize", 10);
@@ -417,5 +416,6 @@ public class DeviceFragment extends BaseFragment {
 
     private void initTopbar() {
         topbar.setTitle("设备");
+        topbar.addRightImageButton(R.mipmap.search, R.id.search).setOnClickListener(v -> SearchActivity.start(getContext()));
     }
 }

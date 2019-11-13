@@ -209,7 +209,7 @@ public class AccountingActivity extends BaseActivity {
 
     private void accounting() {
         String name = edittext.getText().toString();
-        String equipNo = edittext2.getText().toString();
+        String sn = edittext2.getText().toString();
         String dept = tvResult3.getText().toString();
         String parameter = edittext4.getText().toString();
         String location = tvResult5.getText().toString();
@@ -224,8 +224,8 @@ public class AccountingActivity extends BaseActivity {
             ToastUtils.showShort("设备名称不能为空");
             return;
         }
-        if (StringUtils.isEmpty(equipNo)) {
-            ToastUtils.showShort("设备编号不能为空");
+        if (StringUtils.isEmpty(sn)) {
+            ToastUtils.showShort("厂家编号不能为空");
             return;
         }
         if (StringUtils.isEmpty(dept)) {
@@ -275,7 +275,7 @@ public class AccountingActivity extends BaseActivity {
             jsonObject.put("equip", jsonObject1);
             jsonObject1.put("name", name);
             jsonObject1.put("categoryId", categoryId);
-            jsonObject1.put("sn", equipNo);
+            jsonObject1.put("sn", sn);
             jsonObject1.put("deptId", deptId);
             jsonObject1.put("parameter", parameter);
             jsonObject1.put("locationId", locationId);

@@ -6,32 +6,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.qmuiteam.qmui.widget.QMUITopBar
-        android:id="@+id/topbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/qmui_topbar_height"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <com.example.a719equipmentmanagement.view.DropDownMenu
-        android:id="@+id/dropDownMenu"
-        android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_16"
+            android:src="@mipmap/back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_name"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/search_bg"
+            android:hint="请输入(设备名称)"
+            android:padding="@dimen/dp_4"
+            android:singleLine="true"
+            app:layout_constraintEnd_toStartOf="@id/bt_search"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/et_sn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/dp_10"
+            android:background="@drawable/search_bg"
+            android:hint="请输入(sn)"
+            android:inputType="text"
+            android:padding="@dimen/dp_4"
+            android:singleLine="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bt_search"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintTop_toBottomOf="@id/et_name" />
+
+        <TextView
+            android:id="@+id/bt_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:background="@drawable/write_round_bg"
+            android:padding="@dimen/dp_10"
+            android:text="搜索"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refreshlayout"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:dddividerColor="@color/gray"
-        app:ddmaskColor="@color/mask_color"
-        app:ddmenuBackgroundColor="@color/white"
-        app:ddmenuMenuHeightPercent="0.5"
-        app:ddmenuSelectedIcon="@mipmap/shangla"
-        app:ddmenuTextSize="13sp"
-        app:ddmenuUnselectedIcon="@mipmap/xiala"
-        app:ddtextSelectedColor="@color/drop_down_selected"
-        app:ddtextUnselectedColor="@color/drop_down_unselected"
-        app:ddunderlineColor="@color/gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topbar" />
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout1">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@color/qmui_config_color_white" />
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -70,7 +70,7 @@
     <string name="str_conn_state_connecting">连接状态：连接中</string>
     <string name="str_conn_state_connected">连接状态：已连接</string>
     <string name="device_name">设备名称：</string>
-    <string name="device_no">设备编号：</string>
+    <string name="device_no">厂家编号(sn)：</string>
     <string name="Technical_Parameters">技术参数：</string>
     <string name="location">所在位置：</string>
     <string name="factory">厂家：</string>
@@ -100,4 +100,5 @@
     <string name="no_by">不通过</string>
     <string name="login_name">登录名称:</string>
     <string name="Review">审核</string>
+    <string name="input">请输入(设备名称/sn)</string>
 </resources>

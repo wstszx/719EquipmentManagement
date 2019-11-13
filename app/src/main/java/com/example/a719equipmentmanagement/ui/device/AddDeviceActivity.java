@@ -42,8 +42,6 @@ public class AddDeviceActivity extends BaseActivity {
 
 
     private String[] containerAttrs = {"设备名称", "技术指标", "生产厂家", "责任人"};
-//    private String[] containerAttrValue = {"05", "5MPa", "2019009", "三科室", "3#3", "001",
-//            "3", "10", "12"};
 
     @BindView(R.id.groupListView_addDevice)
     QMUIGroupListView groupListView_addDevice;
@@ -101,13 +99,13 @@ public class AddDeviceActivity extends BaseActivity {
         if (StringUtils.isEmpty(input0)) {
             ToastUtils.showShort("设备名称不能为空");
             return;
-        }else if (StringUtils.isEmpty(input1)) {
+        } else if (StringUtils.isEmpty(input1)) {
             ToastUtils.showShort("指标不能为空");
             return;
-        }else if (StringUtils.isEmpty(input2)) {
+        } else if (StringUtils.isEmpty(input2)) {
             ToastUtils.showShort("厂家不能为空");
             return;
-        }else if (StringUtils.isEmpty(input3)) {
+        } else if (StringUtils.isEmpty(input3)) {
             ToastUtils.showShort("责任人不能为空");
             return;
         }
@@ -116,19 +114,18 @@ public class AddDeviceActivity extends BaseActivity {
         JSONObject jsonObject = new JSONObject();
         try {
 //            jsonObject.put("id",rowCount);
-            jsonObject.put("equipNo",rowCount+"");
-            jsonObject.put("status",1);  //添加设备时默认状态为“可用”
+            jsonObject.put("equipNo", rowCount + "");
+            jsonObject.put("status", 1);  //添加设备时默认状态为“可用”
 //                jsonObject.put("sn", 5);
 //                jsonObject.put("category_id", 5);
 
             //此三行为目前展示需要，对应DeviceAdapter添加对应解析
-            int i=rowCount%4;
+            int i = rowCount % 4;
             jsonObject.put("locationId", i);
             jsonObject.put("deptId", i);
             jsonObject.put("categoryId", i);
-
             jsonObject.put("name", input0);
-            jsonObject.put("parameter", input1) ;
+            jsonObject.put("parameter", input1);
             jsonObject.put("manufactuer", input2);
             jsonObject.put("responsor", input3);
         } catch (JSONException e) {
@@ -140,7 +137,7 @@ public class AddDeviceActivity extends BaseActivity {
                 .subscribe(new BaseSubscriber<BaseResponse>(AddDeviceActivity.this) {
                     @Override
                     public void onSuccess(BaseResponse baseResponse) {
-                        setResult(RESULT_OK,new Intent());
+                        setResult(RESULT_OK, new Intent());
                     }
                 });
 

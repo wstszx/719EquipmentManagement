@@ -277,7 +277,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             return;
         }
         if (StringUtils.isEmpty(sn)) {
-            ToastUtils.showShort("设备编号不能为空");
+            ToastUtils.showShort("厂家编号不能为空");
             return;
         }
         if (StringUtils.isEmpty(dept)) {
@@ -424,7 +424,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
         if (data != null) {
             deviceName = data.getName();
             equipId = data.getId();
-            String equipNo = data.getEquipNo();
+            String sn = data.getSn();
             parameter = data.getParameter();
             manufactuer = data.getManufactuer();
             int techState = data.getTechState();
@@ -503,7 +503,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
             }
             edittext.setText(deviceName);
             tvResult1.setText(categoryName);
-            edittext2.setText(equipNo);
+            edittext2.setText(sn);
             tvResult3.setText(deptName);
             edittext4.setText(parameter);
             tvResult5.setText(locationName);

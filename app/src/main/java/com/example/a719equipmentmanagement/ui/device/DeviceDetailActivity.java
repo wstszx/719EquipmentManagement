@@ -268,7 +268,7 @@ public class DeviceDetailActivity extends BaseActivity {
     private void setData(DeviceScanData.DataBean dataBean) {
         DeviceScanData.DataBean.DeptBean dept = dataBean.getDept();
         DeviceScanData.DataBean.LocationBean location = dataBean.getLocation();
-        String equipNo = dataBean.getEquipNo();
+        String sn = dataBean.getSn();
         int techState = dataBean.getTechState();
         String deviceName = dataBean.getName();
         equipId = dataBean.getId();
@@ -344,7 +344,7 @@ public class DeviceDetailActivity extends BaseActivity {
         }
         edittext.setText(deviceName);
         tvResult1.setText(categoryName);
-        edittext2.setText(equipNo);
+        edittext2.setText(sn);
         tvResult3.setText(deptName);
         edittext4.setText(parameter);
         tvResult5.setText(locationName);
