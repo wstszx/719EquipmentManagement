@@ -30,15 +30,12 @@ public class PersonDetailActivity extends BaseActivity {
     @BindView(R.id.topbar)
     QMUITopBarLayout topbar;
     private String[] containerAttrs = {"上级部门", "部门名称", "显示排序", "负责人", "联系电话", "邮箱", "部门状态"};
-    private String[] containerAttrValue = {"张三", "三科室", "普通用户"};
     private QMUICommonListItemView listItemView;
-    private String heightDept = "";
     private String deptName;
     private String orderNum;
     private String leader;
     private String phone;
     private String email;
-    private String status;
 
     @Override
     protected void init(Bundle savedInstanceState) {
@@ -55,7 +52,7 @@ public class PersonDetailActivity extends BaseActivity {
         leader = deptList.getLeader();
         phone = deptList.getPhone();
         email = deptList.getEmail();
-        status = deptList.getStatus();
+        String status = deptList.getStatus();
         switch (status) {
             case "0":
                 status = "正常";
@@ -86,10 +83,11 @@ public class PersonDetailActivity extends BaseActivity {
             startActivityForResult(intent, tag);
         };
         QMUIGroupListView.Section section = QMUIGroupListView.newSection(this);
+        String heightDept = "";
         QMUICommonListItemView item = groupListView.createItemView(
                 null,
                 containerAttrs[0],
-                heightDept != null ? heightDept : " ",
+                heightDept,
                 QMUICommonListItemView.HORIZONTAL,
                 QMUICommonListItemView.ACCESSORY_TYPE_CHEVRON);
         item.setTag(0);

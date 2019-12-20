@@ -60,7 +60,7 @@ public class InventoryHistory {
         private String createTime;
         private String updateBy;
         private String updateTime;
-        private Object remark;
+        private String remark;
         private String name;
         private int state;
         private String containerIds;
@@ -114,11 +114,11 @@ public class InventoryHistory {
             this.updateTime = updateTime;
         }
 
-        public Object getRemark() {
-            return remark;
+        public String getRemark() {
+            return remark == null ? "" : remark;
         }
 
-        public void setRemark(Object remark) {
+        public void setRemark(String remark) {
             this.remark = remark;
         }
 

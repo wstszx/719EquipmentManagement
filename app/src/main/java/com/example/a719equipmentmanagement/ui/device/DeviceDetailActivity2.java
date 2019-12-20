@@ -1,11 +1,9 @@
 package com.example.a719equipmentmanagement.ui.device;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +14,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
@@ -47,12 +44,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -153,15 +148,10 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private static final int CONTAINER_TYPE = 3;
     private static final int DATE_ONE = 4;
     private static final int DATE_TWO = 5;
-    private String deviceName;
-    private String parameter;
-    private String manufactuer;
     private String responsor;
     private String deptName;
     private String locationName;
     private int status;
-    private String deviceStatus;
-    private int deviceId;
     private List<String> opers;
     private QMUIListPopup mListPopup;
     private ArrayAdapter<String> adapter;
@@ -244,13 +234,6 @@ public class DeviceDetailActivity2 extends BaseActivity {
         return R.layout.activity_device_detail2;
     }
 
-//    public static void start(Context context, String deviceId) {
-//        Intent starter = new Intent(context, DeviceDetailActivity2.class);
-//        starter.putExtra("deviceId", deviceId);
-//        context.startActivity(starter);
-//    }
-
-
     private void initTopbar() {
         topbar.setTitle("设备详情");
         topbar.addLeftBackImageButton().setOnClickListener(v -> {
@@ -280,46 +263,46 @@ public class DeviceDetailActivity2 extends BaseActivity {
             ToastUtils.showShort("厂家编号不能为空");
             return;
         }
-        if (StringUtils.isEmpty(dept)) {
-            ToastUtils.showShort("归属部门不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(parameter)) {
-            ToastUtils.showShort("技术参数不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(location)) {
-            ToastUtils.showShort("所在位置不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(manufactuer)) {
-            ToastUtils.showShort("厂家不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(equipStatus)) {
-            ToastUtils.showShort("仪器状态不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(responsor)) {
-            ToastUtils.showShort("负责人不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(techStatus)) {
-            ToastUtils.showShort("技术状态不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(verifyPeriod)) {
-            ToastUtils.showShort("检定周期不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(latestVerifyDate)) {
-            ToastUtils.showShort("最近检定日期不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(validDate)) {
-            ToastUtils.showShort("有效期不能为空");
-            return;
-        }
+//        if (StringUtils.isEmpty(dept)) {
+//            ToastUtils.showShort("归属部门不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(parameter)) {
+//            ToastUtils.showShort("技术参数不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(location)) {
+//            ToastUtils.showShort("所在位置不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(manufactuer)) {
+//            ToastUtils.showShort("厂家不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(equipStatus)) {
+//            ToastUtils.showShort("仪器状态不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(responsor)) {
+//            ToastUtils.showShort("负责人不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(techStatus)) {
+//            ToastUtils.showShort("技术状态不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(verifyPeriod)) {
+//            ToastUtils.showShort("检定周期不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(latestVerifyDate)) {
+//            ToastUtils.showShort("最近检定日期不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(validDate)) {
+//            ToastUtils.showShort("有效期不能为空");
+//            return;
+//        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("id", equipId);
@@ -422,11 +405,11 @@ public class DeviceDetailActivity2 extends BaseActivity {
     private void setData(DeviceDetailData deviceDetailData) {
         DeviceDetailData.DataBean data = deviceDetailData.getData();
         if (data != null) {
-            deviceName = data.getName();
+            String deviceName = data.getName();
             equipId = data.getId();
             String sn = data.getSn();
-            parameter = data.getParameter();
-            manufactuer = data.getManufactuer();
+            String parameter = data.getParameter();
+            String manufactuer = data.getManufactuer();
             int techState = data.getTechState();
             responsor = data.getResponsor();
             int verifyPeriod = data.getVerifyPeriod();
@@ -458,6 +441,7 @@ public class DeviceDetailActivity2 extends BaseActivity {
                     techStateStr = "不合格";
                     break;
             }
+            String deviceStatus;
             switch (status) {
                 case 0:
                     deviceStatus = "可用";

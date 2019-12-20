@@ -132,34 +132,12 @@ public class DeviceDetailFragment extends BaseFragment {
     TextView tvTitle12;
     @BindView(R.id.tv_title13)
     TextView tvTitle13;
-    private static final int VALID_DATA = 1;
-    private static final int LAST_DATA = 2;
-    private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String name;
-    private String parameter;
-    private String manufactuer;
-    private String responsor;
     private String deptName;
     private String locationName;
-    private String deviceStatus;
-    private int status;
     private int equipId;
-    private ArrayAdapter<String> adapter;
-    private QMUIListPopup mListPopup;
-    private List<String> opers;
-    private ReturnInspectionDialog returnInspectionDialog;
-    private String date;
-    private String date1;
-    private AuditDialog auditDialog;
-    private int userId;
     private String techStateStr;
     private String categoryName;
-    private int locationId;
-    private int deptId;
-    private int categoryId;
     private int inventoryId;
-    private String equipNo;
-    private String deviceName;
 
 
     @Override
@@ -217,33 +195,33 @@ public class DeviceDetailFragment extends BaseFragment {
     private void setData(DeviceDetailData deviceDetailData) {
         DeviceDetailData.DataBean data = deviceDetailData.getData();
         if (data != null) {
-            deviceName = data.getName();
+            String deviceName = data.getName();
             equipId = data.getId();
             String equipNo = data.getEquipNo();
-            parameter = data.getParameter();
-            manufactuer = data.getManufactuer();
+            String parameter = data.getParameter();
+            String manufactuer = data.getManufactuer();
             int techState = data.getTechState();
-            responsor = data.getResponsor();
+            String responsor = data.getResponsor();
             int verifyPeriod = data.getVerifyPeriod();
             String latestVerifyDate = data.getLatestVerifyDate();
             String validDate = data.getValidDate();
             DeviceDetailData.DataBean.DeptBean dept1 = data.getDept();
             if (dept1 != null) {
-                deptId = dept1.getDeptId();
+                int deptId = dept1.getDeptId();
                 deptName = dept1.getDeptName();
             }
             DeviceDetailData.DataBean.CategoryBean category = data.getCategory();
             if (category != null) {
-                categoryId = category.getId();
+                int categoryId = category.getId();
                 categoryName = category.getName();
             }
             DeviceDetailData.DataBean.LocationBean location1 = data.getLocation();
             if (location1 != null) {
-                locationId = location1.getId();
+                int locationId = location1.getId();
                 locationName = location1.getName();
             }
-            status = data.getStatus();
-            opers = data.getOpers();
+            int status = data.getStatus();
+            List<String> opers = data.getOpers();
             switch (techState) {
                 case 0:
                     techStateStr = "合格";
@@ -252,6 +230,7 @@ public class DeviceDetailFragment extends BaseFragment {
                     techStateStr = "不合格";
                     break;
             }
+            String deviceStatus;
             switch (status) {
                 case 0:
                     deviceStatus = "可用";

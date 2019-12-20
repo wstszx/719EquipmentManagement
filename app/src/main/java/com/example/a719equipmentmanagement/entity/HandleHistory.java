@@ -64,7 +64,7 @@ public class HandleHistory {
         private String createTime;
         private Object updateBy;
         private String updateTime;
-        private Object remark;
+        private String remark;
         private int type;
         private int equipId;
         private int deptId;
@@ -121,11 +121,11 @@ public class HandleHistory {
             this.updateTime = updateTime;
         }
 
-        public Object getRemark() {
-            return remark;
+        public String getRemark() {
+            return remark == null ? "" : remark;
         }
 
-        public void setRemark(Object remark) {
+        public void setRemark(String remark) {
             this.remark = remark;
         }
 

@@ -30,7 +30,8 @@ public class HandleAdapter extends BaseQuickAdapter<HandleHistory.RowsBean, Base
             helper.setText(R.id.tv_1, equipNo)
                     .setText(R.id.tv_2, name)
                     .setText(R.id.tv_3, createTime)
-                    .setText(R.id.tv_4, equipType);
+                    .setText(R.id.tv_4, equipType)
+                    .setText(R.id.tv_5, item.getRemark());
         }
     }
 }

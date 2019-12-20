@@ -1,30 +1,20 @@
 package com.example.a719equipmentmanagement.ui.device;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
 import com.example.a719equipmentmanagement.base.BaseActivity;
 import com.example.a719equipmentmanagement.entity.BaseResponse;
-import com.example.a719equipmentmanagement.entity.DeviceData2;
-import com.example.a719equipmentmanagement.entity.DeviceDetailData;
 import com.example.a719equipmentmanagement.entity.DeviceScanData;
 import com.example.a719equipmentmanagement.entity.DeptList;
 import com.example.a719equipmentmanagement.entity.UserBean;
@@ -32,7 +22,6 @@ import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
-import com.example.a719equipmentmanagement.ui.home.ScanActivity;
 import com.example.a719equipmentmanagement.ui.home.ScanActivity2;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
 import com.example.a719equipmentmanagement.view.AuditDialog;
@@ -41,16 +30,12 @@ import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
-import com.qmuiteam.qmui.widget.grouplist.QMUICommonListItemView;
-import com.qmuiteam.qmui.widget.grouplist.QMUIGroupListView;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import io.reactivex.Single;
@@ -144,14 +129,9 @@ public class DeviceDetailActivity extends BaseActivity {
     private static final int VALID_DATA = 1;
     private static final int LAST_DATA = 2;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
-    private String name;
-    private String parameter;
-    private String manufactuer;
     private String responsor;
     private String deptName;
     private String locationName;
-    private String deviceStatus;
-    private int status;
     private int equipId;
     private ArrayAdapter<String> adapter;
     private QMUIListPopup mListPopup;
@@ -161,9 +141,6 @@ public class DeviceDetailActivity extends BaseActivity {
     private int userId;
     private String techStateStr;
     private String categoryName;
-    private int locationId;
-    private int deptId;
-    private int categoryId;
 
 
     @Override
@@ -272,25 +249,25 @@ public class DeviceDetailActivity extends BaseActivity {
         int techState = dataBean.getTechState();
         String deviceName = dataBean.getName();
         equipId = dataBean.getId();
-        name = dataBean.getName();
+        String name = dataBean.getName();
         int verifyPeriod = dataBean.getVerifyPeriod();
         String latestVerifyDate = dataBean.getLatestVerifyDate();
         String validDate = dataBean.getValidDate();
-        parameter = dataBean.getParameter();
-        manufactuer = dataBean.getManufactuer();
+        String parameter = dataBean.getParameter();
+        String manufactuer = dataBean.getManufactuer();
         responsor = dataBean.getResponsor();
         if (dept != null) {
-            deptId = dept.getDeptId();
+            int deptId = dept.getDeptId();
             deptName = dept.getDeptName();
         }
         if (location != null) {
-            locationId = location.getId();
+            int locationId = location.getId();
             locationName = location.getName();
         }
-        status = dataBean.getStatus();
+        int status = dataBean.getStatus();
         DeviceScanData.DataBean.CategoryBean category = dataBean.getCategory();
         if (category != null) {
-            categoryId = category.getId();
+            int categoryId = category.getId();
             categoryName = category.getName();
         }
         switch (techState) {
@@ -304,6 +281,7 @@ public class DeviceDetailActivity extends BaseActivity {
                 techStateStr = "限制使用";
                 break;
         }
+        String deviceStatus;
         switch (status) {
             case 0:
                 deviceStatus = "可用";
@@ -385,7 +363,6 @@ public class DeviceDetailActivity extends BaseActivity {
                         break;
                     case "归还":
                         returnEquip();
-//                        showOperaDialog(2, s);
                         break;
                     case "送检申请":
                         showOperaDialog(3, s);

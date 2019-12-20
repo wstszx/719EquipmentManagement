@@ -49,7 +49,7 @@ public class BorrowHistoryActivity extends BaseActivity {
     }
 
     private void initAdapter() {
-        adapter = new BorrowHistoryAdapter(R.layout.return_item);
+        adapter = new BorrowHistoryAdapter(R.layout.borrow_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);

@@ -248,7 +248,7 @@ public class DeviceFragment extends BaseFragment {
         adapter4.setOnItemClickListener((adapter, view, position) -> {
             BaseSingleFilter baseSingleFilter = adapter4.getData().get(position);
             String name = baseSingleFilter.getName();
-            if (position < 10) {
+            if (position < 11) {
                 map.put("status", position);
                 dropDownMenu.setTabText(name);
             } else {

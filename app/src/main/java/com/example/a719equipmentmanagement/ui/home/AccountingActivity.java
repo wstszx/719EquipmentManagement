@@ -228,46 +228,46 @@ public class AccountingActivity extends BaseActivity {
             ToastUtils.showShort("厂家编号不能为空");
             return;
         }
-        if (StringUtils.isEmpty(dept)) {
-            ToastUtils.showShort("归属部门不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(parameter)) {
-            ToastUtils.showShort("技术参数不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(location)) {
-            ToastUtils.showShort("所在位置不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(manufactuer)) {
-            ToastUtils.showShort("厂家不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(equipStatus)) {
-            ToastUtils.showShort("仪器状态不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(responsor)) {
-            ToastUtils.showShort("负责人不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(techStatus)) {
-            ToastUtils.showShort("技术状态不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(verifyPeriod)) {
-            ToastUtils.showShort("检定周期不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(latestVerifyDate)) {
-            ToastUtils.showShort("最近检定日期不能为空");
-            return;
-        }
-        if (StringUtils.isEmpty(validDate)) {
-            ToastUtils.showShort("有效期不能为空");
-            return;
-        }
+//        if (StringUtils.isEmpty(dept)) {
+//            ToastUtils.showShort("归属部门不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(parameter)) {
+//            ToastUtils.showShort("技术参数不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(location)) {
+//            ToastUtils.showShort("所在位置不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(manufactuer)) {
+//            ToastUtils.showShort("厂家不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(equipStatus)) {
+//            ToastUtils.showShort("仪器状态不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(responsor)) {
+//            ToastUtils.showShort("负责人不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(techStatus)) {
+//            ToastUtils.showShort("技术状态不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(verifyPeriod)) {
+//            ToastUtils.showShort("检定周期不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(latestVerifyDate)) {
+//            ToastUtils.showShort("最近检定日期不能为空");
+//            return;
+//        }
+//        if (StringUtils.isEmpty(validDate)) {
+//            ToastUtils.showShort("有效期不能为空");
+//            return;
+//        }
 
         JSONObject jsonObject = new JSONObject();
         JSONObject jsonObject1 = new JSONObject();

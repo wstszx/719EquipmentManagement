@@ -20,7 +20,8 @@ public class InventoryAdapter extends BaseQuickAdapter<InventoryHistory.RowsBean
             helper.setText(R.id.tv_1, item.getName())
                     .setText(R.id.tv_2, item.getUpdateBy())
                     .setText(R.id.tv_3, item.getCreateBy() != null ? item.getCreateBy() + "的盘点" : "")
-                    .setText(R.id.tv_4, item.getCreateTime());
+                    .setText(R.id.tv_4, item.getCreateTime())
+                    .setText(R.id.tv_5, item.getRemark());
         }
     }
 }
