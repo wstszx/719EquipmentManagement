@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.a719equipmentmanagement.R;
@@ -21,6 +25,9 @@ import com.example.a719equipmentmanagement.entity.UserBean;
 import com.example.a719equipmentmanagement.net.BaseSubscriber;
 import com.example.a719equipmentmanagement.net.CommonCompose;
 import com.example.a719equipmentmanagement.net.RetrofitClient;
+import com.example.a719equipmentmanagement.ui.home.ChoiceContainerActivity;
+import com.example.a719equipmentmanagement.ui.home.ChoiceDeptActivity;
+import com.example.a719equipmentmanagement.ui.home.ChoiceDeviceClassifiyActivity;
 import com.example.a719equipmentmanagement.ui.home.ResultActivity;
 import com.example.a719equipmentmanagement.ui.home.ScanActivity2;
 import com.example.a719equipmentmanagement.utils.AboriginalDateSelect;
@@ -29,18 +36,25 @@ import com.example.a719equipmentmanagement.view.OperaDialog;
 import com.example.a719equipmentmanagement.view.ReturnInspectionDialog;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.QMUITopBarLayout;
+import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIListPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 public class DeviceDetailActivity extends BaseActivity {
 
@@ -128,6 +142,11 @@ public class DeviceDetailActivity extends BaseActivity {
     TextView tvTitle13;
     private static final int VALID_DATA = 1;
     private static final int LAST_DATA = 2;
+    private static final int DEVICE_TYPE = 1;
+    private static final int DEPT_TYPE = 2;
+    private static final int CONTAINER_TYPE = 3;
+    private static final int DATE_ONE = 4;
+    private static final int DATE_TWO = 5;
     private int mCurrentDialogStyle = com.qmuiteam.qmui.R.style.QMUI_Dialog;
     private String responsor;
     private String deptName;
@@ -141,10 +160,19 @@ public class DeviceDetailActivity extends BaseActivity {
     private int userId;
     private String techStateStr;
     private String categoryName;
+    private int categoryId;
+    private int deptId;
+    private int locationId;
+    private int status;
+    private int tech_statu;
+    private String[] options = {"可用", "借用", "送检占用", "送检", "报废占用", "报废", "封存", "解封占用", "过期", "外借", "未送检", "不限"};
+    private String[] technical_status = {"合格", "不合格", "限制使用"};
+    private boolean isManager;
 
 
     @Override
     protected void init(Bundle savedInstanceState) {
+        isManager = SPUtils.getInstance().getBoolean("isManager", false);
         initTopbar();
         initView();
         initData();
@@ -257,17 +285,17 @@ public class DeviceDetailActivity extends BaseActivity {
         String manufactuer = dataBean.getManufactuer();
         responsor = dataBean.getResponsor();
         if (dept != null) {
-            int deptId = dept.getDeptId();
+            deptId = dept.getDeptId();
             deptName = dept.getDeptName();
         }
         if (location != null) {
-            int locationId = location.getId();
+            locationId = location.getId();
             locationName = location.getName();
         }
         int status = dataBean.getStatus();
         DeviceScanData.DataBean.CategoryBean category = dataBean.getCategory();
         if (category != null) {
-            int categoryId = category.getId();
+            categoryId = category.getId();
             categoryName = category.getName();
         }
         switch (techState) {
@@ -465,17 +493,11 @@ public class DeviceDetailActivity extends BaseActivity {
         tvTitle12.setEnabled(true);
         tvTitle13.setEnabled(true);
 
-        edittext.setFocusable(true);
         tvResult1.setEnabled(true);
-        edittext2.setFocusable(true);
         tvResult3.setEnabled(true);
-        edittext4.setFocusable(true);
         tvResult5.setEnabled(true);
-        edittext6.setFocusable(true);
         tvResult7.setEnabled(true);
-        edittext8.setFocusable(true);
         tvResult9.setEnabled(true);
-        edittext11.setFocusable(true);
         tvResult12.setEnabled(true);
         tvResult13.setEnabled(true);
         edittext.setEnabled(true);
@@ -497,8 +519,22 @@ public class DeviceDetailActivity extends BaseActivity {
         constraint13.setEnabled(true);
         topbar.removeAllLeftViews();
         topbar.removeAllRightViews();
-        topbar.addLeftTextButton(R.string.canecl, R.id.canecl);
-        topbar.addRightTextButton(R.string.save, R.id.save);
+        topbar.addLeftTextButton(R.string.canecl, R.id.canecl).setOnClickListener(v -> {
+            topbar.removeAllLeftViews();
+            topbar.removeAllRightViews();
+            initTopbar();
+            if (opers != null) {
+                topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
+                    initListPopupIfNeed(opers);
+                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                    mListPopup.show(v1);
+                });
+            }
+        });
+        topbar.addRightTextButton(R.string.save, R.id.save).setOnClickListener(v -> {
+            updateDevice();
+        });
     }
 
     private void showReturnInspectionDialog(String s) {
@@ -532,6 +568,72 @@ public class DeviceDetailActivity extends BaseActivity {
                     break;
             }
         });
+    }
+
+    private void updateDevice() {
+        String name = edittext.getText().toString();
+        String sn = edittext2.getText().toString();
+        String dept = tvResult3.getText().toString();
+        String parameter = edittext4.getText().toString();
+        String location = tvResult5.getText().toString();
+        String manufactuer = edittext6.getText().toString();
+        String equipStatus = tvResult7.getText().toString();
+        String responsor = edittext8.getText().toString();
+        String techStatus = tvResult9.getText().toString();
+        String verifyPeriod = edittext11.getText().toString();
+        String latestVerifyDate = tvResult12.getText().toString();
+        String validDate = tvResult13.getText().toString();
+        if (StringUtils.isEmpty(name)) {
+            ToastUtils.showShort("设备名称不能为空");
+            return;
+        }
+        if (StringUtils.isEmpty(sn)) {
+            ToastUtils.showShort("厂家编号不能为空");
+            return;
+        }
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("id", equipId);
+            jsonObject.put("name", name);
+            jsonObject.put("categoryId", categoryId);
+            jsonObject.put("sn", sn);
+            jsonObject.put("deptId", deptId);
+            jsonObject.put("parameter", parameter);
+            jsonObject.put("locationId", locationId);
+            jsonObject.put("manufactuer", manufactuer);
+            jsonObject.put("status", status);
+            jsonObject.put("responsor", responsor);
+            jsonObject.put("techState", tech_statu);
+            jsonObject.put("verifyPeriod", verifyPeriod);
+            jsonObject.put("latestVerifyDate", latestVerifyDate);
+            jsonObject.put("validDate", validDate);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        RetrofitClient.getInstance().getService().updateDevice(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new BaseSubscriber<BaseResponse>(DeviceDetailActivity.this) {
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response != null && response.getCode() == 0) {
+                            topbar.removeAllLeftViews();
+                            topbar.removeAllRightViews();
+                            initTopbar();
+                            if (opers != null) {
+                                topbar.addRightImageButton(R.mipmap.menu, R.id.menu).setOnClickListener(v1 -> {
+                                    initListPopupIfNeed(opers);
+                                    mListPopup.setAnimStyle(QMUIPopup.ANIM_GROW_FROM_CENTER);
+                                    mListPopup.setPreferredDirection(QMUIPopup.DIRECTION_NONE);
+                                    mListPopup.show(v1);
+                                });
+                            }
+                            ToastUtils.showShort("保存成功");
+                        }
+                    }
+                });
+
     }
 
 
@@ -677,6 +779,92 @@ public class DeviceDetailActivity extends BaseActivity {
                         dialog.dismiss();
                     })
                     .create(mCurrentDialogStyle).show();
+        }
+    }
+
+    @OnClick({R.id.constraint1, R.id.constraint3, R.id.constraint5, R.id.constraint7,
+            R.id.constraint9, R.id.constraint12, R.id.constraint13})
+    public void onViewClicked(View view) {
+        if (isManager) {
+            switch (view.getId()) {
+                case R.id.constraint1:
+                    startActivityForResult(new Intent(DeviceDetailActivity.this, ChoiceDeviceClassifiyActivity.class), DEVICE_TYPE);
+                    break;
+                case R.id.constraint3:
+                    startActivityForResult(new Intent(DeviceDetailActivity.this, ChoiceDeptActivity.class), DEPT_TYPE);
+                    break;
+                case R.id.constraint5:
+                    startActivityForResult(new Intent(DeviceDetailActivity.this, ChoiceContainerActivity.class), CONTAINER_TYPE);
+                    break;
+                case R.id.constraint7:
+                    showSimpleBottomSheetList(options, 1);
+                    break;
+                case R.id.constraint9:
+                    showSimpleBottomSheetList(technical_status, 2);
+                    break;
+                case R.id.constraint12:
+                    AboriginalDateSelect.getInstance().showDate(this, DATE_ONE);
+                    break;
+                case R.id.constraint13:
+                    AboriginalDateSelect.getInstance().showDate(this, DATE_TWO);
+                    break;
+            }
+        }
+    }
+
+    private void showSimpleBottomSheetList(String[] array, int flag) {
+        QMUIBottomSheet.BottomListSheetBuilder bottomListSheetBuilder = new QMUIBottomSheet.BottomListSheetBuilder(this);
+        for (String s : array) {
+            bottomListSheetBuilder.addItem(s != null ? s : "未知");
+        }
+
+        bottomListSheetBuilder.setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
+            dialog.dismiss();
+            switch (flag) {
+                case 1:
+                    status = position;
+                    tvResult7.setText(tag);
+                    break;
+                case 2:
+                    tech_statu = position;
+                    tvResult9.setText(tag);
+                    break;
+                case 3:
+                    categoryId = position;
+                    break;
+            }
+        })
+                .build()
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case DEVICE_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        categoryId = data.getIntExtra("id", 0);
+                        tvResult1.setText(name);
+                    }
+                    break;
+                case DEPT_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        deptId = data.getIntExtra("id", 0);
+                        tvResult3.setText(name);
+                    }
+                    break;
+                case CONTAINER_TYPE:
+                    if (data != null) {
+                        String name = data.getStringExtra("name");
+                        locationId = data.getIntExtra("id", 0);
+                        tvResult5.setText(name);
+                    }
+                    break;
+            }
         }
     }
 }
