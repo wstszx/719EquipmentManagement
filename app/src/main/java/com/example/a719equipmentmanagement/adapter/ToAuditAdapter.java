@@ -29,13 +29,15 @@ public class ToAuditAdapter extends BaseQuickAdapter<ToAudit.RowsBean, BaseViewH
             String equipType = Constant.getEquipType(type);
             String equipNo = equip.getEquipNo();
             String name = equip.getName();
+            String sn = equip.getSn();
+
 
 //            SpannableStringBuilder builder = new SpannableStringBuilder();
 //            SpannableString spannableString = new SpannableString(equipNo);
 //            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(App.getContext(), R.color.blue)), 0, spannableString.length(), 0);
 //            builder.append(createBy).append(createTime).append(equipType).append(spannableString).append(name);
             helper
-                    .setText(R.id.tv_1, equipNo)
+                    .setText(R.id.tv_1, sn)
                     .setText(R.id.tv_2, name)
                     .setText(R.id.tv_3, createTime)
                     .setText(R.id.tv_4, equipType)

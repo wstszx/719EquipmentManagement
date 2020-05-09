@@ -224,7 +224,7 @@ public class UserToAudit {
             private String updateTime;
             private Object remark;
             private String equipNo;
-            private Object sn;
+            private String sn;
             private int locationId;
             private int categoryId;
             private Object category;
@@ -308,11 +308,11 @@ public class UserToAudit {
                 this.equipNo = equipNo;
             }
 
-            public Object getSn() {
-                return sn;
+            public String getSn() {
+                return sn == null ? "" : sn;
             }
 
-            public void setSn(Object sn) {
+            public void setSn(String sn) {
                 this.sn = sn;
             }
 

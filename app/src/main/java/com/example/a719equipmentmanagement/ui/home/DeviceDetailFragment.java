@@ -149,9 +149,7 @@ public class DeviceDetailFragment extends BaseFragment {
 
     private void initTopbar() {
         topbar.setTitle("设备详情");
-        topbar.addLeftBackImageButton().setOnClickListener(v -> {
-            Navigation.findNavController(v).navigateUp();
-        });
+        topbar.addLeftBackImageButton().setOnClickListener(v -> Navigation.findNavController(v).navigateUp());
     }
 
     private void initData() {

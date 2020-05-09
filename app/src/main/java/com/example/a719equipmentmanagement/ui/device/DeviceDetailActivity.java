@@ -179,7 +179,6 @@ public class DeviceDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-
         tvTitle.setEnabled(false);
         tvTitle1.setEnabled(false);
         tvTitle2.setEnabled(false);
@@ -194,17 +193,11 @@ public class DeviceDetailActivity extends BaseActivity {
         tvTitle12.setEnabled(false);
         tvTitle13.setEnabled(false);
 
-        edittext.setFocusable(false);
         tvResult1.setEnabled(false);
-        edittext2.setFocusable(false);
         tvResult3.setEnabled(false);
-        edittext4.setFocusable(false);
         tvResult5.setEnabled(false);
-        edittext6.setFocusable(false);
         tvResult7.setEnabled(false);
-        edittext8.setFocusable(false);
         tvResult9.setEnabled(false);
-        edittext11.setFocusable(false);
         tvResult12.setEnabled(false);
         tvResult13.setEnabled(false);
         edittext.setEnabled(false);

@@ -27,6 +27,7 @@ public class ToDoAdapter extends BaseQuickAdapter<ToDo.RowsBean, BaseViewHolder>
             int type = item.getType();
             String equipType = Constant.getEquipType(type);
             String equipNo = equip.getEquipNo();
+            String sn = equip.getSn();
             String name = equip.getName();
 //            SpannableStringBuilder builder = new SpannableStringBuilder();
 //            SpannableString spannableString = new SpannableString(equipNo);

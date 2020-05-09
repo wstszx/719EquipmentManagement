@@ -25,7 +25,6 @@ public class ScanActivity extends BaseActivity implements QRCodeView.Delegate {
     ZBarView zbarview;
     @BindView(R.id.iv_back)
     ImageView ivBack;
-    private String id;
 
     @Override
     protected void init(Bundle savedInstanceState) {
