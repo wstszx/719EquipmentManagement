@@ -176,6 +176,16 @@ public class DeviceDetailActivity extends BaseActivity {
         initTopbar();
         initView();
         initData();
+        AboriginalDateSelect.getInstance().setListener((position, date) -> {
+            switch (position) {
+                case DATE_ONE:
+                    tvResult12.setText(date);
+                    break;
+                case DATE_TWO:
+                    tvResult13.setText(date);
+                    break;
+            }
+        });
     }
 
     private void initView() {
